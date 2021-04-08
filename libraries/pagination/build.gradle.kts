@@ -5,5 +5,5 @@ plugins {
 dependencies {
   api(project(Modules.libraryAndroid))
 
-  testImplementation(project(Modules.libraryTestCo))
+  testImplementation(project(Modules.libraryTest))
 }

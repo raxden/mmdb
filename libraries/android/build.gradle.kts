@@ -25,5 +25,5 @@ dependencies {
   api(AndroidLibraries.lifecycleCommon)
   api(AndroidLibraries.lifecycleViewModel)
 
-  testImplementation(project(Modules.libraryTestCo))
+  testImplementation(project(Modules.libraryTest))
 }
