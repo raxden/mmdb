@@ -11,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 @Database(
   entities = [HomeModuleEntity::class],
   version = 1,
-  exportSchema = false
 )
 abstract class HomeModuleDatabase : RoomDatabase() {
 
