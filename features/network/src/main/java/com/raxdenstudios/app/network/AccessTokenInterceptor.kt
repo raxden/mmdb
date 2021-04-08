@@ -1,0 +1,38 @@
+package com.raxdenstudios.app.network
+
+import com.raxdenstudios.app.account.data.repository.AccountRepository
+import com.raxdenstudios.app.account.domain.model.Account
+import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
+import okhttp3.Response
+import java.io.IOException
+
+internal class AccessTokenInterceptor(
+  private val accountRepository: AccountRepository
+) : Interceptor {
+
+  companion object {
+    private const val AUTHORIZATION = "Authorization"
+  }
+
+  @Throws(IOException::class)
+  override fun intercept(chain: Interceptor.Chain): Response {
+    var request = chain.request()
+    runBlocking {
+      val accessToken = getAccessToken()
+      if (accessToken != null) {
+        request = request.newBuilder()
+          .addHeader(AUTHORIZATION, "Bearer $accessToken")
+          .build()
+      }
+    }
+    return chain.proceed(request)
+  }
+
+  private suspend fun getAccessToken(): String? {
+    return when (val account = accountRepository.getAccount()) {
+      is Account.Logged -> account.credentials.accessToken
+      is Account.Guest -> null
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppCard.MovieListItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".view.HomeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/movie_image_view"
+            android:layout_width="128dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="w,13:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <com.raxdenstudios.app.home.view.component.WatchButtonView
+            android:id="@+id/watch_button_view"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="@+id/movie_image_view"
+            app:layout_constraintTop_toTopOf="@+id/movie_image_view" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/movie_title_view"
+            style="@style/CodeFont.MovieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/movie_image_view"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/movie_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/movie_image_view"
+            tools:text="Greenland" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/movie_star_view"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:tint="#efc84d"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_view"
+            app:srcCompat="@drawable/ic_baseline_star_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/movie_rate_view"
+            style="@style/CodeFont.MovieTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/movie_star_view"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_view"
+            tools:text="7.8" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/movie_subtitle_view"
+            style="@style/CodeFont.MovieSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/movie_title_view"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title_view"
+            tools:text="2011" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

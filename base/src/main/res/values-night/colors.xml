@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#616161</color>
+    <color name="colorPrimaryVariant">#616161</color>
+    <color name="colorOnPrimary">#ffffff</color>
+    <color name="colorSecondary">#b71c1c</color>
+    <color name="colorSecondaryVariant">#f05545</color>
+    <color name="colorOnSecondary">#f5f5f5</color>
+    <color name="colorBackground">#eeeeee</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorSurface">#f5f5f6</color>
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorControlActivated">#b71c1c</color>
+    <color name="colorError">#f05545</color>
+    <color name="colorOnError">#FFFFFF</color>
+
+    <color name="statusBarColor">#373737</color>
+    <color name="navigationBarColor">#616161</color>
+    <!-- http://chir.ag/projects/name-that-color -->
+
+</resources>

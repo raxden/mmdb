@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Mobile movie database</string>
+    <string name="home_carousel_popular_movies">Popular movies</string>
+    <string name="home_carousel_now_playing_movies">Now playing</string>
+    <string name="home_carousel_top_rated_movies">Top rated</string>
+    <string name="home_carousel_upcoming_movies">Upcoming</string>
+    <string name="home_carousel_see_all">See all</string>
+</resources>

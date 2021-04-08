@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.raxdenstudios.app.login">
+
+    <application>
+
+        <activity
+            android:name=".view.LoginActivity"
+            android:theme="@style/Theme.App.Login"
+            android:windowSoftInputMode="adjustPan" />
+    </application>
+</manifest>

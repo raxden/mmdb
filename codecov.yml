@@ -1,0 +1,8 @@
+coverage:
+  status:
+    project:
+      default:
+        # Choose a minimum coverage ratio that the commit must meet to be considered a success
+        target: 95%
+        # Allow the coverage to drop by X%, and posting a success status
+        threshold: 1%

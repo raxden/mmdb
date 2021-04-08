@@ -1,0 +1,11 @@
+<resources>
+    <string name="permission_rationale_access_fine_location_title">¿Porqué necesitamos que autorices la geolocalización?</string>
+    <string name="permission_rationale_access_fine_location_message">Para poder mostrarte los servicios cercanos a tu posición necesitamos saber donde estás.</string>
+    <string name="permission_rationale_access_fine_location_positive">¡Entendido!</string>
+    <string name="permission_rationale_access_fine_location_negative">No permitir</string>
+
+    <string name="permission_rationale_camera_title">¿Porqué necesitamos que autorices el acceso a la cámara?</string>
+    <string name="permission_rationale_camera_message">Para poder realizar foto, necesitamos acceder a la cámara de tu dispositivo.</string>
+    <string name="permission_rationale_camera_positive">¡Entendido!</string>
+    <string name="permission_rationale_camera_negative">No permitir</string>
+</resources>
