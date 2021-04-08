@@ -17,6 +17,7 @@ object Modules {
 
   const val libraryKotlin = ":libraries:kotlin"
   const val libraryCoroutines = ":libraries:coroutines"
+  const val libraryCoroutinesTest = ":libraries:coroutines-test"
   const val libraryBase = ":libraries:base"
   const val libraryAndroid = ":libraries:android"
   const val libraryKoin = ":libraries:koin"
@@ -30,6 +31,5 @@ object Modules {
   const val libraryThreeten = ":libraries:threeten"
   const val libraryGlide = ":libraries:glide"
   const val libraryTest = ":libraries:test-unit"
-  const val libraryTestCo = ":libraries:test-unit-co"
   const val libraryAndroidTest = ":libraries:test-android"
 }

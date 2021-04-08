@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
-  api(project(Modules.libraryTestCo))
+  api(project(Modules.libraryTest))
+  api(project(Modules.libraryCoroutinesTest))
 }
