@@ -108,10 +108,13 @@ object TestLibraries {
   const val threetenabp = "org.threeten:threetenbp:1.3.3"
 
   const val timberJunit = "net.lachlanmckee:timber-junit-rule:${Versions.timberJunit}"
+
 }
 
 object TestAndroidLibraries {
   const val fragmentTest = "androidx.fragment:fragment-testing:${Versions.fragmentTest}"
+
+  const val room = "androidx.room:room-testing:${Versions.room}"
 
   const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
   const val espressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
