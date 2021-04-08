@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="feature_error_information">Información</string>
+	<string name="feature_error_lost_connection">No hay conexión a internet</string>
+	<string name="feature_error_unespected_error_message">Se ha producido un error inesperado, inténtalo más tarde.</string>
+</resources>
