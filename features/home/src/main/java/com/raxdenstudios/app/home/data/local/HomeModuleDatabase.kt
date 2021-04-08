@@ -9,7 +9,7 @@ import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 
 @Database(
   entities = [HomeModuleEntity::class],
-  version = 1,
+  version = 2,
 )
 abstract class HomeModuleDatabase : RoomDatabase() {
 
@@ -31,12 +31,13 @@ abstract class HomeModuleDatabase : RoomDatabase() {
       return Room.inMemoryDatabaseBuilder(context, HomeModuleDatabase::class.java)
         // allowing main thread queries, just for testing
         .allowMainThreadQueries()
+        .addMigrations(HomeModuleDatabaseMigrationV1toV2())
         .build()
     }
 
     private fun buildDatabase(context: Context): HomeModuleDatabase {
       return Room.databaseBuilder(context, HomeModuleDatabase::class.java, "home_module.db")
-        .fallbackToDestructiveMigration()
+        .addMigrations(HomeModuleDatabaseMigrationV1toV2())
         .build()
     }
   }
