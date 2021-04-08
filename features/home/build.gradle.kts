@@ -10,6 +10,10 @@ android {
       }
     }
   }
+  sourceSets {
+    // Adds exported schema location as test app assets.
+    getByName("debug").assets.srcDirs(files("$projectDir/schemas"))
+  }
 }
 
 dependencies {
@@ -30,4 +34,5 @@ dependencies {
 
   testImplementation(project(Modules.baseTest))
   androidTestImplementation(project(Modules.baseAndroidTest))
+  androidTestImplementation(TestAndroidLibraries.room)
 }
