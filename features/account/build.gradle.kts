@@ -2,6 +2,16 @@ plugins {
   id("com.raxdenstudios.android-library")
 }
 
+android {
+  defaultConfig {
+    javaCompileOptions {
+      annotationProcessorOptions {
+        arguments(mapOf("room.schemaLocation" to "$projectDir/schemas"))
+      }
+    }
+  }
+}
+
 dependencies {
   implementation(project(Modules.libraryAndroid))
   implementation(project(Modules.libraryKoin))

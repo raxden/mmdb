@@ -10,7 +10,6 @@ import com.raxdenstudios.app.account.data.local.model.AccountEntity
 @Database(
   entities = [AccountEntity::class],
   version = 1,
-  exportSchema = false
 )
 abstract class AccountDatabase : RoomDatabase() {
 
