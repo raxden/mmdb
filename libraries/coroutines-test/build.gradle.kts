@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  api(project(Modules.libraryTest))
+  implementation(project(Modules.libraryTest))
 
   api(platform(KotlinLibraries.coroutinesBom))
   api(TestLibraries.coroutinesTest)
