@@ -5,4 +5,7 @@ plugins {
 dependencies {
   api(project(Modules.libraryAndroidTest))
   implementation(project(Modules.libraryThreeten))
+
+  api(platform(KotlinLibraries.coroutinesBom))
+  api(TestLibraries.coroutinesTest)
 }

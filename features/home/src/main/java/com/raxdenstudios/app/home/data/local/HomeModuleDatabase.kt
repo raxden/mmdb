@@ -6,7 +6,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
-import kotlinx.coroutines.runBlocking
 
 @Database(
   entities = [HomeModuleEntity::class],
@@ -33,29 +32,12 @@ abstract class HomeModuleDatabase : RoomDatabase() {
         // allowing main thread queries, just for testing
         .allowMainThreadQueries()
         .build()
-        .also { database -> populateInitialData(database.dao()) }
     }
 
     private fun buildDatabase(context: Context): HomeModuleDatabase {
       return Room.databaseBuilder(context, HomeModuleDatabase::class.java, "home_module.db")
         .fallbackToDestructiveMigration()
         .build()
-        .also { database -> populateInitialData(database.dao()) }
-    }
-
-    private fun populateInitialData(dao: HomeModuleDao) {
-      runBlocking {
-        val elements = dao.getAll().size
-        if (elements == 0) {
-          val entities = listOf(
-            HomeModuleEntity(type = 1, subtype = 1, order = 1),
-            HomeModuleEntity(type = 1, subtype = 2, order = 2),
-            HomeModuleEntity(type = 1, subtype = 3, order = 3),
-            HomeModuleEntity(type = 1, subtype = 4, order = 4),
-          )
-          dao.insert(entities)
-        }
-      }
     }
   }
 }

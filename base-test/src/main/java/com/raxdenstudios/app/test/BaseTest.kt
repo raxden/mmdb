@@ -3,6 +3,7 @@ package com.raxdenstudios.app.test
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.raxdenstudios.commons.test.rules.CoroutineTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import net.lachlanmckee.timberjunit.TimberTestRule
 import org.junit.Rule
 import org.koin.core.module.Module
@@ -18,8 +19,11 @@ abstract class BaseTest : KoinTest {
   val koinTestRule = KoinTestRule.create { modules(modules) }
 
   @ExperimentalCoroutinesApi
+  val testDispatcher = TestCoroutineDispatcher()
+
+  @ExperimentalCoroutinesApi
   @get:Rule
-  val coroutineTestRule = CoroutineTestRule()
+  val coroutineTestRule = CoroutineTestRule(testDispatcher)
 
   @get:Rule
   val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()
