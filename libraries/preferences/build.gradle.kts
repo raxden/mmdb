@@ -8,5 +8,5 @@ dependencies {
   api(AndroidLibraries.kotlinPreferences)
   api(Libraries.gson)
 
-  testImplementation(project(Modules.libraryTestCo))
+  testImplementation(project(Modules.libraryTest))
 }
