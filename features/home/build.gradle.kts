@@ -29,4 +29,5 @@ dependencies {
   implementation(Libraries.roomRX)
 
   testImplementation(project(Modules.baseTest))
+  androidTestImplementation(project(Modules.baseAndroidTest))
 }

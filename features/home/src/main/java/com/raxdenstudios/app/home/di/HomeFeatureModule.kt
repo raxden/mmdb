@@ -24,6 +24,7 @@ import timber.log.Timber
 val homeFeatureModule = module {
 
   single { HomeModuleDatabase.getInstance(get()) }
+  factory { get<HomeModuleDatabase>().dao() }
 
   factory { HomeModuleLocalDataSource(get(), get()) }
   factory { HomeModuleEntityToDomainMapper() }
