@@ -9,11 +9,7 @@ import com.raxdenstudios.app.login.databinding.LoginActivityBinding
 import com.raxdenstudios.app.login.view.viewmodel.LoginUIState
 import com.raxdenstudios.app.login.view.viewmodel.LoginViewModel
 import com.raxdenstudios.app.tmdb.TMDBConnect
-import com.raxdenstudios.commons.ext.intentFor
-import com.raxdenstudios.commons.ext.observe
-import com.raxdenstudios.commons.ext.setSafeOnClickListener
-import com.raxdenstudios.commons.ext.setVirtualNavigationBarSafeArea
-import com.raxdenstudios.commons.ext.viewBinding
+import com.raxdenstudios.commons.ext.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -39,7 +35,7 @@ class LoginActivity : BaseActivity() {
 
   private fun handleState(state: LoginUIState): Unit = when (state) {
     is LoginUIState.Error -> errorManager.handleError(state.throwable)
-    LoginUIState.Logged -> finish()
+    LoginUIState.Logged -> setResultOKAndFinish()
   }
 
   private fun LoginActivityBinding.setUp() {
