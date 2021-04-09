@@ -5,4 +5,7 @@
     <string name="home_carousel_top_rated_movies">Top rated</string>
     <string name="home_carousel_upcoming_movies">Upcoming</string>
     <string name="home_carousel_see_all">See all</string>
+    <string name="home_carousel_from_your_watchlist">From your Watchlist</string>
+    <string name="home_carousel_no_available_releases">No available releases</string>
+    <string name="add_more_shows_and_movies">Add more shows and movies to keep track of what you want to watch</string>
 </resources>
