@@ -72,7 +72,7 @@ internal class HomeViewModel(
 
   fun addMovieToWatchList(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel.CarouselMovies,
+    homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
   ) = viewModelScope.launch {
@@ -91,7 +91,7 @@ internal class HomeViewModel(
 
   private fun updateMovieWithWatchButton(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel.CarouselMovies,
+    homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
     watchButtonModel: WatchButtonModel,
@@ -103,7 +103,7 @@ internal class HomeViewModel(
 
   fun removeMovieFromWatchList(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel.CarouselMovies,
+    homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
   ) = viewModelScope.launch {
@@ -123,7 +123,7 @@ internal class HomeViewModel(
   private fun replaceMovieFromHomeModel(
     movieListItemModel: MovieListItemModel,
     carouselMoviesModel: CarouselMovieListModel,
-    homeModuleModel: HomeModuleModel.CarouselMovies,
+    homeModuleModel: HomeModuleModel,
     model: HomeModel
   ): HomeModel {
     val carousel = carouselMoviesModel.replaceMovie(movieListItemModel)
