@@ -19,5 +19,6 @@ internal class MovieDtoToDomainMapper(
     poster = pictureDtoToDomainMapper.transform(poster_path),
     release = dateDtoToLocalDateMapper.transform(release_date),
     vote = voteDtoToDomainMapper.transform(this),
+    watchList = false,
   )
 }

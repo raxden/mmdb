@@ -15,6 +15,9 @@ internal class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>(
     image = poster.thumbnail.url,
     rating = vote.average.toString(),
     releaseDate = release.year.toString(),
-    watchButtonModel = WatchButtonModel.Unselected,
+    watchButtonModel = when {
+      watchList -> WatchButtonModel.Selected
+      else -> WatchButtonModel.Unselected
+    }
   )
 }

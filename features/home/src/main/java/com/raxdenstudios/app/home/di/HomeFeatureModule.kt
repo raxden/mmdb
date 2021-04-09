@@ -6,7 +6,6 @@ import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapp
 import com.raxdenstudios.app.home.data.repository.HomeModuleRepository
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.GetMoviesUseCase
-import com.raxdenstudios.app.home.domain.GetWatchMovieListUseCase
 import com.raxdenstudios.app.home.view.mapper.CarouselMovieListModelMapper
 import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
@@ -33,7 +32,6 @@ val homeFeatureModule = module {
 
   factory { GetMoviesUseCase(get()) }
   factory { GetHomeModulesUseCase(get()) }
-  factory { GetWatchMovieListUseCase(get()) }
 
   factory { MovieListItemModelMapper() }
   factory { HomeModuleModelMapper(get()) }
