@@ -24,6 +24,7 @@ internal class HomeModuleLocalDataSource(
       HomeModuleEntity.nowPlaying,
       HomeModuleEntity.topRated,
       HomeModuleEntity.upcoming,
+      HomeModuleEntity.watchList,
     )
     dao.insert(modules)
   }

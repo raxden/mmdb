@@ -54,6 +54,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
             HomeModuleEntity.nowPlaying,
             HomeModuleEntity.topRated,
             HomeModuleEntity.upcoming,
+            HomeModuleEntity.watchList,
           )
         )
       }

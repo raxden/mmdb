@@ -6,4 +6,5 @@ sealed class HomeModule {
   object NowPlayingMovies : HomeModule()
   object TopRatedMovies : HomeModule()
   object UpcomingMovies : HomeModule()
+  object WatchListMovies : HomeModule()
 }

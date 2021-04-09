@@ -16,6 +16,7 @@ import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchList
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.launch
+import com.raxdenstudios.commons.ext.safeLaunch
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 
@@ -36,13 +37,13 @@ internal class HomeViewModel(
     loadData()
   }
 
-  private fun loadData() = viewModelScope.launch {
+  private fun loadData() = viewModelScope.safeLaunch {
     mState.value = HomeUIState.Loading
 
     getHomeModulesUseCase.execute().collect { homeModuleList ->
       val accountLogged = isAccountLogged.execute()
       val moduleModelList = homeModuleList.map { homeModule ->
-        async { getMoviesFromModule(homeModule) }
+        async { getDataFromModule(homeModule) }
       }.map { deferred ->
         deferred.await()
       }
@@ -51,10 +52,10 @@ internal class HomeViewModel(
     }
   }
 
-  private suspend fun getMoviesFromModule(homeModule: HomeModule): HomeModuleModel {
-    val useCaseParams = getMoviesUseCaseParamsMapper.transform(homeModule)
+  private suspend fun getDataFromModule(module: HomeModule): HomeModuleModel {
+    val useCaseParams = getMoviesUseCaseParamsMapper.transform(module)
     val resultData = getMoviesUseCase.execute(useCaseParams)
-    return homeModuleModelMapper.transform(homeModule, resultData)
+    return homeModuleModelMapper.transform(module, resultData)
   }
 
   fun refreshData() {
