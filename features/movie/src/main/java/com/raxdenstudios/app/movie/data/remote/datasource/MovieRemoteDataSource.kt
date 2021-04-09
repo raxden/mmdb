@@ -27,6 +27,11 @@ internal class MovieRemoteDataSource(
   suspend fun watchList(accountId: String, page: Page): ResultData<PageList<Movie>> =
     movieGateway.watchList(accountId, page.value)
       .map { pageDto -> transformPageData(pageDto) }
+      .map { pageList ->
+        pageList.copy(
+          items = pageList.items.map { movie -> movie.copy(watchList = true) }
+        )
+      }
 
   suspend fun movies(
     searchType: SearchType,
