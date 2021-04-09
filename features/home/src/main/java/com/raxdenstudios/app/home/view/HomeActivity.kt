@@ -64,6 +64,7 @@ internal class HomeActivity : BaseActivity() {
   private fun HomeActivityBinding.handleContentState(model: HomeModel) {
     swipeRefreshLayout.isRefreshing = false
     adapter.submitList(model.modules)
+    adapter.onSigInClickListener = { doLoginAndRefreshDataIfSuccess() }
     adapter.onMovieClickListener =
       { moduleModel, carouselMovieListModel, movieListItemModel ->
         movieSelected(model, moduleModel, carouselMovieListModel, movieListItemModel)
@@ -76,6 +77,10 @@ internal class HomeActivity : BaseActivity() {
       { moduleModel, carouselMovieListModel, movieListItemModel ->
         removeMovieFromWatchList(model, moduleModel, carouselMovieListModel, movieListItemModel)
       }
+  }
+
+  private fun doLoginAndRefreshDataIfSuccess() {
+    navigator.login { viewModel.refreshData() }
   }
 
   private fun addMovieToWatchList(
@@ -91,16 +96,14 @@ internal class HomeActivity : BaseActivity() {
         carouselMovieListModel,
         movieListItemModel
       )
-    else navigator.login(
-      onSuccess = {
-        viewModel.addMovieToWatchList(
-          model.copy(logged = true),
-          moduleModel,
-          carouselMovieListModel,
-          movieListItemModel
-        )
-      }
-    )
+    else navigator.login {
+      viewModel.addMovieToWatchList(
+        model.copy(logged = true),
+        moduleModel,
+        carouselMovieListModel,
+        movieListItemModel
+      )
+    }
   }
 
   private fun removeMovieFromWatchList(

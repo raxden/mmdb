@@ -29,7 +29,7 @@ internal class HomeModuleListAdapter :
     { _, _, _ -> }
   var onMovieClickListener: (HomeModuleModel, CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _, _ -> }
-  var onSigInClickListener: (HomeModuleModel) -> Unit = {}
+  var onSigInClickListener: () -> Unit = {}
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
     is HomeModuleModel.CarouselMovies -> CAROUSEL_MOVIES_LAYOUT
@@ -63,7 +63,7 @@ internal class HomeModuleListAdapter :
     private fun bindWatchListWithoutContent() {}
 
     private fun bindWatchListNotLogged(model: HomeModuleModel) {
-      view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener(model) }
+      view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener() }
     }
 
     private fun bindCarousel(model: HomeModuleModel, item: CarouselMovieListModel) {
