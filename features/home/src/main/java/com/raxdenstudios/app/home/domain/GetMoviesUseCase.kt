@@ -11,11 +11,22 @@ internal class GetMoviesUseCase(
   private val movieRepository: MovieRepository
 ) {
 
-  suspend fun execute(params: Params): ResultData<PageList<Movie>> =
-    movieRepository.movies(params.searchType, params.page)
+  suspend fun execute(params: Params): ResultData<PageList<Movie>> = when (params) {
+    is Params.BySearchType -> movieRepository.movies(params.searchType, params.page)
+    is Params.WatchList -> movieRepository.watchList(params.page)
+  }
 
-  data class Params(
-    val searchType: SearchType,
-    val page: Page = Page(1),
-  )
+  sealed class Params {
+
+    abstract val page: Page
+
+    data class BySearchType(
+      val searchType: SearchType,
+      override val page: Page = Page(1),
+    ) : Params()
+
+    data class WatchList(
+      override val page: Page = Page(1),
+    ) : Params()
+  }
 }

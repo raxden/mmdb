@@ -16,22 +16,15 @@ internal class HomeModuleModelMapper(
     movieResultData: ResultData<PageList<Movie>>
   ): HomeModuleModel {
     val movieList = movieResultData.getValueOrNull()?.items ?: emptyList()
+    val carouselMoviesModel = carouselMovieListModelMapper.transform(homeModule, movieList)
     return when (homeModule) {
-      HomeModule.NowPlayingMovies -> {
-        val movieModelList = carouselMovieListModelMapper.transform(homeModule, movieList)
-        HomeModuleModel.CarouselMovies.NowPlaying(movieModelList)
-      }
-      HomeModule.PopularMovies -> {
-        val movieModelList = carouselMovieListModelMapper.transform(homeModule, movieList)
-        HomeModuleModel.CarouselMovies.Popular(movieModelList)
-      }
-      HomeModule.TopRatedMovies -> {
-        val movieModelList = carouselMovieListModelMapper.transform(homeModule, movieList)
-        HomeModuleModel.CarouselMovies.TopRated(movieModelList)
-      }
-      HomeModule.UpcomingMovies -> {
-        val movieModelList = carouselMovieListModelMapper.transform(homeModule, movieList)
-        HomeModuleModel.CarouselMovies.Upcoming(movieModelList)
+      HomeModule.NowPlayingMovies -> HomeModuleModel.CarouselMovies.NowPlaying(carouselMoviesModel)
+      HomeModule.PopularMovies -> HomeModuleModel.CarouselMovies.Popular(carouselMoviesModel)
+      HomeModule.TopRatedMovies -> HomeModuleModel.CarouselMovies.TopRated(carouselMoviesModel)
+      HomeModule.UpcomingMovies -> HomeModuleModel.CarouselMovies.Upcoming(carouselMoviesModel)
+      HomeModule.WatchListMovies -> when {
+        carouselMoviesModel.movies.isEmpty() -> HomeModuleModel.WatchList.WithoutContent
+        else -> HomeModuleModel.WatchList.WithContent(carouselMoviesModel)
       }
     }
   }
