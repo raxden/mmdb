@@ -10,6 +10,7 @@ data class Movie(
   val poster: Picture,
   val release: LocalDate,
   val vote: Vote,
+  val watchList: Boolean,
 ) {
 
   companion object {
@@ -21,6 +22,7 @@ data class Movie(
       poster = Picture.empty,
       release = LocalDate.of(1970, 1, 1),
       vote = Vote.empty,
+      watchList = false,
     )
   }
 }

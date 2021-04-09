@@ -9,6 +9,8 @@ data class CarouselMovieListModel(
   val movies: List<MovieListItemModel>,
 ) {
 
+  fun hasMovies() = movies.isNotEmpty()
+
   fun replaceMovie(movie: MovieListItemModel): CarouselMovieListModel = copy(
     movies = movies.replaceItem(movie) { movieToReplace -> movieToReplace.id == movie.id }
   )

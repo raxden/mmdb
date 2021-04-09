@@ -1,6 +1,8 @@
 package com.raxdenstudios.app.home.view.model
 
-sealed class HomeModuleModel {
+sealed class HomeModuleModel(
+  open val itemId: Long
+) {
 
   fun replaceCarousel(carousel: CarouselMovieListModel): HomeModuleModel = when (this) {
     is CarouselMovies.NowPlaying -> copy(carouselMovieListModel = carousel)
@@ -12,32 +14,36 @@ sealed class HomeModuleModel {
     WatchList.WithoutContent -> throw IllegalStateException("This module hasn't carousel")
   }
 
-  sealed class CarouselMovies : HomeModuleModel() {
+  sealed class CarouselMovies(
+    override val itemId: Long
+  ) : HomeModuleModel(itemId) {
 
     abstract val carouselMovieListModel: CarouselMovieListModel
 
     data class Popular(
       override val carouselMovieListModel: CarouselMovieListModel
-    ) : CarouselMovies()
+    ) : CarouselMovies(1)
 
     data class NowPlaying(
       override val carouselMovieListModel: CarouselMovieListModel
-    ) : CarouselMovies()
+    ) : CarouselMovies(2)
 
     data class TopRated(
       override val carouselMovieListModel: CarouselMovieListModel
-    ) : CarouselMovies()
+    ) : CarouselMovies(3)
 
     data class Upcoming(
       override val carouselMovieListModel: CarouselMovieListModel
-    ) : CarouselMovies()
+    ) : CarouselMovies(4)
   }
 
-  sealed class WatchList : HomeModuleModel() {
-    object NotLogged: WatchList()
-    object WithoutContent: WatchList()
+  sealed class WatchList(
+    override val itemId: Long
+  ) : HomeModuleModel(itemId) {
+    object NotLogged: WatchList(5)
+    object WithoutContent: WatchList(6)
     data class WithContent(
       val carouselMovieListModel: CarouselMovieListModel
-    ): WatchList()
+    ): WatchList(7)
   }
 }

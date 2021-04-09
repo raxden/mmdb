@@ -31,6 +31,8 @@ internal class HomeModuleListAdapter :
     { _, _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
+  override fun getItemId(position: Int): Long = getItem(position).itemId
+
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
     is HomeModuleModel.CarouselMovies -> CAROUSEL_MOVIES_LAYOUT
     is HomeModuleModel.WatchList.WithContent -> CAROUSEL_MOVIES_LAYOUT
@@ -56,13 +58,14 @@ internal class HomeModuleListAdapter :
     fun bind(model: HomeModuleModel) = when (model) {
       is HomeModuleModel.CarouselMovies -> bindCarousel(model, model.carouselMovieListModel)
       is HomeModuleModel.WatchList.WithContent -> bindCarousel(model, model.carouselMovieListModel)
-      is HomeModuleModel.WatchList.NotLogged -> bindWatchListNotLogged(model)
+      is HomeModuleModel.WatchList.NotLogged -> bindWatchListNotLogged()
       is HomeModuleModel.WatchList.WithoutContent -> bindWatchListWithoutContent()
     }
 
-    private fun bindWatchListWithoutContent() {}
+    private fun bindWatchListWithoutContent() {
+    }
 
-    private fun bindWatchListNotLogged(model: HomeModuleModel) {
+    private fun bindWatchListNotLogged() {
       view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener() }
     }
 

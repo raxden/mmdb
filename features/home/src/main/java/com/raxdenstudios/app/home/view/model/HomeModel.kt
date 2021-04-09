@@ -19,12 +19,8 @@ data class HomeModel(
           moduleToReplace is HomeModuleModel.CarouselMovies.TopRated
         is HomeModuleModel.CarouselMovies.Upcoming ->
           moduleToReplace is HomeModuleModel.CarouselMovies.Upcoming
-        HomeModuleModel.WatchList.NotLogged ->
-          moduleToReplace is HomeModuleModel.WatchList.NotLogged
-        is HomeModuleModel.WatchList.WithContent ->
-          moduleToReplace is HomeModuleModel.WatchList.WithContent
-        HomeModuleModel.WatchList.WithoutContent ->
-          moduleToReplace is HomeModuleModel.WatchList.WithoutContent
+        is HomeModuleModel.WatchList ->
+          moduleToReplace is HomeModuleModel.WatchList
       }
     }
   )
