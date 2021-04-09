@@ -47,11 +47,25 @@ fun <T : Parcelable> Activity.loadParcelable(
   if (value != null) operation(value)
 }
 
-inline fun <reified T : Parcelable> Activity.setResultOK(value: T) {
+fun Activity.setResultOK() {
+  setResult(Activity.RESULT_OK)
+}
+
+fun Activity.setResultOKAndFinish() {
+  setResultOK()
+  finish()
+}
+
+inline fun <reified T : Parcelable> Activity.setResultOKWithData(value: T) {
   setResult(
     Activity.RESULT_OK,
     Intent().apply { putExtra(T::class.java.simpleName, value) }
   )
+}
+
+inline fun <reified T : Parcelable> Activity.setResultOKWithDataAndFinish(value: T) {
+  setResultOKWithData(value)
+  finish()
 }
 
 fun Activity.contentView(@LayoutRes resId: Int) = ActivityContentViewDelegate(resId)
