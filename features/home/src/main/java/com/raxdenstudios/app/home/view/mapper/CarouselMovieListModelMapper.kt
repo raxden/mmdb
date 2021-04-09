@@ -35,5 +35,10 @@ internal class CarouselMovieListModelMapper(
       description = "",
       movies = movieListItemModelMapper.transform(movies),
     )
+    HomeModule.WatchListMovies -> CarouselMovieListModel(
+      label = stringProvider.getString(R.string.home_carousel_upcoming_movies),
+      description = "",
+      movies = movieListItemModelMapper.transform(movies),
+    )
   }
 }

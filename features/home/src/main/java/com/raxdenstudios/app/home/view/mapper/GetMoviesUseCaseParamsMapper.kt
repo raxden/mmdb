@@ -9,9 +9,10 @@ internal class GetMoviesUseCaseParamsMapper : DataMapper<HomeModule, GetMoviesUs
 
   override fun transform(source: HomeModule): GetMoviesUseCase.Params =
     when (source) {
-      HomeModule.NowPlayingMovies -> GetMoviesUseCase.Params(SearchType.NowPlaying)
-      HomeModule.PopularMovies -> GetMoviesUseCase.Params(SearchType.Popular)
-      HomeModule.TopRatedMovies -> GetMoviesUseCase.Params(SearchType.TopRated)
-      HomeModule.UpcomingMovies -> GetMoviesUseCase.Params(SearchType.Upcoming)
+      HomeModule.NowPlayingMovies -> GetMoviesUseCase.Params.BySearchType(SearchType.NowPlaying)
+      HomeModule.PopularMovies -> GetMoviesUseCase.Params.BySearchType(SearchType.Popular)
+      HomeModule.TopRatedMovies -> GetMoviesUseCase.Params.BySearchType(SearchType.TopRated)
+      HomeModule.UpcomingMovies -> GetMoviesUseCase.Params.BySearchType(SearchType.Upcoming)
+      HomeModule.WatchListMovies -> GetMoviesUseCase.Params.WatchList()
     }
 }

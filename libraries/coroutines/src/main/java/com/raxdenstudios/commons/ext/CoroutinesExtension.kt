@@ -4,10 +4,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private val onErrorStub: (e: Throwable) -> Unit = { _ -> }
 private val defaultExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-  throwable.printStackTrace()
+  Timber.e(throwable)
 }
 
 fun CoroutineScope.safeLaunch(
