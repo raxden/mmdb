@@ -80,7 +80,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun addMovieToWatchList(
     model: HomeModel,
-    moduleModel: HomeModuleModel.CarouselMovies,
+    moduleModel: HomeModuleModel,
     carouselMovieListModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel
   ) {
@@ -105,7 +105,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun removeMovieFromWatchList(
     model: HomeModel,
-    moduleModel: HomeModuleModel.CarouselMovies,
+    moduleModel: HomeModuleModel,
     carouselMovieListModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel
   ) {
