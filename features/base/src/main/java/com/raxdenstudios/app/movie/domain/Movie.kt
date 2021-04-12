@@ -14,6 +14,15 @@ data class Movie(
 ) {
 
   companion object {
+    fun withId(id: Long) = Movie(
+      id = id,
+      title = "",
+      backdrop = null,
+      poster = Picture.empty,
+      release = LocalDate.of(1970, 1, 1),
+      vote = Vote.empty,
+      watchList = false,
+    )
     @VisibleForTesting
     val empty = Movie(
       id = 0L,
