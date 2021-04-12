@@ -16,4 +16,13 @@ data class PageDto<T : Any>(
       items = transform(results),
       page = Page(page)
     )
+
+  companion object {
+    val empty = PageDto(
+      page = 0,
+      total_pages = 0,
+      total_results = 0,
+      results = emptyList()
+    )
+  }
 }

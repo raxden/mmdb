@@ -14,7 +14,6 @@ val baseModule = module {
     object : DispatcherFacade {
       override fun io() = Dispatchers.IO
       override fun default() = Dispatchers.Default
-      override fun main() = Dispatchers.Main
     }
   }
 }

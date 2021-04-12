@@ -24,7 +24,7 @@ val movieDataModule = module {
   single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }
 
-  factory { MovieGateway(get(), get()) }
+  factory { MovieGateway(get(), get(), get()) }
 
   factory { VoteDtoToDomainMapper() }
   factory { PictureDtoToDomainMapper(get(named(APIVersion.V3))) }
