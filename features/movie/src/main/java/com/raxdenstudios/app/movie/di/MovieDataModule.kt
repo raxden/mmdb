@@ -1,5 +1,7 @@
 package com.raxdenstudios.app.movie.di
 
+import com.raxdenstudios.app.movie.data.local.MovieDatabase
+import com.raxdenstudios.app.movie.data.local.datasource.MovieWatchListLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.DateDtoToLocalDateMapper
@@ -20,6 +22,11 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val movieDataModule = module {
+
+  single { MovieDatabase.getInstance(get()) }
+  factory { get<MovieDatabase>().watchListDao() }
+
+  factory { MovieWatchListLocalDataSource(get()) }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }
