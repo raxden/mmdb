@@ -10,7 +10,7 @@ val baseModule = module {
 
   factory { ActivityHolder() }
   factory { StringProvider(get()) }
-  factory {
+  factory<DispatcherFacade> {
     object : DispatcherFacade {
       override fun io() = Dispatchers.IO
       override fun default() = Dispatchers.Default
