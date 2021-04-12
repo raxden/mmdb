@@ -82,7 +82,7 @@ internal class HomeViewModel(
     when (val result = addMovieToWatchList.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
-        val homeModelResult = updateMovieWithWatchButtonAndRefreshWatchListModule(
+        val homeModelResult = updateMovieWithWatchButton(
           homeModel = homeModel,
           homeModuleModel = homeModuleModel,
           carouselMoviesModel = carouselMoviesModel,
@@ -90,11 +90,12 @@ internal class HomeViewModel(
           watchButtonModel = WatchButtonModel.Selected,
         )
         mState.value = HomeUIState.Content(homeModelResult)
+        refreshData()
       }
     }
   }
 
-  private suspend fun updateMovieWithWatchButtonAndRefreshWatchListModule(
+  private suspend fun updateMovieWithWatchButton(
     homeModel: HomeModel,
     homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
@@ -104,11 +105,7 @@ internal class HomeViewModel(
     val movieUpdated = movieListItemModel.copy(watchButtonModel = watchButtonModel)
     val carouselUpdated = carouselMoviesModel.replaceMovie(movieUpdated)
     val homeModuleUpdated = homeModuleModel.replaceCarousel(carouselUpdated)
-    val homeModelUpdated = homeModel.replaceModule(homeModuleUpdated)
-    val watchListModuleModel = getDataFromHomeModule(HomeModule.WatchListMovies)
-    watchListModuleModel?.let { module ->
-      homeModelUpdated.replaceModule(module)
-    } ?: homeModelUpdated
+    homeModel.replaceModule(homeModuleUpdated)
   }
 
   fun removeMovieFromWatchList(
@@ -120,7 +117,7 @@ internal class HomeViewModel(
     when (val result = removeMovieFromWatchList.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
-        val homeModelResult = updateMovieWithWatchButtonAndRefreshWatchListModule(
+        val homeModelResult = updateMovieWithWatchButton(
           homeModel = homeModel,
           homeModuleModel = homeModuleModel,
           carouselMoviesModel = carouselMoviesModel,
@@ -128,6 +125,7 @@ internal class HomeViewModel(
           watchButtonModel = WatchButtonModel.Unselected,
         )
         mState.value = HomeUIState.Content(homeModelResult)
+        refreshData()
       }
     }
   }
