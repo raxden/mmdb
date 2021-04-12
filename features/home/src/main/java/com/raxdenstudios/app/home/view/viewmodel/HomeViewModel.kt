@@ -17,19 +17,19 @@ import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.launch
 import com.raxdenstudios.commons.ext.safeLaunch
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
 internal class HomeViewModel(
+  private val dispatcher: DispatcherFacade,
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMoviesUseCase: GetMoviesUseCase,
   private val isAccountLogged: IsAccountLogged,
   private val addMovieToWatchList: AddMovieToWatchList,
   private val removeMovieFromWatchList: RemoveMovieFromWatchList,
   private val getMoviesUseCaseParamsMapper: GetMoviesUseCaseParamsMapper,
-  private val homeModuleModelMapper: HomeModuleModelMapper,
+  private val homeModuleModelMapper: HomeModuleModelMapper
 ) : BaseViewModel() {
 
   private val mState = MutableLiveData<HomeUIState>()
@@ -78,7 +78,7 @@ internal class HomeViewModel(
     homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
-  ) = viewModelScope.launch {
+  ) = viewModelScope.safeLaunch {
     when (val result = addMovieToWatchList.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
@@ -100,31 +100,15 @@ internal class HomeViewModel(
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
     watchButtonModel: WatchButtonModel,
-  ): HomeModel {
-    return withContext(Dispatchers.Default) {
-      val homeModelWithMovieUpdated = updateMovieWithWatchButton(
-        homeModel,
-        homeModuleModel,
-        carouselMoviesModel,
-        movieListItemModel,
-        watchButtonModel
-      )
-      val watchListModuleModel = getDataFromHomeModule(HomeModule.WatchListMovies)
-      watchListModuleModel?.let { module ->
-        homeModelWithMovieUpdated.replaceModule(module)
-      } ?: homeModelWithMovieUpdated
-    }
-  }
-
-  private fun updateMovieWithWatchButton(
-    model: HomeModel,
-    homeModuleModel: HomeModuleModel,
-    carouselMoviesModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel,
-    watchButtonModel: WatchButtonModel,
-  ): HomeModel {
-    val movie = movieListItemModel.copy(watchButtonModel = watchButtonModel)
-    return replaceMovieFromHomeModel(movie, carouselMoviesModel, homeModuleModel, model)
+  ): HomeModel = withContext(dispatcher.default()) {
+    val movieUpdated = movieListItemModel.copy(watchButtonModel = watchButtonModel)
+    val carouselUpdated = carouselMoviesModel.replaceMovie(movieUpdated)
+    val homeModuleUpdated = homeModuleModel.replaceCarousel(carouselUpdated)
+    val homeModelUpdated = homeModel.replaceModule(homeModuleUpdated)
+    val watchListModuleModel = getDataFromHomeModule(HomeModule.WatchListMovies)
+    watchListModuleModel?.let { module ->
+      homeModelUpdated.replaceModule(module)
+    } ?: homeModelUpdated
   }
 
   fun removeMovieFromWatchList(
@@ -132,7 +116,7 @@ internal class HomeViewModel(
     homeModuleModel: HomeModuleModel,
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
-  ) = viewModelScope.launch {
+  ) = viewModelScope.safeLaunch {
     when (val result = removeMovieFromWatchList.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
@@ -146,16 +130,5 @@ internal class HomeViewModel(
         mState.value = HomeUIState.Content(homeModelResult)
       }
     }
-  }
-
-  private fun replaceMovieFromHomeModel(
-    movieListItemModel: MovieListItemModel,
-    carouselMoviesModel: CarouselMovieListModel,
-    homeModuleModel: HomeModuleModel,
-    model: HomeModel
-  ): HomeModel {
-    val carousel = carouselMoviesModel.replaceMovie(movieListItemModel)
-    val homeModule = homeModuleModel.replaceCarousel(carousel)
-    return model.replaceModule(homeModule)
   }
 }

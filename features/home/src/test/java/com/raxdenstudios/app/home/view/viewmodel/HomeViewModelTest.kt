@@ -17,20 +17,22 @@ import com.raxdenstudios.app.movie.domain.Movie
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchList
 import com.raxdenstudios.app.movie.domain.SearchType
 import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.provider.StringProvider
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
+import io.mockk.*
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import org.koin.core.inject
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+@ExperimentalCoroutinesApi
 internal class HomeViewModelTest : BaseTest() {
 
   private val stringProvider: StringProvider = mockk(relaxed = true)
@@ -42,6 +44,7 @@ internal class HomeViewModelTest : BaseTest() {
     coEvery { execute(aGetTopRatedMoviesUseCaseParams) } returns aResultPageMovieListSuccess
     coEvery { execute(aGetPopularMoviesUseCaseParams) } returns aResultPageMovieListSuccess
     coEvery { execute(aGetNowPlayingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
+    coEvery { execute(aGetWatchListMoviesUseCaseParams) } returns aResultPageMovieListSuccess
   }
   private val isAccountLogged: IsAccountLogged = mockk {
     coEvery { execute() } returns false
@@ -53,6 +56,10 @@ internal class HomeViewModelTest : BaseTest() {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
   private val stateObserver: Observer<HomeUIState> = mockk(relaxed = true)
+  private val dispatcher: DispatcherFacade = object : DispatcherFacade {
+    override fun io() = testDispatcher
+    override fun default() = testDispatcher
+  }
 
   override val modules: List<Module>
     get() = listOf(
@@ -64,6 +71,7 @@ internal class HomeViewModelTest : BaseTest() {
         factory(override = true) { addMovieToWatchList }
         factory(override = true) { removeMovieToWatchList }
         factory(override = true) { stringProvider }
+        factory(override = true) { dispatcher }
       }
     )
 
@@ -103,34 +111,36 @@ internal class HomeViewModelTest : BaseTest() {
 
   @Test
   fun `Given a Home model populated, When addMovieToWatchList is called, Then movie is replaced in home model with watchButton as selected`() {
-    viewModel.state.observeForever(stateObserver)
+    testDispatcher.runBlockingTest {
+      viewModel.state.observeForever(stateObserver)
 
-    viewModel.addMovieToWatchList(
-      aHomeModel,
-      aCarouselMoviesPopularModuleModel,
-      aCarouselMovieListModel,
-      aMovieModel,
-    )
+      viewModel.addMovieToWatchList(
+        aHomeModel,
+        aCarouselMoviesPopularModuleModel,
+        aCarouselMovieListModel,
+        aMovieModel,
+      )
 
-    verify {
-      stateObserver.onChanged(
-        HomeUIState.Content(
-          HomeModel.empty.copy(
-            modules = listOf(
-              HomeModuleModel.CarouselMovies.Popular(
-                CarouselMovieListModel.empty.copy(
-                  movies = listOf(
-                    MovieListItemModel.empty.copy(
-                      id = 1L,
-                      watchButtonModel = WatchButtonModel.Selected
-                    ),
+      coVerify {
+        stateObserver.onChanged(
+          HomeUIState.Content(
+            HomeModel.empty.copy(
+              modules = listOf(
+                HomeModuleModel.CarouselMovies.Popular(
+                  CarouselMovieListModel.empty.copy(
+                    movies = listOf(
+                      MovieListItemModel.empty.copy(
+                        id = 1L,
+                        watchButtonModel = WatchButtonModel.Selected
+                      ),
+                    )
                   )
                 )
               )
             )
           )
         )
-      )
+      }
     }
   }
 }
@@ -165,3 +175,5 @@ private val aGetPopularMoviesUseCaseParams =
   GetMoviesUseCase.Params.BySearchType(SearchType.Popular, Page(1))
 private val aGetNowPlayingMoviesUseCaseParams =
   GetMoviesUseCase.Params.BySearchType(SearchType.NowPlaying, Page(1))
+private val aGetWatchListMoviesUseCaseParams =
+  GetMoviesUseCase.Params.WatchList(Page(1))

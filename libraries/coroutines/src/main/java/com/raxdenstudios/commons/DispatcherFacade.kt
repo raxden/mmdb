@@ -6,5 +6,4 @@ interface DispatcherFacade {
 
   fun io(): CoroutineDispatcher
   fun default(): CoroutineDispatcher
-  fun main(): CoroutineDispatcher
 }

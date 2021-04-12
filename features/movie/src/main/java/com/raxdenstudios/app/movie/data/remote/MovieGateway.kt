@@ -5,13 +5,42 @@ import com.raxdenstudios.app.movie.data.remote.model.WatchListDto
 import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
 import com.raxdenstudios.app.network.model.PageDto
+import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.retrofit.toResultData
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 internal class MovieGateway(
+  private val dispatcher: DispatcherFacade,
   private val movieV3Service: MovieV3Service,
   private val movieV4Service: MovieV4Service,
 ) {
+
+  companion object {
+    private const val FIRST_PAGE = 1
+  }
+
+  suspend fun watchList(
+    accountId: String
+  ): ResultData<List<MovieDto>> =
+    when (val resultData = watchList(accountId, FIRST_PAGE)) {
+      is ResultData.Error -> resultData
+      is ResultData.Success -> {
+        withContext(dispatcher.io()) {
+          val allMovies = resultData.value.results.toMutableList()
+          val totalPages = resultData.value.total_pages
+          val movies = (FIRST_PAGE + 1..totalPages)
+            .map { page -> async { watchList(accountId, page) } }
+            .mapNotNull { deferred -> deferred.await().getValueOrNull() }
+            .map { resultData -> resultData.results }
+            .flatten()
+          allMovies.addAll(movies)
+          ResultData.Success(allMovies)
+        }
+      }
+    }
 
   suspend fun watchList(
     accountId: String,
