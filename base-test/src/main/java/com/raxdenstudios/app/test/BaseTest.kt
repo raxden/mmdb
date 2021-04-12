@@ -12,8 +12,9 @@ import org.koin.test.KoinTestRule
 
 abstract class BaseTest : KoinTest {
 
+  // Used for liveData testing purposes.
   @get:Rule
-  val instantExecutorRule = InstantTaskExecutorRule() // Used for liveData testing purposes.
+  val instantExecutorRule = InstantTaskExecutorRule()
 
   @get:Rule
   val koinTestRule = KoinTestRule.create { modules(modules) }
@@ -21,6 +22,9 @@ abstract class BaseTest : KoinTest {
   @ExperimentalCoroutinesApi
   val testDispatcher = TestCoroutineDispatcher()
 
+  // Will override the Main dispatcher in test situations. This is helpful when you want to execute
+  // a test in situations where the platform Main dispatcher is not available, or you wish to
+  // replace Dispatchers.Main with a testing dispatcher.
   @ExperimentalCoroutinesApi
   @get:Rule
   val coroutineTestRule = CoroutineTestRule(testDispatcher)
