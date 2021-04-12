@@ -2,6 +2,7 @@ package com.raxdenstudios.app.movie.di
 
 import com.raxdenstudios.app.movie.data.local.MovieDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MovieWatchListLocalDataSource
+import com.raxdenstudios.app.movie.data.local.mapper.MovieToMovieWatchListDataMapper
 import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.DateDtoToLocalDateMapper
@@ -26,7 +27,9 @@ val movieDataModule = module {
   single { MovieDatabase.getInstance(get()) }
   factory { get<MovieDatabase>().watchListDao() }
 
-  factory { MovieWatchListLocalDataSource(get()) }
+  factory { MovieWatchListLocalDataSource(get(), get()) }
+
+  factory { MovieToMovieWatchListDataMapper() }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }
@@ -40,7 +43,7 @@ val movieDataModule = module {
 
   factory { MovieRemoteDataSource(get(), get()) }
 
-  factory<MovieRepository> { MovieRepositoryImpl(get(), get()) }
+  factory<MovieRepository> { MovieRepositoryImpl(get(), get(), get()) }
 
   factory<AddMovieToWatchList> { AddMovieToWatchListImpl(get()) }
   factory<RemoveMovieFromWatchList> { RemoveMovieFromWatchListImpl(get()) }

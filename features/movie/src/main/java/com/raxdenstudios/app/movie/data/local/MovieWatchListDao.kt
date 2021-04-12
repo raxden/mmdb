@@ -15,6 +15,9 @@ interface MovieWatchListDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(movie: MovieWatchListEntity)
 
+  @Query("DELETE FROM watchlist WHERE movie_id == :movieId")
+  suspend fun delete(movieId: Long)
+
   @Query("SELECT * FROM watchlist WHERE movie_id == :movieId")
   suspend fun find(movieId: Long): MovieWatchListEntity?
 }
