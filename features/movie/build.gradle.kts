@@ -13,6 +13,11 @@ dependencies {
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
 
+  implementation(Libraries.roomRunTime)
+  kapt(Libraries.roomCompiler)
+  implementation(Libraries.roomKtx)
+  implementation(Libraries.roomRX)
+
   implementation(Libraries.gson)
 
   testImplementation(project(Modules.baseTest))
