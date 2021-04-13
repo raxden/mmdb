@@ -12,4 +12,5 @@ interface MovieRepository {
   suspend fun removeMovieFromWatchList(movieId: Long): ResultData<Boolean>
   suspend fun movies(searchType: SearchType, page: Page, pageSize: PageSize): ResultData<PageList<Movie>>
   suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>>
+  suspend fun loadWatchListFromRemoteAndPersistInLocal()
 }
