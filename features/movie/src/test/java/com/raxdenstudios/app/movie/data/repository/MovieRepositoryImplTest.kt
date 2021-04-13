@@ -6,8 +6,8 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.di.movieDataModule
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.SearchType
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData

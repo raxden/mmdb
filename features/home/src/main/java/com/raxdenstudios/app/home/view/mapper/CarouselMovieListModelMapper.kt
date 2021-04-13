@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
-import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.provider.StringProvider
 
 internal class CarouselMovieListModelMapper(

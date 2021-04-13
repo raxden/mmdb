@@ -5,8 +5,8 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.SearchType
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList

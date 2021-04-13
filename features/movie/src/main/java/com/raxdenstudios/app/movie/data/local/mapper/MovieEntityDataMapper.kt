@@ -4,10 +4,10 @@ import com.raxdenstudios.app.movie.data.local.model.MovieEntity
 import com.raxdenstudios.app.movie.data.local.model.PictureEntity
 import com.raxdenstudios.app.movie.data.local.model.SizeEntity
 import com.raxdenstudios.app.movie.data.local.model.VoteEntity
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.Picture
-import com.raxdenstudios.app.movie.domain.Size
-import com.raxdenstudios.app.movie.domain.Vote
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Picture
+import com.raxdenstudios.app.movie.domain.model.Size
+import com.raxdenstudios.app.movie.domain.model.Vote
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds

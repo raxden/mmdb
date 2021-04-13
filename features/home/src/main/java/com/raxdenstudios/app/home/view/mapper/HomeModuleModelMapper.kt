@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.pagination.model.PageList

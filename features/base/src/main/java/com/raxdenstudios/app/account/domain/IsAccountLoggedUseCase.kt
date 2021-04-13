@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.account.domain
 
-interface IsAccountLogged {
+interface IsAccountLoggedUseCase {
   suspend fun execute(): Boolean
 }
+

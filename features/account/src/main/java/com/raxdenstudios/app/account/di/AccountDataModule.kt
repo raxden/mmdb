@@ -7,8 +7,10 @@ import com.raxdenstudios.app.account.data.local.mapper.AccountEntityToDomainMapp
 import com.raxdenstudios.app.account.data.local.mapper.AccountToEntityMapper
 import com.raxdenstudios.app.account.data.repository.AccountRepository
 import com.raxdenstudios.app.account.data.repository.AccountRepositoryImpl
-import com.raxdenstudios.app.account.domain.IsAccountLogged
-import com.raxdenstudios.app.account.domain.IsAccountLoggedImpl
+import com.raxdenstudios.app.account.domain.GetAccountUseCase
+import com.raxdenstudios.app.account.domain.GetAccountUseCaseImpl
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCaseImpl
 import org.koin.dsl.module
 
 val accountDataModule = module {
@@ -22,5 +24,6 @@ val accountDataModule = module {
 
   factory<AccountRepository> { AccountRepositoryImpl(get()) }
 
-  factory<IsAccountLogged> { IsAccountLoggedImpl(get()) }
+  factory<GetAccountUseCase> { GetAccountUseCaseImpl(get()) }
+  factory<IsAccountLoggedUseCase> { IsAccountLoggedUseCaseImpl(get()) }
 }
