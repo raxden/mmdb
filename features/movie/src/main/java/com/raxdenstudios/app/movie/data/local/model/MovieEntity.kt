@@ -47,8 +47,8 @@ data class PictureEntity(
 ) {
   companion object {
     val empty = PictureEntity(
-      thumbnail = SizeEntity.empty,
-      original = SizeEntity.empty,
+      thumbnail = SizeEntity.empty.copy(type = "thumbnail"),
+      original = SizeEntity.empty.copy(type = "original"),
     )
   }
 }
@@ -60,7 +60,7 @@ data class SizeEntity(
   companion object {
     val empty = SizeEntity(
       url = "",
-      type = "original",
+      type = "",
     )
   }
 }
