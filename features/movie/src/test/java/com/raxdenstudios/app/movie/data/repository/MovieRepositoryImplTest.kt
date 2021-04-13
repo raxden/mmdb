@@ -45,7 +45,7 @@ internal class MovieRepositoryImplTest : BaseTest() {
       watchList(aCredentialsAccountId, aPage)
     } returns ResultData.Success(aPageList)
     coEvery {
-      detail(aMovieId)
+      movieById(aMovieId)
     } returns ResultData.Success(Movie.empty.copy(id = aMovieId))
   }
   private val movieLocalDataSource: MovieLocalDataSource = mockk {

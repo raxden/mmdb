@@ -8,7 +8,9 @@ import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.getValueOrNull
+import com.raxdenstudios.commons.coFlatMap
+import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -26,20 +28,9 @@ internal class MovieRepositoryImpl(
     }
 
   private suspend fun addMovieToWatchList(accountId: String, movieId: Long): ResultData<Boolean> =
-    when (val result = movieRemoteDataSource.addMovieToWatchList(accountId, movieId)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> markMovieAsWatchedAndPersistInLocal(movieId)
-    }
-
-  private suspend fun markMovieAsWatchedAndPersistInLocal(movieId: Long): ResultData<Boolean> =
-    when (val result = movieRemoteDataSource.detail(movieId)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> {
-        val movie = result.value.copy(watchList = true)
-        movieLocalDataSource.insert(movie)
-        ResultData.Success(true)
-      }
-    }
+    movieRemoteDataSource.addMovieToWatchList(accountId, movieId)
+      .coFlatMap { getMovieAndMarkAsWatched(movieId, true) }
+      .coFlatMap { movie -> updateMovie(movie) }
 
   override suspend fun removeMovieFromWatchList(movieId: Long): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {
@@ -51,67 +42,52 @@ internal class MovieRepositoryImpl(
     accountId: String,
     movieId: Long
   ): ResultData<Boolean> =
-    when (val result = movieRemoteDataSource.removeMovieFromWatchList(accountId, movieId)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> markMovieAsNotWatchedAndPersistInLocal(movieId)
-    }
+    movieRemoteDataSource.removeMovieFromWatchList(accountId, movieId)
+      .coFlatMap { getMovieAndMarkAsWatched(movieId, false) }
+      .coFlatMap { movie -> updateMovie(movie) }
 
-  private suspend fun markMovieAsNotWatchedAndPersistInLocal(movieId: Long): ResultData<Boolean> =
-    when (val result = movieRemoteDataSource.detail(movieId)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> {
-        val movie = result.value.copy(watchList = false)
-        movieLocalDataSource.insert(movie)
-        ResultData.Success(true)
-      }
-    }
+  private suspend fun getMovieAndMarkAsWatched(movieId: Long, watched: Boolean) =
+    movieRemoteDataSource.movieById(movieId).map { movie -> movie.copy(watchList = watched) }
+
+  private suspend fun updateMovie(movie: Movie): ResultData.Success<Boolean> {
+    movieLocalDataSource.insert(movie)
+    return ResultData.Success(true)
+  }
 
   override suspend fun movies(
     searchType: SearchType,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Movie>> {
-    return when (val result = movieRemoteDataSource.movies(searchType, page)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> markMoviesAsWatchedIfWereWatched(result.value)
-    }
-  }
-
-  private suspend fun markMoviesAsWatchedIfWereWatched(
-    pageList: PageList<Movie>
   ): ResultData<PageList<Movie>> =
-    ResultData.Success(
-      pageList.copy(
-        items = pageList.items.map { movie ->
-          movie.copy(watchList = movieLocalDataSource.isWatchList(movie.id))
-        }
-      )
+    movieRemoteDataSource.movies(searchType, page)
+      .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
+
+  private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Movie>) =
+    pageList.copy(
+      items = pageList.items.map { movie ->
+        movie.copy(watchList = movieLocalDataSource.isWatchList(movie.id))
+      }
     )
 
-  override suspend fun loadWatchListFromRemoteAndPersistInLocal() {
-    val result = when (val account = accountLocalDataSource.getAccount()) {
+  override suspend fun loadWatchListFromRemoteAndPersistInLocal(): ResultData<Boolean> =
+    when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> movieRemoteDataSource.watchList(account.credentials.accountId)
+      is Account.Logged -> loadWatchListFromRemoteAndPersistInLocal(account.credentials.accountId)
     }
-    result.getValueOrNull()?.let { movies -> movieLocalDataSource.insert(movies) }
+
+  private suspend fun loadWatchListFromRemoteAndPersistInLocal(
+    accountId: String
+  ): ResultData<Boolean> =
+    movieRemoteDataSource.watchList(accountId)
+      .coFlatMap { movies -> updateMovies(movies) }
+
+  private suspend fun updateMovies(movies: List<Movie>): ResultData.Success<Boolean> {
+    movieLocalDataSource.insert(movies)
+    return ResultData.Success(true)
   }
 
   override suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>> {
     val pageList = movieLocalDataSource.watchList(page, pageSize)
-    return if (pageList.items.isEmpty()) {
-      when (val result = watchListFromRemote(page, pageSize)) {
-        is ResultData.Error -> result
-        is ResultData.Success -> result.also { movieLocalDataSource.insert(result.value.items) }
-      }
-    } else ResultData.Success(pageList)
+    return ResultData.Success(pageList)
   }
-
-  private suspend fun watchListFromRemote(
-    page: Page,
-    pageSize: PageSize
-  ): ResultData<PageList<Movie>> =
-    when (val account = accountLocalDataSource.getAccount()) {
-      is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> movieRemoteDataSource.watchList(account.credentials.accountId, page)
-    }
 }
