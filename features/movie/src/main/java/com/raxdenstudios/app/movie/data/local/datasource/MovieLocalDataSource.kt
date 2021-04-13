@@ -20,14 +20,17 @@ internal class MovieLocalDataSource(
   }
 
   suspend fun watchList(page: Page, pageSize: PageSize): PageList<Movie> {
-    val startIndex = page.value - 1 * pageSize.value
-    val endIndex = startIndex + pageSize.value
     val dtoList = dao.watchList()
+    val startIndex = (page.value - 1) * pageSize.value
+    val endIndex = when {
+      startIndex + pageSize.value > dtoList.size -> dtoList.size
+      else -> startIndex + pageSize.value
+    }
     return try {
       val dtoPageList = dtoList.subList(startIndex, endIndex)
       val movies = movieEntityToDomainMapper.transform(dtoPageList)
       PageList(movies, page)
-    } catch (e: Throwable) {
+    } catch (throwable: Throwable) {
       PageList(emptyList(), page)
     }
   }
