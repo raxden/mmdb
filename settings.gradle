@@ -1,3 +1,4 @@
+include ':features:list'
 include ':libraries:retrofit-co'
 include ':libraries:pagination-co'
 include ':features:base'
