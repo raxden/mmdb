@@ -16,17 +16,15 @@ internal class MovieRemoteDataSource(
   private val movieDtoToDomainMapper: MovieDtoToDomainMapper,
 ) {
 
-  suspend fun detail(movieId: Long): ResultData<Movie> =
+  suspend fun movieById(movieId: Long): ResultData<Movie> =
     movieGateway.detail(movieId.toString())
       .map { dto -> movieDtoToDomainMapper.transform(dto) }
 
   suspend fun addMovieToWatchList(accountId: String, movieId: Long): ResultData<Boolean> =
-    movieGateway.addToWatchList(accountId, movieId)
-      .map { true }
+    movieGateway.addToWatchList(accountId, movieId).map { true }
 
   suspend fun removeMovieFromWatchList(accountId: String, movieId: Long): ResultData<Boolean> =
-    movieGateway.removeFromWatchList(accountId, movieId)
-      .map { true }
+    movieGateway.removeFromWatchList(accountId, movieId).map { true }
 
   suspend fun watchList(accountId: String): ResultData<List<Movie>> =
     movieGateway.watchList(accountId)
