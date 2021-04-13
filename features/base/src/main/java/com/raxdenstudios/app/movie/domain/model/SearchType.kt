@@ -6,4 +6,5 @@ sealed class SearchType {
   object NowPlaying : SearchType()
   object TopRated : SearchType()
   object Upcoming : SearchType()
+  object WatchList : SearchType()
 }
