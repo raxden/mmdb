@@ -2,7 +2,7 @@ package com.raxdenstudios.app.home.view.mapper
 
 import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.home.view.model.WatchButtonModel
-import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.util.DataMapper
 
 internal class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {

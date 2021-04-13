@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.remote.mapper
 
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
-import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.util.DataMapper
 
 internal class MovieDtoToDomainMapper(

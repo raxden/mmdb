@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.repository
 
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.SearchType
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList

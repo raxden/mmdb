@@ -1,21 +1,16 @@
 package com.raxdenstudios.app.home.view.viewmodel
 
 import androidx.lifecycle.Observer
-import com.raxdenstudios.app.account.domain.IsAccountLogged
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.GetMoviesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
-import com.raxdenstudios.app.home.view.model.HomeModel
-import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.home.view.model.HomeUIState
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
-import com.raxdenstudios.app.home.view.model.WatchButtonModel
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchList
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchList
-import com.raxdenstudios.app.movie.domain.SearchType
+import com.raxdenstudios.app.home.view.model.*
+import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
@@ -23,7 +18,6 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.provider.StringProvider
 import io.mockk.*
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
@@ -46,13 +40,13 @@ internal class HomeViewModelTest : BaseTest() {
     coEvery { execute(aGetNowPlayingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
     coEvery { execute(aGetWatchListMoviesUseCaseParams) } returns aResultPageMovieListSuccess
   }
-  private val isAccountLogged: IsAccountLogged = mockk {
+  private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
     coEvery { execute() } returns false
   }
-  private val addMovieToWatchList: AddMovieToWatchList = mockk {
+  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
-  private val removeMovieToWatchList: RemoveMovieFromWatchList = mockk {
+  private val removeMovieToWatchListUseCase: RemoveMovieFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
   private val stateObserver: Observer<HomeUIState> = mockk(relaxed = true)
@@ -67,9 +61,9 @@ internal class HomeViewModelTest : BaseTest() {
       module {
         factory(override = true) { getHomeModulesUseCase }
         factory(override = true) { getMoviesUseCase }
-        factory(override = true) { isAccountLogged }
-        factory(override = true) { addMovieToWatchList }
-        factory(override = true) { removeMovieToWatchList }
+        factory(override = true) { isAccountLoggedUseCase }
+        factory(override = true) { addMovieToWatchListUseCase }
+        factory(override = true) { removeMovieToWatchListUseCase }
         factory(override = true) { stringProvider }
         factory(override = true) { dispatcher }
       }
