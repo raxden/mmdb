@@ -11,6 +11,7 @@ object Modules {
   const val featureAccount = ":features:account"
   const val featureMovie = ":features:movie"
   const val featureHome = ":features:home"
+  const val featureList = ":features:list"
   const val featureLogin = ":features:login"
   const val featureTMDBConnect = ":features:tmdb"
   const val featureError = ":features:error"
