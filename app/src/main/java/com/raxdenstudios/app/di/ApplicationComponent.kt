@@ -4,6 +4,7 @@ import com.raxdenstudios.app.account.di.accountDataModule
 import com.raxdenstudios.app.base.di.baseModule
 import com.raxdenstudios.app.error.di.errorFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
+import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.login.di.loginFeatureModule
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.navigator.di.navigatorModule
@@ -27,6 +28,7 @@ val featureModules: List<Module> = listOf(
   loginFeatureModule,
   tmdbFeatureModule,
   errorFeatureModule,
+  listFeatureModule,
 )
 
 val appComponent: List<Module> = mutableListOf<Module>().apply {
