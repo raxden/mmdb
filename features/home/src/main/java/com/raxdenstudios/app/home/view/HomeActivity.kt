@@ -145,6 +145,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun HomeActivityBinding.setUp() {
     recyclerView.setPaddingTop(SDK.getStatusBarHeight(this@HomeActivity))
+    recyclerView.itemAnimator = null
     recyclerView.adapter = adapter
     swipeRefreshLayout.setProgressViewEndTarget(false, 600.toDp())
     swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData() }
