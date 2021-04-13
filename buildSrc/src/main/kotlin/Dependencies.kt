@@ -39,19 +39,13 @@ object Libraries {
   const val koinScope = "org.koin:koin-androidx-scope:${Versions.koin}"
   const val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
 
-  // RX
-  const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-  const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
-
   // Room
   const val roomRunTime = "androidx.room:room-runtime:${Versions.room}"
   const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
   const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
-  const val roomRX = "androidx.room:room-rxjava2:${Versions.room}"
 
   // Retrofit
   const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-  const val retrofitRxAdapter = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
   const val retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
   const val retrofitNetworkResponseAdapter = "com.github.haroldadmin:NetworkResponseAdapter:${Versions.retrofitNetworkResponseAdapter}"
 

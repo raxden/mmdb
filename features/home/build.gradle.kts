@@ -30,7 +30,6 @@ dependencies {
   implementation(Libraries.roomRunTime)
   kapt(Libraries.roomCompiler)
   implementation(Libraries.roomKtx)
-  implementation(Libraries.roomRX)
 
   testImplementation(project(Modules.baseTest))
   androidTestImplementation(project(Modules.baseAndroidTest))
