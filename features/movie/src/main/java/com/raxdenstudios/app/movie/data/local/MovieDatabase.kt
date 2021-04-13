@@ -5,15 +5,15 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.raxdenstudios.app.movie.data.local.model.MovieWatchListEntity
+import com.raxdenstudios.app.movie.data.local.model.MovieEntity
 
 @Database(
-  entities = [MovieWatchListEntity::class],
-  version = 1,
+  entities = [MovieEntity::class],
+  version = 2,
 )
 abstract class MovieDatabase : RoomDatabase() {
 
-  abstract fun watchListDao(): MovieWatchListDao
+  abstract fun watchListDao(): MovieDao
 
   companion object {
 
@@ -36,6 +36,7 @@ abstract class MovieDatabase : RoomDatabase() {
 
     private fun buildDatabase(context: Context): MovieDatabase {
       return Room.databaseBuilder(context, MovieDatabase::class.java, "movie.db")
+        .fallbackToDestructiveMigration()
         .build()
     }
   }
