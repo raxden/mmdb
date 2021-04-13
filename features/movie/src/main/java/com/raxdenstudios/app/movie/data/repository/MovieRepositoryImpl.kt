@@ -59,7 +59,7 @@ internal class MovieRepositoryImpl(
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<Movie>> = when (searchType) {
-    SearchType.WatchList -> watchList(page, pageSize)
+    SearchType.WatchList -> watchListFromLocal(page, pageSize)
     else -> moviesFromRemote(searchType, page, pageSize)
   }
 
@@ -67,9 +67,11 @@ internal class MovieRepositoryImpl(
     searchType: SearchType,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Movie>> =
-    movieRemoteDataSource.movies(searchType, page)
+  ): ResultData<PageList<Movie>> {
+    val account = accountLocalDataSource.getAccount()
+    return movieRemoteDataSource.movies(searchType, account, page)
       .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
+  }
 
   private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Movie>) =
     pageList.copy(
@@ -95,7 +97,10 @@ internal class MovieRepositoryImpl(
     return ResultData.Success(true)
   }
 
-  private suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>> {
+  private suspend fun watchListFromLocal(
+    page: Page,
+    pageSize: PageSize
+  ): ResultData<PageList<Movie>> {
     val pageList = movieLocalDataSource.watchList(page, pageSize)
     return ResultData.Success(pageList)
   }
