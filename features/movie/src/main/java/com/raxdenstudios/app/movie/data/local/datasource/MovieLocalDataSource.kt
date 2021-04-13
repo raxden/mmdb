@@ -14,6 +14,11 @@ internal class MovieLocalDataSource(
   private val movieEntityToDomainMapper: MovieEntityToDomainMapper,
 ) {
 
+  suspend fun watchList(): List<Movie> {
+    val entityList = dao.watchList()
+    return movieEntityToDomainMapper.transform(entityList)
+  }
+
   suspend fun watchList(page: Page, pageSize: PageSize): PageList<Movie> {
     val startIndex = page.value - 1 * pageSize.value
     val endIndex = startIndex + pageSize.value

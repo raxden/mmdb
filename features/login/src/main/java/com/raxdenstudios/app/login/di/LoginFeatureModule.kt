@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val loginFeatureModule = module {
 
-  factory { LoginUseCase(get()) }
+  factory { LoginUseCase(get(), get()) }
 
   viewModel { LoginViewModel(get()) }
 }
