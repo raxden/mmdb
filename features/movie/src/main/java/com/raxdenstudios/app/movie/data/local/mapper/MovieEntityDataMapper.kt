@@ -1,0 +1,107 @@
+package com.raxdenstudios.app.movie.data.local.mapper
+
+import com.raxdenstudios.app.movie.data.local.model.MovieEntity
+import com.raxdenstudios.app.movie.data.local.model.PictureEntity
+import com.raxdenstudios.app.movie.data.local.model.SizeEntity
+import com.raxdenstudios.app.movie.data.local.model.VoteEntity
+import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.Picture
+import com.raxdenstudios.app.movie.domain.Size
+import com.raxdenstudios.app.movie.domain.Vote
+import com.raxdenstudios.app.network.APIDataProvider
+import com.raxdenstudios.commons.threeten.ext.toLocalDate
+import com.raxdenstudios.commons.threeten.ext.toMilliseconds
+import com.raxdenstudios.commons.util.DataMapper
+
+internal class MovieToEntityMapper(
+  private val pictureToEntityMapper: PictureToEntityMapper,
+  private val voteToEntityMapper: VoteToEntityMapper,
+) : DataMapper<Movie, MovieEntity>() {
+
+  override fun transform(source: Movie): MovieEntity = MovieEntity(
+    id = source.id,
+    title = source.title,
+    backdrop = source.backdrop?.let { backdrop -> pictureToEntityMapper.transform(backdrop) },
+    poster = source.poster.let { poster -> pictureToEntityMapper.transform(poster) },
+    release = source.release.toMilliseconds(),
+    vote = voteToEntityMapper.transform(source.vote),
+    watchList = source.watchList,
+  )
+}
+
+internal class MovieEntityToDomainMapper(
+  private val pictureEntityToDomainMapper: PictureEntityToDomainMapper,
+  private val voteEntityToDomainMapper: VoteEntityToDomainMapper,
+) : DataMapper<MovieEntity, Movie>() {
+
+  override fun transform(source: MovieEntity): Movie = Movie(
+    id = source.id,
+    title = source.title,
+    backdrop = source.backdrop?.let { backdrop -> pictureEntityToDomainMapper.transform(backdrop) },
+    poster = source.poster.let { poster -> pictureEntityToDomainMapper.transform(poster) },
+    release = source.release.toLocalDate(),
+    vote = voteEntityToDomainMapper.transform(source.vote),
+    watchList = source.watchList,
+  )
+}
+
+internal class VoteToEntityMapper : DataMapper<Vote, VoteEntity>() {
+
+  override fun transform(source: Vote): VoteEntity = VoteEntity(
+    average = source.average,
+    count = source.count,
+  )
+}
+
+internal class VoteEntityToDomainMapper : DataMapper<VoteEntity, Vote>() {
+
+  override fun transform(source: VoteEntity): Vote = Vote(
+    average = source.average,
+    count = source.count,
+  )
+}
+
+internal class PictureToEntityMapper(
+  private val sizeToEntityMapper: SizeToEntityMapper
+) : DataMapper<Picture, PictureEntity>() {
+
+  override fun transform(source: Picture): PictureEntity = PictureEntity(
+    thumbnail = sizeToEntityMapper.transform(source.thumbnail),
+    original = sizeToEntityMapper.transform(source.original),
+  )
+}
+
+internal class PictureEntityToDomainMapper(
+  private val sizeEntityToDomainMapper: SizeEntityToDomainMapper
+) : DataMapper<PictureEntity, Picture>() {
+
+  override fun transform(source: PictureEntity): Picture = Picture(
+    thumbnail = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Thumbnail,
+    original = sizeEntityToDomainMapper.transform(source.original) as Size.Original,
+  )
+}
+
+internal class SizeToEntityMapper : DataMapper<Size, SizeEntity>() {
+
+  override fun transform(source: Size): SizeEntity = when (source) {
+    is Size.Original -> SizeEntity(source.source, "original")
+    is Size.Thumbnail -> SizeEntity(source.source, "thumbnail")
+  }
+}
+
+internal class SizeEntityToDomainMapper(
+  private val apiDataProvider: APIDataProvider
+) : DataMapper<SizeEntity, Size>() {
+
+  override fun transform(source: SizeEntity): Size = when (source.type) {
+    "thumbnail" -> Size.Thumbnail(
+      apiDataProvider.getImageDomain(),
+      source.url
+    )
+    "original" -> Size.Original(
+      apiDataProvider.getImageDomain(),
+      source.url
+    )
+    else -> throw IllegalStateException("Invalid field value to represent Picture.Size")
+  }
+}

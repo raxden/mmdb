@@ -91,4 +91,9 @@ internal class MovieGateway(
     movieV3Service.upcoming(page).toResultData(
       "Error occurred during fetching upcoming movies"
     ) { body -> body }
+
+  suspend fun detail(movieId: String): ResultData<MovieDto> =
+    movieV3Service.detail(movieId).toResultData(
+      "Error ocurred during fetching detail movie with id: $movieId"
+    ) { body -> body }
 }

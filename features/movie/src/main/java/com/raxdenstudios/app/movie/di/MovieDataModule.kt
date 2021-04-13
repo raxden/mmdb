@@ -1,8 +1,12 @@
 package com.raxdenstudios.app.movie.di
 
 import com.raxdenstudios.app.movie.data.local.MovieDatabase
-import com.raxdenstudios.app.movie.data.local.datasource.MovieWatchListLocalDataSource
-import com.raxdenstudios.app.movie.data.local.mapper.MovieToMovieWatchListDataMapper
+import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
+import com.raxdenstudios.app.movie.data.local.mapper.*
+import com.raxdenstudios.app.movie.data.local.mapper.MovieEntityToDomainMapper
+import com.raxdenstudios.app.movie.data.local.mapper.MovieToEntityMapper
+import com.raxdenstudios.app.movie.data.local.mapper.VoteEntityToDomainMapper
+import com.raxdenstudios.app.movie.data.local.mapper.VoteToEntityMapper
 import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.DateDtoToLocalDateMapper
@@ -27,9 +31,15 @@ val movieDataModule = module {
   single { MovieDatabase.getInstance(get()) }
   factory { get<MovieDatabase>().watchListDao() }
 
-  factory { MovieWatchListLocalDataSource(get(), get()) }
-
-  factory { MovieToMovieWatchListDataMapper() }
+  factory { MovieToEntityMapper(get(), get()) }
+  factory { MovieEntityToDomainMapper(get(), get()) }
+  factory { VoteToEntityMapper() }
+  factory { VoteEntityToDomainMapper() }
+  factory { PictureToEntityMapper(get()) }
+  factory { PictureEntityToDomainMapper(get()) }
+  factory { SizeToEntityMapper() }
+  factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
+  factory { MovieLocalDataSource(get(), get(), get()) }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }

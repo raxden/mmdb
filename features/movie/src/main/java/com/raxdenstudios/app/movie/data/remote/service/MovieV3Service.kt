@@ -38,4 +38,9 @@ interface MovieV3Service {
     @Path("account_id") accountId: String,
     @Body request: WatchListDto.Request
   ): NetworkResponse<WatchListDto.Response, ErrorDto>
+
+  @GET("movie/{movie_id}")
+  suspend fun detail(
+    @Path("movie_id") movieId: String,
+  ): NetworkResponse<MovieDto, ErrorDto>
 }
