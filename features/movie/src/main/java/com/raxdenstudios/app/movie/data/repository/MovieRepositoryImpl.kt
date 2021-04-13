@@ -8,6 +8,7 @@ import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -87,10 +88,22 @@ internal class MovieRepositoryImpl(
       )
     )
 
+  override suspend fun loadWatchListFromRemoteAndPersistInLocal() {
+    val result = when (val account = accountLocalDataSource.getAccount()) {
+      is Account.Guest -> ResultData.Error(UserNotLoggedException())
+      is Account.Logged -> movieRemoteDataSource.watchList(account.credentials.accountId)
+    }
+    result.getValueOrNull()?.let { movies -> movieLocalDataSource.insert(movies) }
+  }
+
   override suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>> {
     val pageList = movieLocalDataSource.watchList(page, pageSize)
-    return if (pageList.items.isEmpty()) watchListFromRemote(page, pageSize)
-    else ResultData.Success(pageList)
+    return if (pageList.items.isEmpty()) {
+      when (val result = watchListFromRemote(page, pageSize)) {
+        is ResultData.Error -> result
+        is ResultData.Success -> result.also { movieLocalDataSource.insert(result.value.items) }
+      }
+    } else ResultData.Success(pageList)
   }
 
   private suspend fun watchListFromRemote(
@@ -99,23 +112,6 @@ internal class MovieRepositoryImpl(
   ): ResultData<PageList<Movie>> =
     when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> watchListFromRemote(account.credentials.accountId, page)
+      is Account.Logged -> movieRemoteDataSource.watchList(account.credentials.accountId, page)
     }
-
-  private suspend fun watchListFromRemote(
-    accountId: String,
-    page: Page
-  ): ResultData<PageList<Movie>> =
-    when (val result = movieRemoteDataSource.watchList(accountId, page)) {
-      is ResultData.Error -> result
-      is ResultData.Success -> markMoviesAsWatchedAndPersistInLocal(result.value)
-    }
-
-  private suspend fun markMoviesAsWatchedAndPersistInLocal(
-    pageList: PageList<Movie>
-  ): ResultData<PageList<Movie>> {
-    val result = pageList.copy(items = pageList.items.map { movie -> movie.copy(watchList = true) })
-    movieLocalDataSource.insert(result.items)
-    return ResultData.Success(result)
-  }
 }

@@ -49,10 +49,5 @@ internal class CarouselMovieListView @JvmOverloads constructor(
       { item -> onAddMovieToWatchListClickListener(model, item) }
     adapter.onRemoveMovieFromWatchListClickListener =
       { item -> onRemoveMovieFromWatchListClickListener(model, item) }
-    scrollToFirstPosition()
-  }
-
-  private fun CarouselMovieListViewBinding.scrollToFirstPosition() {
-    recyclerView.post { recyclerView.scrollToPosition(0) }
   }
 }
