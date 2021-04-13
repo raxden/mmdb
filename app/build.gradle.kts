@@ -21,6 +21,7 @@ dependencies {
   implementation(project(Modules.featureNetwork))
   implementation(project(Modules.featureMovie))
   implementation(project(Modules.featureAccount))
+  implementation(project(Modules.featureList))
 
   implementation(project(Modules.featureHome))
   implementation(project(Modules.featureError))
