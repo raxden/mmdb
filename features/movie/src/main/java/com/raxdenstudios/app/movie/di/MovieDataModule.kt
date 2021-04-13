@@ -1,5 +1,7 @@
 package com.raxdenstudios.app.movie.di
 
+import com.raxdenstudios.app.home.domain.GetMoviesUseCase
+import com.raxdenstudios.app.home.domain.GetMoviesUseCaseImpl
 import com.raxdenstudios.app.movie.data.local.MovieDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
@@ -53,4 +55,5 @@ val movieDataModule = module {
 
   factory<AddMovieToWatchListUseCase> { AddMovieToWatchListUseCaseImpl(get()) }
   factory<RemoveMovieFromWatchListUseCase> { RemoveMovieFromWatchListUseCaseImpl(get()) }
+  factory<GetMoviesUseCase> { GetMoviesUseCaseImpl(get()) }
 }
