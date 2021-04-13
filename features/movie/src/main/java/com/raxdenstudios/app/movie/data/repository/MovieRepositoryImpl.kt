@@ -58,6 +58,15 @@ internal class MovieRepositoryImpl(
     searchType: SearchType,
     page: Page,
     pageSize: PageSize
+  ): ResultData<PageList<Movie>> = when (searchType) {
+    SearchType.WatchList -> watchList(page, pageSize)
+    else -> moviesFromRemote(searchType, page, pageSize)
+  }
+
+  private suspend fun moviesFromRemote(
+    searchType: SearchType,
+    page: Page,
+    pageSize: PageSize
   ): ResultData<PageList<Movie>> =
     movieRemoteDataSource.movies(searchType, page)
       .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
@@ -86,7 +95,7 @@ internal class MovieRepositoryImpl(
     return ResultData.Success(true)
   }
 
-  override suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>> {
+  private suspend fun watchList(page: Page, pageSize: PageSize): ResultData<PageList<Movie>> {
     val pageList = movieLocalDataSource.watchList(page, pageSize)
     return ResultData.Success(pageList)
   }
