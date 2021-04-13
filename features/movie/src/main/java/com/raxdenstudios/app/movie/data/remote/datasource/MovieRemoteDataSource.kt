@@ -3,8 +3,8 @@ package com.raxdenstudios.app.movie.data.remote.datasource
 import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
-import com.raxdenstudios.app.movie.domain.Movie
-import com.raxdenstudios.app.movie.domain.SearchType
+import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.map

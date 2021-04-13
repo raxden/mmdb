@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.raxdenstudios.app.account.domain.IsAccountLogged
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.GetMoviesUseCase
@@ -11,11 +11,10 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.model.*
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchList
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchList
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.commons.DispatcherFacade
-import com.raxdenstudios.commons.ext.launch
+import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.safeLaunch
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
@@ -25,9 +24,9 @@ internal class HomeViewModel(
   private val dispatcher: DispatcherFacade,
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMoviesUseCase: GetMoviesUseCase,
-  private val isAccountLogged: IsAccountLogged,
-  private val addMovieToWatchList: AddMovieToWatchList,
-  private val removeMovieFromWatchList: RemoveMovieFromWatchList,
+  private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
+  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
+  private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val getMoviesUseCaseParamsMapper: GetMoviesUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper
 ) : BaseViewModel() {
@@ -43,7 +42,7 @@ internal class HomeViewModel(
     mState.value = HomeUIState.Loading
 
     getHomeModulesUseCase.execute().collect { homeModuleList ->
-      val accountLogged = isAccountLogged.execute()
+      val accountLogged = isAccountLoggedUseCase.execute()
       val homeModuleListModel = homeModuleList.map { homeModule ->
         async { getDataFromHomeModule(homeModule) }
       }.mapNotNull { deferred ->
@@ -79,7 +78,7 @@ internal class HomeViewModel(
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
   ) = viewModelScope.safeLaunch {
-    when (val result = addMovieToWatchList.execute(movieListItemModel.id)) {
+    when (val result = addMovieToWatchListUseCase.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
         val homeModelResult = updateMovieWithWatchButton(
@@ -114,7 +113,7 @@ internal class HomeViewModel(
     carouselMoviesModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel,
   ) = viewModelScope.safeLaunch {
-    when (val result = removeMovieFromWatchList.execute(movieListItemModel.id)) {
+    when (val result = removeMovieFromWatchListUseCase.execute(movieListItemModel.id)) {
       is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
       is ResultData.Success -> {
         val homeModelResult = updateMovieWithWatchButton(

@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.network
 
-import com.raxdenstudios.app.account.data.repository.AccountRepository
+import com.raxdenstudios.app.account.domain.GetAccountUseCase
 import com.raxdenstudios.app.account.domain.model.Account
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -8,7 +8,7 @@ import okhttp3.Response
 import java.io.IOException
 
 internal class SessionInterceptor(
-  private val accountRepository: AccountRepository
+  private val getAccountUseCase: GetAccountUseCase,
 ) : Interceptor {
 
   companion object {
@@ -29,7 +29,7 @@ internal class SessionInterceptor(
   }
 
   private suspend fun getSessionId(): String {
-    return when (val account = accountRepository.getAccount()) {
+    return when (val account = getAccountUseCase.execute()) {
       is Account.Logged -> account.credentials.sessionId
       is Account.Guest -> ""
     }

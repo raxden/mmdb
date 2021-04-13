@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.local.datasource
 import com.raxdenstudios.app.movie.data.local.MovieDao
 import com.raxdenstudios.app.movie.data.local.mapper.MovieEntityToDomainMapper
 import com.raxdenstudios.app.movie.data.local.mapper.MovieToEntityMapper
-import com.raxdenstudios.app.movie.domain.Movie
+import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize

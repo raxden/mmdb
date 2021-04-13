@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.movie.domain
+package com.raxdenstudios.app.movie.domain.model
 
 sealed class SearchType {
 

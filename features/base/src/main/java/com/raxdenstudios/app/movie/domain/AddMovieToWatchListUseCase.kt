@@ -2,6 +2,6 @@ package com.raxdenstudios.app.movie.domain
 
 import com.raxdenstudios.commons.ResultData
 
-interface RemoveMovieFromWatchList {
+interface AddMovieToWatchListUseCase {
   suspend fun execute(movieId: Long): ResultData<Boolean>
 }
