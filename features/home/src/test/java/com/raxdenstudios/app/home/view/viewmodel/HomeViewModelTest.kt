@@ -162,12 +162,12 @@ private val aMovies = listOf(
 private val aPageMovieList = PageList(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)
 private val aGetUpcomingMoviesUseCaseParams =
-  GetMoviesUseCase.Params.BySearchType(SearchType.Upcoming, Page(1))
+  GetMoviesUseCase.Params(SearchType.Upcoming, Page(1))
 private val aGetTopRatedMoviesUseCaseParams =
-  GetMoviesUseCase.Params.BySearchType(SearchType.TopRated, Page(1))
+  GetMoviesUseCase.Params(SearchType.TopRated, Page(1))
 private val aGetPopularMoviesUseCaseParams =
-  GetMoviesUseCase.Params.BySearchType(SearchType.Popular, Page(1))
+  GetMoviesUseCase.Params(SearchType.Popular, Page(1))
 private val aGetNowPlayingMoviesUseCaseParams =
-  GetMoviesUseCase.Params.BySearchType(SearchType.NowPlaying, Page(1))
+  GetMoviesUseCase.Params(SearchType.NowPlaying, Page(1))
 private val aGetWatchListMoviesUseCaseParams =
-  GetMoviesUseCase.Params.WatchList(Page(1))
+  GetMoviesUseCase.Params(SearchType.WatchList, Page(1))
