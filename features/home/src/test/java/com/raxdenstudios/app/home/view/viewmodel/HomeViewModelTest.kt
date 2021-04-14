@@ -2,6 +2,7 @@ package com.raxdenstudios.app.home.view.viewmodel
 
 import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
+import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.GetMoviesUseCase
@@ -57,6 +58,7 @@ internal class HomeViewModelTest : BaseTest() {
 
   override val modules: List<Module>
     get() = listOf(
+      baseFeatureModule,
       homeFeatureModule,
       module {
         factory(override = true) { getHomeModulesUseCase }
