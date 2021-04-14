@@ -5,6 +5,7 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
+import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType
@@ -44,9 +45,13 @@ internal class MovieRepositoryImplTest : BaseTest() {
     coEvery {
       movieById(aMovieId)
     } returns ResultData.Success(Movie.empty.copy(id = aMovieId))
+    coEvery {
+      watchList(aAccountLogged.credentials.accountId)
+    } returns ResultData.Success(aMovies)
   }
   private val movieLocalDataSource: MovieLocalDataSource = mockk {
     coEvery { insert(any<Movie>()) } returns Unit
+    coEvery { insert(any<List<Movie>>()) } returns Unit
     coEvery { isWatchList(any()) } returns false
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
@@ -74,12 +79,13 @@ internal class MovieRepositoryImplTest : BaseTest() {
     }
 
   @Test
-  fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() = testDispatcher.runBlockingTest {
-    val result = repository.removeMovieFromWatchList(aMovieId)
+  fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() =
+    testDispatcher.runBlockingTest {
+      val result = repository.removeMovieFromWatchList(aMovieId)
 
-    coVerify { movieLocalDataSource.insert(aMovie.copy(watchList = false)) }
-    assertEquals(ResultData.Success(true), result)
-  }
+      coVerify { movieLocalDataSource.insert(aMovie.copy(watchList = false)) }
+      assertEquals(ResultData.Success(true), result)
+    }
 
   @Test
   fun `Given a movies returned by the server, When movies are called, Then movies returned should be marked as watched if requires`() =
@@ -101,6 +107,26 @@ internal class MovieRepositoryImplTest : BaseTest() {
         result
       )
     }
+
+  @Test
+  fun `Given an account logged, When loadWatchListFromRemoteAndPersistInLocal is called, Then load data from remote and persist in local`() =
+    testDispatcher.runBlockingTest {
+
+      val result = repository.loadWatchListFromRemoteAndPersistInLocal()
+
+      assertEquals(ResultData.Success(true), result)
+    }
+
+  @Test
+  fun `Given an account not logged, When loadWatchListFromRemoteAndPersistInLocal is called, Then and exception raised`() =
+    testDispatcher.runBlockingTest {
+      coEvery { accountLocalDataSource.getAccount() } returns aAccountGuest
+
+      val result = repository.loadWatchListFromRemoteAndPersistInLocal()
+
+      result as ResultData.Error
+      assert(result.throwable is UserNotLoggedException)
+    }
 }
 
 private val aMovies = listOf(
@@ -114,6 +140,7 @@ private val aPageList = PageList(
   page = aPage,
 )
 private const val aCredentialsAccountId = "aCredentialsAccountId"
+private val aAccountGuest = Account.Guest.empty
 private val aAccountLogged = Account.Logged.empty.copy(
   credentials = Credentials.empty.copy(
     accountId = aCredentialsAccountId
