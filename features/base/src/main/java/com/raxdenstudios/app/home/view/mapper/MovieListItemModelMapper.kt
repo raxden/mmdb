@@ -5,7 +5,7 @@ import com.raxdenstudios.app.home.view.model.WatchButtonModel
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.util.DataMapper
 
-internal class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {
+class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {
 
   override fun transform(source: Movie): MovieListItemModel = source.toModel()
 

@@ -18,6 +18,7 @@ dependencies {
 
   implementation(project(Modules.base))
 
+  implementation(project(Modules.featureBase))
   implementation(project(Modules.featureNetwork))
   implementation(project(Modules.featureMovie))
   implementation(project(Modules.featureAccount))
