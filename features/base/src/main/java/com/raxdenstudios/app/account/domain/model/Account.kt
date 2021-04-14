@@ -12,6 +12,9 @@ sealed class Account {
       val default = Guest(
         id = 1L
       )
+      val empty = Guest(
+        id = 0L
+      )
     }
   }
 
@@ -26,7 +29,7 @@ sealed class Account {
         credentials = credentials
       )
       val empty = Logged(
-        id = 1L,
+        id = 0L,
         credentials = Credentials.empty
       )
     }

@@ -27,7 +27,7 @@ data class Movie(
     val empty = Movie(
       id = 0L,
       title = "",
-      backdrop = null,
+      backdrop = Picture.empty,
       poster = Picture.empty,
       release = LocalDate.of(1970, 1, 1),
       vote = Vote.empty,
