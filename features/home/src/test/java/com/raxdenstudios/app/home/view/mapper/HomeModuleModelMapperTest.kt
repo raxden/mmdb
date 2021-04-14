@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.home.view.mapper
 
+import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
@@ -25,6 +26,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   override val modules: List<Module>
     get() = listOf(
+      baseFeatureModule,
       homeFeatureModule,
       module {
         factory(override = true) { stringProvider }

@@ -27,8 +27,8 @@ internal class MovieListViewModel(
     getMoviesUseCase.execute(useCaseParams)
       .map { pageList -> movieListModelMapper.transform(pageList) }
       .fold(
-        onSuccess = { model -> MovieListUIState.Content(model) },
-        onError = { error -> MovieListUIState.Error(error) }
+        onSuccess = { model -> mState.value = MovieListUIState.Content(model) },
+        onError = { error -> mState.value = MovieListUIState.Error(error) }
       )
   }
 }
