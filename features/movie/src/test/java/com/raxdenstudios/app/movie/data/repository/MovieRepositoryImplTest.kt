@@ -39,10 +39,7 @@ internal class MovieRepositoryImplTest : BaseTest() {
       removeMovieFromWatchList(aCredentialsAccountId, aMovieId)
     } returns ResultData.Success(true)
     coEvery {
-      movies(any(), aPage)
-    } returns ResultData.Success(aPageList)
-    coEvery {
-      watchList(aCredentialsAccountId, aPage)
+      movies(any(), aAccountLogged, aPage)
     } returns ResultData.Success(aPageList)
     coEvery {
       movieById(aMovieId)
