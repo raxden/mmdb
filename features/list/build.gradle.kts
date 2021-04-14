@@ -16,7 +16,6 @@ dependencies {
   implementation(Libraries.roomRunTime)
   kapt(Libraries.roomCompiler)
   implementation(Libraries.roomKtx)
-  implementation(Libraries.roomRX)
 
   implementation(Libraries.gson)
 

@@ -24,6 +24,7 @@ val dataModules: List<Module> = listOf(
 )
 
 val featureModules: List<Module> = listOf(
+  baseFeatureModule,
   homeFeatureModule,
   loginFeatureModule,
   tmdbFeatureModule,
