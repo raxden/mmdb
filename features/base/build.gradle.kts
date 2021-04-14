@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
   implementation(project(Modules.libraryAndroid))
+  implementation(project(Modules.libraryKoin))
   implementation(project(Modules.libraryPaginationCo))
   implementation(project(Modules.libraryThreeten))
 
