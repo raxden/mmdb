@@ -20,7 +20,7 @@ data class MovieEntity(
     val empty = MovieEntity(
       id = 0L,
       title = "",
-      backdrop = null,
+      backdrop = PictureEntity.empty,
       poster = PictureEntity.empty,
       release = 0L,
       vote = VoteEntity.empty,
