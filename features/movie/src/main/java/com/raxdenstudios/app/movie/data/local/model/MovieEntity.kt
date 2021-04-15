@@ -10,7 +10,7 @@ data class MovieEntity(
   @PrimaryKey @ColumnInfo(name = "id") val id: Long,
   @ColumnInfo(name = "title") val title: String,
   @Embedded(prefix = "backdrop_") val backdrop: PictureEntity?,
-  @Embedded(prefix = "poster_") val poster: PictureEntity,
+  @Embedded(prefix = "poster_") val poster: PictureEntity?,
   @ColumnInfo(name = "release") val release: Long,
   @Embedded(prefix = "vote_") val vote: VoteEntity,
   @ColumnInfo(name = "watch_list") val watchList: Boolean,

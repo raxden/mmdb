@@ -2,16 +2,21 @@ package com.raxdenstudios.app.movie.domain.model
 
 import androidx.annotation.VisibleForTesting
 
-data class Picture(
-  val thumbnail: Size.Thumbnail,
-  val original: Size.Original,
-) {
+sealed class Picture {
 
-  companion object {
-    @VisibleForTesting
-    val empty = Picture(
-      thumbnail = Size.Thumbnail("", ""),
-      original = Size.Original("", ""),
-    )
+  object Empty : Picture()
+
+  data class WithImage(
+    val thumbnail: Size.Thumbnail,
+    val original: Size.Original,
+  ) : Picture() {
+
+    companion object {
+      @VisibleForTesting
+      val empty = WithImage(
+        thumbnail = Size.Thumbnail("", ""),
+        original = Size.Original("", ""),
+      )
+    }
   }
 }

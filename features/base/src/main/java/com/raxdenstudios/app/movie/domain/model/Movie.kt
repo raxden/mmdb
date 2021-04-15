@@ -6,7 +6,7 @@ import org.threeten.bp.LocalDate
 data class Movie(
   val id: Long,
   val title: String,
-  val backdrop: Picture?,
+  val backdrop: Picture,
   val poster: Picture,
   val release: LocalDate,
   val vote: Vote,
@@ -17,8 +17,8 @@ data class Movie(
     fun withId(id: Long) = Movie(
       id = id,
       title = "",
-      backdrop = null,
-      poster = Picture.empty,
+      backdrop = Picture.Empty,
+      poster = Picture.Empty,
       release = LocalDate.of(1970, 1, 1),
       vote = Vote.empty,
       watchList = false,
@@ -27,8 +27,8 @@ data class Movie(
     val empty = Movie(
       id = 0L,
       title = "",
-      backdrop = Picture.empty,
-      poster = Picture.empty,
+      backdrop = Picture.Empty,
+      poster = Picture.Empty,
       release = LocalDate.of(1970, 1, 1),
       vote = Vote.empty,
       watchList = false,

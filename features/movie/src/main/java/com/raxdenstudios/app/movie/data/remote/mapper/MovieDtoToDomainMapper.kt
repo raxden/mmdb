@@ -15,7 +15,7 @@ internal class MovieDtoToDomainMapper(
   private fun MovieDto.toDomain() = Movie(
     id = id.toLong(),
     title = title,
-    backdrop = backdrop_path?.let { path -> pictureDtoToDomainMapper.transform(path) },
+    backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
     poster = pictureDtoToDomainMapper.transform(poster_path),
     release = dateDtoToLocalDateMapper.transform(release_date),
     vote = voteDtoToDomainMapper.transform(this),
