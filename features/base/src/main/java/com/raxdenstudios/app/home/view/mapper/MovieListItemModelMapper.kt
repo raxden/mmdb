@@ -3,6 +3,7 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.home.view.model.WatchButtonModel
 import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Picture
 import com.raxdenstudios.commons.util.DataMapper
 
 class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {
@@ -12,7 +13,10 @@ class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {
   private fun Movie.toModel() = MovieListItemModel(
     id = id,
     title = title,
-    image = poster.thumbnail.url,
+    image = when (poster) {
+      Picture.Empty -> ""
+      is Picture.WithImage -> poster.thumbnail.url
+    },
     rating = vote.average.toString(),
     releaseDate = release.year.toString(),
     watchButtonModel = when {

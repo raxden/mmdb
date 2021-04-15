@@ -21,8 +21,8 @@ internal class MovieToEntityMapper(
   override fun transform(source: Movie): MovieEntity = MovieEntity(
     id = source.id,
     title = source.title,
-    backdrop = source.backdrop?.let { backdrop -> pictureToEntityMapper.transform(backdrop) },
-    poster = source.poster.let { poster -> pictureToEntityMapper.transform(poster) },
+    backdrop = pictureToEntityMapper.transform(source.backdrop),
+    poster = pictureToEntityMapper.transform(source.poster),
     release = source.release.toMilliseconds(),
     vote = voteToEntityMapper.transform(source.vote),
     watchList = source.watchList,
@@ -37,8 +37,8 @@ internal class MovieEntityToDomainMapper(
   override fun transform(source: MovieEntity): Movie = Movie(
     id = source.id,
     title = source.title,
-    backdrop = source.backdrop?.let { backdrop -> pictureEntityToDomainMapper.transform(backdrop) },
-    poster = source.poster.let { poster -> pictureEntityToDomainMapper.transform(poster) },
+    backdrop = pictureEntityToDomainMapper.transform(source.backdrop),
+    poster = pictureEntityToDomainMapper.transform(source.poster),
     release = source.release.toLocalDate(),
     vote = voteEntityToDomainMapper.transform(source.vote),
     watchList = source.watchList,
@@ -65,20 +65,25 @@ internal class PictureToEntityMapper(
   private val sizeToEntityMapper: SizeToEntityMapper
 ) : DataMapper<Picture, PictureEntity>() {
 
-  override fun transform(source: Picture): PictureEntity = PictureEntity(
-    thumbnail = sizeToEntityMapper.transform(source.thumbnail),
-    original = sizeToEntityMapper.transform(source.original),
-  )
+  override fun transform(source: Picture): PictureEntity = when (source) {
+    Picture.Empty -> PictureEntity.empty
+    is Picture.WithImage -> PictureEntity(
+      thumbnail = sizeToEntityMapper.transform(source.thumbnail),
+      original = sizeToEntityMapper.transform(source.original),
+    )
+  }
 }
 
 internal class PictureEntityToDomainMapper(
   private val sizeEntityToDomainMapper: SizeEntityToDomainMapper
-) : DataMapper<PictureEntity, Picture>() {
+) : DataMapper<PictureEntity?, Picture>() {
 
-  override fun transform(source: PictureEntity): Picture = Picture(
-    thumbnail = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Thumbnail,
-    original = sizeEntityToDomainMapper.transform(source.original) as Size.Original,
-  )
+  override fun transform(source: PictureEntity?): Picture = source?.let {
+    Picture.WithImage(
+      thumbnail = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Thumbnail,
+      original = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Original,
+    )
+  } ?: Picture.Empty
 }
 
 internal class SizeToEntityMapper : DataMapper<Size, SizeEntity>() {

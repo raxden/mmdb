@@ -7,10 +7,13 @@ import com.raxdenstudios.commons.util.DataMapper
 
 internal class PictureDtoToDomainMapper(
   private val apiDataProvider: APIDataProvider,
-) : DataMapper<String, Picture>() {
+) : DataMapper<String?, Picture>() {
 
-  override fun transform(source: String): Picture = Picture(
-    thumbnail = Size.Thumbnail(apiDataProvider.getImageDomain(), source),
-    original = Size.Original(apiDataProvider.getImageDomain(), source),
-  )
+  override fun transform(source: String?): Picture =
+    source?.let {
+      Picture.WithImage(
+        thumbnail = Size.Thumbnail(apiDataProvider.getImageDomain(), source),
+        original = Size.Original(apiDataProvider.getImageDomain(), source),
+      )
+    } ?: Picture.Empty
 }
