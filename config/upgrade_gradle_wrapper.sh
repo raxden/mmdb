@@ -1,6 +1,6 @@
 # https://docs.gradle.org/current/release-notes.html
 
-GRADLE_WRAPPER_VERSION="6.8.3"
+GRADLE_WRAPPER_VERSION="7.0"
 
 function updateGradleWrapperVersion {
   cd ..
