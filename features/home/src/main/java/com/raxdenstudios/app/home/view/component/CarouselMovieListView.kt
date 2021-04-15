@@ -5,10 +5,11 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
-import com.raxdenstudios.app.home.view.adapter.MovieListAdapter
+import com.raxdenstudios.app.home.view.adapter.CarouselMovieListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.inflateView
+import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
 
 internal class CarouselMovieListView @JvmOverloads constructor(
@@ -20,7 +21,7 @@ internal class CarouselMovieListView @JvmOverloads constructor(
 
   private val binding: CarouselMovieListViewBinding by viewBinding()
 
-  private val adapter: MovieListAdapter by lazy { MovieListAdapter() }
+  private val adapter: CarouselMovieListAdapter by lazy { CarouselMovieListAdapter() }
 
   var onAddMovieToWatchListClickListener: (CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _ -> }
@@ -28,6 +29,7 @@ internal class CarouselMovieListView @JvmOverloads constructor(
     { _, _ -> }
   var onMovieClickListener: (CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _ -> }
+  var onSeeAllClickListener: (CarouselMovieListModel) -> Unit = {}
 
   init {
     if (isInEditMode) {
@@ -49,5 +51,6 @@ internal class CarouselMovieListView @JvmOverloads constructor(
       { item -> onAddMovieToWatchListClickListener(model, item) }
     adapter.onRemoveMovieFromWatchListClickListener =
       { item -> onRemoveMovieFromWatchListClickListener(model, item) }
+    carouselSeeAllArrowViewGroup.setSafeOnClickListener { onSeeAllClickListener(model) }
   }
 }

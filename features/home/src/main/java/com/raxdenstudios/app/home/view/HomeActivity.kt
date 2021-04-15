@@ -73,6 +73,7 @@ internal class HomeActivity : BaseActivity() {
       { moduleModel, carouselMovieListModel, movieListItemModel ->
         removeMovieFromWatchList(model, moduleModel, carouselMovieListModel, movieListItemModel)
       }
+    adapter.onCarouselMoviesModel = { moduleModel, _ -> navigator.movies(moduleModel) }
   }
 
   private fun doLoginAndRefreshDataIfSuccess() {
