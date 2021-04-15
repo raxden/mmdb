@@ -91,8 +91,10 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun MovieListActivityBinding.setUp() {
-    recyclerView.setPaddingTop(SDK.getStatusBarHeight(this@MovieListActivity))
+    val statusBarHeight = SDK.getStatusBarHeight(this@MovieListActivity)
+    recyclerView.setPaddingTop(statusBarHeight)
     recyclerView.adapter = adapter
+    swipeRefreshLayout.addProgressViewEndTarget(end = statusBarHeight)
     swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies(params) }
   }
 }
