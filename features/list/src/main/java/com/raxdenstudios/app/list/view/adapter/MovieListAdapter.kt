@@ -1,11 +1,11 @@
-package com.raxdenstudios.app.home.view.adapter
+package com.raxdenstudios.app.list.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
-import com.raxdenstudios.app.home.R
+import com.raxdenstudios.app.list.R
 import com.raxdenstudios.app.movie.view.component.MovieListItemView
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener

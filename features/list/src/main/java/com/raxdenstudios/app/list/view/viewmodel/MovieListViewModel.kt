@@ -34,9 +34,30 @@ internal class MovieListViewModel(
     super.onCleared()
   }
 
-  fun loadMovies(params: MovieListParams) {
+  fun movieSelected(model: MovieListModel, item: MovieListItemModel) {
+
+  }
+
+  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
+
+  }
+
+  fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) {
+
+  }
+
+  fun refreshMovies(params: MovieListParams) {
+    pagination.clear()
     requestFirstPage(params)
   }
+
+  fun loadMovies(params: MovieListParams) {
+    if (dataIsReadyOrLoading()) return
+    requestFirstPage(params)
+  }
+
+  private fun dataIsReadyOrLoading() =
+    mState.value is MovieListUIState.Content || mState.value is MovieListUIState.Loading
 
   private fun requestFirstPage(params: MovieListParams) {
     requestPage(PageIndex.first, MovieListModel.withSearchType(params.searchType))
