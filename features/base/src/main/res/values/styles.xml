@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppCard.MovieListItem" parent="Widget.MaterialComponents.CardView">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:clickable">true</item>
+        <item name="cardBackgroundColor">#ffffff</item>
+    </style>
+
+    <style name="CodeFont.MovieTitle" parent="CodeFont.Body2" />
+
+    <style name="CodeFont.MovieSubtitle" parent="CodeFont.Caption">
+        <item name="android:textColor">#4d4d4d</item>
+    </style>
+
+</resources>

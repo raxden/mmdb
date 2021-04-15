@@ -7,6 +7,7 @@ dependencies {
   implementation(project(Modules.libraryKoin))
   implementation(project(Modules.libraryPaginationCo))
   implementation(project(Modules.libraryThreeten))
+  implementation(project(Modules.libraryGlide))
 
   implementation(project(Modules.base))
 

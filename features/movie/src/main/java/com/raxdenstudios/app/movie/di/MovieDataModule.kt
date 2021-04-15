@@ -1,7 +1,5 @@
 package com.raxdenstudios.app.movie.di
 
-import com.raxdenstudios.app.home.domain.GetMoviesUseCase
-import com.raxdenstudios.app.home.domain.GetMoviesUseCaseImpl
 import com.raxdenstudios.app.movie.data.local.MovieDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
@@ -15,10 +13,7 @@ import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
 import com.raxdenstudios.app.movie.data.repository.MovieRepository
 import com.raxdenstudios.app.movie.data.repository.MovieRepositoryImpl
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCaseImpl
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCaseImpl
+import com.raxdenstudios.app.movie.domain.*
 import com.raxdenstudios.app.network.model.APIVersion
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

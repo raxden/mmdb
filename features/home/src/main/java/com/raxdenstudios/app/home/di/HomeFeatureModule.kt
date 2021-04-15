@@ -8,8 +8,8 @@ import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.view.mapper.CarouselMovieListModelMapper
 import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize

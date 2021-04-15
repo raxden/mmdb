@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.home.domain
+package com.raxdenstudios.app.movie.domain
 
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType

@@ -11,13 +11,9 @@ import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
-import com.raxdenstudios.commons.ext.intentFor
-import com.raxdenstudios.commons.ext.observe
-import com.raxdenstudios.commons.ext.setPaddingTop
-import com.raxdenstudios.commons.ext.toDp
-import com.raxdenstudios.commons.ext.viewBinding
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.util.SDK
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

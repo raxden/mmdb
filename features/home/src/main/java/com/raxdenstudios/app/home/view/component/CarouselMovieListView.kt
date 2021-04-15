@@ -7,7 +7,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
 import com.raxdenstudios.app.home.view.adapter.MovieListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.viewBinding
 
