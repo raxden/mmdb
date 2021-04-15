@@ -12,17 +12,18 @@ inline fun <reified T : Activity> Context.intentFor(params: Parcelable? = null) 
     if (params != null) putExtra("params", params)
   }
 
-fun Intent.startActivity(activity: Activity, options: Bundle? = null) {
-  ContextCompat.startActivity(activity, this, options)
+fun Intent.startActivity(context: Context, options: Bundle? = null) {
+  ContextCompat.startActivity(context, this, options)
 }
 
-fun Intent.startActivityAndFinishCurrent(activity: Activity, options: Bundle? = null) {
-  ContextCompat.startActivity(activity, this, options)
-  activity.finish()
+fun Intent.startActivityAndFinishCurrent(context: Context, options: Bundle? = null) {
+  check(context is Activity) { "context must be an instance of Activity" }
+  ContextCompat.startActivity(context, this, options)
+  context.finish()
 }
 
-fun Intent.startActivityAndFinishAll(activity: Activity, options: Bundle? = null) {
+fun Intent.startActivityAndFinishAll(context: Context, options: Bundle? = null) {
   flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-  ContextCompat.startActivity(activity, this, options)
+  ContextCompat.startActivity(context, this, options)
 }
 

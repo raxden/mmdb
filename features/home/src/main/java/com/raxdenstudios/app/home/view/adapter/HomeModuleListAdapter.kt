@@ -18,7 +18,7 @@ internal class HomeModuleListAdapter :
   ) {
 
   companion object {
-    private val CAROUSEL_MOVIES_LAYOUT = R.layout.carousel_movie_list_view_item
+    private val CAROUSEL_MOVIES_LAYOUT = R.layout.home_module_list_item
     private val WATCHLIST_NOT_LOGGED = R.layout.sigin_watch_list_view
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
@@ -29,6 +29,8 @@ internal class HomeModuleListAdapter :
     { _, _, _ -> }
   var onMovieClickListener: (HomeModuleModel, CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _, _ -> }
+  var onCarouselMoviesModel: (HomeModuleModel, CarouselMovieListModel) -> Unit =
+    { _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
   override fun getItemId(position: Int): Long = getItem(position).itemId
@@ -71,6 +73,9 @@ internal class HomeModuleListAdapter :
 
     private fun bindCarousel(model: HomeModuleModel, item: CarouselMovieListModel) {
       val component = view.findViewById<CarouselMovieListView>(R.id.item_view)
+      component.onSeeAllClickListener = { carouselMoviesModel ->
+        onCarouselMoviesModel(model, carouselMoviesModel)
+      }
       component.onMovieClickListener = { carouselMoviesModel, movieItemModel ->
         onMovieClickListener(model, carouselMoviesModel, movieItemModel)
       }

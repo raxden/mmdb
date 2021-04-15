@@ -11,8 +11,6 @@ import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
-import com.raxdenstudios.commons.pagination.model.Page
-import com.raxdenstudios.commons.pagination.model.PageSize
 import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -34,13 +32,6 @@ val homeFeatureModule = module {
   factory { GetMoviesUseCaseParamsMapper() }
   factory { CarouselMovieListModelMapper(get(), get()) }
 
-  factory {
-    Pagination.Config.default.copy(
-      initialPage = Page(1),
-      pageSize = PageSize(20),
-      prefetchDistance = 4
-    )
-  }
   factory { (coroutineScope: CoroutineScope) ->
     Pagination<MovieListItemModel>(
       config = get(),

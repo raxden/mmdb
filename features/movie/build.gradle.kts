@@ -1,5 +1,5 @@
 plugins {
-  id("com.raxdenstudios.android-library")
+  id("com.raxdenstudios.android-feature")
 }
 
 dependencies {

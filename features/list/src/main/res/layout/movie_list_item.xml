@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.raxdenstudios.app.home.view.component.CarouselMovieListView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.raxdenstudios.app.movie.view.component.MovieListItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
