@@ -9,7 +9,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.view.component.CarouselMovieListView
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class HomeModuleListAdapter :

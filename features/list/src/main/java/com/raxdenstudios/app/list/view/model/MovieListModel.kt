@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.list.view.model
 
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 
 data class MovieListModel(
   val searchType: SearchType,

@@ -1,11 +1,11 @@
-package com.raxdenstudios.app.home.view.component
+package com.raxdenstudios.app.movie.view.component
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.databinding.WatchButtonViewBinding
-import com.raxdenstudios.app.home.view.model.WatchButtonModel
+import com.raxdenstudios.app.feature.base.R
+import com.raxdenstudios.app.feature.base.databinding.WatchButtonViewBinding
+import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.viewBinding
 

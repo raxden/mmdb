@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.list.di
 
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
-import com.raxdenstudios.app.list.view.MovieListViewModel
+import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import kotlinx.coroutines.CoroutineScope

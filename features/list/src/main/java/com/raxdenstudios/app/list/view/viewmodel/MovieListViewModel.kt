@@ -1,16 +1,16 @@
-package com.raxdenstudios.app.list.view
+package com.raxdenstudios.app.list.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.base.BaseViewModel
-import com.raxdenstudios.app.home.domain.GetMoviesUseCase
-import com.raxdenstudios.app.home.view.mapper.MovieListItemModelMapper
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
 import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
 import com.raxdenstudios.commons.pagination.Pagination

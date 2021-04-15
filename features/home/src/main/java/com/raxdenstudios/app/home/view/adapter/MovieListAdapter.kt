@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
 import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.view.component.MovieListItemView
-import com.raxdenstudios.app.home.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.component.MovieListItemView
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class MovieListAdapter :

@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.home.view.mapper
 
-import com.raxdenstudios.app.home.domain.GetMoviesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
+import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.util.DataMapper
 
