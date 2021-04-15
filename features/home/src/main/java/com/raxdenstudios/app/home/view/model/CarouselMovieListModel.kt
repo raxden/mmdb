@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.home.view.model
 
 import androidx.annotation.VisibleForTesting
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class CarouselMovieListModel(

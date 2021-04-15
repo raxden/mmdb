@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.home.view.model
+package com.raxdenstudios.app.movie.view.model
 
 sealed class WatchButtonModel {
 
