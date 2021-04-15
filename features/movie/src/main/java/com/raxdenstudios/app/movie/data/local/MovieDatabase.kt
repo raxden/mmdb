@@ -9,7 +9,7 @@ import com.raxdenstudios.app.movie.data.local.model.MovieEntity
 
 @Database(
   entities = [MovieEntity::class],
-  version = 2,
+  version = 3,
 )
 abstract class MovieDatabase : RoomDatabase() {
 
