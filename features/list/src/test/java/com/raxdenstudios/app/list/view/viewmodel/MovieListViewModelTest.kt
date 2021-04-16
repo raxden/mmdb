@@ -6,7 +6,9 @@ import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
@@ -26,6 +28,12 @@ import org.koin.test.inject
 
 internal class MovieListViewModelTest : BaseTest() {
 
+  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase = mockk() {
+    coEvery { execute(any()) } returns ResultData.Success(true)
+  }
+  private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase = mockk() {
+    coEvery { execute(any()) } returns ResultData.Success(true)
+  }
   private val getMoviesUseCase: GetMoviesUseCase = mockk() {
     coEvery { execute(aGetMoviesUseCaseFirstPageParams) } returns ResultData.Success(aFirstPageList)
     coEvery { execute(aGetMoviesUseCaseSecondPageParams) } returns ResultData.Success(
@@ -40,6 +48,8 @@ internal class MovieListViewModelTest : BaseTest() {
       listFeatureModule,
       module {
         factory(override = true) { getMoviesUseCase }
+        factory(override = true) { addMovieToWatchListUseCase }
+        factory(override = true) { removeMovieFromWatchListUseCase }
       }
     )
 
