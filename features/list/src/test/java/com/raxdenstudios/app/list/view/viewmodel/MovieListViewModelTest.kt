@@ -68,7 +68,7 @@ internal class MovieListViewModelTest : BaseTest() {
   @Test
   fun `Given a model with results from first page and pageIndex with value 8, When loadMoreMovies is called, Then second page with movies is returned`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
-    val pageIndex = PageIndex(8)
+    val pageIndex = PageIndex(20)
     viewModel.state.observeForever(stateObserver)
 
     viewModel.loadMoreMovies(pageIndex, model)
@@ -94,7 +94,7 @@ internal class MovieListViewModelTest : BaseTest() {
 
 private val aFirstPage = Page(1)
 private val aSecondPage = Page(2)
-private val aPageSize = PageSize.defaultSize
+private val aPageSize = PageSize(20)
 private val aGetMoviesUseCaseFirstPageParams =
   GetMoviesUseCase.Params(SearchType.Popular, aFirstPage, aPageSize)
 private val aGetMoviesUseCaseSecondPageParams =

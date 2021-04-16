@@ -16,7 +16,7 @@ data class MovieListItemModel(
     val empty = MovieListItemModel(
       id = 0L,
       title = "",
-      image = "w500",
+      image = "",
       rating = "0.0",
       releaseDate = "1970",
       watchButtonModel = WatchButtonModel.Unselected
