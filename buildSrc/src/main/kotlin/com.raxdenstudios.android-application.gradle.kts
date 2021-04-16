@@ -44,11 +44,13 @@ android {
 
   buildTypes {
     getByName("debug") {
+      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
       isMinifyEnabled = false
       isTestCoverageEnabled = true
       signingConfig = signingConfigs.getByName("debug")
     }
     getByName("release") {
+      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
       isMinifyEnabled = true
       isShrinkResources = true
       signingConfig = signingConfigs.getByName("release")
