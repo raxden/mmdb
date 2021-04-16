@@ -54,7 +54,7 @@ internal class MovieLocalDataSourceTest : BaseTest() {
     }
 
   @Test
-  fun `Given a database with results, When a 'watchList' method is called and first page is requested return a pageList with results`() =
+  fun `Given a database with results, When a 'watchList' method is called requesting first page, Then a first page with results is returned`() =
     testDispatcher.runBlockingTest {
       coEvery { dao.watchList() } returns aMovies
       val aPage = Page(1)
@@ -74,7 +74,7 @@ internal class MovieLocalDataSourceTest : BaseTest() {
     }
 
   @Test
-  fun `Given a database with results, When a 'watchList' method is called and second page is requested return a pageList with results`() =
+  fun `Given a database with results, When a 'watchList' method is called requesting second page, Then a second page with results is returned`() =
     testDispatcher.runBlockingTest {
       coEvery { dao.watchList() } returns aMovies
       val aPage = Page(2)
