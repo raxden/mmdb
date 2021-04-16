@@ -78,12 +78,13 @@ internal class PictureEntityToDomainMapper(
   private val sizeEntityToDomainMapper: SizeEntityToDomainMapper
 ) : DataMapper<PictureEntity?, Picture>() {
 
-  override fun transform(source: PictureEntity?): Picture = source?.let {
-    Picture.WithImage(
-      thumbnail = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Thumbnail,
-      original = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Original,
-    )
-  } ?: Picture.Empty
+  override fun transform(source: PictureEntity?): Picture =
+    source?.takeIf { it.thumbnail.url.isNotEmpty() && it.original.url.isNotEmpty() }?.let {
+      Picture.WithImage(
+        thumbnail = sizeEntityToDomainMapper.transform(source.thumbnail) as Size.Thumbnail,
+        original = sizeEntityToDomainMapper.transform(source.original) as Size.Original,
+      )
+    } ?: Picture.Empty
 }
 
 internal class SizeToEntityMapper : DataMapper<Size, SizeEntity>() {

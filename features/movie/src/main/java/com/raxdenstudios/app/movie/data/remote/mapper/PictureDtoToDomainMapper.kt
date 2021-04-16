@@ -10,7 +10,7 @@ internal class PictureDtoToDomainMapper(
 ) : DataMapper<String?, Picture>() {
 
   override fun transform(source: String?): Picture =
-    source?.let {
+    source?.takeIf { it.isNotEmpty() }?.let {
       Picture.WithImage(
         thumbnail = Size.Thumbnail(apiDataProvider.getImageDomain(), source),
         original = Size.Original(apiDataProvider.getImageDomain(), source),
