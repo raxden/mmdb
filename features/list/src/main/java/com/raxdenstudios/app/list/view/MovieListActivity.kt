@@ -63,7 +63,7 @@ class MovieListActivity : BaseActivity() {
 
   private fun MovieListAdapter.populateAdapter(model: MovieListModel) {
     submitList(model.movies)
-    onMovieClickListener = { item -> viewModel.movieSelected(model, item) }
+    onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item -> viewModel.addMovieToWatchList(model, item) }
     onRemoveMovieFromWatchListClickListener =
       { item -> viewModel.removeMovieFromWatchList(model, item) }

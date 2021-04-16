@@ -7,12 +7,17 @@ import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.ext.launch
+import com.raxdenstudios.commons.onSuccess
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.*
 import org.koin.core.KoinComponent
@@ -21,6 +26,8 @@ import org.koin.core.parameter.parametersOf
 
 internal class MovieListViewModel(
   private val getMoviesUseCase: GetMoviesUseCase,
+  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
+  private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val movieListItemModelMapper: MovieListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
 
@@ -34,17 +41,18 @@ internal class MovieListViewModel(
     super.onCleared()
   }
 
-  fun movieSelected(model: MovieListModel, item: MovieListItemModel) {
-
+  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) = viewModelScope.launch {
+    val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
+    addMovieToWatchListUseCase.execute(item.id)
+      .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
   }
 
-  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
-
-  }
-
-  fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) {
-
-  }
+  fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) =
+    viewModelScope.launch {
+      val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
+      removeMovieFromWatchListUseCase.execute(item.id)
+        .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
+    }
 
   fun refreshMovies(params: MovieListParams) {
     pagination.clear()
