@@ -6,17 +6,11 @@ plugins {
   id("com.google.firebase.appdistribution")
 }
 
-versioning {
-  versionFilePath = "$rootDir/config/version.properties"
-}
-
 android {
 
   defaultConfig {
-    setProperty(
-      "archivesBaseName",
-      "mmdb"
-    ) // apk name, is posible to add variables as version, date...
+    // apk name, is posible to add variables as version, date...
+    setProperty("archivesBaseName", "mmdb")
   }
 
   signingConfigs {
