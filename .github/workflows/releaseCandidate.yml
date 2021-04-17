@@ -16,9 +16,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  # This workflow contains a single job called "test"
-  test:
-    name: Run Unit Tests
+  deploy:
+    name: Run Deploy version in Firebase app distribution
     runs-on: ubuntu-latest
 
     steps:
@@ -32,10 +31,4 @@ jobs:
           java-version: 1.8
 
       - name: Unit tests
-        run: bash ./gradlew -Pci --console=plain testDebugUnitTest jacocoTestReportDebug --stacktrace
-
-      - name: Upload to Codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        uses: codecov/codecov-action@v1
-
+        run: bash ./gradlew --console=plain assembleRelease appDistributionUploadRelease
