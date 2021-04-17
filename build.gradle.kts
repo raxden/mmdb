@@ -14,6 +14,7 @@ buildscript {
 
 plugins {
   id("com.vanniktech.android.junit.jacoco").version("0.16.0")
+  id("com.raxdenstudios.android-releasing").version("0.41")
 }
 
 junitJacoco {
