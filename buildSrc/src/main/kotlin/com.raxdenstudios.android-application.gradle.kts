@@ -23,42 +23,6 @@ android {
     targetSdkVersion(Versions.targetSdk)
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-    setProperty("archivesBaseName", "mmdb") // apk name, is posible to add variables as version, date...
-  }
-
-  signingConfigs {
-    getByName("debug") {
-      keyAlias = "androiddebugkey"
-      keyPassword = "android"
-      storeFile = file("../config/debug.keystore")
-      storePassword = "android"
-    }
-    create("release") {
-      keyAlias = "mmdb"
-      keyPassword = "bob1YTMqc5acHN9spcYI"
-      storeFile = file("../config/release.jks")
-      storePassword = "bob1YTMqc5acHN9spcYI"
-    }
-  }
-
-  buildTypes {
-    getByName("debug") {
-      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
-      isMinifyEnabled = false
-      isTestCoverageEnabled = true
-      signingConfig = signingConfigs.getByName("debug")
-    }
-    getByName("release") {
-      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
-      isMinifyEnabled = true
-      isShrinkResources = true
-      signingConfig = signingConfigs.getByName("release")
-      proguardFiles(
-        "proguard-android-optimize.txt",
-        "proguard-rules.pro"
-      )
-    }
   }
 
   buildFeatures {
