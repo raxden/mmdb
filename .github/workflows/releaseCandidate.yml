@@ -17,7 +17,7 @@ on:
 jobs:
 
   deploy:
-    name: Build & upload to Firebase App Distribution
+    name: Build & Upload to Firebase App Distribution
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,10 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Unit tests
+      - name: Build
+        run: bash ./gradlew assembleRelease
+
+      - name: Deploy in Firebase App Distribution
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: bash ./gradlew --console=plain assembleRelease appDistributionUploadRelease
+        run: bash ./gradlew appDistributionUploadRelease
