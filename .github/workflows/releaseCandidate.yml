@@ -16,7 +16,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  deploy:
+  # This workflow contains a single job called "release"
+  release:
     name: Build & Upload to Firebase App Distribution
     runs-on: ubuntu-latest
 
