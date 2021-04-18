@@ -2,7 +2,8 @@
 
 name: Continuous Integration
 
-# Controls when the action will run.
+# Workflow events: Controls when the action will run.
+# More info: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:

@@ -29,5 +29,3 @@ include ':libraries:android'
 include ':libraries:test-unit'
 include ':libraries:retrofit'
 include ':libraries:test-android'
-
-rootProject.name = "Mobile movie database"
