@@ -3,7 +3,9 @@ plugins {
 }
 
 dependencies {
-  implementation(project(Modules.libraryAndroid))
-  implementation(project(Modules.libraryKoin))
-  implementation(project(Modules.libraryCoroutines))
+  api(project(Modules.libraryAndroid))
+  api(project(Modules.libraryCoroutines))
+
+  api(Libraries.koinScope)
+  api(Libraries.koinViewModel)
 }

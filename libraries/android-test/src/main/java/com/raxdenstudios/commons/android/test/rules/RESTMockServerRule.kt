@@ -1,4 +1,4 @@
-package com.raxdenstudios.commons.test.android.rules
+package com.raxdenstudios.commons.android.test.rules
 
 import io.appflate.restmock.RESTMockServer
 import org.junit.rules.TestWatcher

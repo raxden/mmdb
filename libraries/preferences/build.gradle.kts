@@ -8,5 +8,6 @@ dependencies {
   api(AndroidLibraries.kotlinPreferences)
   api(Libraries.gson)
 
-  testImplementation(project(Modules.libraryTest))
+  testImplementation(TestLibraries.atslJunit)
+  testImplementation(TestLibraries.robolectric)
 }

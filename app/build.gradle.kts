@@ -53,13 +53,9 @@ android {
 }
 
 dependencies {
-  implementation(project(Modules.libraryAndroid))
-  implementation(project(Modules.libraryKoin))
   implementation(project(Modules.libraryThreeten))
-  implementation(project(Modules.libraryFirebase))
 
   implementation(project(Modules.base))
-
   implementation(project(Modules.featureBase))
   implementation(project(Modules.featureNetwork))
   implementation(project(Modules.featureMovie))
@@ -72,6 +68,9 @@ dependencies {
   implementation(project(Modules.featureTMDBConnect))
 
   implementation(project(Modules.navigator))
+
+  implementation(platform(FirebaseLibraries.firebaseBoom))
+  implementation(FirebaseLibraries.firebaseCrashlytics)
 
   debugImplementation(DebugLibraries.leakcanary)
   debugImplementation(DebugLibraries.ganderDebug)

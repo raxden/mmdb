@@ -6,6 +6,8 @@ dependencies {
   api(project(Modules.libraryPagination))
   api(project(Modules.libraryCoroutines))
 
-  testImplementation(project(Modules.libraryTest))
+  testImplementation(TestLibraries.atslJunit)
+  testImplementation(TestLibraries.mockkCore)
+  testImplementation(TestLibraries.mockkAndroid)
   testImplementation(project(Modules.libraryCoroutinesTest))
 }
