@@ -1,4 +1,4 @@
-package com.raxdenstudios.commons.test.android
+package com.raxdenstudios.commons.android.test
 
 import androidx.test.espresso.Espresso.pressBack
 

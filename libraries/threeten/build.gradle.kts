@@ -7,5 +7,5 @@ dependencies {
 
   api(Libraries.threetenabp)
 
-  testImplementation(project(Modules.libraryTest))
+  testImplementation(TestLibraries.atslJunit)
 }
