@@ -46,21 +46,18 @@ internal class MovieRemoteDataSource(
       SearchType.Popular -> popular(page)
       SearchType.TopRated -> topRated(page)
       SearchType.Upcoming -> upcoming(page)
-      SearchType.WatchList -> watchlist(account, page)
+      SearchType.WatchList -> watchList(account, page)
     }
 
-  private suspend fun watchlist(
+  private suspend fun watchList(
     account: Account,
     page: Page
   ): ResultData<PageList<Movie>> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
-    is Account.Logged -> watchList(account, page)
-  }
-
-  private suspend fun watchList(account: Account.Logged, page: Page): ResultData<PageList<Movie>> =
-    movieGateway.watchList(account.credentials.accountId, page.value)
+    is Account.Logged -> movieGateway.watchList(account.credentials.accountId, page.value)
       .map { pageDto -> transformPageData(pageDto) }
       .map { pageList -> markMoviesAsWatched(pageList) }
+  }
 
   private fun markMoviesAsWatched(pageList: PageList<Movie>) =
     pageList.copy(items = pageList.items.map { movie -> movie.copy(watchList = true) })
