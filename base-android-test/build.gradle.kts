@@ -5,6 +5,8 @@ plugins {
 dependencies {
   api(project(Modules.libraryAndroidTest))
   api(project(Modules.libraryCoroutinesTest))
+  api(project(Modules.libraryThreeten))
 
-  implementation(project(Modules.libraryThreeten))
+  api(TestLibraries.koinTest)
+  api(TestLibraries.timberJunit)
 }

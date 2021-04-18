@@ -1,4 +1,4 @@
-package com.raxdenstudios.commons.test.android.matchers
+package com.raxdenstudios.commons.android.test.matchers
 
 import android.view.View
 import android.widget.Checkable
