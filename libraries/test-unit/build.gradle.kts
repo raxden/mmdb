@@ -19,5 +19,7 @@ dependencies {
 
   api(TestLibraries.timberJunit)
 
-  api(TestLibraries.robolectric)
+  api(TestLibraries.robolectric) {
+    exclude("org.apache.maven", "maven-ant-tasks")
+  }
 }
