@@ -14,6 +14,7 @@ dependencies {
   implementation("com.android.tools.build:gradle:4.1.1")
   implementation("org.ajoberstar.grgit:grgit-gradle:4.1.0")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
+  implementation("com.adarshr:gradle-test-logger-plugin:3.0.0")
   implementation(kotlin("gradle-plugin", version = "1.4.32"))
   implementation(gradleApi())
   implementation(localGroovy())
