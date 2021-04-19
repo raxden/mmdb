@@ -19,10 +19,6 @@ plugins {
   id("com.raxdenstudios.android-releasing").version("0.41")
 }
 
-junitJacoco {
-
-}
-
 allprojects {
   repositories {
     google()
