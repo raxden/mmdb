@@ -6,11 +6,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.raxdenstudios.app.home.HomeNavigator
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.list.view.MovieListActivity
-import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
-import com.raxdenstudios.commons.ext.startActivity
+import com.raxdenstudios.app.navigator.result.MoviesActivityResultContract
 
 internal class HomeNavigatorImpl(
   private val activity: FragmentActivity
@@ -18,17 +16,21 @@ internal class HomeNavigatorImpl(
 
   companion object {
     private const val LOGIN_KEY = "login"
+    private const val MOVIES_KEY = "movies"
   }
 
   private val registry: ActivityResultRegistry = activity.activityResultRegistry
   private lateinit var loginActivityResultLauncher: ActivityResultLauncher<Unit>
+  private lateinit var moviesActivityResultLauncher: ActivityResultLauncher<SearchType>
 
   private var onLoginSuccess: () -> Unit = {}
+  private var onMoviesRefresh: () -> Unit = {}
 
   override fun onCreate(owner: LifecycleOwner) {
     super.onCreate(owner)
 
     loginActivityResultLauncher = registry.registerLoginActivityResultRegistry(owner)
+    moviesActivityResultLauncher = registry.registerMoviesActivityResultRegistry(owner)
   }
 
   override fun login(onSuccess: () -> Unit) {
@@ -36,7 +38,8 @@ internal class HomeNavigatorImpl(
     loginActivityResultLauncher.launch(Unit)
   }
 
-  override fun movies(homeModuleModel: HomeModuleModel) {
+  override fun movies(homeModuleModel: HomeModuleModel, onRefresh: () -> Unit) {
+    onMoviesRefresh = onRefresh
     val searchType = when (homeModuleModel) {
       is HomeModuleModel.CarouselMovies.NowPlaying -> SearchType.NowPlaying
       is HomeModuleModel.CarouselMovies.Popular -> SearchType.Popular
@@ -44,8 +47,7 @@ internal class HomeNavigatorImpl(
       is HomeModuleModel.CarouselMovies.Upcoming -> SearchType.Upcoming
       is HomeModuleModel.WatchList -> SearchType.WatchList
     }
-    val params = MovieListParams(searchType)
-    MovieListActivity.createIntent(activity, params).startActivity(activity)
+    moviesActivityResultLauncher.launch(searchType)
   }
 
   private fun ActivityResultRegistry.registerLoginActivityResultRegistry(
@@ -56,4 +58,13 @@ internal class HomeNavigatorImpl(
       owner,
       LoginActivityResultContract()
     ) { logged -> if (logged) onLoginSuccess() }
+
+  private fun ActivityResultRegistry.registerMoviesActivityResultRegistry(
+    owner: LifecycleOwner
+  ): ActivityResultLauncher<SearchType> =
+    register(
+      MOVIES_KEY,
+      owner,
+      MoviesActivityResultContract()
+    ) { refresh -> if (refresh) onMoviesRefresh() }
 }
