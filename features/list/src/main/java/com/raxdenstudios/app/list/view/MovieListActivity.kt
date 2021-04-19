@@ -69,9 +69,14 @@ class MovieListActivity : BaseActivity() {
   private fun MovieListAdapter.populateAdapter(model: MovieListModel) {
     submitList(model.movies)
     onMovieClickListener = { TODO() }
-    onAddMovieToWatchListClickListener = { item -> viewModel.addMovieToWatchList(model, item) }
-    onRemoveMovieFromWatchListClickListener =
-      { item -> viewModel.removeMovieFromWatchList(model, item) }
+    onAddMovieToWatchListClickListener = { item ->
+      this@MovieListActivity.setResultOK()
+      viewModel.addMovieToWatchList(model, item)
+    }
+    onRemoveMovieFromWatchListClickListener = { item ->
+      this@MovieListActivity.setResultOK()
+      viewModel.removeMovieFromWatchList(model, item)
+    }
   }
 
   private fun MovieListActivityBinding.loadMoreMoviesWhenScrollDown(model: MovieListModel) {
@@ -89,7 +94,7 @@ class MovieListActivity : BaseActivity() {
   private fun MovieListActivityBinding.handleErrorState(state: MovieListUIState.Error) {
     swipeRefreshLayout.isRefreshing = false
     when (state.throwable) {
-      is UserNotLoggedException -> navigator.login()
+      is UserNotLoggedException -> navigator.login() { setResultOK() }
       else -> errorManager.handleError(state.throwable)
     }
   }

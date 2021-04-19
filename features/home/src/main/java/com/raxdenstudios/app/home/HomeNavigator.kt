@@ -5,6 +5,6 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 
 interface HomeNavigator : DefaultLifecycleObserver {
 
-  fun login(onSuccess: () -> Unit)
-  fun movies(homeModuleModel: HomeModuleModel)
+  fun login(onSuccess: () -> Unit = {})
+  fun movies(homeModuleModel: HomeModuleModel, onRefresh: () -> Unit = {})
 }
