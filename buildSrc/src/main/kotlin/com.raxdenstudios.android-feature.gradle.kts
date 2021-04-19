@@ -8,6 +8,10 @@ plugins {
   id("project-report")
 }
 
+testlogger {
+  setTheme("mocha")
+}
+
 android {
 
   compileSdkVersion(Versions.compileSdk)
