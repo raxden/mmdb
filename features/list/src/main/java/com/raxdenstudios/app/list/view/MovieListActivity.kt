@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
+import com.raxdenstudios.app.list.MovieListNavigator
 import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
 import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
+import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
 import com.raxdenstudios.commons.util.SDK
@@ -31,6 +33,7 @@ class MovieListActivity : BaseActivity() {
 
   private val binding: MovieListActivityBinding by viewBinding()
   private val viewModel: MovieListViewModel by viewModel()
+  private val navigator: MovieListNavigator by inject { parametersOf(this) }
   private val errorManager: ErrorManager by inject { parametersOf(this) }
   private val params: MovieListParams by argument()
 
@@ -45,6 +48,8 @@ class MovieListActivity : BaseActivity() {
     observe(viewModel.state) { state -> binding.handleState(state) }
 
     viewModel.loadMovies(params)
+
+    lifecycle.addObserver(navigator)
   }
 
   private fun MovieListActivityBinding.handleState(state: MovieListUIState) = when (state) {
@@ -83,7 +88,10 @@ class MovieListActivity : BaseActivity() {
 
   private fun MovieListActivityBinding.handleErrorState(state: MovieListUIState.Error) {
     swipeRefreshLayout.isRefreshing = false
-    errorManager.handleError(state.throwable)
+    when (state.throwable) {
+      is UserNotLoggedException -> navigator.login()
+      else -> errorManager.handleError(state.throwable)
+    }
   }
 
   private fun MovieListActivityBinding.handleLoadingState() {
