@@ -44,6 +44,7 @@ jobs:
       - name: Unit tests
         run: ./gradlew testDebugUnitTest --stacktrace
 
+
 #  instrumental:
 #    name: Run Android Instrumental Tests
 #    runs-on: macOS-latest # enables hardware acceleration in the virtual machine
