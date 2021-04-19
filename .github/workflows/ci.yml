@@ -33,7 +33,8 @@ jobs:
           java-version: 1.8
 
       - name: Unit tests
-        script: ./gradlew -Pci --console=plain testDebugUnitTest jacocoTestReportDebug --stacktrace
+        run: ./gradlew -Pci --console=plain testDebugUnitTest jacocoTestReportDebug --stacktrace
+
 
       - name: Upload to Codecov
         env:
