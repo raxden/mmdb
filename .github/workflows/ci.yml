@@ -40,7 +40,7 @@ jobs:
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
 
-      - name: Upload to Codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        uses: codecov/codecov-action@v1
+#      - name: Upload to Codecov
+#        env:
+#          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+#        uses: codecov/codecov-action@v1
