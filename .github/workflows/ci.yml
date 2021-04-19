@@ -32,7 +32,7 @@ jobs:
         with:
           java-version: 1.8
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2 # https://github.com/actions/cache/blob/main/examples.md#java---gradle
         with:
           path: |
             ~/.gradle/caches
@@ -52,6 +52,10 @@ jobs:
   instrumental:
     name: Run Android Instrumental Tests
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        api-level: [29]
 
     steps:
       - name: Check out code
@@ -62,7 +66,7 @@ jobs:
         with:
           java-version: 1.8
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2 # https://github.com/actions/cache/blob/main/examples.md#java---gradle
         with:
           path: |
             ~/.gradle/caches
@@ -72,8 +76,9 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Instrumental tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
         with:
-          api-level: 29
+          api-level: ${{ matrix.api-level }}
           disable-animations: true
+          arch: x86_64
           script: ./gradlew connectedAndroidTest --stacktrace
