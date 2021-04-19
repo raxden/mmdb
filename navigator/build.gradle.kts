@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  implementation(project(Modules.libraryThreeten))
+  implementation(RaxdenLibraries.threeten)
 
   implementation(project(Modules.base))
 

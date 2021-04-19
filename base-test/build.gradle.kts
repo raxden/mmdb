@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  api(project(Modules.libraryCoroutinesTest))
+  api(RaxdenLibraries.coroutinesTest)
 
   api(TestLibraries.archCoreTest)
   api(TestLibraries.atslJunit)

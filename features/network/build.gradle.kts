@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-  implementation(project(Modules.libraryOkHttp3))
-  implementation(project(Modules.libraryRetrofitCo))
-  implementation(project(Modules.libraryThreeten))
+  implementation(RaxdenLibraries.okhttp3)
+  implementation(RaxdenLibraries.retrofitCo)
+  implementation(RaxdenLibraries.threeten)
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))

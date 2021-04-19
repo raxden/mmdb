@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-  implementation(project(Modules.libraryPaginationCo))
-  implementation(project(Modules.libraryThreeten))
-  implementation(project(Modules.libraryGlide))
+  implementation(RaxdenLibraries.paginationCo)
+  implementation(RaxdenLibraries.threeten)
+  implementation(RaxdenLibraries.glide)
 
   implementation(project(Modules.base))
 

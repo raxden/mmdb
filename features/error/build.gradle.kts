@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  implementation(project(Modules.libraryRetrofitCo))
+  implementation(RaxdenLibraries.retrofitCo)
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
