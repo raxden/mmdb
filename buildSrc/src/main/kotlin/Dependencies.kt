@@ -1,3 +1,16 @@
+object RaxdenLibraries {
+  const val android = "com.raxdenstudios:commons-android:${Versions.commonsVersion}"
+  const val androidTest = "com.raxdenstudios:commons-android-test:${Versions.commonsVersion}"
+  const val coroutines = "com.raxdenstudios:commons-coroutines:${Versions.commonsVersion}"
+  const val coroutinesTest = "com.raxdenstudios:commons-coroutines-test:${Versions.commonsVersion}"
+  const val glide = "com.raxdenstudios:commons-glide:${Versions.commonsVersion}"
+  const val okhttp3 = "com.raxdenstudios:commons-okhttp3:${Versions.commonsVersion}"
+  const val paginationCo = "com.raxdenstudios:commons-pagination-co:${Versions.commonsVersion}"
+  const val permissions = "com.raxdenstudios:commons-permissions:${Versions.commonsVersion}"
+  const val retrofitCo = "com.raxdenstudios:commons-retrofit-co:${Versions.commonsVersion}"
+  const val threeten = "com.raxdenstudios:commons-threeten:${Versions.commonsVersion}"
+}
+
 object AndroidLibraries {
   const val material = "com.google.android.material:material:${Versions.material}"
   const val playCore = "com.google.android.play:core:${Versions.playCore}"

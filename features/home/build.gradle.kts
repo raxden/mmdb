@@ -17,9 +17,9 @@ android {
 }
 
 dependencies {
-  implementation(project(Modules.libraryThreeten))
-  implementation(project(Modules.libraryPaginationCo))
-  implementation(project(Modules.libraryGlide))
+  implementation(RaxdenLibraries.threeten)
+  implementation(RaxdenLibraries.paginationCo)
+  implementation(RaxdenLibraries.glide)
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))

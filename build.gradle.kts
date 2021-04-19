@@ -2,6 +2,8 @@ buildscript {
   repositories {
     google()
     jcenter()
+    mavenCentral()
+    mavenLocal()
     maven("https://plugins.gradle.org/m2/")
   }
   dependencies {
@@ -25,6 +27,7 @@ allprojects {
   repositories {
     google()
     jcenter()
+    mavenCentral()
     mavenLocal()
     maven("https://jitpack.io")
   }

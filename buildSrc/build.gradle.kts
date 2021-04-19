@@ -4,6 +4,7 @@ plugins {
 // Required since Gradle 4.10+.
 repositories {
   mavenCentral()
+  mavenLocal()
   google()
   jcenter()
   maven("https://plugins.gradle.org/m2/")

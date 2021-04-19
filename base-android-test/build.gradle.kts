@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-  api(project(Modules.libraryAndroidTest))
-  api(project(Modules.libraryCoroutinesTest))
-  api(project(Modules.libraryThreeten))
+  api(RaxdenLibraries.androidTest)
+  api(RaxdenLibraries.coroutinesTest)
+  api(RaxdenLibraries.threeten)
 
   api(TestLibraries.koinTest)
   api(TestLibraries.timberJunit)
