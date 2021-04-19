@@ -16,6 +16,7 @@ import org.koin.dsl.module
 val accountDataModule = module {
 
   single { AccountDatabase.getInstance(get()) }
+  factory { get<AccountDatabase>().dao() }
 
   factory { AccountEntityToDomainMapper() }
   factory { AccountToEntityMapper() }
