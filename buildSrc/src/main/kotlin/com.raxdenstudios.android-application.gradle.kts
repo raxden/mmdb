@@ -1,6 +1,7 @@
 plugins {
   id("com.android.application")
   id("com.raxdenstudios.android-detekt")
+  id("com.adarshr.test-logger")
   id("kotlin-android")
   id("kotlin-kapt")
   id("kotlin-parcelize")
