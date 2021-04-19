@@ -33,8 +33,12 @@ jobs:
           java-version: 1.8
 
       - name: Unit tests
-        #        run: bash ./gradlew --console=plain detekt testDebugUnitTest jacocoTestReportDebug --stacktrace
-        run: bash ./gradlew -Pci --console=plain testDebugUnitTest jacocoTestReportDebug --stacktrace
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: testDebugUnitTest jacocoTestReportDebug
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
 
       - name: Upload to Codecov
         env:
