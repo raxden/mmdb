@@ -2,7 +2,6 @@ package com.raxdenstudios.app.home.view.viewmodel
 
 import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
-import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
@@ -38,7 +37,7 @@ internal class HomeViewModelTest : BaseTest() {
 
   private val stringProvider: StringProvider = mockk(relaxed = true)
   private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
-    every { execute() } returns flow { emit(Pair(aGuestAccount, aHomeModules)) }
+    every { execute() } returns flow { emit(aHomeModules) }
   }
   private val getMoviesUseCase: GetMoviesUseCase = mockk {
     coEvery { execute(aGetUpcomingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
@@ -159,7 +158,6 @@ private val aHomeModelModules = listOf(
 private val aHomeModel = HomeModel.empty.copy(
   modules = aHomeModelModules
 )
-private val aGuestAccount = Account.Guest.empty
 private val aHomeModules = listOf(
   HomeModule.PopularMovies,
   HomeModule.NowPlayingMovies
