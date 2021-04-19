@@ -8,6 +8,6 @@ internal class HomeModuleRepository(
   private val homeModuleLocalDataSource: HomeModuleLocalDataSource,
 ) {
 
-  fun modules(): Flow<List<HomeModule>> =
-    homeModuleLocalDataSource.modules()
+  fun observeModules(): Flow<List<HomeModule>> =
+    homeModuleLocalDataSource.observe()
 }

@@ -42,5 +42,7 @@ internal class AccountLocalDataSourceImpl(
   }
 
   private fun observeAccount(): Flow<Account> =
-    dao.observe().map { entity -> accountEntityToDomainMapper.transform(entity) }
+    dao.observe().map { entity ->
+      accountEntityToDomainMapper.transform(entity)
+    }
 }

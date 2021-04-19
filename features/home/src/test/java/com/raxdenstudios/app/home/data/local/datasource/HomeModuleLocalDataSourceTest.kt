@@ -41,7 +41,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
 
       coEvery { dao.observeAll() } returns flow { emit(emptyList<HomeModuleEntity>()) }
 
-      val flow = dataSource.modules()
+      val flow = dataSource.observe()
 
       flow.collect { modules ->
         assertEquals(emptyList<HomeModuleEntity>(), modules)
@@ -67,7 +67,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
 
       coEvery { dao.observeAll() } returns flow { emit(aHomeModuleEntityList) }
 
-      val flow = dataSource.modules()
+      val flow = dataSource.observe()
 
       flow.collect { modules ->
         assertEquals(
