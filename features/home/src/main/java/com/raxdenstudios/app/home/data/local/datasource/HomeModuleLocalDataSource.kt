@@ -12,7 +12,7 @@ internal class HomeModuleLocalDataSource(
   private val homeModuleEntityToDomainMapper: HomeModuleEntityToDomainMapper,
 ) {
 
-  fun modules(): Flow<List<HomeModule>> = dao.observeAll()
+  fun observe(): Flow<List<HomeModule>> = dao.observeAll()
     .map { entityList ->
       if (entityList.isEmpty()) initModules()
       homeModuleEntityToDomainMapper.transform(entityList)

@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "home_module")
 data class HomeModuleEntity(
+//  TODO PRIMARY KEY TYPE AND SUBTYPE
   @PrimaryKey(autoGenerate = true) val id: Long = 0,
   @ColumnInfo(name = "type") val type: Int,
   @ColumnInfo(name = "subtype") val subtype: Int,
