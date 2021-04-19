@@ -16,7 +16,8 @@ import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
-import com.raxdenstudios.commons.ext.launch
+import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.onFailure
 import com.raxdenstudios.commons.onSuccess
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.*
@@ -41,16 +42,19 @@ internal class MovieListViewModel(
     super.onCleared()
   }
 
-  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) = viewModelScope.launch {
-    val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
-    addMovieToWatchListUseCase.execute(item.id)
-      .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
-  }
+  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) =
+    viewModelScope.safeLaunch {
+      val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
+      addMovieToWatchListUseCase.execute(item.id)
+        .onFailure { error -> mState.value = MovieListUIState.Error(error) }
+        .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
+    }
 
   fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) =
-    viewModelScope.launch {
+    viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       removeMovieFromWatchListUseCase.execute(item.id)
+        .onFailure { error -> mState.value = MovieListUIState.Error(error) }
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
