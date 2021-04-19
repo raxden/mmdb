@@ -22,11 +22,11 @@ val homeFeatureModule = module {
 
   factory { HomeModuleRepository(get()) }
 
-  factory { GetHomeModulesUseCase(get()) }
+  factory { GetHomeModulesUseCase(get(), get()) }
 
   factory { HomeModuleModelMapper(get()) }
   factory { GetMoviesUseCaseParamsMapper() }
   factory { CarouselMovieListModelMapper(get(), get()) }
 
-  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
 }
