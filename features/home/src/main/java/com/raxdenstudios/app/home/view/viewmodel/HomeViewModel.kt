@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.raxdenstudios.app.account.domain.model.Account
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
@@ -30,6 +30,7 @@ internal class HomeViewModel(
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMoviesUseCase: GetMoviesUseCase,
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
+  private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val getMoviesUseCaseParamsMapper: GetMoviesUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper,
@@ -45,15 +46,14 @@ internal class HomeViewModel(
   private fun loadData() = viewModelScope.safeLaunch {
     mState.value = HomeUIState.Loading
 
-    getHomeModulesUseCase.execute().collect { result ->
-      val account = result.first
-      val modules = result.second
+    getHomeModulesUseCase.execute().collect { modules ->
+      val accountIsLogged = isAccountLoggedUseCase.execute()
       val homeModuleListModel = modules.map { homeModule ->
         async { getDataFromHomeModule(homeModule) }
       }.mapNotNull { deferred ->
         deferred.await()
       }
-      val model = HomeModel(account is Account.Logged, homeModuleListModel)
+      val model = HomeModel(accountIsLogged, homeModuleListModel)
       mState.value = HomeUIState.Content(model)
     }
   }
