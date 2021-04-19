@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._c4b7c5df5154c3b61221505670b52303.testlogger
+
 plugins {
   id("com.android.application")
   id("com.raxdenstudios.android-detekt")
@@ -6,6 +8,10 @@ plugins {
   id("kotlin-kapt")
   id("kotlin-parcelize")
   id("project-report")
+}
+
+testlogger {
+  setTheme("mocha")
 }
 
 android {
