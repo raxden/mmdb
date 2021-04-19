@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-  api(project(Modules.libraryAndroid))
-  api(project(Modules.libraryCoroutines))
+  api(RaxdenLibraries.android)
+  api(RaxdenLibraries.coroutines)
 
   api(Libraries.koinScope)
   api(Libraries.koinViewModel)

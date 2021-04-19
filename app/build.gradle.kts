@@ -53,7 +53,7 @@ android {
 }
 
 dependencies {
-  implementation(project(Modules.libraryThreeten))
+  implementation(RaxdenLibraries.threeten)
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
