@@ -3,7 +3,7 @@ object Versions {
   const val compileSdk = 29
   const val targetSdk = 29
 
-  const val commonsVersion = "4.8.0"
+  const val commonsVersion = "4.9.1"
 
   const val playCore = "1.9.0"
   const val material = "1.2.1"
