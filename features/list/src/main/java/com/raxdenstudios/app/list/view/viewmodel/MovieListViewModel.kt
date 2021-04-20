@@ -91,13 +91,27 @@ internal class MovieListViewModel(
 
   private fun pageResponse(model: MovieListModel, pageResult: PageResult<MovieListItemModel>) =
     when (pageResult) {
-      is PageResult.Content ->
-        mState.value = MovieListUIState.Content(model.copy(movies = pageResult.items))
+      is PageResult.Content -> handlePageResultContent(model, pageResult)
       is PageResult.Error -> mState.value = MovieListUIState.Error(pageResult.throwable)
       PageResult.Loading -> mState.value = MovieListUIState.Loading
       PageResult.NoMoreResults -> Unit
       PageResult.NoResults -> mState.value = MovieListUIState.EmptyContent
     }
+
+  private fun handlePageResultContent(
+    model: MovieListModel,
+    pageResult: PageResult.Content<MovieListItemModel>
+  ) {
+    viewModelScope.safeLaunch {
+      val isAccountLogged = isAccountLoggedUseCase.execute()
+      mState.value = MovieListUIState.Content(
+        model.copy(
+          logged = isAccountLogged,
+          movies = pageResult.items
+        )
+      )
+    }
+  }
 
   private suspend fun pageRequest(
     searchType: SearchType,
