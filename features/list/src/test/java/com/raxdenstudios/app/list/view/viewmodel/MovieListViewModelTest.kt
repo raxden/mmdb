@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.list.view.viewmodel
 
 import androidx.lifecycle.Observer
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.list.view.model.MovieListModel
@@ -12,6 +13,7 @@ import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -28,6 +30,9 @@ import org.koin.test.inject
 
 internal class MovieListViewModelTest : BaseTest() {
 
+  private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
+    coEvery { execute() } returns false
+  }
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase = mockk() {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
@@ -47,6 +52,7 @@ internal class MovieListViewModelTest : BaseTest() {
       baseFeatureModule,
       listFeatureModule,
       module {
+        factory(override = true) { isAccountLoggedUseCase }
         factory(override = true) { getMoviesUseCase }
         factory(override = true) { addMovieToWatchListUseCase }
         factory(override = true) { removeMovieFromWatchListUseCase }
@@ -54,6 +60,96 @@ internal class MovieListViewModelTest : BaseTest() {
     )
 
   private val viewModel: MovieListViewModel by inject()
+
+  @Test
+  fun `when movie is added to watchlist, movie is replaced in model`() {
+    val model = givenAMovieListModelWithResultsFromFirstPage()
+    val itemToAddToWatchList = MovieListItemModel.empty.copy(id = 2L)
+    viewModel.state.observeForever(stateObserver)
+
+    viewModel.addMovieToWatchList(model, itemToAddToWatchList)
+
+    coVerifyOrder {
+      stateObserver.onChanged(
+        MovieListUIState.Content(
+          MovieListModel(
+            logged = false,
+            searchType = SearchType.Popular,
+            movies = listOf(
+              MovieListItemModel.empty.copy(id = 1L),
+              MovieListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
+              MovieListItemModel.empty.copy(id = 3L),
+              MovieListItemModel.empty.copy(id = 4L),
+              MovieListItemModel.empty.copy(id = 5L),
+              MovieListItemModel.empty.copy(id = 6L),
+              MovieListItemModel.empty.copy(id = 7L),
+              MovieListItemModel.empty.copy(id = 8L),
+              MovieListItemModel.empty.copy(id = 9L),
+              MovieListItemModel.empty.copy(id = 10L),
+            )
+          )
+        )
+      )
+    }
+  }
+
+  @Test
+  fun `when movie is removed from watchlist, movie is replaced in model`() {
+    val model = givenAMovieListModelWithResultsFromFirstPage()
+    val itemToRemoveFromWatchList = MovieListItemModel.empty.copy(
+      id = 2L, watchButtonModel = WatchButtonModel.Selected
+    )
+    viewModel.state.observeForever(stateObserver)
+
+    viewModel.removeMovieFromWatchList(model, itemToRemoveFromWatchList)
+
+    coVerifyOrder {
+      stateObserver.onChanged(
+        MovieListUIState.Content(
+          MovieListModel(
+            logged = false,
+            searchType = SearchType.Popular,
+            movies = listOf(
+              MovieListItemModel.empty.copy(id = 1L),
+              MovieListItemModel.empty.copy(
+                id = 2L,
+                watchButtonModel = WatchButtonModel.Unselected
+              ),
+              MovieListItemModel.empty.copy(id = 3L),
+              MovieListItemModel.empty.copy(id = 4L),
+              MovieListItemModel.empty.copy(id = 5L),
+              MovieListItemModel.empty.copy(id = 6L),
+              MovieListItemModel.empty.copy(id = 7L),
+              MovieListItemModel.empty.copy(id = 8L),
+              MovieListItemModel.empty.copy(id = 9L),
+              MovieListItemModel.empty.copy(id = 10L),
+            )
+          )
+        )
+      )
+    }
+  }
+
+  @Test
+  fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
+    val params = MovieListParams(SearchType.Popular)
+    viewModel.state.observeForever(stateObserver)
+
+    viewModel.refreshMovies(params)
+
+    coVerifyOrder {
+      stateObserver.onChanged(MovieListUIState.Loading)
+      stateObserver.onChanged(
+        MovieListUIState.Content(
+          MovieListModel(
+            logged = false,
+            searchType = SearchType.Popular,
+            movies = aFirstPageMoviesModel
+          )
+        )
+      )
+    }
+  }
 
   @Test
   fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
