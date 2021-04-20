@@ -14,7 +14,7 @@ import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
-import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
+import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
 import com.raxdenstudios.commons.util.SDK
@@ -70,13 +70,34 @@ class MovieListActivity : BaseActivity() {
     submitList(model.movies)
     onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item ->
-      this@MovieListActivity.setResultOK()
-      viewModel.addMovieToWatchList(model, item)
+      checkIfLoggedAndAddMovieToWatchList(model, item)
     }
     onRemoveMovieFromWatchListClickListener = { item ->
-      this@MovieListActivity.setResultOK()
-      viewModel.removeMovieFromWatchList(model, item)
+      checkIfLoggedAndRemoveMovieFromWatchList(model, item)
     }
+  }
+
+  private fun checkIfLoggedAndRemoveMovieFromWatchList(
+    model: MovieListModel,
+    item: MovieListItemModel
+  ) {
+    if (!model.logged) navigator.login { removeMovieFromWatchList(model, item) }
+    else removeMovieFromWatchList(model, item)
+  }
+
+  private fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) {
+    this@MovieListActivity.setResultOK()
+    viewModel.removeMovieFromWatchList(model, item)
+  }
+
+  private fun checkIfLoggedAndAddMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
+    if (!model.logged) navigator.login { addMovieToWatchList(model, item) }
+    else addMovieToWatchList(model, item)
+  }
+
+  private fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
+    this@MovieListActivity.setResultOK()
+    viewModel.addMovieToWatchList(model, item)
   }
 
   private fun MovieListActivityBinding.loadMoreMoviesWhenScrollDown(model: MovieListModel) {
@@ -93,10 +114,7 @@ class MovieListActivity : BaseActivity() {
 
   private fun MovieListActivityBinding.handleErrorState(state: MovieListUIState.Error) {
     swipeRefreshLayout.isRefreshing = false
-    when (state.throwable) {
-      is UserNotLoggedException -> navigator.login() { setResultOK() }
-      else -> errorManager.handleError(state.throwable)
-    }
+    errorManager.handleError(state.throwable)
   }
 
   private fun MovieListActivityBinding.handleLoadingState() {
