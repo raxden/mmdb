@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 val listFeatureModule = module {
 
-  viewModel { MovieListViewModel(get(), get(), get(), get(), get()) }
+  viewModel { MovieListViewModel(get(), get(), get(), get(), get(), get()) }
 }

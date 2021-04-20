@@ -4,10 +4,7 @@ import com.raxdenstudios.app.movie.data.local.model.MovieEntity
 import com.raxdenstudios.app.movie.data.local.model.PictureEntity
 import com.raxdenstudios.app.movie.data.local.model.SizeEntity
 import com.raxdenstudios.app.movie.data.local.model.VoteEntity
-import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.Picture
-import com.raxdenstudios.app.movie.domain.model.Size
-import com.raxdenstudios.app.movie.domain.model.Vote
+import com.raxdenstudios.app.movie.domain.model.*
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
@@ -36,6 +33,7 @@ internal class MovieEntityToDomainMapper(
 
   override fun transform(source: MovieEntity): Movie = Movie(
     id = source.id,
+    mediaType = MediaType.Movie,
     title = source.title,
     backdrop = pictureEntityToDomainMapper.transform(source.backdrop),
     poster = pictureEntityToDomainMapper.transform(source.poster),

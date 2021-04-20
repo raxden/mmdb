@@ -7,6 +7,7 @@ import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -37,13 +38,14 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a NowPlayingMovies module and resultData with movies, When transform is called, Then return a NowPlayingMoviesModel`() {
-    val module = HomeModule.NowPlayingMovies
+    val module = HomeModule.nowPlayingMovies
 
     val result = mapper.transform(module, aResultDataWithMovies)
 
     assertEquals(
-      HomeModuleModel.CarouselMovies.NowPlaying(
-        CarouselMovieListModel.empty.copy(
+      HomeModuleModel.CarouselMovies(
+        mediaFilterModel = MediaFilterModel.nowPlayingMovies,
+        carouselMovieListModel = CarouselMovieListModel.empty.copy(
           movies = listOf(
             MovieListItemModel.empty.copy(id = 1L)
           )
@@ -55,7 +57,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a NowPlayingMovies module and resultData without movies, When transform is called, Then return a null`() {
-    val module = HomeModule.NowPlayingMovies
+    val module = HomeModule.nowPlayingMovies
 
     val result = mapper.transform(module, aResultDataWithoutMovies)
 
@@ -64,7 +66,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a NowPlayingMovies module and resultData with error, When transform is called, Then return a null`() {
-    val module = HomeModule.NowPlayingMovies
+    val module = HomeModule.nowPlayingMovies
     val resultDataWithError = ResultData.Error(IllegalStateException(""))
 
     val result = mapper.transform(module, resultDataWithError)
@@ -74,23 +76,24 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a WatchListMovies module and resultData with a UserNotLoggedException, When transform is called, Then return a WatchListNotLogged`() {
-    val module = HomeModule.WatchListMovies
+    val module = HomeModule.watchListMovies
     val resultDataWithError = ResultData.Error(UserNotLoggedException())
 
     val result = mapper.transform(module, resultDataWithError)
 
-    assertEquals(HomeModuleModel.WatchList.NotLogged, result)
+    assertEquals(HomeModuleModel.WatchlistNotLogged, result)
   }
 
   @Test
   fun `Given a WatchListMovies module and resultData with movies, When transform is called, Then return a WatchListWithContent`() {
-    val module = HomeModule.WatchListMovies
+    val module = HomeModule.watchListMovies
 
     val result = mapper.transform(module, aResultDataWithMovies)
 
     assertEquals(
-      HomeModuleModel.WatchList.WithContent(
-        CarouselMovieListModel.empty.copy(
+      HomeModuleModel.CarouselMovies(
+        mediaFilterModel = MediaFilterModel.watchlistMovies,
+        carouselMovieListModel = CarouselMovieListModel.empty.copy(
           movies = listOf(
             MovieListItemModel.empty.copy(id = 1L)
           )
@@ -102,11 +105,11 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a WatchListMovies module and resultData without movies, When transform is called, Then return a WatchListWithoutContent`() {
-    val module = HomeModule.WatchListMovies
+    val module = HomeModule.watchListMovies
 
     val result = mapper.transform(module, aResultDataWithoutMovies)
 
-    assertEquals(HomeModuleModel.WatchList.WithoutContent, result)
+    assertEquals(HomeModuleModel.WatchlistWithoutContent, result)
   }
 }
 

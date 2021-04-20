@@ -6,12 +6,12 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import com.raxdenstudios.app.list.view.MovieListActivity
 import com.raxdenstudios.app.list.view.model.MovieListParams
-import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 
-internal class MoviesActivityResultContract : ActivityResultContract<SearchType, Boolean>() {
+internal class MoviesActivityResultContract : ActivityResultContract<MediaFilterModel, Boolean>() {
 
-  override fun createIntent(context: Context, searchType: SearchType): Intent {
-    val params = MovieListParams(searchType)
+  override fun createIntent(context: Context, mediaFilterModel: MediaFilterModel): Intent {
+    val params = MovieListParams(mediaFilterModel)
     return MovieListActivity.createIntent(context, params)
   }
 
