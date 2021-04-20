@@ -7,6 +7,6 @@ internal class RemoveMovieFromWatchListUseCaseImpl(
   private val movieRepository: MovieRepository
 ) : RemoveMovieFromWatchListUseCase {
 
-  override suspend fun execute(movieId: Long): ResultData<Boolean> =
-    movieRepository.removeMovieFromWatchList(movieId)
+  override suspend fun execute(params: RemoveMovieFromWatchListUseCase.Params): ResultData<Boolean> =
+    movieRepository.removeMovieFromWatchList(params.movieId, params.mediaType)
 }

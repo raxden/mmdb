@@ -16,27 +16,27 @@ internal class CarouselMovieListModelMapper(
     homeModule: HomeModule,
     movies: List<Movie>
   ): CarouselMovieListModel = when (homeModule) {
-    HomeModule.NowPlayingMovies -> CarouselMovieListModel(
+    is HomeModule.NowPlaying -> CarouselMovieListModel(
       label = stringProvider.getString(R.string.home_carousel_now_playing_movies),
       description = "",
       movies = movieListItemModelMapper.transform(movies),
     )
-    HomeModule.PopularMovies -> CarouselMovieListModel(
+    is HomeModule.Popular -> CarouselMovieListModel(
       label = stringProvider.getString(R.string.home_carousel_popular_movies),
       description = "",
       movies = movieListItemModelMapper.transform(movies),
     )
-    HomeModule.TopRatedMovies -> CarouselMovieListModel(
+    is HomeModule.TopRated -> CarouselMovieListModel(
       label = stringProvider.getString(R.string.home_carousel_top_rated_movies),
       description = "",
       movies = movieListItemModelMapper.transform(movies),
     )
-    HomeModule.UpcomingMovies -> CarouselMovieListModel(
+    is HomeModule.Upcoming -> CarouselMovieListModel(
       label = stringProvider.getString(R.string.home_carousel_upcoming_movies),
       description = "",
       movies = movieListItemModelMapper.transform(movies),
     )
-    HomeModule.WatchListMovies -> CarouselMovieListModel(
+    is HomeModule.WatchList -> CarouselMovieListModel(
       label = stringProvider.getString(R.string.home_carousel_from_your_watchlist),
       description = "",
       movies = movieListItemModelMapper.transform(movies),

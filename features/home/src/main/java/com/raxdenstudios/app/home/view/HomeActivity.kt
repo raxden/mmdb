@@ -74,7 +74,7 @@ internal class HomeActivity : BaseActivity() {
         removeMovieFromWatchList(model, moduleModel, carouselMovieListModel, movieListItemModel)
       }
     adapter.onCarouselMoviesModel = { moduleModel, _ ->
-      navigator.movies(moduleModel) { viewModel.refreshData() }
+      navigator.movies(moduleModel.mediaFilterModel) { viewModel.refreshData() }
     }
   }
 
@@ -84,7 +84,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun addMovieToWatchList(
     model: HomeModel,
-    moduleModel: HomeModuleModel,
+    moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel
   ) {
@@ -107,7 +107,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun removeMovieFromWatchList(
     model: HomeModel,
-    moduleModel: HomeModuleModel,
+    moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel
   ) {
@@ -121,7 +121,7 @@ internal class HomeActivity : BaseActivity() {
 
   private fun movieSelected(
     model: HomeModel,
-    moduleModel: HomeModuleModel,
+    moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
     movieListItemModel: MovieListItemModel
   ) {

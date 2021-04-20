@@ -6,9 +6,9 @@ import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
 import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.map
@@ -21,9 +21,12 @@ internal class MovieRemoteDataSource(
   private val movieDtoToDomainMapper: MovieDtoToDomainMapper,
 ) {
 
-  suspend fun movieById(movieId: Long): ResultData<Movie> =
-    movieGateway.detail(movieId.toString())
-      .map { dto -> movieDtoToDomainMapper.transform(dto) }
+  suspend fun movieById(movieId: Long, mediaType: MediaType): ResultData<Movie> =
+    movieGateway.detail(
+      movieId = movieId.toString(),
+      mediaType = mediaTypeToDtoMapper.transform(mediaType)
+    )
+      .map { dto -> movieDtoToDomainMapper.transform(mediaType, dto) }
 
   suspend fun addMovieToWatchList(
     account: Account.Logged,
@@ -54,21 +57,21 @@ internal class MovieRemoteDataSource(
     )
       .map { dtoList ->
         dtoList.map { dto ->
-          movieDtoToDomainMapper.transform(dto).copy(watchList = true)
+          movieDtoToDomainMapper.transform(mediaType, dto).copy(watchList = true)
         }
       }
 
   suspend fun movies(
-    searchType: SearchType,
+    mediaFilter: MediaFilter,
     account: Account,
     page: Page,
   ): ResultData<PageList<Movie>> =
-    when (searchType) {
-      is SearchType.NowPlaying -> nowPlaying(searchType.mediaType, page)
-      is SearchType.Popular -> popular(searchType.mediaType, page)
-      is SearchType.TopRated -> topRated(searchType.mediaType, page)
-      SearchType.Upcoming -> upcoming(page)
-      is SearchType.WatchList -> watchList(account, searchType.mediaType, page)
+    when (mediaFilter) {
+      is MediaFilter.NowPlaying -> nowPlaying(mediaFilter.mediaType, page)
+      is MediaFilter.Popular -> popular(mediaFilter.mediaType, page)
+      is MediaFilter.TopRated -> topRated(mediaFilter.mediaType, page)
+      MediaFilter.Upcoming -> upcoming(page)
+      is MediaFilter.WatchList -> watchList(account, mediaFilter.mediaType, page)
     }
 
   private suspend fun watchList(
@@ -82,7 +85,7 @@ internal class MovieRemoteDataSource(
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       page = page.value
     )
-      .map { pageDto -> transformPageData(pageDto) }
+      .map { pageDto -> transformPageData(mediaType, pageDto) }
       .map { pageList -> markMoviesAsWatched(pageList) }
   }
 
@@ -91,20 +94,22 @@ internal class MovieRemoteDataSource(
 
   private suspend fun upcoming(page: Page): ResultData<PageList<Movie>> =
     movieGateway.upcoming(page.value)
-      .map { pageDto -> transformPageData(pageDto) }
+      .map { pageDto -> transformPageData(MediaType.Movie, pageDto) }
 
   private suspend fun topRated(mediaType: MediaType, page: Page): ResultData<PageList<Movie>> =
     movieGateway.topRated(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(pageDto) }
+      .map { pageDto -> transformPageData(mediaType, pageDto) }
 
   private suspend fun popular(mediaType: MediaType, page: Page): ResultData<PageList<Movie>> =
     movieGateway.popular(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(pageDto) }
+      .map { pageDto -> transformPageData(mediaType, pageDto) }
 
   private suspend fun nowPlaying(mediaType: MediaType, page: Page): ResultData<PageList<Movie>> =
     movieGateway.nowPlaying(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(pageDto) }
+      .map { pageDto -> transformPageData(mediaType, pageDto) }
 
-  private fun transformPageData(pageDto: PageDto<MovieDto>): PageList<Movie> =
-    pageDto.toPageList { movieDtoList -> movieDtoToDomainMapper.transform(movieDtoList) }
+  private fun transformPageData(mediaType: MediaType, pageDto: PageDto<MovieDto>): PageList<Movie> =
+    pageDto.toPageList { movieDtoList ->
+      movieDtoList.map { movieDto -> movieDtoToDomainMapper.transform(mediaType, movieDto) }
+    }
 }
