@@ -24,16 +24,16 @@ internal class MovieGateway(
 
   suspend fun watchList(
     accountId: String,
-    category: String,
+    mediaType: String,
   ): ResultData<List<MovieDto>> =
-    when (val resultData = watchList(accountId, category, FIRST_PAGE)) {
+    when (val resultData = watchList(accountId, mediaType, FIRST_PAGE)) {
       is ResultData.Error -> resultData
       is ResultData.Success -> {
         withContext(dispatcher.io()) {
           val allMovies = resultData.value.results.toMutableList()
           val totalPages = resultData.value.total_pages
           val movies = (FIRST_PAGE + 1..totalPages)
-            .map { page -> async { watchList(accountId, category, page) } }
+            .map { page -> async { watchList(accountId, mediaType, page) } }
             .mapNotNull { deferred -> deferred.await().getValueOrNull() }
             .map { resultData -> resultData.results }
             .flatten()
@@ -45,47 +45,49 @@ internal class MovieGateway(
 
   suspend fun watchList(
     accountId: String,
-    category: String,
+    mediaType: String,
     page: Int
   ): ResultData<PageDto<MovieDto>> =
-    movieV4Service.watchList(accountId, category, page).toResultData(
+    movieV4Service.watchList(accountId, mediaType, page).toResultData(
       "Error occurred during fetching watch list movies"
     ) { body -> body }
 
   suspend fun addToWatchList(
     accountId: String,
+    mediaType: String,
     movieId: Long
   ): ResultData<WatchListDto.Response> =
     movieV3Service.watchList(
       accountId,
-      WatchListDto.Request.Add(movieId)
+      WatchListDto.Request.Add(movieId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
     ) { body -> body }
 
   suspend fun removeFromWatchList(
     accountId: String,
+    mediaType: String,
     movieId: Long
   ): ResultData<WatchListDto.Response> =
     movieV3Service.watchList(
       accountId,
-      WatchListDto.Request.Remove(movieId)
+      WatchListDto.Request.Remove(movieId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
     ) { body -> body }
 
-  suspend fun popular(category: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.popular(category, page).toResultData(
+  suspend fun popular(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+    movieV3Service.popular(mediaType, page).toResultData(
       "Error occurred during fetching popular movies"
     ) { body -> body }
 
-  suspend fun nowPlaying(category: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.nowPlaying(category, page).toResultData(
+  suspend fun nowPlaying(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+    movieV3Service.nowPlaying(mediaType, page).toResultData(
       "Error occurred during fetching now playing movies"
     ) { body -> body }
 
-  suspend fun topRated(category: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.topRated(category, page).toResultData(
+  suspend fun topRated(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+    movieV3Service.topRated(mediaType, page).toResultData(
       "Error occurred during fetching top rated movies"
     ) { body -> body }
 

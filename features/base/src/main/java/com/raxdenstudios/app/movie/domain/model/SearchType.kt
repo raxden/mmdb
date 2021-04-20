@@ -6,17 +6,32 @@ import kotlinx.parcelize.Parcelize
 sealed class SearchType : Parcelable {
 
   @Parcelize
-  object Popular : SearchType()
+  data class Popular(
+    val mediaType: MediaType
+  ) : SearchType()
 
   @Parcelize
-  object NowPlaying : SearchType()
+  data class NowPlaying(
+    val mediaType: MediaType
+  ) : SearchType()
 
   @Parcelize
-  object TopRated : SearchType()
+  data class TopRated(
+    val mediaType: MediaType
+  ) : SearchType()
 
   @Parcelize
   object Upcoming : SearchType()
 
   @Parcelize
-  object WatchList : SearchType()
+  data class WatchList(
+    val mediaType: MediaType
+  ) : SearchType() {
+
+    companion object {
+      val empty = WatchList(
+        mediaType = MediaType.Movie
+      )
+    }
+  }
 }

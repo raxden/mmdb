@@ -9,21 +9,21 @@ import retrofit2.http.*
 
 interface MovieV3Service {
 
-  @GET("{category}/popular")
+  @GET("{media_type}/popular")
   suspend fun popular(
-    @Path("category") category: String,
+    @Path("media_type") mediaType: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
-  @GET("{category}/now_playing")
+  @GET("{media_type}/now_playing")
   suspend fun nowPlaying(
-    @Path("category") category: String,
+    @Path("media_type") mediaType: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
-  @GET("{category}/top_rated")
+  @GET("{media_type}/top_rated")
   suspend fun topRated(
-    @Path("category") category: String,
+    @Path("media_type") mediaType: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
