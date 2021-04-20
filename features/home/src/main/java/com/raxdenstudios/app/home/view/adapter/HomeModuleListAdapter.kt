@@ -9,6 +9,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.view.component.CarouselMovieListView
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
@@ -23,23 +24,32 @@ internal class HomeModuleListAdapter :
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
 
-  var onAddMovieToWatchListClickListener: (HomeModuleModel, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _, _ -> }
-  var onMovieClickListener: (HomeModuleModel, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onMovieClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
     { _, _, _ -> }
-  var onCarouselMoviesModel: (HomeModuleModel, CarouselMovieListModel) -> Unit =
+  var onCarouselMoviesModel: (HomeModuleModel.CarouselMovies, CarouselMovieListModel) -> Unit =
     { _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
-  override fun getItemId(position: Int): Long = getItem(position).itemId
+  override fun getItemId(position: Int): Long = when (val item = getItem(position)) {
+    is HomeModuleModel.CarouselMovies -> when (item.mediaFilterModel) {
+      is MediaFilterModel.NowPlaying -> 1
+      is MediaFilterModel.Popular -> 2
+      is MediaFilterModel.TopRated -> 3
+      MediaFilterModel.Upcoming -> 4
+      is MediaFilterModel.WatchList -> 5
+    }
+    HomeModuleModel.WatchlistNotLogged -> 6
+    HomeModuleModel.WatchlistWithoutContent -> 7
+  }
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
     is HomeModuleModel.CarouselMovies -> CAROUSEL_MOVIES_LAYOUT
-    is HomeModuleModel.WatchList.WithContent -> CAROUSEL_MOVIES_LAYOUT
-    is HomeModuleModel.WatchList.NotLogged -> WATCHLIST_NOT_LOGGED
-    is HomeModuleModel.WatchList.WithoutContent -> WATCHLIST_WITHOUT_CONTENT
+    HomeModuleModel.WatchlistNotLogged -> WATCHLIST_NOT_LOGGED
+    HomeModuleModel.WatchlistWithoutContent -> WATCHLIST_WITHOUT_CONTENT
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListAdapterHolder {
@@ -59,9 +69,8 @@ internal class HomeModuleListAdapter :
 
     fun bind(model: HomeModuleModel) = when (model) {
       is HomeModuleModel.CarouselMovies -> bindCarousel(model, model.carouselMovieListModel)
-      is HomeModuleModel.WatchList.WithContent -> bindCarousel(model, model.carouselMovieListModel)
-      is HomeModuleModel.WatchList.NotLogged -> bindWatchListNotLogged()
-      is HomeModuleModel.WatchList.WithoutContent -> bindWatchListWithoutContent()
+      HomeModuleModel.WatchlistNotLogged -> bindWatchListNotLogged()
+      HomeModuleModel.WatchlistWithoutContent -> bindWatchListWithoutContent()
     }
 
     private fun bindWatchListWithoutContent() {
@@ -71,7 +80,7 @@ internal class HomeModuleListAdapter :
       view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener() }
     }
 
-    private fun bindCarousel(model: HomeModuleModel, item: CarouselMovieListModel) {
+    private fun bindCarousel(model: HomeModuleModel.CarouselMovies, item: CarouselMovieListModel) {
       val component = view.findViewById<CarouselMovieListView>(R.id.item_view)
       component.onSeeAllClickListener = { carouselMoviesModel ->
         onCarouselMoviesModel(model, carouselMoviesModel)
@@ -92,7 +101,5 @@ internal class HomeModuleListAdapter :
         }
       component.setModel(item)
     }
-
-
   }
 }

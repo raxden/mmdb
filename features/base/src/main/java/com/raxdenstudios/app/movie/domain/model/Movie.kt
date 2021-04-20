@@ -5,6 +5,7 @@ import org.threeten.bp.LocalDate
 
 data class Movie(
   val id: Long,
+  val mediaType: MediaType,
   val title: String,
   val backdrop: Picture,
   val poster: Picture,
@@ -16,6 +17,7 @@ data class Movie(
   companion object {
     fun withId(id: Long) = Movie(
       id = id,
+      mediaType = MediaType.Movie,
       title = "",
       backdrop = Picture.Empty,
       poster = Picture.Empty,
@@ -26,6 +28,7 @@ data class Movie(
     @VisibleForTesting
     val empty = Movie(
       id = 0L,
+      mediaType = MediaType.Movie,
       title = "",
       backdrop = Picture.Empty,
       poster = Picture.Empty,

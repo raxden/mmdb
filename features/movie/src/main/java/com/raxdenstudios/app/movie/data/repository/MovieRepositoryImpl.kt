@@ -5,9 +5,9 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
+import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
 import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coFlatMap
 import com.raxdenstudios.commons.coMap
@@ -37,7 +37,7 @@ internal class MovieRepositoryImpl(
     movieId: Long
   ): ResultData<Boolean> =
     movieRemoteDataSource.addMovieToWatchList(account, mediaType, movieId)
-      .coFlatMap { getMovieAndMarkAsWatched(movieId, true) }
+      .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, true) }
       .coFlatMap { movie -> updateMovie(movie) }
 
   override suspend fun removeMovieFromWatchList(
@@ -55,11 +55,16 @@ internal class MovieRepositoryImpl(
     movieId: Long
   ): ResultData<Boolean> =
     movieRemoteDataSource.removeMovieFromWatchList(account, mediaType, movieId)
-      .coFlatMap { getMovieAndMarkAsWatched(movieId, false) }
+      .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, false) }
       .coFlatMap { movie -> updateMovie(movie) }
 
-  private suspend fun getMovieAndMarkAsWatched(movieId: Long, watched: Boolean) =
-    movieRemoteDataSource.movieById(movieId).map { movie -> movie.copy(watchList = watched) }
+  private suspend fun getMovieAndMarkAsWatched(
+    movieId: Long,
+    mediaType: MediaType,
+    watched: Boolean
+  ): ResultData<Movie> =
+    movieRemoteDataSource.movieById(movieId, mediaType)
+      .map { movie -> movie.copy(watchList = watched) }
 
   private suspend fun updateMovie(movie: Movie): ResultData.Success<Boolean> {
     movieLocalDataSource.insert(movie)
@@ -67,19 +72,19 @@ internal class MovieRepositoryImpl(
   }
 
   override suspend fun movies(
-    searchType: SearchType,
+    mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<Movie>> =
-    moviesFromRemote(searchType, page, pageSize)
+    moviesFromRemote(mediaFilter, page, pageSize)
 
   private suspend fun moviesFromRemote(
-    searchType: SearchType,
+    mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<Movie>> {
     val account = accountLocalDataSource.getAccount()
-    return movieRemoteDataSource.movies(searchType, account, page)
+    return movieRemoteDataSource.movies(mediaFilter, account, page)
       .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
   }
 
@@ -90,7 +95,7 @@ internal class MovieRepositoryImpl(
       }
     )
 
-  override suspend fun loadWatchListFromRemoteAndPersistInLocal(
+  override suspend fun loadWatchListInLocal(
     mediaType: MediaType
   ): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {

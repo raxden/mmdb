@@ -5,8 +5,8 @@ import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
 import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.network.model.PageDto
@@ -50,7 +50,7 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
   fun `Given a searchType of type watchlist and account logged, When movies is called, Then load movies`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(SearchType.WatchList.empty, aAccountLogged, aFirstPage)
+      val result = dataSource.movies(MediaFilter.watchListMovies, aAccountLogged, aFirstPage)
 
       assertEquals(
         ResultData.Success(
@@ -69,7 +69,7 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
   fun `Given a searchType of type watchlist and account not logged, When movies is called, Then and exception raised`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(SearchType.WatchList.empty, aAccountGuest, aFirstPage)
+      val result = dataSource.movies(MediaFilter.watchListMovies, aAccountGuest, aFirstPage)
 
       result as ResultData.Error
       assert(result.throwable is UserNotLoggedException)

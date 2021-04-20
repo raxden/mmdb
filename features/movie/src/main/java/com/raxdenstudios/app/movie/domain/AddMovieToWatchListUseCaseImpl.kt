@@ -7,6 +7,6 @@ internal class AddMovieToWatchListUseCaseImpl(
   private val movieRepository: MovieRepository
 ) : AddMovieToWatchListUseCase {
 
-  override suspend fun execute(movieId: Long): ResultData<Boolean> =
-    movieRepository.addMovieToWatchList(movieId)
+  override suspend fun execute(params: AddMovieToWatchListUseCase.Params): ResultData<Boolean> =
+    movieRepository.addMovieToWatchList(params.movieId, params.mediaType)
 }

@@ -11,8 +11,9 @@ import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
-import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.mapper.MediaFilterModelToDomainMapper
 import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ResultData
@@ -31,6 +32,7 @@ internal class MovieListViewModel(
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
+  private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
   private val movieListItemModelMapper: MovieListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
 
@@ -47,7 +49,8 @@ internal class MovieListViewModel(
   fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
-      addMovieToWatchListUseCase.execute(item.id)
+      val params = AddMovieToWatchListUseCase.Params(item.id, item.mediaType)
+      addMovieToWatchListUseCase.execute(params)
         .onFailure { error -> mState.value = MovieListUIState.Error(error) }
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
@@ -55,7 +58,8 @@ internal class MovieListViewModel(
   fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
-      removeMovieFromWatchListUseCase.execute(item.id)
+      val params = RemoveMovieFromWatchListUseCase.Params(item.id, item.mediaType)
+      removeMovieFromWatchListUseCase.execute(params)
         .onFailure { error -> mState.value = MovieListUIState.Error(error) }
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
@@ -74,13 +78,13 @@ internal class MovieListViewModel(
     mState.value is MovieListUIState.Content || mState.value is MovieListUIState.Loading
 
   private fun requestFirstPage(params: MovieListParams) {
-    requestPage(PageIndex.first, MovieListModel.withSearchType(params.searchType))
+    requestPage(PageIndex.first, MovieListModel.withFilter(params.mediaFilterModel))
   }
 
   private fun requestPage(pageIndex: PageIndex, model: MovieListModel) {
     pagination.requestPage(
       pageIndex = pageIndex,
-      pageRequest = { page, pageSize -> pageRequest(model.searchType, page, pageSize) },
+      pageRequest = { page, pageSize -> pageRequest(model.mediaFilterModel, page, pageSize) },
       pageResponse = { pageResult -> pageResponse(model, pageResult) }
     )
   }
@@ -114,12 +118,14 @@ internal class MovieListViewModel(
   }
 
   private suspend fun pageRequest(
-    searchType: SearchType,
+    mediaFilterModel: MediaFilterModel,
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<MovieListItemModel>> {
-    val useCaseParams = GetMoviesUseCase.Params(searchType, page, pageSize)
+    val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
+    val useCaseParams = GetMoviesUseCase.Params(mediaFilter, page, pageSize)
     return getMoviesUseCase.execute(useCaseParams)
       .coMap { pageList -> pageList.map { items -> movieListItemModelMapper.transform(items) } }
   }
 }
+
