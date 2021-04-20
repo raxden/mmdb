@@ -5,26 +5,25 @@ import com.raxdenstudios.app.movie.data.remote.model.MovieDto
 import com.raxdenstudios.app.movie.data.remote.model.WatchListDto
 import com.raxdenstudios.app.network.model.ErrorDto
 import com.raxdenstudios.app.network.model.PageDto
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MovieV3Service {
 
-  @GET("movie/popular")
+  @GET("{category}/popular")
   suspend fun popular(
+    @Path("category") category: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
-  @GET("movie/now_playing")
+  @GET("{category}/now_playing")
   suspend fun nowPlaying(
+    @Path("category") category: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
-  @GET("movie/top_rated")
+  @GET("{category}/top_rated")
   suspend fun topRated(
+    @Path("category") category: String,
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
 
