@@ -67,6 +67,7 @@ internal class MovieListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MovieListModel(
+            logged = false,
             searchType = SearchType.Popular,
             movies = aFirstPageMoviesModel
           )
@@ -88,6 +89,7 @@ internal class MovieListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MovieListModel(
+            logged = false,
             searchType = SearchType.Popular,
             movies = aSecondPageMoviesModel
           )
@@ -97,6 +99,7 @@ internal class MovieListViewModelTest : BaseTest() {
   }
 
   private fun givenAMovieListModelWithResultsFromFirstPage(): MovieListModel = MovieListModel(
+    logged = false,
     searchType = SearchType.Popular,
     movies = aFirstPageMoviesModel
   )

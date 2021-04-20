@@ -3,6 +3,7 @@ package com.raxdenstudios.app.list.view.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListParams
@@ -27,6 +28,7 @@ import org.koin.core.parameter.parametersOf
 
 internal class MovieListViewModel(
   private val getMoviesUseCase: GetMoviesUseCase,
+  private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val movieListItemModelMapper: MovieListItemModelMapper,
