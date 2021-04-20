@@ -58,10 +58,8 @@ internal class MovieRepositoryImpl(
     searchType: SearchType,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Movie>> = when (searchType) {
-    SearchType.WatchList -> watchListFromLocal(page, pageSize)
-    else -> moviesFromRemote(searchType, page, pageSize)
-  }
+  ): ResultData<PageList<Movie>> =
+    moviesFromRemote(searchType, page, pageSize)
 
   private suspend fun moviesFromRemote(
     searchType: SearchType,
