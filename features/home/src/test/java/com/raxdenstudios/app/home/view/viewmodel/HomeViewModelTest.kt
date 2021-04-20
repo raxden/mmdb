@@ -13,8 +13,9 @@ import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -87,16 +88,18 @@ internal class HomeViewModelTest : BaseTest() {
         HomeUIState.Content(
           HomeModel.empty.copy(
             modules = listOf(
-              HomeModuleModel.CarouselMovies.Popular(
-                CarouselMovieListModel.empty.copy(
+              HomeModuleModel.CarouselMovies(
+                mediaFilterModel = MediaFilterModel.popularMovies,
+                carouselMovieListModel = CarouselMovieListModel.empty.copy(
                   movies = listOf(
                     MovieListItemModel.empty.copy(id = 1L),
                     MovieListItemModel.empty.copy(id = 2L),
                   )
                 )
               ),
-              HomeModuleModel.CarouselMovies.NowPlaying(
-                CarouselMovieListModel.empty.copy(
+              HomeModuleModel.CarouselMovies(
+                mediaFilterModel = MediaFilterModel.nowPlayingMovies,
+                carouselMovieListModel = CarouselMovieListModel.empty.copy(
                   movies = listOf(
                     MovieListItemModel.empty.copy(id = 1L),
                     MovieListItemModel.empty.copy(id = 2L),
@@ -127,8 +130,9 @@ internal class HomeViewModelTest : BaseTest() {
           HomeUIState.Content(
             HomeModel.empty.copy(
               modules = listOf(
-                HomeModuleModel.CarouselMovies.Popular(
-                  CarouselMovieListModel.empty.copy(
+                HomeModuleModel.CarouselMovies(
+                  mediaFilterModel = MediaFilterModel.popularMovies,
+                  carouselMovieListModel = CarouselMovieListModel.empty.copy(
                     movies = listOf(
                       MovieListItemModel.empty.copy(
                         id = 1L,
@@ -151,7 +155,10 @@ private val aCarouselMovieListModel = CarouselMovieListModel.empty.copy(
   movies = listOf(aMovieModel)
 )
 private val aCarouselMoviesPopularModuleModel =
-  HomeModuleModel.CarouselMovies.Popular(aCarouselMovieListModel)
+  HomeModuleModel.CarouselMovies(
+    mediaFilterModel = MediaFilterModel.popularMovies,
+    carouselMovieListModel = aCarouselMovieListModel
+  )
 private val aHomeModelModules = listOf(
   aCarouselMoviesPopularModuleModel
 )
@@ -159,8 +166,8 @@ private val aHomeModel = HomeModel.empty.copy(
   modules = aHomeModelModules
 )
 private val aHomeModules = listOf(
-  HomeModule.PopularMovies,
-  HomeModule.NowPlayingMovies
+  HomeModule.popularMovies,
+  HomeModule.nowPlayingMovies
 )
 private val aMovies = listOf(
   Movie.empty.copy(id = 1),
@@ -169,12 +176,12 @@ private val aMovies = listOf(
 private val aPageMovieList = PageList(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)
 private val aGetUpcomingMoviesUseCaseParams =
-  GetMoviesUseCase.Params(SearchType.Upcoming, Page(1))
+  GetMoviesUseCase.Params(MediaFilter.Upcoming, Page(1))
 private val aGetTopRatedMoviesUseCaseParams =
-  GetMoviesUseCase.Params(SearchType.TopRated, Page(1))
+  GetMoviesUseCase.Params(MediaFilter.topRatedMovies, Page(1))
 private val aGetPopularMoviesUseCaseParams =
-  GetMoviesUseCase.Params(SearchType.Popular, Page(1))
+  GetMoviesUseCase.Params(MediaFilter.popularMovies, Page(1))
 private val aGetNowPlayingMoviesUseCaseParams =
-  GetMoviesUseCase.Params(SearchType.NowPlaying, Page(1))
+  GetMoviesUseCase.Params(MediaFilter.nowPlayingMovies, Page(1))
 private val aGetWatchListMoviesUseCaseParams =
-  GetMoviesUseCase.Params(SearchType.WatchList, Page(1))
+  GetMoviesUseCase.Params(MediaFilter.watchListMovies, Page(1))

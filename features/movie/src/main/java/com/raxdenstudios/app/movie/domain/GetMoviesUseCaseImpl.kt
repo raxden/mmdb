@@ -10,5 +10,5 @@ internal class GetMoviesUseCaseImpl(
 ) : GetMoviesUseCase {
 
   override suspend fun execute(params: GetMoviesUseCase.Params): ResultData<PageList<Movie>> =
-    movieRepository.movies(params.searchType, params.page, params.pageSize)
+    movieRepository.movies(params.mediaFilter, params.page, params.pageSize)
 }

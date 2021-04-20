@@ -44,7 +44,7 @@ internal class MovieGatewayTest : BaseTest() {
   @Test
   fun `Given a movie results split in pages, When watchList is called with a valid accountId, Then return all movies`() =
     testDispatcher.runBlockingTest {
-      val resultData = gateway.watchList(aCategory, aAccountId)
+      val resultData = gateway.watchList(aAccountId, aCategory)
 
       coVerify {
         movieV4Service.watchList(aAccountId, aCategory, 1)

@@ -5,8 +5,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.raxdenstudios.app.home.HomeNavigator
-import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
 import com.raxdenstudios.app.navigator.result.MoviesActivityResultContract
 
@@ -21,7 +20,7 @@ internal class HomeNavigatorImpl(
 
   private val registry: ActivityResultRegistry = activity.activityResultRegistry
   private lateinit var loginActivityResultLauncher: ActivityResultLauncher<Unit>
-  private lateinit var moviesActivityResultLauncher: ActivityResultLauncher<SearchType>
+  private lateinit var moviesActivityResultLauncher: ActivityResultLauncher<MediaFilterModel>
 
   private var onLoginSuccess: () -> Unit = {}
   private var onMoviesRefresh: () -> Unit = {}
@@ -38,16 +37,9 @@ internal class HomeNavigatorImpl(
     loginActivityResultLauncher.launch(Unit)
   }
 
-  override fun movies(homeModuleModel: HomeModuleModel, onRefresh: () -> Unit) {
+  override fun movies(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit) {
     onMoviesRefresh = onRefresh
-    val searchType = when (homeModuleModel) {
-      is HomeModuleModel.CarouselMovies.NowPlaying -> SearchType.NowPlaying
-      is HomeModuleModel.CarouselMovies.Popular -> SearchType.Popular
-      is HomeModuleModel.CarouselMovies.TopRated -> SearchType.TopRated
-      is HomeModuleModel.CarouselMovies.Upcoming -> SearchType.Upcoming
-      is HomeModuleModel.WatchList -> SearchType.WatchList
-    }
-    moviesActivityResultLauncher.launch(searchType)
+    moviesActivityResultLauncher.launch(mediaFilterModel)
   }
 
   private fun ActivityResultRegistry.registerLoginActivityResultRegistry(
@@ -61,7 +53,7 @@ internal class HomeNavigatorImpl(
 
   private fun ActivityResultRegistry.registerMoviesActivityResultRegistry(
     owner: LifecycleOwner
-  ): ActivityResultLauncher<SearchType> =
+  ): ActivityResultLauncher<MediaFilterModel> =
     register(
       MOVIES_KEY,
       owner,

@@ -10,8 +10,8 @@ import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.Movie
-import com.raxdenstudios.app.movie.domain.model.SearchType
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -72,9 +72,7 @@ internal class MovieListViewModelTest : BaseTest() {
     coVerifyOrder {
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel(
-            logged = false,
-            searchType = SearchType.Popular,
+          MovieListModel.empty.copy(
             movies = listOf(
               MovieListItemModel.empty.copy(id = 1L),
               MovieListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
@@ -106,9 +104,7 @@ internal class MovieListViewModelTest : BaseTest() {
     coVerifyOrder {
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel(
-            logged = false,
-            searchType = SearchType.Popular,
+          MovieListModel.empty.copy(
             movies = listOf(
               MovieListItemModel.empty.copy(id = 1L),
               MovieListItemModel.empty.copy(
@@ -132,7 +128,7 @@ internal class MovieListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
-    val params = MovieListParams(SearchType.Popular)
+    val params = MovieListParams.popularMovies
     viewModel.state.observeForever(stateObserver)
 
     viewModel.refreshMovies(params)
@@ -141,9 +137,7 @@ internal class MovieListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel(
-            logged = false,
-            searchType = SearchType.Popular,
+          MovieListModel.empty.copy(
             movies = aFirstPageMoviesModel
           )
         )
@@ -153,7 +147,7 @@ internal class MovieListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
-    val params = MovieListParams(SearchType.Popular)
+    val params = MovieListParams.popularMovies
     viewModel.state.observeForever(stateObserver)
 
     viewModel.loadMovies(params)
@@ -162,9 +156,7 @@ internal class MovieListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel(
-            logged = false,
-            searchType = SearchType.Popular,
+          MovieListModel.empty.copy(
             movies = aFirstPageMoviesModel
           )
         )
@@ -184,9 +176,7 @@ internal class MovieListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel(
-            logged = false,
-            searchType = SearchType.Popular,
+          MovieListModel.empty.copy(
             movies = aSecondPageMoviesModel
           )
         )
@@ -194,20 +184,19 @@ internal class MovieListViewModelTest : BaseTest() {
     }
   }
 
-  private fun givenAMovieListModelWithResultsFromFirstPage(): MovieListModel = MovieListModel(
-    logged = false,
-    searchType = SearchType.Popular,
-    movies = aFirstPageMoviesModel
-  )
+  private fun givenAMovieListModelWithResultsFromFirstPage(): MovieListModel =
+    MovieListModel.empty.copy(
+      movies = aFirstPageMoviesModel
+    )
 }
 
 private val aFirstPage = Page(1)
 private val aSecondPage = Page(2)
 private val aPageSize = PageSize(20)
 private val aGetMoviesUseCaseFirstPageParams =
-  GetMoviesUseCase.Params(SearchType.Popular, aFirstPage, aPageSize)
+  GetMoviesUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
 private val aGetMoviesUseCaseSecondPageParams =
-  GetMoviesUseCase.Params(SearchType.Popular, aSecondPage, aPageSize)
+  GetMoviesUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
 private val aFirstPageMoviesModel = listOf(
   MovieListItemModel.empty.copy(id = 1L),
   MovieListItemModel.empty.copy(id = 2L),

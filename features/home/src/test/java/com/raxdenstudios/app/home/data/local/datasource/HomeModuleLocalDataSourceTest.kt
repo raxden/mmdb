@@ -72,10 +72,10 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
       flow.collect { modules ->
         assertEquals(
           listOf(
-            HomeModule.PopularMovies,
-            HomeModule.NowPlayingMovies,
-            HomeModule.TopRatedMovies,
-            HomeModule.UpcomingMovies,
+            HomeModule.popularMovies,
+            HomeModule.nowPlayingMovies,
+            HomeModule.topRatedMovies,
+            HomeModule.upcomingMovies,
           ), modules
         )
       }

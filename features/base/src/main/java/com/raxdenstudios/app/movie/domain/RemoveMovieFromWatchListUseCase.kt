@@ -1,7 +1,13 @@
 package com.raxdenstudios.app.movie.domain
 
+import com.raxdenstudios.app.movie.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 
 interface RemoveMovieFromWatchListUseCase {
-  suspend fun execute(movieId: Long): ResultData<Boolean>
+  suspend fun execute(params: Params): ResultData<Boolean>
+
+  data class Params(
+    val movieId: Long,
+    val mediaType: MediaType
+  )
 }

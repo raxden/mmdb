@@ -19,8 +19,9 @@ import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.DispatcherFacade
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.onSuccess
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
@@ -49,7 +50,7 @@ internal class HomeViewModel(
     getHomeModulesUseCase.execute().collect { modules ->
       val accountIsLogged = isAccountLoggedUseCase.execute()
       val homeModuleListModel = modules.map { homeModule ->
-        async { getDataFromHomeModule(homeModule) }
+        async { getDataFromModule(homeModule) }
       }.mapNotNull { deferred ->
         deferred.await()
       }
@@ -58,7 +59,7 @@ internal class HomeViewModel(
     }
   }
 
-  private suspend fun getDataFromHomeModule(module: HomeModule): HomeModuleModel? {
+  private suspend fun getDataFromModule(module: HomeModule): HomeModuleModel? {
     val useCaseParams = getMoviesUseCaseParamsMapper.transform(module)
     val resultData = getMoviesUseCase.execute(useCaseParams)
     return homeModuleModelMapper.transform(module, resultData)
@@ -70,7 +71,7 @@ internal class HomeViewModel(
 
   fun movieSelected(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel,
+    homeModuleModel: HomeModuleModel.CarouselMovies,
     carouselMoviesModel: CarouselMovieListModel,
     movieItemModel: MovieListItemModel,
   ) {
@@ -78,59 +79,54 @@ internal class HomeViewModel(
   }
 
   fun addMovieToWatchList(
-    homeModel: HomeModel,
-    homeModuleModel: HomeModuleModel,
-    carouselMoviesModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel,
+    home: HomeModel,
+    homeModule: HomeModuleModel.CarouselMovies,
+    carouselMovieList: CarouselMovieListModel,
+    movieListItem: MovieListItemModel,
   ) = viewModelScope.safeLaunch {
-    when (val result = addMovieToWatchListUseCase.execute(movieListItemModel.id)) {
-      is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
-      is ResultData.Success -> {
-        val homeModelResult = updateMovieWithWatchButton(
-          homeModel = homeModel,
-          homeModuleModel = homeModuleModel,
-          carouselMoviesModel = carouselMoviesModel,
-          movieListItemModel = movieListItemModel,
-          watchButtonModel = WatchButtonModel.Selected,
-        )
-        mState.value = HomeUIState.Content(homeModelResult)
-        refreshData()
-      }
-    }
-  }
-
-  private suspend fun updateMovieWithWatchButton(
-    homeModel: HomeModel,
-    homeModuleModel: HomeModuleModel,
-    carouselMoviesModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel,
-    watchButtonModel: WatchButtonModel,
-  ): HomeModel = withContext(dispatcher.default()) {
-    val movieUpdated = movieListItemModel.copy(watchButtonModel = watchButtonModel)
-    val carouselUpdated = carouselMoviesModel.replaceMovie(movieUpdated)
-    val homeModuleUpdated = homeModuleModel.replaceCarousel(carouselUpdated)
-    homeModel.replaceModule(homeModuleUpdated)
+    updateMovieWithWatchButton(
+      home = home,
+      homeModule = homeModule,
+      carouselMovieList = carouselMovieList,
+      movieListItem = movieListItem,
+      watchButton = WatchButtonModel.Selected,
+    )
+    addMovieToWatchListUseCase.execute(
+      AddMovieToWatchListUseCase.Params(movieListItem.id, movieListItem.mediaType)
+    ).onSuccess { refreshData() }
   }
 
   fun removeMovieFromWatchList(
-    homeModel: HomeModel,
-    homeModuleModel: HomeModuleModel,
-    carouselMoviesModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel,
+    home: HomeModel,
+    homeModule: HomeModuleModel.CarouselMovies,
+    carouselMovieList: CarouselMovieListModel,
+    movieListItem: MovieListItemModel,
   ) = viewModelScope.safeLaunch {
-    when (val result = removeMovieFromWatchListUseCase.execute(movieListItemModel.id)) {
-      is ResultData.Error -> mState.value = HomeUIState.Error(result.throwable)
-      is ResultData.Success -> {
-        val homeModelResult = updateMovieWithWatchButton(
-          homeModel = homeModel,
-          homeModuleModel = homeModuleModel,
-          carouselMoviesModel = carouselMoviesModel,
-          movieListItemModel = movieListItemModel,
-          watchButtonModel = WatchButtonModel.Unselected,
-        )
-        mState.value = HomeUIState.Content(homeModelResult)
-        refreshData()
-      }
+    updateMovieWithWatchButton(
+      home = home,
+      homeModule = homeModule,
+      carouselMovieList = carouselMovieList,
+      movieListItem = movieListItem,
+      watchButton = WatchButtonModel.Unselected,
+    )
+    removeMovieFromWatchListUseCase.execute(
+      RemoveMovieFromWatchListUseCase.Params(movieListItem.id, movieListItem.mediaType)
+    ).onSuccess { refreshData() }
+  }
+
+  private suspend fun updateMovieWithWatchButton(
+    home: HomeModel,
+    homeModule: HomeModuleModel.CarouselMovies,
+    carouselMovieList: CarouselMovieListModel,
+    movieListItem: MovieListItemModel,
+    watchButton: WatchButtonModel,
+  ) {
+    val homeUpdated = withContext(dispatcher.default()) {
+      val movieListItemUpdated = movieListItem.copy(watchButtonModel = watchButton)
+      val carouselMovieListUpdated = carouselMovieList.replaceMovie(movieListItemUpdated)
+      val homeModuleUpdated = homeModule.copy(carouselMovieListModel = carouselMovieListUpdated)
+      home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
     }
+    mState.value = HomeUIState.Content(homeUpdated)
   }
 }

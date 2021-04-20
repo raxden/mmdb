@@ -38,8 +38,9 @@ interface MovieV3Service {
     @Body request: WatchListDto.Request
   ): NetworkResponse<WatchListDto.Response, ErrorDto>
 
-  @GET("movie/{movie_id}")
+  @GET("{media_type}/{movie_id}")
   suspend fun detail(
+    @Path("media_type") mediaType: String,
     @Path("movie_id") movieId: String,
   ): NetworkResponse<MovieDto, ErrorDto>
 }

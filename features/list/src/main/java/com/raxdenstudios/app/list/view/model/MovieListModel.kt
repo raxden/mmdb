@@ -1,11 +1,11 @@
 package com.raxdenstudios.app.list.view.model
 
-import com.raxdenstudios.app.movie.domain.model.SearchType
+import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class MovieListModel(
-  val searchType: SearchType,
+  val mediaFilterModel: MediaFilterModel,
   val logged: Boolean,
   val movies: List<MovieListItemModel>,
 ) {
@@ -17,13 +17,13 @@ data class MovieListModel(
   companion object {
     val empty = MovieListModel(
       logged = false,
-      searchType = SearchType.Popular,
+      mediaFilterModel = MediaFilterModel.Popular.popularMoviesMediaFilter,
       movies = emptyList()
     )
 
-    fun withSearchType(searchType: SearchType) = MovieListModel(
+    fun withFilter(mediaFilterModel: MediaFilterModel) = MovieListModel(
       logged = false,
-      searchType = searchType,
+      mediaFilterModel = mediaFilterModel,
       movies = emptyList()
     )
   }
