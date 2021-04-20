@@ -30,7 +30,7 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
 
   private val movieGateway: MovieGateway = mockk() {
     coEvery {
-      watchList(aAccountLogged.credentials.accountId, any())
+      watchList(aAccountLogged.credentials.accountId, any(), any())
     } returns ResultData.Success(aPageDto)
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
@@ -50,7 +50,7 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
   fun `Given a searchType of type watchlist and account logged, When movies is called, Then load movies`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(SearchType.WatchList, aAccountLogged, aFirstPage)
+      val result = dataSource.movies(SearchType.WatchList.empty, aAccountLogged, aFirstPage)
 
       assertEquals(
         ResultData.Success(
@@ -69,7 +69,7 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
   fun `Given a searchType of type watchlist and account not logged, When movies is called, Then and exception raised`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(SearchType.WatchList, aAccountGuest, aFirstPage)
+      val result = dataSource.movies(SearchType.WatchList.empty, aAccountGuest, aFirstPage)
 
       result as ResultData.Error
       assert(result.throwable is UserNotLoggedException)
