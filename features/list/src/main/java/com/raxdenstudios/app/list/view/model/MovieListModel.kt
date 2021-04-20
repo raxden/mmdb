@@ -6,6 +6,7 @@ import com.raxdenstudios.commons.ext.replaceItem
 
 data class MovieListModel(
   val searchType: SearchType,
+  val logged: Boolean,
   val movies: List<MovieListItemModel>,
 ) {
 
@@ -15,11 +16,13 @@ data class MovieListModel(
 
   companion object {
     val empty = MovieListModel(
+      logged = false,
       searchType = SearchType.Popular,
       movies = emptyList()
     )
 
     fun withSearchType(searchType: SearchType) = MovieListModel(
+      logged = false,
       searchType = searchType,
       movies = emptyList()
     )
