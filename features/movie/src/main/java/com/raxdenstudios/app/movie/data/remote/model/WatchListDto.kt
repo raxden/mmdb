@@ -10,14 +10,14 @@ sealed class WatchListDto {
     @Expose val watchlist: Boolean = true,
   ) : WatchListDto() {
 
-    data class Add(val movieId: Long) : Request(
-      media_type = "movie",
+    data class Add(val movieId: Long, val category: String) : Request(
+      media_type = category,
       media_id = movieId,
       watchlist = true,
     )
 
-    data class Remove(val movieId: Long) : Request(
-      media_type = "movie",
+    data class Remove(val movieId: Long, val category: String) : Request(
+      media_type = category,
       media_id = movieId,
       watchlist = false,
     )

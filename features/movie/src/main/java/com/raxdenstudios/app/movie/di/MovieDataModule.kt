@@ -5,10 +5,7 @@ import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
 import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
-import com.raxdenstudios.app.movie.data.remote.mapper.DateDtoToLocalDateMapper
-import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
-import com.raxdenstudios.app.movie.data.remote.mapper.PictureDtoToDomainMapper
-import com.raxdenstudios.app.movie.data.remote.mapper.VoteDtoToDomainMapper
+import com.raxdenstudios.app.movie.data.remote.mapper.*
 import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
 import com.raxdenstudios.app.movie.data.repository.MovieRepository
@@ -39,12 +36,13 @@ val movieDataModule = module {
 
   factory { MovieGateway(get(), get(), get()) }
 
+  factory { MediaTypeToDtoMapper() }
   factory { VoteDtoToDomainMapper() }
   factory { PictureDtoToDomainMapper(get(named(APIVersion.V3))) }
   factory { DateDtoToLocalDateMapper() }
   factory { MovieDtoToDomainMapper(get(), get(), get()) }
 
-  factory { MovieRemoteDataSource(get(), get()) }
+  factory { MovieRemoteDataSource(get(), get(), get()) }
 
   factory<MovieRepository> { MovieRepositoryImpl(get(), get(), get()) }
 
