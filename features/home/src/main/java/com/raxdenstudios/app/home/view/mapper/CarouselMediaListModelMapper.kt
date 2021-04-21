@@ -3,8 +3,8 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
-import com.raxdenstudios.app.movie.domain.model.Media
-import com.raxdenstudios.app.movie.view.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.commons.provider.StringProvider
 
 internal class CarouselMediaListModelMapper(

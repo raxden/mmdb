@@ -6,7 +6,7 @@ import com.raxdenstudios.app.error.di.errorFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.login.di.loginFeatureModule
-import com.raxdenstudios.app.movie.di.mediaDataModule
+import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.navigator.di.navigatorModule
 import com.raxdenstudios.app.network.di.networkDataModule
 import com.raxdenstudios.app.tmdb.di.tmdbFeatureModule

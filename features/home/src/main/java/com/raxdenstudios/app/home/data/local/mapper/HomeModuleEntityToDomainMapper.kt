@@ -2,7 +2,7 @@ package com.raxdenstudios.app.home.data.local.mapper
 
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.movie.domain.model.MediaType
+import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.util.DataMapper
 
 internal class HomeModuleEntityToDomainMapper : DataMapper<HomeModuleEntity, HomeModule>() {

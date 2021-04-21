@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import com.raxdenstudios.app.list.view.MediaListActivity
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.movie.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 
 internal class MediaListActivityResultContract :
   ActivityResultContract<MediaFilterModel, Boolean>() {

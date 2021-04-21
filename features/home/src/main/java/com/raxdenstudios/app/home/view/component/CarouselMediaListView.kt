@@ -7,7 +7,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMediaListViewBinding
 import com.raxdenstudios.app.home.view.adapter.CarouselMediaListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding

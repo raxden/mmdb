@@ -12,7 +12,7 @@ import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.util.SDK
 import org.koin.android.ext.android.inject

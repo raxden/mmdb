@@ -9,7 +9,7 @@ object Modules {
 
   const val featureBase = ":features:base"
   const val featureAccount = ":features:account"
-  const val featureMovie = ":features:movie"
+  const val featureMedia = ":features:media"
   const val featureHome = ":features:home"
   const val featureMovieList = ":features:list"
   const val featureLogin = ":features:login"

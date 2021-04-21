@@ -1,8 +1,8 @@
 package com.raxdenstudios.app.home.view.mapper
 
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.movie.domain.GetMediasUseCase
-import com.raxdenstudios.app.movie.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.GetMediasUseCase
+import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.commons.util.DataMapper
 
 internal class GetMediasUseCaseParamsMapper : DataMapper<HomeModule, GetMediasUseCase.Params>() {

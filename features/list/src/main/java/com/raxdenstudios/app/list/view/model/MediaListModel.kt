@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.list.view.model
 
-import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class MediaListModel(
