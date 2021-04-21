@@ -7,7 +7,7 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
-interface GetMoviesUseCase {
+interface GetMediasUseCase {
   suspend fun execute(params: Params): ResultData<PageList<Media>>
 
   data class Params(
