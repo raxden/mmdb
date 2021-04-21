@@ -8,7 +8,7 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
-internal class MovieLocalDataSource(
+internal class MediaLocalDataSource(
   private val dao: MediaDao,
   private val movieToEntityMapper: MovieToEntityMapper,
   private val movieEntityToDomainMapper: MovieEntityToDomainMapper,
