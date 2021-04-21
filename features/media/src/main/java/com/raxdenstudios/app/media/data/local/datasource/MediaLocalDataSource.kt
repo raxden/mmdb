@@ -21,6 +21,10 @@ internal class MediaLocalDataSource(
     watchListDao.insert(WatchListEntity(media.id))
   }
 
+  suspend fun removeFromWatchList(mediaId: Long) {
+    watchListDao.remove(mediaId = mediaId)
+  }
+
   suspend fun watchList(): List<Media> {
     val entityList = mediaDao.watchList()
     return mediaEntityToDomainMapper.transform(entityList)
