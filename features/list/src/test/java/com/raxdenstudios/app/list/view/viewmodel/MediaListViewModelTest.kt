@@ -8,7 +8,7 @@ import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
-import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
+import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
@@ -39,7 +39,7 @@ internal class MediaListViewModelTest : BaseTest() {
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase = mockk() {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
-  private val getMoviesUseCase: GetMoviesUseCase = mockk() {
+  private val getMediasUseCase: GetMediasUseCase = mockk() {
     coEvery { execute(aGetMoviesUseCaseFirstPageParams) } returns ResultData.Success(aFirstPageList)
     coEvery { execute(aGetMoviesUseCaseSecondPageParams) } returns ResultData.Success(
       aSecondPageList
@@ -53,7 +53,7 @@ internal class MediaListViewModelTest : BaseTest() {
       listFeatureModule,
       module {
         factory(override = true) { isAccountLoggedUseCase }
-        factory(override = true) { getMoviesUseCase }
+        factory(override = true) { getMediasUseCase }
         factory(override = true) { addMovieToWatchListUseCase }
         factory(override = true) { removeMovieFromWatchListUseCase }
       }
@@ -194,9 +194,9 @@ private val aFirstPage = Page(1)
 private val aSecondPage = Page(2)
 private val aPageSize = PageSize(20)
 private val aGetMoviesUseCaseFirstPageParams =
-  GetMoviesUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
+  GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
 private val aGetMoviesUseCaseSecondPageParams =
-  GetMoviesUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
+  GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
 private val aFirstPageMoviesModel = listOf(
   MediaListItemModel.empty.copy(id = 1L),
   MediaListItemModel.empty.copy(id = 2L),

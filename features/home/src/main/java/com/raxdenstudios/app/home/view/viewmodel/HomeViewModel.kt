@@ -14,7 +14,7 @@ import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
-import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
+import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 internal class HomeViewModel(
   private val dispatcher: DispatcherFacade,
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
-  private val getMoviesUseCase: GetMoviesUseCase,
+  private val getMediasUseCase: GetMediasUseCase,
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
@@ -61,7 +61,7 @@ internal class HomeViewModel(
 
   private suspend fun getDataFromModule(module: HomeModule): HomeModuleModel? {
     val useCaseParams = getMoviesUseCaseParamsMapper.transform(module)
-    val resultData = getMoviesUseCase.execute(useCaseParams)
+    val resultData = getMediasUseCase.execute(useCaseParams)
     return homeModuleModelMapper.transform(module, resultData)
   }
 
