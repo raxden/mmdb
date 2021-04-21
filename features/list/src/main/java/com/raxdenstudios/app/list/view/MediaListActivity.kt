@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MediaListNavigator
-import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
+import com.raxdenstudios.app.list.databinding.MediaListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
@@ -31,7 +31,7 @@ class MediaListActivity : BaseActivity() {
       }
   }
 
-  private val binding: MovieListActivityBinding by viewBinding()
+  private val binding: MediaListActivityBinding by viewBinding()
   private val viewModel: MediaListViewModel by viewModel()
   private val navigator: MediaListNavigator by inject { parametersOf(this) }
   private val errorManager: ErrorManager by inject { parametersOf(this) }
@@ -52,14 +52,14 @@ class MediaListActivity : BaseActivity() {
     lifecycle.addObserver(navigator)
   }
 
-  private fun MovieListActivityBinding.handleState(state: MediaListUIState) = when (state) {
+  private fun MediaListActivityBinding.handleState(state: MediaListUIState) = when (state) {
     is MediaListUIState.Content -> handleContentState(state)
     MediaListUIState.EmptyContent -> handleEmptyState()
     is MediaListUIState.Error -> handleErrorState(state)
     MediaListUIState.Loading -> handleLoadingState()
   }
 
-  private fun MovieListActivityBinding.handleContentState(state: MediaListUIState.Content) {
+  private fun MediaListActivityBinding.handleContentState(state: MediaListUIState.Content) {
     swipeRefreshLayout.isRefreshing = false
 
     loadMoreMoviesWhenScrollDown(state.model)
@@ -100,7 +100,7 @@ class MediaListActivity : BaseActivity() {
     viewModel.addMovieToWatchList(model, item)
   }
 
-  private fun MovieListActivityBinding.loadMoreMoviesWhenScrollDown(model: MediaListModel) {
+  private fun MediaListActivityBinding.loadMoreMoviesWhenScrollDown(model: MediaListModel) {
     onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
     onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
       val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -108,20 +108,20 @@ class MediaListActivity : BaseActivity() {
     }
   }
 
-  private fun MovieListActivityBinding.handleEmptyState() {
+  private fun MediaListActivityBinding.handleEmptyState() {
     swipeRefreshLayout.isRefreshing = false
   }
 
-  private fun MovieListActivityBinding.handleErrorState(state: MediaListUIState.Error) {
+  private fun MediaListActivityBinding.handleErrorState(state: MediaListUIState.Error) {
     swipeRefreshLayout.isRefreshing = false
     errorManager.handleError(state.throwable)
   }
 
-  private fun MovieListActivityBinding.handleLoadingState() {
+  private fun MediaListActivityBinding.handleLoadingState() {
     swipeRefreshLayout.isRefreshing = true
   }
 
-  private fun MovieListActivityBinding.setUp() {
+  private fun MediaListActivityBinding.setUp() {
     val statusBarHeight = SDK.getStatusBarHeight(this@MediaListActivity)
     recyclerView.setPaddingTop(statusBarHeight)
     recyclerView.adapter = adapter
