@@ -16,19 +16,19 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
-internal class MovieRepositoryImpl(
+internal class MediaRepositoryImpl(
   private val movieRemoteDataSource: MovieRemoteDataSource,
   private val mediaLocalDataSource: MediaLocalDataSource,
   private val accountLocalDataSource: AccountLocalDataSource,
-) : MovieRepository {
+) : MediaRepository {
 
-  override suspend fun addMovieToWatchList(
-    movieId: Long,
+  override suspend fun addMediaToWatchList(
+    mediaId: Long,
     mediaType: MediaType
   ): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> addMovieToWatchList(account, mediaType, movieId)
+      is Account.Logged -> addMovieToWatchList(account, mediaType, mediaId)
     }
 
   private suspend fun addMovieToWatchList(
@@ -40,13 +40,13 @@ internal class MovieRepositoryImpl(
       .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, true) }
       .coFlatMap { movie -> updateMovie(movie) }
 
-  override suspend fun removeMovieFromWatchList(
-    movieId: Long,
+  override suspend fun removeMediaFromWatchList(
+    mediaId: Long,
     mediaType: MediaType
   ): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> removeMovieFromWatchList(account, mediaType, movieId)
+      is Account.Logged -> removeMovieFromWatchList(account, mediaType, mediaId)
     }
 
   private suspend fun removeMovieFromWatchList(
@@ -71,7 +71,7 @@ internal class MovieRepositoryImpl(
     return ResultData.Success(true)
   }
 
-  override suspend fun movies(
+  override suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
