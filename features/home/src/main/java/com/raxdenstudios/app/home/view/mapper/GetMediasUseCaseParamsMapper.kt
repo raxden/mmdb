@@ -5,7 +5,7 @@ import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.commons.util.DataMapper
 
-internal class GetMoviesUseCaseParamsMapper : DataMapper<HomeModule, GetMediasUseCase.Params>() {
+internal class GetMediasUseCaseParamsMapper : DataMapper<HomeModule, GetMediasUseCase.Params>() {
 
   override fun transform(source: HomeModule): GetMediasUseCase.Params {
     val mediaFilter = when (source) {
