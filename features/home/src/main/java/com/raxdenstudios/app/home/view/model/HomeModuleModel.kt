@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.home.view.model
 
-import com.raxdenstudios.app.movie.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 
 sealed class HomeModuleModel {
 

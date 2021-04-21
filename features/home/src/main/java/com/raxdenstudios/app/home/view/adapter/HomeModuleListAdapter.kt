@@ -9,8 +9,8 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.view.component.CarouselMediaListView
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class HomeModuleListAdapter :

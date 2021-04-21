@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.home.domain.model
 
-import com.raxdenstudios.app.movie.domain.model.MediaType
+import com.raxdenstudios.app.media.domain.model.MediaType
 
 sealed class HomeModule {
 
