@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
-import com.raxdenstudios.app.home.view.adapter.CarouselMovieListAdapter
+import com.raxdenstudios.app.home.view.adapter.CarouselMediaListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.inflateView
@@ -21,7 +21,7 @@ internal class CarouselMediaListView @JvmOverloads constructor(
 
   private val binding: CarouselMovieListViewBinding by viewBinding()
 
-  private val adapter: CarouselMovieListAdapter by lazy { CarouselMovieListAdapter() }
+  private val adapter: CarouselMediaListAdapter by lazy { CarouselMediaListAdapter() }
 
   var onAddMovieToWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
