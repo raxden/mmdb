@@ -3,11 +3,17 @@ package com.raxdenstudios.app.movie.data.local;
 import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.RoomOpenHelper;
+import androidx.room.RoomOpenHelper.Delegate;
+import androidx.room.RoomOpenHelper.ValidationResult;
 import androidx.room.util.DBUtil;
 import androidx.room.util.TableInfo;
+import androidx.room.util.TableInfo.Column;
+import androidx.room.util.TableInfo.ForeignKey;
+import androidx.room.util.TableInfo.Index;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
-
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
@@ -90,7 +96,7 @@ public final class MediaDatabase_Impl extends MediaDatabase {
         final TableInfo _infoMovie = new TableInfo("movie", _columnsMovie, _foreignKeysMovie, _indicesMovie);
         final TableInfo _existingMovie = TableInfo.read(_db, "movie");
         if (! _infoMovie.equals(_existingMovie)) {
-          return new RoomOpenHelper.ValidationResult(false, "movie(com.raxdenstudios.app.movie.data.local.model.MovieEntity).\n"
+          return new RoomOpenHelper.ValidationResult(false, "movie(com.raxdenstudios.app.movie.data.local.model.MediaEntity).\n"
                   + " Expected:\n" + _infoMovie + "\n"
                   + " Found:\n" + _existingMovie);
         }
