@@ -16,7 +16,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val movieDataModule = module {
+val mediaDataModule = module {
 
   single { MediaDatabase.getInstance(get()) }
   factory { get<MediaDatabase>().watchListDao() }

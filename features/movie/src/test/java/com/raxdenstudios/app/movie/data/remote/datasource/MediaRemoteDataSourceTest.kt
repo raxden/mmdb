@@ -4,7 +4,7 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.model.MediaDto
-import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.di.mediaDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.network.APIDataProvider
@@ -37,7 +37,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
   override val modules: List<Module>
     get() = listOf(
-      movieDataModule,
+      mediaDataModule,
       module {
         factory(override = true) { mediaGateway }
         factory(override = true, qualifier = named(APIVersion.V3)) { apiDataProvider }
