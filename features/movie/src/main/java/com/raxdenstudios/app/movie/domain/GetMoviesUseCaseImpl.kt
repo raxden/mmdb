@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.domain
 
 import com.raxdenstudios.app.movie.data.repository.MovieRepository
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.PageList
 
@@ -9,6 +9,6 @@ internal class GetMoviesUseCaseImpl(
   private val movieRepository: MovieRepository
 ) : GetMoviesUseCase {
 
-  override suspend fun execute(params: GetMoviesUseCase.Params): ResultData<PageList<Movie>> =
+  override suspend fun execute(params: GetMoviesUseCase.Params): ResultData<PageList<Media>> =
     movieRepository.movies(params.mediaFilter, params.page, params.pageSize)
 }

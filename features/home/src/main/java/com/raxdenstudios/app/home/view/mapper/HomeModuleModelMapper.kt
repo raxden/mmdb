@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MediaTypeModel
 import com.raxdenstudios.commons.ResultData
@@ -16,7 +16,7 @@ internal class HomeModuleModelMapper(
 
   fun transform(
     homeModule: HomeModule,
-    resultData: ResultData<PageList<Movie>>
+    resultData: ResultData<PageList<Media>>
   ): HomeModuleModel? {
     val movieList = resultData.getValueOrNull()?.items ?: emptyList()
     val carouselMoviesModel = carouselMovieListModelMapper.transform(homeModule, movieList)
