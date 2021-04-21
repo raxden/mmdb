@@ -4,7 +4,7 @@ import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 
 sealed class HomeModuleModel {
 
-  data class CarouselMovies(
+  data class CarouselMedias(
     val mediaFilterModel: MediaFilterModel,
     val carouselMediaListModel: CarouselMediaListModel,
   ) : HomeModuleModel()
