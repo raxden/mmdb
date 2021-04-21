@@ -19,6 +19,7 @@ import retrofit2.Retrofit
 val mediaDataModule = module {
 
   single { MediaDatabase.getInstance(get()) }
+  factory { get<MediaDatabase>().mediaDao() }
   factory { get<MediaDatabase>().watchListDao() }
 
   factory { MediaToEntityMapper(get(), get()) }
@@ -29,7 +30,7 @@ val mediaDataModule = module {
   factory { PictureEntityToDomainMapper(get()) }
   factory { SizeToEntityMapper() }
   factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
-  factory { MediaLocalDataSource(get(), get(), get()) }
+  factory { MediaLocalDataSource(get(), get(), get(), get()) }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MediaV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MediaV4Service::class.java) }
