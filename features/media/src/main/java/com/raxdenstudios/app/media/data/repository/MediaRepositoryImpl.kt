@@ -48,11 +48,10 @@ internal class MediaRepositoryImpl(
   private suspend fun removeMovieFromWatchList(
     account: Account.Logged,
     mediaType: MediaType,
-    movieId: Long
+    mediaId: Long
   ): ResultData<Boolean> =
-    mediaRemoteDataSource.removeMediaFromWatchList(account, mediaType, movieId)
-      .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, false) }
-      .coFlatMap { movie -> updateMovie(movie) }
+    mediaRemoteDataSource.removeMediaFromWatchList(account, mediaType, mediaId)
+      .onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
 
   private suspend fun getMovieAndMarkAsWatched(
     movieId: Long,
