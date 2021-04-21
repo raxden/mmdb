@@ -9,8 +9,8 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.coFlatMap
 import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -75,7 +75,7 @@ internal class MediaRepositoryImpl(
       }
     )
 
-  override suspend fun loadWatchListInLocal(
+  override suspend fun loadWatchListFromRemoteAndPersistInLocal(
     mediaType: MediaType
   ): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {
@@ -88,10 +88,6 @@ internal class MediaRepositoryImpl(
     mediaType: MediaType,
   ): ResultData<Boolean> =
     mediaRemoteDataSource.watchList(account, mediaType)
-      .coFlatMap { movies -> updateMovies(movies) }
-
-  private suspend fun updateMovies(media: List<Media>): ResultData.Success<Boolean> {
-    mediaLocalDataSource.insert(media)
-    return ResultData.Success(true)
-  }
+      .coMap { medias -> mediaLocalDataSource.addToWatchList(medias) }
+      .map { true }
 }

@@ -51,10 +51,10 @@ internal class MediaRepositoryImplTest : BaseTest() {
     } returns ResultData.Success(aMovies)
   }
   private val mediaLocalDataSource: MediaLocalDataSource = mockk {
-    coEvery { insert(any<Media>()) } returns Unit
-    coEvery { insert(any<List<Media>>()) } returns Unit
-    coEvery { isWatchList(any()) } returns false
-    coEvery { addToWatchList(any()) } returns Unit
+    coEvery { containsInWatchList(any()) } returns false
+    coEvery { addToWatchList(any<Media>()) } returns Unit
+    coEvery { addToWatchList(any<List<Media>>()) } returns Unit
+    coEvery { removeFromWatchList(any()) } returns Unit
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
@@ -85,14 +85,14 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       val result = repository.removeMediaFromWatchList(aMovieId, aMediaType)
 
-      coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = false)) }
+      coVerify { mediaLocalDataSource.removeFromWatchList(aMovieId) }
       assertEquals(ResultData.Success(true), result)
     }
 
   @Test
   fun `Given a movies returned by the server, When movies are called, Then movies returned should be marked as watched if requires`() =
     testDispatcher.runBlockingTest {
-      coEvery { mediaLocalDataSource.isWatchList(2L) } returns true
+      coEvery { mediaLocalDataSource.containsInWatchList(2L) } returns true
 
       val result = repository.medias(MediaFilter.popularMovies, aPage, aPageSize)
 
@@ -114,7 +114,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   fun `Given an account logged, When loadWatchListFromRemoteAndPersistInLocal is called, Then load data from remote and persist in local`() =
     testDispatcher.runBlockingTest {
 
-      val result = repository.loadWatchListInLocal(aMediaType)
+      val result = repository.loadWatchListFromRemoteAndPersistInLocal(aMediaType)
 
       assertEquals(ResultData.Success(true), result)
     }
@@ -124,7 +124,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       coEvery { accountLocalDataSource.getAccount() } returns aAccountGuest
 
-      val result = repository.loadWatchListInLocal(aMediaType)
+      val result = repository.loadWatchListFromRemoteAndPersistInLocal(aMediaType)
 
       result as ResultData.Error
       assert(result.throwable is UserNotLoggedException)

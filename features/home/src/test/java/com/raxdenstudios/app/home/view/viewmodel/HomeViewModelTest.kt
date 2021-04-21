@@ -51,7 +51,7 @@ internal class HomeViewModelTest : BaseTest() {
     coEvery { execute() } returns false
   }
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
-    coEvery { execute(any()) } returns ResultData.Success(true)
+    coEvery { execute(any()) } returns ResultData.Success(Media.empty)
   }
   private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 
 @Dao
@@ -17,7 +16,7 @@ interface WatchListDao {
   suspend fun insert(entity: WatchListEntity)
 
   @Query("SELECT * FROM watch_list WHERE media_id == :mediaId")
-  suspend fun find(mediaId: Long): MediaEntity?
+  suspend fun find(mediaId: Long): WatchListEntity?
 
   @Query("DELETE FROM watch_list WHERE media_id == :mediaId")
   suspend fun remove(mediaId: Long)
