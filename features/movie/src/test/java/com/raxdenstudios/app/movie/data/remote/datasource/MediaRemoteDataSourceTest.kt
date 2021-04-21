@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.remote.datasource
 
 import com.raxdenstudios.app.account.domain.model.Account
-import com.raxdenstudios.app.movie.data.remote.MovieGateway
+import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
 import com.raxdenstudios.app.movie.di.movieDataModule
@@ -28,7 +28,7 @@ import org.koin.test.inject
 @ExperimentalCoroutinesApi
 internal class MediaRemoteDataSourceTest : BaseTest() {
 
-  private val movieGateway: MovieGateway = mockk() {
+  private val mediaGateway: MediaGateway = mockk() {
     coEvery {
       watchList(aAccountLogged.credentials.accountId, any(), any())
     } returns ResultData.Success(aPageDto)
@@ -39,7 +39,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
     get() = listOf(
       movieDataModule,
       module {
-        factory(override = true) { movieGateway }
+        factory(override = true) { mediaGateway }
         factory(override = true, qualifier = named(APIVersion.V3)) { apiDataProvider }
       }
     )

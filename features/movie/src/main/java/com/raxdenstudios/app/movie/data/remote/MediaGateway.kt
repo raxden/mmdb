@@ -12,7 +12,7 @@ import com.raxdenstudios.commons.retrofit.toResultData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-internal class MovieGateway(
+internal class MediaGateway(
   private val dispatcher: DispatcherFacade,
   private val movieV3Service: MovieV3Service,
   private val movieV4Service: MovieV4Service,

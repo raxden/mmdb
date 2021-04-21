@@ -30,8 +30,8 @@ internal class MediaGatewayTest : BaseTest() {
     coEvery { watchList(aAccountId, aCategory, 3) } returns aNetworkResponseSuccessThirdPage
   }
 
-  private val gateway: MovieGateway by lazy {
-    MovieGateway(
+  private val gateway: MediaGateway by lazy {
+    MediaGateway(
       dispatcher = object : DispatcherFacade {
         override fun io() = testDispatcher
         override fun default() = testDispatcher
