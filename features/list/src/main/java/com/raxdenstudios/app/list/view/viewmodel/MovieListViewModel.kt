@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
+import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
@@ -46,7 +46,7 @@ internal class MovieListViewModel(
     super.onCleared()
   }
 
-  fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) =
+  fun addMovieToWatchList(model: MediaListModel, item: MovieListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
       val params = AddMovieToWatchListUseCase.Params(item.id, item.mediaType)
@@ -55,7 +55,7 @@ internal class MovieListViewModel(
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
-  fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) =
+  fun removeMovieFromWatchList(model: MediaListModel, item: MovieListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       val params = RemoveMovieFromWatchListUseCase.Params(item.id, item.mediaType)
@@ -78,10 +78,10 @@ internal class MovieListViewModel(
     mState.value is MovieListUIState.Content || mState.value is MovieListUIState.Loading
 
   private fun requestFirstPage(params: MediaListParams) {
-    requestPage(PageIndex.first, MovieListModel.withFilter(params.mediaFilterModel))
+    requestPage(PageIndex.first, MediaListModel.withFilter(params.mediaFilterModel))
   }
 
-  private fun requestPage(pageIndex: PageIndex, model: MovieListModel) {
+  private fun requestPage(pageIndex: PageIndex, model: MediaListModel) {
     pagination.requestPage(
       pageIndex = pageIndex,
       pageRequest = { page, pageSize -> pageRequest(model.mediaFilterModel, page, pageSize) },
@@ -89,11 +89,11 @@ internal class MovieListViewModel(
     )
   }
 
-  fun loadMoreMovies(pageIndex: PageIndex, model: MovieListModel) {
+  fun loadMoreMovies(pageIndex: PageIndex, model: MediaListModel) {
     requestPage(pageIndex, model)
   }
 
-  private fun pageResponse(model: MovieListModel, pageResult: PageResult<MovieListItemModel>) =
+  private fun pageResponse(model: MediaListModel, pageResult: PageResult<MovieListItemModel>) =
     when (pageResult) {
       is PageResult.Content -> handlePageResultContent(model, pageResult)
       is PageResult.Error -> mState.value = MovieListUIState.Error(pageResult.throwable)
@@ -103,7 +103,7 @@ internal class MovieListViewModel(
     }
 
   private fun handlePageResultContent(
-    model: MovieListModel,
+    model: MediaListModel,
     pageResult: PageResult.Content<MovieListItemModel>
   ) {
     viewModelScope.safeLaunch {
