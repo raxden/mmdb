@@ -29,7 +29,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:elevation="10dp"
-        android:indeterminateTint="@color/ronchi"
+        android:indeterminateTint="@color/blaze_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

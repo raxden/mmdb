@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EFC84D</color>
+    <color name="colorPrimary">#fa6100</color>
     <color name="colorPrimaryVariant">#616161</color>
     <color name="colorOnPrimary">#000000</color>
     <color name="colorSecondary">#b71c1c</color>
@@ -8,8 +8,8 @@
     <color name="colorOnSecondary">#f5f5f5</color>
     <color name="colorBackground">#e1e2e1</color>
     <color name="colorOnBackground">#000000</color>
-    <color name="colorSurface">#f5f5f6</color>
-    <color name="colorOnSurface">#000000</color>
+    <color name="colorSurface">#ffffff</color>
+    <color name="colorOnSurface">#888888</color>
     <color name="colorControlActivated">#b71c1c</color>
     <color name="colorError">#f05545</color>
     <color name="colorOnError">#FFFFFF</color>
@@ -20,6 +20,6 @@
 
     <color name="white">#ffffff</color>
     <color name="black_translucent">#88000000</color>
-    <color name="ronchi">#EFC84D</color>
+    <color name="blaze_orange">#fa6100</color>
 
 </resources>
