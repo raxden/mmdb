@@ -15,20 +15,20 @@ import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 
-internal class MovieRemoteDataSource(
+internal class MediaRemoteDataSource(
   private val mediaGateway: MediaGateway,
   private val mediaTypeToDtoMapper: MediaTypeToDtoMapper,
   private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,
 ) {
 
-  suspend fun movieById(movieId: Long, mediaType: MediaType): ResultData<Media> =
+  suspend fun mediaById(mediaId: Long, mediaType: MediaType): ResultData<Media> =
     mediaGateway.detail(
-      movieId = movieId.toString(),
+      movieId = mediaId.toString(),
       mediaType = mediaTypeToDtoMapper.transform(mediaType)
     )
       .map { dto -> mediaDtoToDomainMapper.transform(mediaType, dto) }
 
-  suspend fun addMovieToWatchList(
+  suspend fun addMediaToWatchList(
     account: Account.Logged,
     mediaType: MediaType,
     movieId: Long
@@ -39,7 +39,7 @@ internal class MovieRemoteDataSource(
       movieId = movieId
     ).map { true }
 
-  suspend fun removeMovieFromWatchList(
+  suspend fun removeMediaFromWatchList(
     account: Account.Logged,
     mediaType: MediaType,
     movieId: Long
@@ -61,7 +61,7 @@ internal class MovieRemoteDataSource(
         }
       }
 
-  suspend fun movies(
+  suspend fun medias(
     mediaFilter: MediaFilter,
     account: Account,
     page: Page,
@@ -86,10 +86,10 @@ internal class MovieRemoteDataSource(
       page = page.value
     )
       .map { pageDto -> transformPageData(mediaType, pageDto) }
-      .map { pageList -> markMoviesAsWatched(pageList) }
+      .map { pageList -> markMediasAsWatched(pageList) }
   }
 
-  private fun markMoviesAsWatched(pageList: PageList<Media>) =
+  private fun markMediasAsWatched(pageList: PageList<Media>) =
     pageList.copy(items = pageList.items.map { movie -> movie.copy(watchList = true) })
 
   private suspend fun upcoming(page: Page): ResultData<PageList<Media>> =

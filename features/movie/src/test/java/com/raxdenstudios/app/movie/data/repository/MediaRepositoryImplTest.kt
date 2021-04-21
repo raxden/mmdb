@@ -4,7 +4,7 @@ import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSourc
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
-import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
+import com.raxdenstudios.app.movie.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
@@ -33,18 +33,18 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val accountLocalDataSource: AccountLocalDataSource = mockk {
     coEvery { getAccount() } returns aAccountLogged
   }
-  private val movieRemoteDataSource: MovieRemoteDataSource = mockk {
+  private val mediaRemoteDataSource: MediaRemoteDataSource = mockk {
     coEvery {
-      addMovieToWatchList(aAccountLogged, aMediaType, aMovieId)
+      addMediaToWatchList(aAccountLogged, aMediaType, aMovieId)
     } returns ResultData.Success(true)
     coEvery {
-      removeMovieFromWatchList(aAccountLogged, aMediaType, aMovieId)
+      removeMediaFromWatchList(aAccountLogged, aMediaType, aMovieId)
     } returns ResultData.Success(true)
     coEvery {
-      movies(any(), aAccountLogged, aPage)
+      medias(any(), aAccountLogged, aPage)
     } returns ResultData.Success(aPageList)
     coEvery {
-      movieById(aMovieId, aMediaType)
+      mediaById(aMovieId, aMediaType)
     } returns ResultData.Success(Media.empty.copy(id = aMovieId))
     coEvery {
       watchList(aAccountLogged, aMediaType)
@@ -62,7 +62,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
       movieDataModule,
       module {
         factory(override = true) { accountLocalDataSource }
-        factory(override = true) { movieRemoteDataSource }
+        factory(override = true) { mediaRemoteDataSource }
         factory(override = true) { mediaLocalDataSource }
         factory(override = true) { apiDataProvider }
       }
