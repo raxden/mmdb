@@ -3,8 +3,8 @@ package com.raxdenstudios.app.movie.data.remote.datasource
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
+import com.raxdenstudios.app.movie.data.remote.mapper.MediaDtoToDomainMapper
 import com.raxdenstudios.app.movie.data.remote.mapper.MediaTypeToDtoMapper
-import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
 import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
@@ -18,7 +18,7 @@ import com.raxdenstudios.commons.pagination.model.PageList
 internal class MovieRemoteDataSource(
   private val mediaGateway: MediaGateway,
   private val mediaTypeToDtoMapper: MediaTypeToDtoMapper,
-  private val movieDtoToDomainMapper: MovieDtoToDomainMapper,
+  private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,
 ) {
 
   suspend fun movieById(movieId: Long, mediaType: MediaType): ResultData<Media> =
@@ -26,7 +26,7 @@ internal class MovieRemoteDataSource(
       movieId = movieId.toString(),
       mediaType = mediaTypeToDtoMapper.transform(mediaType)
     )
-      .map { dto -> movieDtoToDomainMapper.transform(mediaType, dto) }
+      .map { dto -> mediaDtoToDomainMapper.transform(mediaType, dto) }
 
   suspend fun addMovieToWatchList(
     account: Account.Logged,
@@ -57,7 +57,7 @@ internal class MovieRemoteDataSource(
     )
       .map { dtoList ->
         dtoList.map { dto ->
-          movieDtoToDomainMapper.transform(mediaType, dto).copy(watchList = true)
+          mediaDtoToDomainMapper.transform(mediaType, dto).copy(watchList = true)
         }
       }
 
@@ -110,6 +110,6 @@ internal class MovieRemoteDataSource(
 
   private fun transformPageData(mediaType: MediaType, pageDto: PageDto<MediaDto>): PageList<Media> =
     pageDto.toPageList { movieDtoList ->
-      movieDtoList.map { movieDto -> movieDtoToDomainMapper.transform(mediaType, movieDto) }
+      movieDtoList.map { movieDto -> mediaDtoToDomainMapper.transform(mediaType, movieDto) }
     }
 }

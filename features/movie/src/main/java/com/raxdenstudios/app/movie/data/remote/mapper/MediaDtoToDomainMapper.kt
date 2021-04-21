@@ -4,7 +4,7 @@ import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaType
 
-internal class MovieDtoToDomainMapper(
+internal class MediaDtoToDomainMapper(
   private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
   private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
   private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,

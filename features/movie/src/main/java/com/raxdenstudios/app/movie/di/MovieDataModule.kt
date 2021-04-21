@@ -40,7 +40,7 @@ val movieDataModule = module {
   factory { VoteDtoToDomainMapper() }
   factory { PictureDtoToDomainMapper(get(named(APIVersion.V3))) }
   factory { DateDtoToLocalDateMapper() }
-  factory { MovieDtoToDomainMapper(get(), get(), get()) }
+  factory { MediaDtoToDomainMapper(get(), get(), get()) }
 
   factory { MovieRemoteDataSource(get(), get(), get()) }
 
