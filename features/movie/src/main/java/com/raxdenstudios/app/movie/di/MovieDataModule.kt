@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.movie.di
 
-import com.raxdenstudios.app.movie.data.local.MovieDatabase
+import com.raxdenstudios.app.movie.data.local.MediaDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
@@ -18,8 +18,8 @@ import retrofit2.Retrofit
 
 val movieDataModule = module {
 
-  single { MovieDatabase.getInstance(get()) }
-  factory { get<MovieDatabase>().watchListDao() }
+  single { MediaDatabase.getInstance(get()) }
+  factory { get<MediaDatabase>().watchListDao() }
 
   factory { MovieToEntityMapper(get(), get()) }
   factory { MovieEntityToDomainMapper(get(), get()) }

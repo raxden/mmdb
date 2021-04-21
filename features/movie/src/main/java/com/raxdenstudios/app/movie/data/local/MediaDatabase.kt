@@ -11,31 +11,31 @@ import com.raxdenstudios.app.movie.data.local.model.MovieEntity
   entities = [MovieEntity::class],
   version = 3,
 )
-abstract class MovieDatabase : RoomDatabase() {
+abstract class MediaDatabase : RoomDatabase() {
 
   abstract fun watchListDao(): MovieDao
 
   companion object {
 
     @Volatile
-    private var INSTANCE: MovieDatabase? = null
+    private var INSTANCE: MediaDatabase? = null
 
-    fun getInstance(context: Context): MovieDatabase {
+    fun getInstance(context: Context): MediaDatabase {
       return INSTANCE ?: synchronized(this) {
         INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
       }
     }
 
     @VisibleForTesting
-    fun switchToInMemory(context: Context): MovieDatabase {
-      return Room.inMemoryDatabaseBuilder(context, MovieDatabase::class.java)
+    fun switchToInMemory(context: Context): MediaDatabase {
+      return Room.inMemoryDatabaseBuilder(context, MediaDatabase::class.java)
         // allowing main thread queries, just for testing
         .allowMainThreadQueries()
         .build()
     }
 
-    private fun buildDatabase(context: Context): MovieDatabase {
-      return Room.databaseBuilder(context, MovieDatabase::class.java, "movie.db")
+    private fun buildDatabase(context: Context): MediaDatabase {
+      return Room.databaseBuilder(context, MediaDatabase::class.java, "media.db")
         .fallbackToDestructiveMigration()
         .build()
     }
