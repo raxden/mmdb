@@ -15,7 +15,7 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.DispatcherFacade
@@ -32,7 +32,7 @@ internal class HomeViewModel(
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
-  private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
+  private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper,
 ) : BaseViewModel() {
@@ -109,8 +109,8 @@ internal class HomeViewModel(
       mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Unselected,
     )
-    removeMovieFromWatchListUseCase.execute(
-      RemoveMovieFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+    removeMediaFromWatchListUseCase.execute(
+      RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onSuccess { refreshData() }
   }
 
