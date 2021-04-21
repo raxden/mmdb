@@ -8,7 +8,10 @@ import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.commons.*
+import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.coFlatMap
+import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -52,19 +55,6 @@ internal class MediaRepositoryImpl(
   ): ResultData<Boolean> =
     mediaRemoteDataSource.removeMediaFromWatchList(account, mediaType, mediaId)
       .onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
-
-  private suspend fun getMovieAndMarkAsWatched(
-    movieId: Long,
-    mediaType: MediaType,
-    watched: Boolean
-  ): ResultData<Media> =
-    mediaRemoteDataSource.mediaById(movieId, mediaType)
-      .map { movie -> movie.copy(watchList = watched) }
-
-  private suspend fun updateMovie(media: Media): ResultData.Success<Boolean> {
-    mediaLocalDataSource.insert(media)
-    return ResultData.Success(true)
-  }
 
   override suspend fun medias(
     mediaFilter: MediaFilter,
