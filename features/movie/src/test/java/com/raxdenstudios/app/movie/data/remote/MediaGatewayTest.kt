@@ -2,8 +2,8 @@ package com.raxdenstudios.app.movie.data.remote
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
-import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
-import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
@@ -23,8 +23,8 @@ internal class MediaGatewayTest : BaseTest() {
   override val modules: List<Module>
     get() = emptyList()
 
-  private val movieV3Service: MovieV3Service = mockk(relaxed = true)
-  private val movieV4Service: MovieV4Service = mockk(relaxed = true) {
+  private val mediaV3Service: MediaV3Service = mockk(relaxed = true)
+  private val mediaV4Service: MediaV4Service = mockk(relaxed = true) {
     coEvery { watchList(aAccountId, aCategory, 1) } returns aNetworkResponseSuccessFirstPage
     coEvery { watchList(aAccountId, aCategory, 2) } returns aNetworkResponseSuccessSecondPage
     coEvery { watchList(aAccountId, aCategory, 3) } returns aNetworkResponseSuccessThirdPage
@@ -36,8 +36,8 @@ internal class MediaGatewayTest : BaseTest() {
         override fun io() = testDispatcher
         override fun default() = testDispatcher
       },
-      movieV3Service = movieV3Service,
-      movieV4Service = movieV4Service,
+      mediaV3Service = mediaV3Service,
+      mediaV4Service = mediaV4Service,
     )
   }
 
@@ -47,9 +47,9 @@ internal class MediaGatewayTest : BaseTest() {
       val resultData = gateway.watchList(aAccountId, aCategory)
 
       coVerify {
-        movieV4Service.watchList(aAccountId, aCategory, 1)
-        movieV4Service.watchList(aAccountId, aCategory, 2)
-        movieV4Service.watchList(aAccountId, aCategory, 3)
+        mediaV4Service.watchList(aAccountId, aCategory, 1)
+        mediaV4Service.watchList(aAccountId, aCategory, 2)
+        mediaV4Service.watchList(aAccountId, aCategory, 3)
       }
       assertEquals(
         ResultData.Success(
