@@ -60,7 +60,7 @@ dependencies {
   implementation(project(Modules.featureNetwork))
   implementation(project(Modules.featureMedia))
   implementation(project(Modules.featureAccount))
-  implementation(project(Modules.featureMovieList))
+  implementation(project(Modules.featureMediaList))
 
   implementation(project(Modules.featureHome))
   implementation(project(Modules.featureError))

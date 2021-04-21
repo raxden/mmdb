@@ -10,9 +10,9 @@ data class CarouselMediaListModel(
   val medias: List<MediaListItemModel>,
 ) {
 
-  fun hasMovies() = medias.isNotEmpty()
+  fun hasMedias() = medias.isNotEmpty()
 
-  fun replaceMovie(media: MediaListItemModel): CarouselMediaListModel = copy(
+  fun replaceMedia(media: MediaListItemModel): CarouselMediaListModel = copy(
     medias = medias.replaceItem(media) { mediaToReplace -> mediaToReplace.id == media.id }
   )
 

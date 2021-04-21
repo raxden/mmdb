@@ -150,7 +150,7 @@ internal class MediaListViewModelTest : BaseTest() {
     val params = MediaListParams.popularMovies
     viewModel.state.observeForever(stateObserver)
 
-    viewModel.loadMovies(params)
+    viewModel.loadMedias(params)
 
     coVerifyOrder {
       stateObserver.onChanged(MediaListUIState.Loading)

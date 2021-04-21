@@ -47,7 +47,7 @@ class MediaListActivity : BaseActivity() {
 
     observe(viewModel.state) { state -> binding.handleState(state) }
 
-    viewModel.loadMovies(params)
+    viewModel.loadMedias(params)
 
     lifecycle.addObserver(navigator)
   }

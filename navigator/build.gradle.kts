@@ -9,6 +9,6 @@ dependencies {
 
   implementation(project(Modules.featureBase))
   implementation(project(Modules.featureHome))
-  implementation(project(Modules.featureMovieList))
+  implementation(project(Modules.featureMediaList))
   implementation(project(Modules.featureLogin))
 }

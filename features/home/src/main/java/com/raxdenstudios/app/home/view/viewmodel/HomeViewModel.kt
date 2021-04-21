@@ -69,7 +69,7 @@ internal class HomeViewModel(
     loadData()
   }
 
-  fun movieSelected(
+  fun mediaSelected(
     model: HomeModel,
     homeModuleModel: HomeModuleModel.CarouselMedias,
     carouselMoviesModel: CarouselMediaListModel,
@@ -78,13 +78,13 @@ internal class HomeViewModel(
 
   }
 
-  fun addMovieToWatchList(
+  fun addMediaToWatchList(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
-    updateMovieWithWatchButton(
+    updateMediaWithWatchButton(
       home = home,
       homeModule = homeModule,
       carouselMediaList = carouselMediaList,
@@ -96,13 +96,13 @@ internal class HomeViewModel(
     ).onSuccess { refreshData() }
   }
 
-  fun removeMovieFromWatchList(
+  fun removeMediaFromWatchList(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
-    updateMovieWithWatchButton(
+    updateMediaWithWatchButton(
       home = home,
       homeModule = homeModule,
       carouselMediaList = carouselMediaList,
@@ -114,7 +114,7 @@ internal class HomeViewModel(
     ).onSuccess { refreshData() }
   }
 
-  private suspend fun updateMovieWithWatchButton(
+  private suspend fun updateMediaWithWatchButton(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
@@ -123,7 +123,7 @@ internal class HomeViewModel(
   ) {
     val homeUpdated = withContext(dispatcher.default()) {
       val movieListItemUpdated = mediaListItem.copy(watchButtonModel = watchButton)
-      val carouselMovieListUpdated = carouselMediaList.replaceMovie(movieListItemUpdated)
+      val carouselMovieListUpdated = carouselMediaList.replaceMedia(movieListItemUpdated)
       val homeModuleUpdated = homeModule.copy(carouselMediaListModel = carouselMovieListUpdated)
       home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
     }
