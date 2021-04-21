@@ -5,7 +5,7 @@
     <application>
 
         <activity
-            android:name=".view.MovieListActivity"
+            android:name=".view.MediaListActivity"
             android:theme="@style/Theme.App.MovieList"
             android:windowSoftInputMode="adjustPan" />
     </application>
