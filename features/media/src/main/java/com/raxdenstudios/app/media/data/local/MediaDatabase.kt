@@ -5,16 +5,14 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 
 @Database(
-  entities = [MediaEntity::class, WatchListEntity::class],
-  version = 4,
+  entities = [WatchListEntity::class],
+  version = 1,
 )
 abstract class MediaDatabase : RoomDatabase() {
 
-  abstract fun mediaDao(): MediaDao
   abstract fun watchListDao(): WatchListDao
 
   companion object {

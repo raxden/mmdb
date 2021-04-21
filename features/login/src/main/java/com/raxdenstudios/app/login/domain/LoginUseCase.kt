@@ -17,8 +17,8 @@ internal class LoginUseCase(
   suspend fun execute(credentials: Credentials) {
     accountRepository.createAccountWithCredentials(credentials)
     withContext(dispatcher.io()) {
-      launch { mediaRepository.loadWatchListInLocal(MediaType.Movie) }
-      launch { mediaRepository.loadWatchListInLocal(MediaType.TVShow) }
+      launch { mediaRepository.loadWatchListFromRemoteAndPersistInLocal(MediaType.Movie) }
+      launch { mediaRepository.loadWatchListFromRemoteAndPersistInLocal(MediaType.TVShow) }
     }
   }
 }

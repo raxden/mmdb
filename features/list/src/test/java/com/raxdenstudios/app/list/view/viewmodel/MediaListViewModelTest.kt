@@ -34,7 +34,7 @@ internal class MediaListViewModelTest : BaseTest() {
     coEvery { execute() } returns false
   }
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk() {
-    coEvery { execute(any()) } returns ResultData.Success(true)
+    coEvery { execute(any()) } returns ResultData.Success(Media.empty)
   }
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk() {
     coEvery { execute(any()) } returns ResultData.Success(true)

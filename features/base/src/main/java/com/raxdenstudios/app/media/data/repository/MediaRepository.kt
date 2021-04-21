@@ -17,5 +17,5 @@ interface MediaRepository {
     pageSize: PageSize
   ): ResultData<PageList<Media>>
 
-  suspend fun loadWatchListInLocal(mediaType: MediaType): ResultData<Boolean>
+  suspend fun loadWatchListFromRemoteAndPersistInLocal(mediaType: MediaType): ResultData<Boolean>
 }
