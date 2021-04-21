@@ -8,7 +8,7 @@ import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
+import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.mapper.MediaFilterModelToDomainMapper
@@ -30,7 +30,7 @@ import org.koin.core.parameter.parametersOf
 internal class MediaListViewModel(
   private val getMediasUseCase: GetMediasUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
-  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
+  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
@@ -49,8 +49,8 @@ internal class MediaListViewModel(
   fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
-      val params = AddMovieToWatchListUseCase.Params(item.id, item.mediaType)
-      addMovieToWatchListUseCase.execute(params)
+      val params = AddMediaToWatchListUseCase.Params(item.id, item.mediaType)
+      addMediaToWatchListUseCase.execute(params)
         .onFailure { error -> mState.value = MediaListUIState.Error(error) }
         .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }

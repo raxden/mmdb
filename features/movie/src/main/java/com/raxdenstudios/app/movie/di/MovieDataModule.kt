@@ -46,7 +46,7 @@ val movieDataModule = module {
 
   factory<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
 
-  factory<AddMovieToWatchListUseCase> { AddMovieToWatchListUseCaseImpl(get()) }
+  factory<AddMediaToWatchListUseCase> { AddMediaToWatchListUseCaseImpl(get()) }
   factory<RemoveMovieFromWatchListUseCase> { RemoveMovieFromWatchListUseCaseImpl(get()) }
   factory<GetMediasUseCase> { GetMediasUseCaseImpl(get()) }
 }

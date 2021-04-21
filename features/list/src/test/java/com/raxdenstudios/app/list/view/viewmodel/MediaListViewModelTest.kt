@@ -7,7 +7,7 @@ import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
+import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Media
@@ -33,7 +33,7 @@ internal class MediaListViewModelTest : BaseTest() {
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
     coEvery { execute() } returns false
   }
-  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase = mockk() {
+  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk() {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase = mockk() {
@@ -54,7 +54,7 @@ internal class MediaListViewModelTest : BaseTest() {
       module {
         factory(override = true) { isAccountLoggedUseCase }
         factory(override = true) { getMediasUseCase }
-        factory(override = true) { addMovieToWatchListUseCase }
+        factory(override = true) { addMediaToWatchListUseCase }
         factory(override = true) { removeMovieFromWatchListUseCase }
       }
     )
