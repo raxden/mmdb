@@ -8,7 +8,8 @@ import com.raxdenstudios.app.list.view.MediaListActivity
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 
-internal class MoviesActivityResultContract : ActivityResultContract<MediaFilterModel, Boolean>() {
+internal class MediaListActivityResultContract :
+  ActivityResultContract<MediaFilterModel, Boolean>() {
 
   override fun createIntent(context: Context, mediaFilterModel: MediaFilterModel): Intent {
     val params = MediaListParams(mediaFilterModel)
