@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
 import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.view.component.CarouselMovieListView
+import com.raxdenstudios.app.home.view.component.CarouselMediaListView
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
@@ -81,7 +81,7 @@ internal class HomeModuleListAdapter :
     }
 
     private fun bindCarousel(model: HomeModuleModel.CarouselMovies, item: CarouselMediaListModel) {
-      val component = view.findViewById<CarouselMovieListView>(R.id.item_view)
+      val component = view.findViewById<CarouselMediaListView>(R.id.item_view)
       component.onSeeAllClickListener = { carouselMoviesModel ->
         onCarouselMoviesModel(model, carouselMoviesModel)
       }
