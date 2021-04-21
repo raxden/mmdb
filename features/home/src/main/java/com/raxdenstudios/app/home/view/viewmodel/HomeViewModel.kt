@@ -9,7 +9,7 @@ import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
+import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
@@ -72,7 +72,7 @@ internal class HomeViewModel(
   fun movieSelected(
     model: HomeModel,
     homeModuleModel: HomeModuleModel.CarouselMovies,
-    carouselMoviesModel: CarouselMovieListModel,
+    carouselMoviesModel: CarouselMediaListModel,
     mediaItemModel: MediaListItemModel,
   ) {
 
@@ -81,13 +81,13 @@ internal class HomeViewModel(
   fun addMovieToWatchList(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
-    carouselMovieList: CarouselMovieListModel,
+    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
     updateMovieWithWatchButton(
       home = home,
       homeModule = homeModule,
-      carouselMovieList = carouselMovieList,
+      carouselMediaList = carouselMediaList,
       mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Selected,
     )
@@ -99,13 +99,13 @@ internal class HomeViewModel(
   fun removeMovieFromWatchList(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
-    carouselMovieList: CarouselMovieListModel,
+    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
     updateMovieWithWatchButton(
       home = home,
       homeModule = homeModule,
-      carouselMovieList = carouselMovieList,
+      carouselMediaList = carouselMediaList,
       mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Unselected,
     )
@@ -117,14 +117,14 @@ internal class HomeViewModel(
   private suspend fun updateMovieWithWatchButton(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
-    carouselMovieList: CarouselMovieListModel,
+    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
     watchButton: WatchButtonModel,
   ) {
     val homeUpdated = withContext(dispatcher.default()) {
       val movieListItemUpdated = mediaListItem.copy(watchButtonModel = watchButton)
-      val carouselMovieListUpdated = carouselMovieList.replaceMovie(movieListItemUpdated)
-      val homeModuleUpdated = homeModule.copy(carouselMovieListModel = carouselMovieListUpdated)
+      val carouselMovieListUpdated = carouselMediaList.replaceMovie(movieListItemUpdated)
+      val homeModuleUpdated = homeModule.copy(carouselMediaListModel = carouselMovieListUpdated)
       home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
     }
     mState.value = HomeUIState.Content(homeUpdated)

@@ -6,7 +6,7 @@ sealed class HomeModuleModel {
 
   data class CarouselMovies(
     val mediaFilterModel: MediaFilterModel,
-    val carouselMovieListModel: CarouselMovieListModel,
+    val carouselMediaListModel: CarouselMediaListModel,
   ) : HomeModuleModel()
 
   object WatchlistNotLogged : HomeModuleModel()
