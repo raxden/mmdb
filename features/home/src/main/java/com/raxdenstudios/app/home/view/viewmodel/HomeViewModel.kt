@@ -13,7 +13,7 @@ import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
-import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
+import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
@@ -30,7 +30,7 @@ internal class HomeViewModel(
   private val dispatcher: DispatcherFacade,
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMediasUseCase: GetMediasUseCase,
-  private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
+  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
@@ -91,8 +91,8 @@ internal class HomeViewModel(
       mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Selected,
     )
-    addMovieToWatchListUseCase.execute(
-      AddMovieToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+    addMediaToWatchListUseCase.execute(
+      AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onSuccess { refreshData() }
   }
 
