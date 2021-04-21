@@ -2,7 +2,7 @@ package com.raxdenstudios.app.movie.data.repository
 
 import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSource
 import com.raxdenstudios.app.account.domain.model.Account
-import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
+import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Media
@@ -18,7 +18,7 @@ import com.raxdenstudios.commons.pagination.model.PageSize
 
 internal class MovieRepositoryImpl(
   private val movieRemoteDataSource: MovieRemoteDataSource,
-  private val movieLocalDataSource: MovieLocalDataSource,
+  private val mediaLocalDataSource: MediaLocalDataSource,
   private val accountLocalDataSource: AccountLocalDataSource,
 ) : MovieRepository {
 
@@ -67,7 +67,7 @@ internal class MovieRepositoryImpl(
       .map { movie -> movie.copy(watchList = watched) }
 
   private suspend fun updateMovie(media: Media): ResultData.Success<Boolean> {
-    movieLocalDataSource.insert(media)
+    mediaLocalDataSource.insert(media)
     return ResultData.Success(true)
   }
 
@@ -91,7 +91,7 @@ internal class MovieRepositoryImpl(
   private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Media>) =
     pageList.copy(
       items = pageList.items.map { movie ->
-        movie.copy(watchList = movieLocalDataSource.isWatchList(movie.id))
+        movie.copy(watchList = mediaLocalDataSource.isWatchList(movie.id))
       }
     )
 
@@ -111,7 +111,7 @@ internal class MovieRepositoryImpl(
       .coFlatMap { movies -> updateMovies(movies) }
 
   private suspend fun updateMovies(media: List<Media>): ResultData.Success<Boolean> {
-    movieLocalDataSource.insert(media)
+    mediaLocalDataSource.insert(media)
     return ResultData.Success(true)
   }
 }
