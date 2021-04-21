@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.di
 import com.raxdenstudios.app.movie.data.local.MovieDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
-import com.raxdenstudios.app.movie.data.remote.MovieGateway
+import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.*
 import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
@@ -34,7 +34,7 @@ val movieDataModule = module {
   single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }
 
-  factory { MovieGateway(get(), get(), get()) }
+  factory { MediaGateway(get(), get(), get()) }
 
   factory { MediaTypeToDtoMapper() }
   factory { VoteDtoToDomainMapper() }

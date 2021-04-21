@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.remote.datasource
 
 import com.raxdenstudios.app.account.domain.model.Account
-import com.raxdenstudios.app.movie.data.remote.MovieGateway
+import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
@@ -16,13 +16,13 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 
 internal class MovieRemoteDataSource(
-  private val movieGateway: MovieGateway,
+  private val mediaGateway: MediaGateway,
   private val mediaTypeToDtoMapper: MediaTypeToDtoMapper,
   private val movieDtoToDomainMapper: MovieDtoToDomainMapper,
 ) {
 
   suspend fun movieById(movieId: Long, mediaType: MediaType): ResultData<Media> =
-    movieGateway.detail(
+    mediaGateway.detail(
       movieId = movieId.toString(),
       mediaType = mediaTypeToDtoMapper.transform(mediaType)
     )
@@ -33,7 +33,7 @@ internal class MovieRemoteDataSource(
     mediaType: MediaType,
     movieId: Long
   ): ResultData<Boolean> =
-    movieGateway.addToWatchList(
+    mediaGateway.addToWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       movieId = movieId
@@ -44,14 +44,14 @@ internal class MovieRemoteDataSource(
     mediaType: MediaType,
     movieId: Long
   ): ResultData<Boolean> =
-    movieGateway.removeFromWatchList(
+    mediaGateway.removeFromWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       movieId = movieId
     ).map { true }
 
   suspend fun watchList(account: Account.Logged, mediaType: MediaType): ResultData<List<Media>> =
-    movieGateway.watchList(
+    mediaGateway.watchList(
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       accountId = account.credentials.accountId
     )
@@ -80,7 +80,7 @@ internal class MovieRemoteDataSource(
     page: Page
   ): ResultData<PageList<Media>> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
-    is Account.Logged -> movieGateway.watchList(
+    is Account.Logged -> mediaGateway.watchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       page = page.value
@@ -93,19 +93,19 @@ internal class MovieRemoteDataSource(
     pageList.copy(items = pageList.items.map { movie -> movie.copy(watchList = true) })
 
   private suspend fun upcoming(page: Page): ResultData<PageList<Media>> =
-    movieGateway.upcoming(page.value)
+    mediaGateway.upcoming(page.value)
       .map { pageDto -> transformPageData(MediaType.Movie, pageDto) }
 
   private suspend fun topRated(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    movieGateway.topRated(mediaTypeToDtoMapper.transform(mediaType), page.value)
+    mediaGateway.topRated(mediaTypeToDtoMapper.transform(mediaType), page.value)
       .map { pageDto -> transformPageData(mediaType, pageDto) }
 
   private suspend fun popular(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    movieGateway.popular(mediaTypeToDtoMapper.transform(mediaType), page.value)
+    mediaGateway.popular(mediaTypeToDtoMapper.transform(mediaType), page.value)
       .map { pageDto -> transformPageData(mediaType, pageDto) }
 
   private suspend fun nowPlaying(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    movieGateway.nowPlaying(mediaTypeToDtoMapper.transform(mediaType), page.value)
+    mediaGateway.nowPlaying(mediaTypeToDtoMapper.transform(mediaType), page.value)
       .map { pageDto -> transformPageData(mediaType, pageDto) }
 
   private fun transformPageData(mediaType: MediaType, pageDto: PageDto<MovieDto>): PageList<Media> =
