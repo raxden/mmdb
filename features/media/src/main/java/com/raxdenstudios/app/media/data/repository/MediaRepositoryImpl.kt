@@ -28,17 +28,16 @@ internal class MediaRepositoryImpl(
   ): ResultData<Boolean> =
     when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> addMovieToWatchList(account, mediaType, mediaId)
+      is Account.Logged -> addMediaToWatchList(account, mediaType, mediaId)
     }
 
-  private suspend fun addMovieToWatchList(
+  private suspend fun addMediaToWatchList(
     account: Account.Logged,
     mediaType: MediaType,
-    movieId: Long
+    mediaId: Long
   ): ResultData<Boolean> =
-    mediaRemoteDataSource.addMediaToWatchList(account, mediaType, movieId)
-      .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, true) }
-      .coFlatMap { movie -> updateMovie(movie) }
+    mediaRemoteDataSource.addMediaToWatchList(account, mediaType, mediaId)
+      .coFlatMap { media -> updateMovie(media) }
 
   override suspend fun removeMediaFromWatchList(
     mediaId: Long,
