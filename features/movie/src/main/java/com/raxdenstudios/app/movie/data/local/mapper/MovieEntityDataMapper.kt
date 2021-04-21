@@ -26,7 +26,7 @@ internal class MediaToEntityMapper(
   )
 }
 
-internal class MovieEntityToDomainMapper(
+internal class MediaEntityToDomainMapper(
   private val pictureEntityToDomainMapper: PictureEntityToDomainMapper,
   private val voteEntityToDomainMapper: VoteEntityToDomainMapper,
 ) : DataMapper<MediaEntity, Media>() {
