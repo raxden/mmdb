@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
-import com.raxdenstudios.app.list.MovieListNavigator
+import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
@@ -33,7 +33,7 @@ class MediaListActivity : BaseActivity() {
 
   private val binding: MovieListActivityBinding by viewBinding()
   private val viewModel: MediaListViewModel by viewModel()
-  private val navigator: MovieListNavigator by inject { parametersOf(this) }
+  private val navigator: MediaListNavigator by inject { parametersOf(this) }
   private val errorManager: ErrorManager by inject { parametersOf(this) }
   private val params: MediaListParams by argument()
 
