@@ -11,7 +11,7 @@ import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
-import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
+import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
@@ -40,7 +40,7 @@ internal class HomeViewModelTest : BaseTest() {
   private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
     every { execute() } returns flow { emit(aHomeModules) }
   }
-  private val getMoviesUseCase: GetMoviesUseCase = mockk {
+  private val getMediasUseCase: GetMediasUseCase = mockk {
     coEvery { execute(aGetUpcomingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
     coEvery { execute(aGetTopRatedMoviesUseCaseParams) } returns aResultPageMovieListSuccess
     coEvery { execute(aGetPopularMoviesUseCaseParams) } returns aResultPageMovieListSuccess
@@ -68,7 +68,7 @@ internal class HomeViewModelTest : BaseTest() {
       homeFeatureModule,
       module {
         factory(override = true) { getHomeModulesUseCase }
-        factory(override = true) { getMoviesUseCase }
+        factory(override = true) { getMediasUseCase }
         factory(override = true) { isAccountLoggedUseCase }
         factory(override = true) { addMovieToWatchListUseCase }
         factory(override = true) { removeMovieToWatchListUseCase }
@@ -176,12 +176,12 @@ private val aMovies = listOf(
 private val aPageMovieList = PageList(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)
 private val aGetUpcomingMoviesUseCaseParams =
-  GetMoviesUseCase.Params(MediaFilter.Upcoming, Page(1))
+  GetMediasUseCase.Params(MediaFilter.Upcoming, Page(1))
 private val aGetTopRatedMoviesUseCaseParams =
-  GetMoviesUseCase.Params(MediaFilter.topRatedMovies, Page(1))
+  GetMediasUseCase.Params(MediaFilter.topRatedMovies, Page(1))
 private val aGetPopularMoviesUseCaseParams =
-  GetMoviesUseCase.Params(MediaFilter.popularMovies, Page(1))
+  GetMediasUseCase.Params(MediaFilter.popularMovies, Page(1))
 private val aGetNowPlayingMoviesUseCaseParams =
-  GetMoviesUseCase.Params(MediaFilter.nowPlayingMovies, Page(1))
+  GetMediasUseCase.Params(MediaFilter.nowPlayingMovies, Page(1))
 private val aGetWatchListMoviesUseCaseParams =
-  GetMoviesUseCase.Params(MediaFilter.watchListMovies, Page(1))
+  GetMediasUseCase.Params(MediaFilter.watchListMovies, Page(1))
