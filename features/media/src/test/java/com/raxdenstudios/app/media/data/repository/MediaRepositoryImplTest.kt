@@ -54,6 +54,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     coEvery { insert(any<Media>()) } returns Unit
     coEvery { insert(any<List<Media>>()) } returns Unit
     coEvery { isWatchList(any()) } returns false
+    coEvery { addToWatchList(any()) } returns Unit
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
@@ -71,12 +72,12 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val repository: MediaRepository by inject()
 
   @Test
-  fun `Given a movie, When addMovieToWatchList is called, Then movie is added`() =
+  fun `Given a movie, When addMovieToWatchList is called, Then movie is added to watchlist`() =
     testDispatcher.runBlockingTest {
       val result = repository.addMediaToWatchList(aMovieId, aMediaType)
 
-      coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = true)) }
-      assertEquals(ResultData.Success(true), result)
+      coVerify { mediaLocalDataSource.addToWatchList(aMovie.copy(watchList = true)) }
+      assertEquals(ResultData.Success(aMovie.copy(watchList = true)), result)
     }
 
   @Test

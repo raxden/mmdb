@@ -8,10 +8,7 @@ import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.coFlatMap
-import com.raxdenstudios.commons.coMap
-import com.raxdenstudios.commons.map
+import com.raxdenstudios.commons.*
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -25,7 +22,7 @@ internal class MediaRepositoryImpl(
   override suspend fun addMediaToWatchList(
     mediaId: Long,
     mediaType: MediaType
-  ): ResultData<Boolean> =
+  ): ResultData<Media> =
     when (val account = accountLocalDataSource.getAccount()) {
       is Account.Guest -> ResultData.Error(UserNotLoggedException())
       is Account.Logged -> addMediaToWatchList(account, mediaType, mediaId)
@@ -35,9 +32,9 @@ internal class MediaRepositoryImpl(
     account: Account.Logged,
     mediaType: MediaType,
     mediaId: Long
-  ): ResultData<Boolean> =
+  ): ResultData<Media> =
     mediaRemoteDataSource.addMediaToWatchList(account, mediaType, mediaId)
-      .coFlatMap { media -> updateMovie(media) }
+      .onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
 
   override suspend fun removeMediaFromWatchList(
     mediaId: Long,
