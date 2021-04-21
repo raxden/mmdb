@@ -12,7 +12,7 @@ import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.mapper.MediaFilterModelToDomainMapper
-import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
+import com.raxdenstudios.app.movie.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
@@ -33,7 +33,7 @@ internal class MediaListViewModel(
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
   private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
-  private val movieListItemModelMapper: MovieListItemModelMapper,
+  private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
 
   private val pagination: Pagination<MediaListItemModel> by inject { parametersOf(viewModelScope) }
@@ -125,7 +125,7 @@ internal class MediaListViewModel(
     val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
     val useCaseParams = GetMoviesUseCase.Params(mediaFilter, page, pageSize)
     return getMoviesUseCase.execute(useCaseParams)
-      .coMap { pageList -> pageList.map { items -> movieListItemModelMapper.transform(items) } }
+      .coMap { pageList -> pageList.map { items -> mediaListItemModelMapper.transform(items) } }
   }
 }
 
