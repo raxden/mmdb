@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:tint="#efc84d"
+            android:tint="@color/blaze_orange"
             app:layout_constraintBottom_toBottomOf="@+id/carousel_title_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/carousel_title_view"
@@ -67,18 +67,50 @@
             app:layout_constraintStart_toStartOf="@+id/carousel_see_all_view"
             app:layout_constraintTop_toTopOf="@+id/carousel_see_all_view" />
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/media_type_chip_group"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:chipSpacingHorizontal="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/carousel_title_view"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/movies_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/media_list_item_chip_movies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/tv_series_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/media_list_item_chip_tv_series" />
+
+        </com.google.android.material.chip.ChipGroup>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/carousel_title_view"
+            app:layout_constraintTop_toBottomOf="@+id/media_type_chip_group"
             tools:listitem="@layout/media_list_item_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
