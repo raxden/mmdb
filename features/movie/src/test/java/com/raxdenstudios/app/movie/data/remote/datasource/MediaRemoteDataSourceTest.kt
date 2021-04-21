@@ -44,13 +44,13 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       }
     )
 
-  private val dataSource: MovieRemoteDataSource by inject()
+  private val dataSource: MediaRemoteDataSource by inject()
 
   @Test
   fun `Given a searchType of type watchlist and account logged, When movies is called, Then load movies`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(MediaFilter.watchListMovies, aAccountLogged, aFirstPage)
+      val result = dataSource.medias(MediaFilter.watchListMovies, aAccountLogged, aFirstPage)
 
       assertEquals(
         ResultData.Success(
@@ -69,7 +69,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
   fun `Given a searchType of type watchlist and account not logged, When movies is called, Then and exception raised`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.movies(MediaFilter.watchListMovies, aAccountGuest, aFirstPage)
+      val result = dataSource.medias(MediaFilter.watchListMovies, aAccountGuest, aFirstPage)
 
       result as ResultData.Error
       assert(result.throwable is UserNotLoggedException)
