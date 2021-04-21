@@ -8,10 +8,10 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
-interface MovieRepository {
-  suspend fun addMovieToWatchList(movieId: Long, mediaType: MediaType): ResultData<Boolean>
-  suspend fun removeMovieFromWatchList(movieId: Long, mediaType: MediaType): ResultData<Boolean>
-  suspend fun movies(
+interface MediaRepository {
+  suspend fun addMediaToWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
+  suspend fun removeMediaFromWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
+  suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
