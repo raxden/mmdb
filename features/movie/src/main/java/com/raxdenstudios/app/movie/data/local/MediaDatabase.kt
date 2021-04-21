@@ -13,7 +13,7 @@ import com.raxdenstudios.app.movie.data.local.model.MediaEntity
 )
 abstract class MediaDatabase : RoomDatabase() {
 
-  abstract fun watchListDao(): MovieDao
+  abstract fun watchListDao(): MediaDao
 
   companion object {
 
