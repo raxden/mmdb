@@ -2,7 +2,7 @@ package com.raxdenstudios.app.movie.data.local.datasource
 
 import com.raxdenstudios.app.movie.data.local.MediaDao
 import com.raxdenstudios.app.movie.data.local.model.MediaEntity
-import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.di.mediaDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
@@ -29,7 +29,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
   override val modules: List<Module>
     get() = listOf(
-      movieDataModule,
+      mediaDataModule,
       module {
         factory(override = true) { dao }
         factory(override = true, qualifier = named(APIVersion.V3)) { apiDataProvider }

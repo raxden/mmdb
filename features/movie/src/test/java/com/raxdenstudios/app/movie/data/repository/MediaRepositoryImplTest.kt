@@ -6,7 +6,7 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.di.mediaDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
@@ -59,7 +59,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
   override val modules: List<Module>
     get() = listOf(
-      movieDataModule,
+      mediaDataModule,
       module {
         factory(override = true) { accountLocalDataSource }
         factory(override = true) { mediaRemoteDataSource }
