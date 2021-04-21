@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.raxdenstudios.app.movie.data.local.model.MediaEntity
 
 @Dao
-interface MovieDao {
+interface MediaDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(data: List<MediaEntity>)

@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.movie.data.local.datasource
 
-import com.raxdenstudios.app.movie.data.local.MovieDao
+import com.raxdenstudios.app.movie.data.local.MediaDao
 import com.raxdenstudios.app.movie.data.local.model.MediaEntity
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
@@ -24,7 +24,7 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 internal class MediaLocalDataSourceTest : BaseTest() {
 
-  private val dao: MovieDao = mockk()
+  private val dao: MediaDao = mockk()
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>

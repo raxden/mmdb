@@ -17,7 +17,7 @@ import java.util.Set;
 
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class MediaDatabase_Impl extends MediaDatabase {
-  private volatile MovieDao _movieDao;
+  private volatile MediaDao _mediaDao;
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
@@ -130,15 +130,15 @@ public final class MediaDatabase_Impl extends MediaDatabase {
   }
 
   @Override
-  public MovieDao watchListDao() {
-    if (_movieDao != null) {
-      return _movieDao;
+  public MediaDao watchListDao() {
+    if (_mediaDao != null) {
+      return _mediaDao;
     } else {
       synchronized(this) {
-        if(_movieDao == null) {
-          _movieDao = new MovieDao_Impl(this);
+        if(_mediaDao == null) {
+          _mediaDao = new MediaDao_Impl(this);
         }
-        return _movieDao;
+        return _mediaDao;
       }
     }
   }
