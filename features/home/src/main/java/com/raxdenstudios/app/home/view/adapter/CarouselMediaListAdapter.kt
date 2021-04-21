@@ -10,8 +10,8 @@ import com.raxdenstudios.app.movie.view.component.MovieListItemView
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
-internal class CarouselMovieListAdapter :
-  BaseListAdapter<MediaListItemModel, CarouselMovieListAdapter.MovieListAdapterHolder>(
+internal class CarouselMediaListAdapter :
+  BaseListAdapter<MediaListItemModel, CarouselMediaListAdapter.MovieListAdapterHolder>(
     areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
   ) {
 
