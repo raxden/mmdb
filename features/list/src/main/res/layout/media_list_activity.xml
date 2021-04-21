@@ -22,7 +22,7 @@
             android:orientation="vertical"
             app:spanCount="2"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/movie_list_item_view" />
+            tools:listitem="@layout/media_list_item_view" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
