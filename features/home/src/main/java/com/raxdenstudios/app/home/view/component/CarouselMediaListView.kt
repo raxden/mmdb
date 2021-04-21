@@ -12,7 +12,7 @@ import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
 
-internal class CarouselMovieListView @JvmOverloads constructor(
+internal class CarouselMediaListView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0,
