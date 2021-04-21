@@ -5,12 +5,12 @@ import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MovieListParams(
+data class MediaListParams(
   val mediaFilterModel: MediaFilterModel
 ) : Parcelable {
 
   companion object {
-    val popularMovies = MovieListParams(
+    val popularMovies = MediaListParams(
       mediaFilterModel = MediaFilterModel.Popular.popularMoviesMediaFilter
     )
   }

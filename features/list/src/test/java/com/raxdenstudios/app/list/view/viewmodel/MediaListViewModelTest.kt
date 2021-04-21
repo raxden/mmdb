@@ -4,8 +4,8 @@ import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
+import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListModel
-import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
@@ -128,7 +128,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
-    val params = MovieListParams.popularMovies
+    val params = MediaListParams.popularMovies
     viewModel.state.observeForever(stateObserver)
 
     viewModel.refreshMovies(params)
@@ -147,7 +147,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
-    val params = MovieListParams.popularMovies
+    val params = MediaListParams.popularMovies
     viewModel.state.observeForever(stateObserver)
 
     viewModel.loadMovies(params)
