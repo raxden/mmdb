@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "movie")
-data class MovieEntity(
+data class MediaEntity(
   @PrimaryKey @ColumnInfo(name = "id") val id: Long,
   @ColumnInfo(name = "title") val title: String,
   @Embedded(prefix = "backdrop_") val backdrop: PictureEntity?,
@@ -17,7 +17,7 @@ data class MovieEntity(
 ) {
 
   companion object {
-    val empty = MovieEntity(
+    val empty = MediaEntity(
       id = 0L,
       title = "",
       backdrop = PictureEntity.empty,
