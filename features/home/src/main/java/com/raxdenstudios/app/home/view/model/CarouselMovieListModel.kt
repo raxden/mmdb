@@ -1,19 +1,19 @@
 package com.raxdenstudios.app.home.view.model
 
 import androidx.annotation.VisibleForTesting
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class CarouselMovieListModel(
   val label: String,
   val description: String,
-  val movies: List<MovieListItemModel>,
+  val medias: List<MediaListItemModel>,
 ) {
 
-  fun hasMovies() = movies.isNotEmpty()
+  fun hasMovies() = medias.isNotEmpty()
 
-  fun replaceMovie(movie: MovieListItemModel): CarouselMovieListModel = copy(
-    movies = movies.replaceItem(movie) { movieToReplace -> movieToReplace.id == movie.id }
+  fun replaceMovie(media: MediaListItemModel): CarouselMovieListModel = copy(
+    medias = medias.replaceItem(media) { movieToReplace -> movieToReplace.id == media.id }
   )
 
   companion object {
@@ -21,7 +21,7 @@ data class CarouselMovieListModel(
     val empty = CarouselMovieListModel(
       label = "",
       description = "",
-      movies = emptyList(),
+      medias = emptyList(),
     )
   }
 }

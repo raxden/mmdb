@@ -12,7 +12,7 @@ import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -64,7 +64,7 @@ internal class MediaListViewModelTest : BaseTest() {
   @Test
   fun `when movie is added to watchlist, movie is replaced in model`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
-    val itemToAddToWatchList = MovieListItemModel.empty.copy(id = 2L)
+    val itemToAddToWatchList = MediaListItemModel.empty.copy(id = 2L)
     viewModel.state.observeForever(stateObserver)
 
     viewModel.addMovieToWatchList(model, itemToAddToWatchList)
@@ -73,17 +73,17 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MediaListModel.empty.copy(
-            movies = listOf(
-              MovieListItemModel.empty.copy(id = 1L),
-              MovieListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
-              MovieListItemModel.empty.copy(id = 3L),
-              MovieListItemModel.empty.copy(id = 4L),
-              MovieListItemModel.empty.copy(id = 5L),
-              MovieListItemModel.empty.copy(id = 6L),
-              MovieListItemModel.empty.copy(id = 7L),
-              MovieListItemModel.empty.copy(id = 8L),
-              MovieListItemModel.empty.copy(id = 9L),
-              MovieListItemModel.empty.copy(id = 10L),
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
+              MediaListItemModel.empty.copy(id = 3L),
+              MediaListItemModel.empty.copy(id = 4L),
+              MediaListItemModel.empty.copy(id = 5L),
+              MediaListItemModel.empty.copy(id = 6L),
+              MediaListItemModel.empty.copy(id = 7L),
+              MediaListItemModel.empty.copy(id = 8L),
+              MediaListItemModel.empty.copy(id = 9L),
+              MediaListItemModel.empty.copy(id = 10L),
             )
           )
         )
@@ -94,7 +94,7 @@ internal class MediaListViewModelTest : BaseTest() {
   @Test
   fun `when movie is removed from watchlist, movie is replaced in model`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
-    val itemToRemoveFromWatchList = MovieListItemModel.empty.copy(
+    val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(
       id = 2L, watchButtonModel = WatchButtonModel.Selected
     )
     viewModel.state.observeForever(stateObserver)
@@ -105,20 +105,20 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MediaListModel.empty.copy(
-            movies = listOf(
-              MovieListItemModel.empty.copy(id = 1L),
-              MovieListItemModel.empty.copy(
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(
                 id = 2L,
                 watchButtonModel = WatchButtonModel.Unselected
               ),
-              MovieListItemModel.empty.copy(id = 3L),
-              MovieListItemModel.empty.copy(id = 4L),
-              MovieListItemModel.empty.copy(id = 5L),
-              MovieListItemModel.empty.copy(id = 6L),
-              MovieListItemModel.empty.copy(id = 7L),
-              MovieListItemModel.empty.copy(id = 8L),
-              MovieListItemModel.empty.copy(id = 9L),
-              MovieListItemModel.empty.copy(id = 10L),
+              MediaListItemModel.empty.copy(id = 3L),
+              MediaListItemModel.empty.copy(id = 4L),
+              MediaListItemModel.empty.copy(id = 5L),
+              MediaListItemModel.empty.copy(id = 6L),
+              MediaListItemModel.empty.copy(id = 7L),
+              MediaListItemModel.empty.copy(id = 8L),
+              MediaListItemModel.empty.copy(id = 9L),
+              MediaListItemModel.empty.copy(id = 10L),
             )
           )
         )
@@ -138,7 +138,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MediaListModel.empty.copy(
-            movies = aFirstPageMoviesModel
+            media = aFirstPageMoviesModel
           )
         )
       )
@@ -157,7 +157,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MediaListModel.empty.copy(
-            movies = aFirstPageMoviesModel
+            media = aFirstPageMoviesModel
           )
         )
       )
@@ -177,7 +177,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MovieListUIState.Content(
           MediaListModel.empty.copy(
-            movies = aSecondPageMoviesModel
+            media = aSecondPageMoviesModel
           )
         )
       )
@@ -186,7 +186,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
   private fun givenAMovieListModelWithResultsFromFirstPage(): MediaListModel =
     MediaListModel.empty.copy(
-      movies = aFirstPageMoviesModel
+      media = aFirstPageMoviesModel
     )
 }
 
@@ -198,28 +198,28 @@ private val aGetMoviesUseCaseFirstPageParams =
 private val aGetMoviesUseCaseSecondPageParams =
   GetMoviesUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
 private val aFirstPageMoviesModel = listOf(
-  MovieListItemModel.empty.copy(id = 1L),
-  MovieListItemModel.empty.copy(id = 2L),
-  MovieListItemModel.empty.copy(id = 3L),
-  MovieListItemModel.empty.copy(id = 4L),
-  MovieListItemModel.empty.copy(id = 5L),
-  MovieListItemModel.empty.copy(id = 6L),
-  MovieListItemModel.empty.copy(id = 7L),
-  MovieListItemModel.empty.copy(id = 8L),
-  MovieListItemModel.empty.copy(id = 9L),
-  MovieListItemModel.empty.copy(id = 10L),
+  MediaListItemModel.empty.copy(id = 1L),
+  MediaListItemModel.empty.copy(id = 2L),
+  MediaListItemModel.empty.copy(id = 3L),
+  MediaListItemModel.empty.copy(id = 4L),
+  MediaListItemModel.empty.copy(id = 5L),
+  MediaListItemModel.empty.copy(id = 6L),
+  MediaListItemModel.empty.copy(id = 7L),
+  MediaListItemModel.empty.copy(id = 8L),
+  MediaListItemModel.empty.copy(id = 9L),
+  MediaListItemModel.empty.copy(id = 10L),
 )
 private val aSecondPageMoviesModel = listOf(
-  MovieListItemModel.empty.copy(id = 11L),
-  MovieListItemModel.empty.copy(id = 12L),
-  MovieListItemModel.empty.copy(id = 13L),
-  MovieListItemModel.empty.copy(id = 14L),
-  MovieListItemModel.empty.copy(id = 15L),
-  MovieListItemModel.empty.copy(id = 16L),
-  MovieListItemModel.empty.copy(id = 17L),
-  MovieListItemModel.empty.copy(id = 18L),
-  MovieListItemModel.empty.copy(id = 19L),
-  MovieListItemModel.empty.copy(id = 20L),
+  MediaListItemModel.empty.copy(id = 11L),
+  MediaListItemModel.empty.copy(id = 12L),
+  MediaListItemModel.empty.copy(id = 13L),
+  MediaListItemModel.empty.copy(id = 14L),
+  MediaListItemModel.empty.copy(id = 15L),
+  MediaListItemModel.empty.copy(id = 16L),
+  MediaListItemModel.empty.copy(id = 17L),
+  MediaListItemModel.empty.copy(id = 18L),
+  MediaListItemModel.empty.copy(id = 19L),
+  MediaListItemModel.empty.copy(id = 20L),
 )
 private val aFirstPageMovies = listOf(
   Media.empty.copy(id = 1L),

@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.view.model
 import androidx.annotation.VisibleForTesting
 import com.raxdenstudios.app.movie.domain.model.MediaType
 
-data class MovieListItemModel(
+data class MediaListItemModel(
   val id: Long,
   val mediaType: MediaType,
   val title: String,
@@ -15,7 +15,7 @@ data class MovieListItemModel(
 
   companion object {
     @VisibleForTesting
-    val empty = MovieListItemModel(
+    val empty = MediaListItemModel(
       id = 0L,
       mediaType = MediaType.Movie,
       title = "",

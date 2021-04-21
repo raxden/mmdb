@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.raxdenstudios.app.feature.base.R
 import com.raxdenstudios.app.feature.base.databinding.MovieListItemViewBinding
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.loadImage
@@ -21,8 +21,8 @@ class MovieListItemView @JvmOverloads constructor(
 
   private val binding: MovieListItemViewBinding by viewBinding()
 
-  var onAddToWatchListClickListener: (MovieListItemModel) -> Unit = {}
-  var onRemoveFromWatchListClickListener: (MovieListItemModel) -> Unit = {}
+  var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
+  var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
   init {
     if (isInEditMode) {
@@ -30,11 +30,11 @@ class MovieListItemView @JvmOverloads constructor(
     }
   }
 
-  fun setModel(model: MovieListItemModel) {
+  fun setModel(model: MediaListItemModel) {
     binding.populate(model)
   }
 
-  private fun MovieListItemViewBinding.populate(model: MovieListItemModel) {
+  private fun MovieListItemViewBinding.populate(model: MediaListItemModel) {
     movieImageView.loadImage(model.image)
     movieTitleView.text = model.title
     movieRateView.text = model.rating

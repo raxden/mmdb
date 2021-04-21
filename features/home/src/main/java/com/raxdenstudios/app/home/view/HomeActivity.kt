@@ -12,7 +12,7 @@ import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.util.SDK
 import org.koin.android.ext.android.inject
@@ -86,21 +86,21 @@ internal class HomeActivity : BaseActivity() {
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel
+    mediaListItemModel: MediaListItemModel
   ) {
     if (model.logged)
       viewModel.addMovieToWatchList(
         model,
         moduleModel,
         carouselMovieListModel,
-        movieListItemModel
+        mediaListItemModel
       )
     else navigator.login {
       viewModel.addMovieToWatchList(
         model.copy(logged = true),
         moduleModel,
         carouselMovieListModel,
-        movieListItemModel
+        mediaListItemModel
       )
     }
   }
@@ -109,13 +109,13 @@ internal class HomeActivity : BaseActivity() {
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel
+    mediaListItemModel: MediaListItemModel
   ) {
     viewModel.removeMovieFromWatchList(
       model,
       moduleModel,
       carouselMovieListModel,
-      movieListItemModel
+      mediaListItemModel
     )
   }
 
@@ -123,13 +123,13 @@ internal class HomeActivity : BaseActivity() {
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
     carouselMovieListModel: CarouselMovieListModel,
-    movieListItemModel: MovieListItemModel
+    mediaListItemModel: MediaListItemModel
   ) {
     viewModel.movieSelected(
       model,
       moduleModel,
       carouselMovieListModel,
-      movieListItemModel
+      mediaListItemModel
     )
   }
 
