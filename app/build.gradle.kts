@@ -6,6 +6,10 @@ plugins {
   id("com.google.firebase.appdistribution")
 }
 
+versioning {
+  versionFilePath = "$rootDir/version.properties"
+}
+
 android {
 
   defaultConfig {
