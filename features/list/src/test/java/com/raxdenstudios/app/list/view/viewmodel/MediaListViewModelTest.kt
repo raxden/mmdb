@@ -4,8 +4,8 @@ import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
+import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
@@ -72,7 +72,7 @@ internal class MediaListViewModelTest : BaseTest() {
     coVerifyOrder {
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel.empty.copy(
+          MediaListModel.empty.copy(
             movies = listOf(
               MovieListItemModel.empty.copy(id = 1L),
               MovieListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
@@ -104,7 +104,7 @@ internal class MediaListViewModelTest : BaseTest() {
     coVerifyOrder {
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel.empty.copy(
+          MediaListModel.empty.copy(
             movies = listOf(
               MovieListItemModel.empty.copy(id = 1L),
               MovieListItemModel.empty.copy(
@@ -137,7 +137,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel.empty.copy(
+          MediaListModel.empty.copy(
             movies = aFirstPageMoviesModel
           )
         )
@@ -156,7 +156,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel.empty.copy(
+          MediaListModel.empty.copy(
             movies = aFirstPageMoviesModel
           )
         )
@@ -176,7 +176,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(MovieListUIState.Loading)
       stateObserver.onChanged(
         MovieListUIState.Content(
-          MovieListModel.empty.copy(
+          MediaListModel.empty.copy(
             movies = aSecondPageMoviesModel
           )
         )
@@ -184,8 +184,8 @@ internal class MediaListViewModelTest : BaseTest() {
     }
   }
 
-  private fun givenAMovieListModelWithResultsFromFirstPage(): MovieListModel =
-    MovieListModel.empty.copy(
+  private fun givenAMovieListModelWithResultsFromFirstPage(): MediaListModel =
+    MediaListModel.empty.copy(
       movies = aFirstPageMoviesModel
     )
 }
