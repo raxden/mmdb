@@ -22,11 +22,11 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class MovieListActivity : BaseActivity() {
+class MediaListActivity : BaseActivity() {
 
   companion object {
     fun createIntent(context: Context, params: MediaListParams) =
-      Intent(context, MovieListActivity::class.java).apply {
+      Intent(context, MediaListActivity::class.java).apply {
         putExtra("params", params)
       }
   }
@@ -86,7 +86,7 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) {
-    this@MovieListActivity.setResultOK()
+    this@MediaListActivity.setResultOK()
     viewModel.removeMovieFromWatchList(model, item)
   }
 
@@ -96,7 +96,7 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
-    this@MovieListActivity.setResultOK()
+    this@MediaListActivity.setResultOK()
     viewModel.addMovieToWatchList(model, item)
   }
 
@@ -122,7 +122,7 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun MovieListActivityBinding.setUp() {
-    val statusBarHeight = SDK.getStatusBarHeight(this@MovieListActivity)
+    val statusBarHeight = SDK.getStatusBarHeight(this@MediaListActivity)
     recyclerView.setPaddingTop(statusBarHeight)
     recyclerView.adapter = adapter
     swipeRefreshLayout.addProgressViewEndTarget(end = statusBarHeight)
