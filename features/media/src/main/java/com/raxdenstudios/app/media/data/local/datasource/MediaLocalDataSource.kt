@@ -14,6 +14,10 @@ internal class MediaLocalDataSource(
   private val mediaEntityToDomainMapper: MediaEntityToDomainMapper,
 ) {
 
+  suspend fun addToWatchList(media: Media) {
+
+  }
+
   suspend fun watchList(): List<Media> {
     val entityList = dao.watchList()
     return mediaEntityToDomainMapper.transform(entityList)
