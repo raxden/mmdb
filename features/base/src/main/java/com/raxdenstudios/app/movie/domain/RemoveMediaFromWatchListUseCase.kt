@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.domain
 import com.raxdenstudios.app.movie.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 
-interface RemoveMovieFromWatchListUseCase {
+interface RemoveMediaFromWatchListUseCase {
   suspend fun execute(params: Params): ResultData<Boolean>
 
   data class Params(

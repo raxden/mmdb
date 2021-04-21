@@ -12,7 +12,7 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
@@ -53,7 +53,7 @@ internal class HomeViewModelTest : BaseTest() {
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
-  private val removeMovieToWatchListUseCase: RemoveMovieFromWatchListUseCase = mockk {
+  private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
   private val stateObserver: Observer<HomeUIState> = mockk(relaxed = true)
@@ -71,7 +71,7 @@ internal class HomeViewModelTest : BaseTest() {
         factory(override = true) { getMediasUseCase }
         factory(override = true) { isAccountLoggedUseCase }
         factory(override = true) { addMediaToWatchListUseCase }
-        factory(override = true) { removeMovieToWatchListUseCase }
+        factory(override = true) { removeMediaToWatchListUseCase }
         factory(override = true) { stringProvider }
         factory(override = true) { dispatcher }
       }

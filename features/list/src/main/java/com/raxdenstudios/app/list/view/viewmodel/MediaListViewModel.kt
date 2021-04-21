@@ -10,7 +10,7 @@ import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
-import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.mapper.MediaFilterModelToDomainMapper
 import com.raxdenstudios.app.movie.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
@@ -31,7 +31,7 @@ internal class MediaListViewModel(
   private val getMediasUseCase: GetMediasUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
-  private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
+  private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
@@ -58,8 +58,8 @@ internal class MediaListViewModel(
   fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
-      val params = RemoveMovieFromWatchListUseCase.Params(item.id, item.mediaType)
-      removeMovieFromWatchListUseCase.execute(params)
+      val params = RemoveMediaFromWatchListUseCase.Params(item.id, item.mediaType)
+      removeMediaFromWatchListUseCase.execute(params)
         .onFailure { error -> mState.value = MediaListUIState.Error(error) }
         .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
