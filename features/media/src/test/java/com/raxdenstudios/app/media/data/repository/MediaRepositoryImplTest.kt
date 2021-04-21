@@ -36,7 +36,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val mediaRemoteDataSource: MediaRemoteDataSource = mockk {
     coEvery {
       addMediaToWatchList(aAccountLogged, aMediaType, aMovieId)
-    } returns ResultData.Success(true)
+    } returns ResultData.Success(aMovie.copy(watchList = true))
     coEvery {
       removeMediaFromWatchList(aAccountLogged, aMediaType, aMovieId)
     } returns ResultData.Success(true)

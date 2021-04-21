@@ -11,6 +11,7 @@ import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.coFlatMap
 import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -32,12 +33,14 @@ internal class MediaRemoteDataSource(
     account: Account.Logged,
     mediaType: MediaType,
     mediaId: Long
-  ): ResultData<Boolean> =
+  ): ResultData<Media> =
     mediaGateway.addToWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       mediaId = mediaId
-    ).map { true }
+    )
+      .coFlatMap { mediaById(mediaId, mediaType) }
+      .map { media -> media.copy(watchList = true) }
 
   suspend fun removeMediaFromWatchList(
     account: Account.Logged,
