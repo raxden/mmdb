@@ -7,7 +7,7 @@ import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
 import com.raxdenstudios.commons.provider.StringProvider
 
-internal class CarouselMovieListModelMapper(
+internal class CarouselMediaListModelMapper(
   private val stringProvider: StringProvider,
   private val movieListItemModelMapper: MovieListItemModelMapper,
 ) {
