@@ -10,7 +10,7 @@ import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
 import com.raxdenstudios.commons.util.DataMapper
 
-internal class MovieToEntityMapper(
+internal class MediaToEntityMapper(
   private val pictureToEntityMapper: PictureToEntityMapper,
   private val voteToEntityMapper: VoteToEntityMapper,
 ) : DataMapper<Media, MediaEntity>() {

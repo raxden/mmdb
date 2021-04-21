@@ -21,7 +21,7 @@ val movieDataModule = module {
   single { MediaDatabase.getInstance(get()) }
   factory { get<MediaDatabase>().watchListDao() }
 
-  factory { MovieToEntityMapper(get(), get()) }
+  factory { MediaToEntityMapper(get(), get()) }
   factory { MovieEntityToDomainMapper(get(), get()) }
   factory { VoteToEntityMapper() }
   factory { VoteEntityToDomainMapper() }
