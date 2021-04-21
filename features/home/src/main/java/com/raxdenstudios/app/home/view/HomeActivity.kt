@@ -7,7 +7,7 @@ import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.home.HomeNavigator
 import com.raxdenstudios.app.home.databinding.HomeActivityBinding
 import com.raxdenstudios.app.home.view.adapter.HomeModuleListAdapter
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
+import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
@@ -85,21 +85,21 @@ internal class HomeActivity : BaseActivity() {
   private fun addMovieToWatchList(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
-    carouselMovieListModel: CarouselMovieListModel,
+    carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
     if (model.logged)
       viewModel.addMovieToWatchList(
         model,
         moduleModel,
-        carouselMovieListModel,
+        carouselMediaListModel,
         mediaListItemModel
       )
     else navigator.login {
       viewModel.addMovieToWatchList(
         model.copy(logged = true),
         moduleModel,
-        carouselMovieListModel,
+        carouselMediaListModel,
         mediaListItemModel
       )
     }
@@ -108,13 +108,13 @@ internal class HomeActivity : BaseActivity() {
   private fun removeMovieFromWatchList(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
-    carouselMovieListModel: CarouselMovieListModel,
+    carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
     viewModel.removeMovieFromWatchList(
       model,
       moduleModel,
-      carouselMovieListModel,
+      carouselMediaListModel,
       mediaListItemModel
     )
   }
@@ -122,13 +122,13 @@ internal class HomeActivity : BaseActivity() {
   private fun movieSelected(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMovies,
-    carouselMovieListModel: CarouselMovieListModel,
+    carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
     viewModel.movieSelected(
       model,
       moduleModel,
-      carouselMovieListModel,
+      carouselMediaListModel,
       mediaListItemModel
     )
   }

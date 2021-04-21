@@ -3,7 +3,7 @@ package com.raxdenstudios.app.home.view.mapper
 import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
+import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Media
@@ -45,7 +45,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
     assertEquals(
       HomeModuleModel.CarouselMovies(
         mediaFilterModel = MediaFilterModel.nowPlayingMovies,
-        carouselMovieListModel = CarouselMovieListModel.empty.copy(
+        carouselMediaListModel = CarouselMediaListModel.empty.copy(
           medias = listOf(
             MediaListItemModel.empty.copy(id = 1L)
           )
@@ -93,7 +93,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
     assertEquals(
       HomeModuleModel.CarouselMovies(
         mediaFilterModel = MediaFilterModel.watchlistMovies,
-        carouselMovieListModel = CarouselMovieListModel.empty.copy(
+        carouselMediaListModel = CarouselMediaListModel.empty.copy(
           medias = listOf(
             MediaListItemModel.empty.copy(id = 1L)
           )

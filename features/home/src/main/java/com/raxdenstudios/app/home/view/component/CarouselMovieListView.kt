@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
 import com.raxdenstudios.app.home.view.adapter.CarouselMovieListAdapter
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
+import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
@@ -23,13 +23,13 @@ internal class CarouselMovieListView @JvmOverloads constructor(
 
   private val adapter: CarouselMovieListAdapter by lazy { CarouselMovieListAdapter() }
 
-  var onAddMovieToWatchListClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
+  var onAddMovieToWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
+  var onRemoveMovieFromWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onMovieClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
+  var onMovieClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onSeeAllClickListener: (CarouselMovieListModel) -> Unit = {}
+  var onSeeAllClickListener: (CarouselMediaListModel) -> Unit = {}
 
   init {
     if (isInEditMode) {
@@ -39,11 +39,11 @@ internal class CarouselMovieListView @JvmOverloads constructor(
     }
   }
 
-  fun setModel(model: CarouselMovieListModel) {
+  fun setModel(model: CarouselMediaListModel) {
     binding.populate(model)
   }
 
-  private fun CarouselMovieListViewBinding.populate(model: CarouselMovieListModel) {
+  private fun CarouselMovieListViewBinding.populate(model: CarouselMediaListModel) {
     carouselTitleView.text = model.label
     adapter.submitList(model.medias)
     adapter.onMovieClickListener = { item -> onMovieClickListener(model, item) }
