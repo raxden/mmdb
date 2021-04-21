@@ -6,14 +6,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.raxdenstudios.app.media.data.local.model.MediaEntity
+import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 
 @Database(
-  entities = [MediaEntity::class],
-  version = 3,
+  entities = [MediaEntity::class, WatchListEntity::class],
+  version = 4,
 )
 abstract class MediaDatabase : RoomDatabase() {
 
-  abstract fun watchListDao(): MediaDao
+  abstract fun mediaDao(): MediaDao
+  abstract fun watchListDao(): WatchListDao
 
   companion object {
 
