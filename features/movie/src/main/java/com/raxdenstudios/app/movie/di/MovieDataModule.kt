@@ -6,8 +6,8 @@ import com.raxdenstudios.app.movie.data.local.mapper.*
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.*
-import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
-import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.movie.data.repository.MovieRepository
 import com.raxdenstudios.app.movie.data.repository.MovieRepositoryImpl
 import com.raxdenstudios.app.movie.domain.*
@@ -31,8 +31,8 @@ val movieDataModule = module {
   factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
   factory { MovieLocalDataSource(get(), get(), get()) }
 
-  single { get<Retrofit>(named(APIVersion.V3)).create(MovieV3Service::class.java) }
-  single { get<Retrofit>(named(APIVersion.V4)).create(MovieV4Service::class.java) }
+  single { get<Retrofit>(named(APIVersion.V3)).create(MediaV3Service::class.java) }
+  single { get<Retrofit>(named(APIVersion.V4)).create(MediaV4Service::class.java) }
 
   factory { MediaGateway(get(), get(), get()) }
 

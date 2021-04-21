@@ -2,8 +2,8 @@ package com.raxdenstudios.app.movie.data.remote
 
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
 import com.raxdenstudios.app.movie.data.remote.model.WatchListDto
-import com.raxdenstudios.app.movie.data.remote.service.MovieV3Service
-import com.raxdenstudios.app.movie.data.remote.service.MovieV4Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
+import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
@@ -14,8 +14,8 @@ import kotlinx.coroutines.withContext
 
 internal class MediaGateway(
   private val dispatcher: DispatcherFacade,
-  private val movieV3Service: MovieV3Service,
-  private val movieV4Service: MovieV4Service,
+  private val mediaV3Service: MediaV3Service,
+  private val mediaV4Service: MediaV4Service,
 ) {
 
   companion object {
@@ -48,7 +48,7 @@ internal class MediaGateway(
     mediaType: String,
     page: Int
   ): ResultData<PageDto<MovieDto>> =
-    movieV4Service.watchList(accountId, mediaType, page).toResultData(
+    mediaV4Service.watchList(accountId, mediaType, page).toResultData(
       "Error occurred during fetching watch list movies"
     ) { body -> body }
 
@@ -57,7 +57,7 @@ internal class MediaGateway(
     mediaType: String,
     movieId: Long
   ): ResultData<WatchListDto.Response> =
-    movieV3Service.watchList(
+    mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Add(movieId, mediaType)
     ).toResultData(
@@ -69,7 +69,7 @@ internal class MediaGateway(
     mediaType: String,
     movieId: Long
   ): ResultData<WatchListDto.Response> =
-    movieV3Service.watchList(
+    mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Remove(movieId, mediaType)
     ).toResultData(
@@ -77,27 +77,27 @@ internal class MediaGateway(
     ) { body -> body }
 
   suspend fun popular(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.popular(mediaType, page).toResultData(
+    mediaV3Service.popular(mediaType, page).toResultData(
       "Error occurred during fetching popular movies"
     ) { body -> body }
 
   suspend fun nowPlaying(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.nowPlaying(mediaType, page).toResultData(
+    mediaV3Service.nowPlaying(mediaType, page).toResultData(
       "Error occurred during fetching now playing movies"
     ) { body -> body }
 
   suspend fun topRated(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.topRated(mediaType, page).toResultData(
+    mediaV3Service.topRated(mediaType, page).toResultData(
       "Error occurred during fetching top rated movies"
     ) { body -> body }
 
   suspend fun upcoming(page: Int): ResultData<PageDto<MovieDto>> =
-    movieV3Service.upcoming(page).toResultData(
+    mediaV3Service.upcoming(page).toResultData(
       "Error occurred during fetching upcoming movies"
     ) { body -> body }
 
   suspend fun detail(movieId: String, mediaType: String): ResultData<MovieDto> =
-    movieV3Service.detail(mediaType, movieId).toResultData(
+    mediaV3Service.detail(mediaType, movieId).toResultData(
       "Error ocurred during fetching detail movie with id: $movieId"
     ) { body -> body }
 }

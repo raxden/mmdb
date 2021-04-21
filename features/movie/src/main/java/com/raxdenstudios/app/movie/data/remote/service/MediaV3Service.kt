@@ -7,7 +7,7 @@ import com.raxdenstudios.app.network.model.ErrorDto
 import com.raxdenstudios.app.network.model.PageDto
 import retrofit2.http.*
 
-interface MovieV3Service {
+interface MediaV3Service {
 
   @GET("{media_type}/popular")
   suspend fun popular(
