@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.remote.service
 
 import com.haroldadmin.cnradapter.NetworkResponse
-import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.data.remote.model.WatchListDto
 import com.raxdenstudios.app.network.model.ErrorDto
 import com.raxdenstudios.app.network.model.PageDto
@@ -13,24 +13,24 @@ interface MediaV3Service {
   suspend fun popular(
     @Path("media_type") mediaType: String,
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
 
   @GET("{media_type}/now_playing")
   suspend fun nowPlaying(
     @Path("media_type") mediaType: String,
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
 
   @GET("{media_type}/top_rated")
   suspend fun topRated(
     @Path("media_type") mediaType: String,
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
 
   @GET("movie/upcoming")
   suspend fun upcoming(
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MovieDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
 
   @POST("account/{account_id}/watchlist")
   suspend fun watchList(
@@ -42,5 +42,5 @@ interface MediaV3Service {
   suspend fun detail(
     @Path("media_type") mediaType: String,
     @Path("movie_id") movieId: String,
-  ): NetworkResponse<MovieDto, ErrorDto>
+  ): NetworkResponse<MediaDto, ErrorDto>
 }
