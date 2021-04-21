@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.movie.data.local.mapper
 
-import com.raxdenstudios.app.movie.data.local.model.MovieEntity
+import com.raxdenstudios.app.movie.data.local.model.MediaEntity
 import com.raxdenstudios.app.movie.data.local.model.PictureEntity
 import com.raxdenstudios.app.movie.data.local.model.SizeEntity
 import com.raxdenstudios.app.movie.data.local.model.VoteEntity
@@ -13,9 +13,9 @@ import com.raxdenstudios.commons.util.DataMapper
 internal class MovieToEntityMapper(
   private val pictureToEntityMapper: PictureToEntityMapper,
   private val voteToEntityMapper: VoteToEntityMapper,
-) : DataMapper<Media, MovieEntity>() {
+) : DataMapper<Media, MediaEntity>() {
 
-  override fun transform(source: Media): MovieEntity = MovieEntity(
+  override fun transform(source: Media): MediaEntity = MediaEntity(
     id = source.id,
     title = source.title,
     backdrop = pictureToEntityMapper.transform(source.backdrop),
@@ -29,9 +29,9 @@ internal class MovieToEntityMapper(
 internal class MovieEntityToDomainMapper(
   private val pictureEntityToDomainMapper: PictureEntityToDomainMapper,
   private val voteEntityToDomainMapper: VoteEntityToDomainMapper,
-) : DataMapper<MovieEntity, Media>() {
+) : DataMapper<MediaEntity, Media>() {
 
-  override fun transform(source: MovieEntity): Media = Media(
+  override fun transform(source: MediaEntity): Media = Media(
     id = source.id,
     mediaType = MediaType.Movie,
     title = source.title,

@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.local.datasource
 
 import com.raxdenstudios.app.movie.data.local.MovieDao
-import com.raxdenstudios.app.movie.data.local.model.MovieEntity
+import com.raxdenstudios.app.movie.data.local.model.MediaEntity
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.network.APIDataProvider
@@ -96,7 +96,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
   @Test
   fun `Given a database empty, When 'isWatchList' with movieId param is called, Then return false`() =
     testDispatcher.runBlockingTest {
-      coEvery { dao.find(aMovieId) } returns MovieEntity.empty.copy(watchList = false)
+      coEvery { dao.find(aMovieId) } returns MediaEntity.empty.copy(watchList = false)
 
       val result = dataSource.isWatchList(aMovieId)
 
@@ -105,7 +105,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
   @Test
   fun `Given a database, When 'isWatchList' with movieId param is called And this movie exists, Then return true`() = testDispatcher.runBlockingTest {
-    coEvery { dao.find(aMovieId) } returns MovieEntity.empty.copy(watchList = true)
+    coEvery { dao.find(aMovieId) } returns MediaEntity.empty.copy(watchList = true)
 
     val result = dataSource.isWatchList(aMovieId)
 
@@ -115,10 +115,10 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
 private const val aMovieId = 1L
 private val aMovies = listOf(
-  MovieEntity.empty.copy(id = 1L),
-  MovieEntity.empty.copy(id = 2L),
-  MovieEntity.empty.copy(id = 3L),
-  MovieEntity.empty.copy(id = 4L),
-  MovieEntity.empty.copy(id = 5L),
-  MovieEntity.empty.copy(id = 6L),
+  MediaEntity.empty.copy(id = 1L),
+  MediaEntity.empty.copy(id = 2L),
+  MediaEntity.empty.copy(id = 3L),
+  MediaEntity.empty.copy(id = 4L),
+  MediaEntity.empty.copy(id = 5L),
+  MediaEntity.empty.copy(id = 6L),
 )
