@@ -61,20 +61,20 @@ internal class HomeActivity : BaseActivity() {
     swipeRefreshLayout.isRefreshing = false
     adapter.submitList(model.modules)
     adapter.onSigInClickListener = { doLoginAndRefreshDataIfSuccess() }
-    adapter.onMovieClickListener =
-      { moduleModel, carouselMovieListModel, movieListItemModel ->
-        movieSelected(model, moduleModel, carouselMovieListModel, movieListItemModel)
+    adapter.onMediaClickListener =
+      { moduleModel, carouselMediaListModel, mediaListItemModel ->
+        mediaSelected(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onAddMovieToWatchListClickListener =
-      { moduleModel, carouselMovieListModel, movieListItemModel ->
-        addMovieToWatchList(model, moduleModel, carouselMovieListModel, movieListItemModel)
+    adapter.onAddMediaToWatchListClickListener =
+      { moduleModel, carouselMediaListModel, mediaListItemModel ->
+        addMediaToWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onRemoveMovieFromWatchListClickListener =
-      { moduleModel, carouselMovieListModel, movieListItemModel ->
-        removeMovieFromWatchList(model, moduleModel, carouselMovieListModel, movieListItemModel)
+    adapter.onRemoveMediaFromWatchListClickListener =
+      { moduleModel, carouselMediaListModel, mediaListItemModel ->
+        removeMediaFromWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onCarouselMoviesModel = { moduleModel, _ ->
-      navigator.movies(moduleModel.mediaFilterModel) { viewModel.refreshData() }
+    adapter.onCarouselMediasModel = { moduleModel, _ ->
+      navigator.medias(moduleModel.mediaFilterModel) { viewModel.refreshData() }
     }
   }
 
@@ -82,21 +82,21 @@ internal class HomeActivity : BaseActivity() {
     navigator.login { viewModel.refreshData() }
   }
 
-  private fun addMovieToWatchList(
+  private fun addMediaToWatchList(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMedias,
     carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
     if (model.logged)
-      viewModel.addMovieToWatchList(
+      viewModel.addMediaToWatchList(
         model,
         moduleModel,
         carouselMediaListModel,
         mediaListItemModel
       )
     else navigator.login {
-      viewModel.addMovieToWatchList(
+      viewModel.addMediaToWatchList(
         model.copy(logged = true),
         moduleModel,
         carouselMediaListModel,
@@ -105,13 +105,13 @@ internal class HomeActivity : BaseActivity() {
     }
   }
 
-  private fun removeMovieFromWatchList(
+  private fun removeMediaFromWatchList(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMedias,
     carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
-    viewModel.removeMovieFromWatchList(
+    viewModel.removeMediaFromWatchList(
       model,
       moduleModel,
       carouselMediaListModel,
@@ -119,13 +119,13 @@ internal class HomeActivity : BaseActivity() {
     )
   }
 
-  private fun movieSelected(
+  private fun mediaSelected(
     model: HomeModel,
     moduleModel: HomeModuleModel.CarouselMedias,
     carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
-    viewModel.movieSelected(
+    viewModel.mediaSelected(
       model,
       moduleModel,
       carouselMediaListModel,

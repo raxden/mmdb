@@ -69,7 +69,7 @@ internal class MediaListViewModel(
     requestFirstPage(params)
   }
 
-  fun loadMovies(params: MediaListParams) {
+  fun loadMedias(params: MediaListParams) {
     if (dataIsReadyOrLoading()) return
     requestFirstPage(params)
   }
