@@ -11,7 +11,7 @@ import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class MediaListAdapter :
-  BaseListAdapter<MediaListItemModel, MediaListAdapter.MovieListAdapterHolder>(
+  BaseListAdapter<MediaListItemModel, MediaListAdapter.MediaListAdapterHolder>(
     areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
   ) {
 
@@ -21,19 +21,19 @@ internal class MediaListAdapter :
 
   override fun getItemViewType(position: Int) = R.layout.movie_list_item
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListAdapterHolder {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaListAdapterHolder {
     val view = inflateView(parent, viewType)
-    return MovieListAdapterHolder(view)
+    return MediaListAdapterHolder(view)
   }
 
   private fun inflateView(parent: ViewGroup, viewType: Int) =
     LayoutInflater.from(parent.context).inflate(viewType, parent, false)
 
-  override fun onBindViewHolder(holder: MovieListAdapterHolder, position: Int) {
+  override fun onBindViewHolder(holder: MediaListAdapterHolder, position: Int) {
     holder.bind(getItem(position))
   }
 
-  inner class MovieListAdapterHolder(
+  inner class MediaListAdapterHolder(
     private val view: View
   ) : RecyclerView.ViewHolder(view) {
 
