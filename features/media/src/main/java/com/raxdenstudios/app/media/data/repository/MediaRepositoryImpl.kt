@@ -61,22 +61,17 @@ internal class MediaRepositoryImpl(
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<Media>> =
-    moviesFromRemote(mediaFilter, page, pageSize)
+    mediaRemoteDataSource.medias(
+      mediaFilter = mediaFilter,
+      account = accountLocalDataSource.getAccount(),
+      page = page
+    )
+      .coMap { pageList -> markMediasAsWatchedIfNecessary(pageList) }
 
-  private suspend fun moviesFromRemote(
-    mediaFilter: MediaFilter,
-    page: Page,
-    pageSize: PageSize
-  ): ResultData<PageList<Media>> {
-    val account = accountLocalDataSource.getAccount()
-    return mediaRemoteDataSource.medias(mediaFilter, account, page)
-      .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
-  }
-
-  private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Media>) =
+  private suspend fun markMediasAsWatchedIfNecessary(pageList: PageList<Media>) =
     pageList.copy(
-      items = pageList.items.map { movie ->
-        movie.copy(watchList = mediaLocalDataSource.isWatchList(movie.id))
+      items = pageList.items.map { media ->
+        media.copy(watchList = mediaLocalDataSource.containsInWatchList(media.id))
       }
     )
 
