@@ -20,7 +20,7 @@ internal class HomeNavigatorImpl(
 
   private val registry: ActivityResultRegistry = activity.activityResultRegistry
   private lateinit var loginActivityResultLauncher: ActivityResultLauncher<Unit>
-  private lateinit var moviesActivityResultLauncher: ActivityResultLauncher<MediaFilterModel>
+  private lateinit var mediaListActivityResultLauncher: ActivityResultLauncher<MediaFilterModel>
 
   private var onLoginSuccess: () -> Unit = {}
   private var onMoviesRefresh: () -> Unit = {}
@@ -29,7 +29,7 @@ internal class HomeNavigatorImpl(
     super.onCreate(owner)
 
     loginActivityResultLauncher = registry.registerLoginActivityResultRegistry(owner)
-    moviesActivityResultLauncher = registry.registerMoviesActivityResultRegistry(owner)
+    mediaListActivityResultLauncher = registry.registerMediaListActivityResultRegistry(owner)
   }
 
   override fun login(onSuccess: () -> Unit) {
@@ -37,9 +37,9 @@ internal class HomeNavigatorImpl(
     loginActivityResultLauncher.launch(Unit)
   }
 
-  override fun movies(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit) {
+  override fun medias(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit) {
     onMoviesRefresh = onRefresh
-    moviesActivityResultLauncher.launch(mediaFilterModel)
+    mediaListActivityResultLauncher.launch(mediaFilterModel)
   }
 
   private fun ActivityResultRegistry.registerLoginActivityResultRegistry(
@@ -51,7 +51,7 @@ internal class HomeNavigatorImpl(
       LoginActivityResultContract()
     ) { logged -> if (logged) onLoginSuccess() }
 
-  private fun ActivityResultRegistry.registerMoviesActivityResultRegistry(
+  private fun ActivityResultRegistry.registerMediaListActivityResultRegistry(
     owner: LifecycleOwner
   ): ActivityResultLauncher<MediaFilterModel> =
     register(

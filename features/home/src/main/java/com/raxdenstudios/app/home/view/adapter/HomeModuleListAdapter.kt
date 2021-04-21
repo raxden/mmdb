@@ -24,13 +24,13 @@ internal class HomeModuleListAdapter :
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
 
-  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onAddMediaToWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onRemoveMediaFromWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onMovieClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onMediaClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onCarouselMoviesModel: (HomeModuleModel.CarouselMedias, CarouselMediaListModel) -> Unit =
+  var onCarouselMediasModel: (HomeModuleModel.CarouselMedias, CarouselMediaListModel) -> Unit =
     { _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
@@ -82,21 +82,21 @@ internal class HomeModuleListAdapter :
 
     private fun bindCarousel(model: HomeModuleModel.CarouselMedias, item: CarouselMediaListModel) {
       val component = view.findViewById<CarouselMediaListView>(R.id.item_view)
-      component.onSeeAllClickListener = { carouselMoviesModel ->
-        onCarouselMoviesModel(model, carouselMoviesModel)
+      component.onSeeAllClickListener = { carouselMediasModel ->
+        onCarouselMediasModel(model, carouselMediasModel)
       }
-      component.onMovieClickListener = { carouselMoviesModel, movieItemModel ->
-        onMovieClickListener(model, carouselMoviesModel, movieItemModel)
+      component.onMediaClickListener = { carouselMediasModel, mediaItemModel ->
+        onMediaClickListener(model, carouselMediasModel, mediaItemModel)
       }
-      component.onAddMovieToWatchListClickListener = { carouselMovieListModel, movieListItemModel ->
-        onAddMovieToWatchListClickListener(model, carouselMovieListModel, movieListItemModel)
+      component.onAddMediaToWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
+        onAddMediaToWatchListClickListener(model, carouselMediaListModel, mediaListItemModel)
       }
-      component.onRemoveMovieFromWatchListClickListener =
-        { carouselMovieListModel, movieListItemModel ->
-          onRemoveMovieFromWatchListClickListener(
+      component.onRemoveMediaFromWatchListClickListener =
+        { carouselMediaListModel, mediaListItemModel ->
+          onRemoveMediaFromWatchListClickListener(
             model,
-            carouselMovieListModel,
-            movieListItemModel
+            carouselMediaListModel,
+            mediaListItemModel
           )
         }
       component.setModel(item)

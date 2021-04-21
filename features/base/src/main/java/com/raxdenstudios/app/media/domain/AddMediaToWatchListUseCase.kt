@@ -7,7 +7,7 @@ interface AddMediaToWatchListUseCase {
   suspend fun execute(params: Params): ResultData<Boolean>
 
   data class Params(
-    val movieId: Long,
+    val mediaId: Long,
     val mediaType: MediaType
   )
 }

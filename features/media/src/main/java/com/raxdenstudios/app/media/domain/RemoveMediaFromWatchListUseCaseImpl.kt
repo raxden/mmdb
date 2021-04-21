@@ -8,5 +8,5 @@ internal class RemoveMediaFromWatchListUseCaseImpl(
 ) : RemoveMediaFromWatchListUseCase {
 
   override suspend fun execute(params: RemoveMediaFromWatchListUseCase.Params): ResultData<Boolean> =
-    mediaRepository.removeMediaFromWatchList(params.movieId, params.mediaType)
+    mediaRepository.removeMediaFromWatchList(params.mediaId, params.mediaType)
 }

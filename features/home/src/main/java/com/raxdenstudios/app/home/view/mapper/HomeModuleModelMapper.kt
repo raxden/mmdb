@@ -18,9 +18,9 @@ internal class HomeModuleModelMapper(
     homeModule: HomeModule,
     resultData: ResultData<PageList<Media>>
   ): HomeModuleModel? {
-    val movieList = resultData.getValueOrNull()?.items ?: emptyList()
-    val carouselMoviesModel = carouselMediaListModelMapper.transform(homeModule, movieList)
-    val hasContent = carouselMoviesModel.hasMovies()
+    val mediaList = resultData.getValueOrNull()?.items ?: emptyList()
+    val carouselMoviesModel = carouselMediaListModelMapper.transform(homeModule, mediaList)
+    val hasContent = carouselMoviesModel.hasMedias()
     return when (homeModule) {
       is HomeModule.NowPlaying -> when {
         hasContent -> HomeModuleModel.CarouselMedias(

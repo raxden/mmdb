@@ -118,7 +118,7 @@ internal class HomeViewModelTest : BaseTest() {
     testDispatcher.runBlockingTest {
       viewModel.state.observeForever(stateObserver)
 
-      viewModel.addMovieToWatchList(
+      viewModel.addMediaToWatchList(
         aHomeModel,
         aCarouselMoviesPopularModuleModel,
         aCarouselMovieListModel,
