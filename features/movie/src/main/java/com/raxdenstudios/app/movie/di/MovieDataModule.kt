@@ -8,8 +8,8 @@ import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.*
 import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
-import com.raxdenstudios.app.movie.data.repository.MovieRepository
-import com.raxdenstudios.app.movie.data.repository.MovieRepositoryImpl
+import com.raxdenstudios.app.movie.data.repository.MediaRepository
+import com.raxdenstudios.app.movie.data.repository.MediaRepositoryImpl
 import com.raxdenstudios.app.movie.domain.*
 import com.raxdenstudios.app.network.model.APIVersion
 import org.koin.core.qualifier.named
@@ -44,7 +44,7 @@ val movieDataModule = module {
 
   factory { MovieRemoteDataSource(get(), get(), get()) }
 
-  factory<MovieRepository> { MovieRepositoryImpl(get(), get(), get()) }
+  factory<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
 
   factory<AddMovieToWatchListUseCase> { AddMovieToWatchListUseCaseImpl(get()) }
   factory<RemoveMovieFromWatchListUseCase> { RemoveMovieFromWatchListUseCaseImpl(get()) }

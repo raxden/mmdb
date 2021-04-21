@@ -1,12 +1,12 @@
 package com.raxdenstudios.app.movie.domain
 
-import com.raxdenstudios.app.movie.data.repository.MovieRepository
+import com.raxdenstudios.app.movie.data.repository.MediaRepository
 import com.raxdenstudios.commons.ResultData
 
 internal class RemoveMovieFromWatchListUseCaseImpl(
-  private val movieRepository: MovieRepository
+  private val mediaRepository: MediaRepository
 ) : RemoveMovieFromWatchListUseCase {
 
   override suspend fun execute(params: RemoveMovieFromWatchListUseCase.Params): ResultData<Boolean> =
-    movieRepository.removeMovieFromWatchList(params.movieId, params.mediaType)
+    mediaRepository.removeMediaFromWatchList(params.movieId, params.mediaType)
 }

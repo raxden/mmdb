@@ -68,12 +68,12 @@ internal class MediaRepositoryImplTest : BaseTest() {
       }
     )
 
-  private val repository: MovieRepository by inject()
+  private val repository: MediaRepository by inject()
 
   @Test
   fun `Given a movie, When addMovieToWatchList is called, Then movie is added`() =
     testDispatcher.runBlockingTest {
-      val result = repository.addMovieToWatchList(aMovieId, aMediaType)
+      val result = repository.addMediaToWatchList(aMovieId, aMediaType)
 
       coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = true)) }
       assertEquals(ResultData.Success(true), result)
@@ -82,7 +82,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   @Test
   fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() =
     testDispatcher.runBlockingTest {
-      val result = repository.removeMovieFromWatchList(aMovieId, aMediaType)
+      val result = repository.removeMediaFromWatchList(aMovieId, aMediaType)
 
       coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = false)) }
       assertEquals(ResultData.Success(true), result)
@@ -93,7 +93,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       coEvery { mediaLocalDataSource.isWatchList(2L) } returns true
 
-      val result = repository.movies(MediaFilter.popularMovies, aPage, aPageSize)
+      val result = repository.medias(MediaFilter.popularMovies, aPage, aPageSize)
 
       assertEquals(
         ResultData.Success(
