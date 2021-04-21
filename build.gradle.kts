@@ -19,6 +19,16 @@ plugins {
   id("com.raxdenstudios.android-releasing").version("0.41")
 }
 
+junitJacoco {
+  excludes = listOf(
+    "**/di/*",
+    "**/BuildConfig*",
+    "**/databinding/*",
+    "**/*_*.class",
+    "**/*_Impl*.class"
+  )
+}
+
 allprojects {
   repositories {
     google()
