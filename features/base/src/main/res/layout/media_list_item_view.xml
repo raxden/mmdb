@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
-        <com.raxdenstudios.app.movie.view.component.WatchButtonView
+        <com.raxdenstudios.app.media.view.component.WatchButtonView
             android:id="@+id/watch_button_view"
             android:layout_width="40dp"
             android:layout_height="50dp"

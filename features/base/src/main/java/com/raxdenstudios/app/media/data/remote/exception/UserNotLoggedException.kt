@@ -1,0 +1,3 @@
+package com.raxdenstudios.app.media.data.remote.exception
+
+class UserNotLoggedException : Throwable("This operation requires an user logged")

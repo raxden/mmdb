@@ -13,11 +13,11 @@ import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
-import com.raxdenstudios.app.movie.domain.AddMediaToWatchListUseCase
-import com.raxdenstudios.app.movie.domain.GetMediasUseCase
-import com.raxdenstudios.app.movie.domain.RemoveMediaFromWatchListUseCase
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
-import com.raxdenstudios.app.movie.view.model.WatchButtonModel
+import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
+import com.raxdenstudios.app.media.domain.GetMediasUseCase
+import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch

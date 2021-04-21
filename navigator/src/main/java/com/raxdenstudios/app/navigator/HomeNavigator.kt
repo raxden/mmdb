@@ -5,7 +5,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.raxdenstudios.app.home.HomeNavigator
-import com.raxdenstudios.app.movie.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
 import com.raxdenstudios.app.navigator.result.MediaListActivityResultContract
 

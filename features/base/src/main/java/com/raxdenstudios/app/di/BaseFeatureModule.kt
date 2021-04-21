@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.di
 
-import com.raxdenstudios.app.movie.view.mapper.*
-import com.raxdenstudios.app.movie.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.mapper.*
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
