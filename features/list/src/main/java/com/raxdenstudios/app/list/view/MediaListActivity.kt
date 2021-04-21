@@ -9,7 +9,7 @@ import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
-import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
+import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
@@ -38,7 +38,7 @@ class MediaListActivity : BaseActivity() {
   private val params: MediaListParams by argument()
 
   private var onScrolledListener: RecyclerView.OnScrollListener? = null
-  private val adapter: MovieListAdapter by lazy { MovieListAdapter() }
+  private val adapter: MediaListAdapter by lazy { MediaListAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class MediaListActivity : BaseActivity() {
     adapter.populateAdapter(state.model)
   }
 
-  private fun MovieListAdapter.populateAdapter(model: MediaListModel) {
+  private fun MediaListAdapter.populateAdapter(model: MediaListModel) {
     submitList(model.media)
     onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item ->
