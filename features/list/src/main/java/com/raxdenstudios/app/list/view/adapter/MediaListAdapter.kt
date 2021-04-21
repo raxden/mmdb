@@ -19,7 +19,7 @@ internal class MediaListAdapter :
   var onRemoveMovieFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
   var onMovieClickListener: (MediaListItemModel) -> Unit = {}
 
-  override fun getItemViewType(position: Int) = R.layout.movie_list_item
+  override fun getItemViewType(position: Int) = R.layout.media_list_item
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaListAdapterHolder {
     val view = inflateView(parent, viewType)
