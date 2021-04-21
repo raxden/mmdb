@@ -6,7 +6,7 @@ import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
@@ -45,7 +45,7 @@ internal class MediaListViewModelTest : BaseTest() {
       aSecondPageList
     )
   }
-  private val stateObserver: Observer<MovieListUIState> = mockk(relaxed = true)
+  private val stateObserver: Observer<MediaListUIState> = mockk(relaxed = true)
 
   override val modules: List<Module>
     get() = listOf(
@@ -71,7 +71,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        MovieListUIState.Content(
+        MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
               MediaListItemModel.empty.copy(id = 1L),
@@ -103,7 +103,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        MovieListUIState.Content(
+        MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
               MediaListItemModel.empty.copy(id = 1L),
@@ -134,9 +134,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.refreshMovies(params)
 
     coVerifyOrder {
-      stateObserver.onChanged(MovieListUIState.Loading)
+      stateObserver.onChanged(MediaListUIState.Loading)
       stateObserver.onChanged(
-        MovieListUIState.Content(
+        MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = aFirstPageMoviesModel
           )
@@ -153,9 +153,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.loadMovies(params)
 
     coVerifyOrder {
-      stateObserver.onChanged(MovieListUIState.Loading)
+      stateObserver.onChanged(MediaListUIState.Loading)
       stateObserver.onChanged(
-        MovieListUIState.Content(
+        MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = aFirstPageMoviesModel
           )
@@ -173,9 +173,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.loadMoreMovies(pageIndex, model)
 
     coVerifyOrder {
-      stateObserver.onChanged(MovieListUIState.Loading)
+      stateObserver.onChanged(MediaListUIState.Loading)
       stateObserver.onChanged(
-        MovieListUIState.Content(
+        MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = aSecondPageMoviesModel
           )

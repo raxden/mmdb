@@ -12,7 +12,7 @@ import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
@@ -52,14 +52,14 @@ class MediaListActivity : BaseActivity() {
     lifecycle.addObserver(navigator)
   }
 
-  private fun MovieListActivityBinding.handleState(state: MovieListUIState) = when (state) {
-    is MovieListUIState.Content -> handleContentState(state)
-    MovieListUIState.EmptyContent -> handleEmptyState()
-    is MovieListUIState.Error -> handleErrorState(state)
-    MovieListUIState.Loading -> handleLoadingState()
+  private fun MovieListActivityBinding.handleState(state: MediaListUIState) = when (state) {
+    is MediaListUIState.Content -> handleContentState(state)
+    MediaListUIState.EmptyContent -> handleEmptyState()
+    is MediaListUIState.Error -> handleErrorState(state)
+    MediaListUIState.Loading -> handleLoadingState()
   }
 
-  private fun MovieListActivityBinding.handleContentState(state: MovieListUIState.Content) {
+  private fun MovieListActivityBinding.handleContentState(state: MediaListUIState.Content) {
     swipeRefreshLayout.isRefreshing = false
 
     loadMoreMoviesWhenScrollDown(state.model)
@@ -112,7 +112,7 @@ class MediaListActivity : BaseActivity() {
     swipeRefreshLayout.isRefreshing = false
   }
 
-  private fun MovieListActivityBinding.handleErrorState(state: MovieListUIState.Error) {
+  private fun MovieListActivityBinding.handleErrorState(state: MediaListUIState.Error) {
     swipeRefreshLayout.isRefreshing = false
     errorManager.handleError(state.throwable)
   }

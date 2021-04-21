@@ -7,7 +7,7 @@ import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListUIState
+import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMediasUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
@@ -38,8 +38,8 @@ internal class MediaListViewModel(
 
   private val pagination: Pagination<MediaListItemModel> by inject { parametersOf(viewModelScope) }
 
-  private val mState = MutableLiveData<MovieListUIState>()
-  val state: LiveData<MovieListUIState> = mState
+  private val mState = MutableLiveData<MediaListUIState>()
+  val state: LiveData<MediaListUIState> = mState
 
   override fun onCleared() {
     pagination.clear()
@@ -51,8 +51,8 @@ internal class MediaListViewModel(
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
       val params = AddMovieToWatchListUseCase.Params(item.id, item.mediaType)
       addMovieToWatchListUseCase.execute(params)
-        .onFailure { error -> mState.value = MovieListUIState.Error(error) }
-        .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
+        .onFailure { error -> mState.value = MediaListUIState.Error(error) }
+        .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) =
@@ -60,8 +60,8 @@ internal class MediaListViewModel(
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       val params = RemoveMovieFromWatchListUseCase.Params(item.id, item.mediaType)
       removeMovieFromWatchListUseCase.execute(params)
-        .onFailure { error -> mState.value = MovieListUIState.Error(error) }
-        .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
+        .onFailure { error -> mState.value = MediaListUIState.Error(error) }
+        .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun refreshMovies(params: MediaListParams) {
@@ -75,7 +75,7 @@ internal class MediaListViewModel(
   }
 
   private fun dataIsReadyOrLoading() =
-    mState.value is MovieListUIState.Content || mState.value is MovieListUIState.Loading
+    mState.value is MediaListUIState.Content || mState.value is MediaListUIState.Loading
 
   private fun requestFirstPage(params: MediaListParams) {
     requestPage(PageIndex.first, MediaListModel.withFilter(params.mediaFilterModel))
@@ -96,10 +96,10 @@ internal class MediaListViewModel(
   private fun pageResponse(model: MediaListModel, pageResult: PageResult<MediaListItemModel>) =
     when (pageResult) {
       is PageResult.Content -> handlePageResultContent(model, pageResult)
-      is PageResult.Error -> mState.value = MovieListUIState.Error(pageResult.throwable)
-      PageResult.Loading -> mState.value = MovieListUIState.Loading
+      is PageResult.Error -> mState.value = MediaListUIState.Error(pageResult.throwable)
+      PageResult.Loading -> mState.value = MediaListUIState.Loading
       PageResult.NoMoreResults -> Unit
-      PageResult.NoResults -> mState.value = MovieListUIState.EmptyContent
+      PageResult.NoResults -> mState.value = MediaListUIState.EmptyContent
     }
 
   private fun handlePageResultContent(
@@ -108,7 +108,7 @@ internal class MediaListViewModel(
   ) {
     viewModelScope.safeLaunch {
       val isAccountLogged = isAccountLoggedUseCase.execute()
-      mState.value = MovieListUIState.Content(
+      mState.value = MediaListUIState.Content(
         model.copy(
           logged = isAccountLogged,
           media = pageResult.items
