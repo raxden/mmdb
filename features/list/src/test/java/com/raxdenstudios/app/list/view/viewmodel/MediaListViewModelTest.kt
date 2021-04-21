@@ -10,8 +10,8 @@ import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
-import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -28,7 +28,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.test.inject
 
-internal class MovieListViewModelTest : BaseTest() {
+internal class MediaListViewModelTest : BaseTest() {
 
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
     coEvery { execute() } returns false
@@ -222,28 +222,28 @@ private val aSecondPageMoviesModel = listOf(
   MovieListItemModel.empty.copy(id = 20L),
 )
 private val aFirstPageMovies = listOf(
-  Movie.empty.copy(id = 1L),
-  Movie.empty.copy(id = 2L),
-  Movie.empty.copy(id = 3L),
-  Movie.empty.copy(id = 4L),
-  Movie.empty.copy(id = 5L),
-  Movie.empty.copy(id = 6L),
-  Movie.empty.copy(id = 7L),
-  Movie.empty.copy(id = 8L),
-  Movie.empty.copy(id = 9L),
-  Movie.empty.copy(id = 10L),
+  Media.empty.copy(id = 1L),
+  Media.empty.copy(id = 2L),
+  Media.empty.copy(id = 3L),
+  Media.empty.copy(id = 4L),
+  Media.empty.copy(id = 5L),
+  Media.empty.copy(id = 6L),
+  Media.empty.copy(id = 7L),
+  Media.empty.copy(id = 8L),
+  Media.empty.copy(id = 9L),
+  Media.empty.copy(id = 10L),
 )
 private val aSecondPageMovies = listOf(
-  Movie.empty.copy(id = 11L),
-  Movie.empty.copy(id = 12L),
-  Movie.empty.copy(id = 13L),
-  Movie.empty.copy(id = 14L),
-  Movie.empty.copy(id = 15L),
-  Movie.empty.copy(id = 16L),
-  Movie.empty.copy(id = 17L),
-  Movie.empty.copy(id = 18L),
-  Movie.empty.copy(id = 19L),
-  Movie.empty.copy(id = 20L),
+  Media.empty.copy(id = 11L),
+  Media.empty.copy(id = 12L),
+  Media.empty.copy(id = 13L),
+  Media.empty.copy(id = 14L),
+  Media.empty.copy(id = 15L),
+  Media.empty.copy(id = 16L),
+  Media.empty.copy(id = 17L),
+  Media.empty.copy(id = 18L),
+  Media.empty.copy(id = 19L),
+  Media.empty.copy(id = 20L),
 )
 private val aFirstPageList = PageList(
   items = aFirstPageMovies,

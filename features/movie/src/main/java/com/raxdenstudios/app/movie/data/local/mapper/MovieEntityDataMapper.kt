@@ -13,9 +13,9 @@ import com.raxdenstudios.commons.util.DataMapper
 internal class MovieToEntityMapper(
   private val pictureToEntityMapper: PictureToEntityMapper,
   private val voteToEntityMapper: VoteToEntityMapper,
-) : DataMapper<Movie, MovieEntity>() {
+) : DataMapper<Media, MovieEntity>() {
 
-  override fun transform(source: Movie): MovieEntity = MovieEntity(
+  override fun transform(source: Media): MovieEntity = MovieEntity(
     id = source.id,
     title = source.title,
     backdrop = pictureToEntityMapper.transform(source.backdrop),
@@ -29,9 +29,9 @@ internal class MovieToEntityMapper(
 internal class MovieEntityToDomainMapper(
   private val pictureEntityToDomainMapper: PictureEntityToDomainMapper,
   private val voteEntityToDomainMapper: VoteEntityToDomainMapper,
-) : DataMapper<MovieEntity, Movie>() {
+) : DataMapper<MovieEntity, Media>() {
 
-  override fun transform(source: MovieEntity): Movie = Movie(
+  override fun transform(source: MovieEntity): Media = Media(
     id = source.id,
     mediaType = MediaType.Movie,
     title = source.title,

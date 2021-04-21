@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.local.datasource
 import com.raxdenstudios.app.movie.data.local.MovieDao
 import com.raxdenstudios.app.movie.data.local.model.MovieEntity
 import com.raxdenstudios.app.movie.di.movieDataModule
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.test.BaseTest
@@ -22,7 +22,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
-internal class MovieLocalDataSourceTest : BaseTest() {
+internal class MediaLocalDataSourceTest : BaseTest() {
 
   private val dao: MovieDao = mockk()
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
@@ -48,7 +48,7 @@ internal class MovieLocalDataSourceTest : BaseTest() {
       val result = dataSource.watchList(aPage, aPageSize)
 
       assertEquals(
-        PageList(emptyList<Movie>(), Page(1)),
+        PageList(emptyList<Media>(), Page(1)),
         result
       )
     }
@@ -65,8 +65,8 @@ internal class MovieLocalDataSourceTest : BaseTest() {
       assertEquals(
         PageList(
           listOf(
-            Movie.empty.copy(id = 1L),
-            Movie.empty.copy(id = 2L),
+            Media.empty.copy(id = 1L),
+            Media.empty.copy(id = 2L),
           ), Page(1)
         ),
         result
@@ -85,8 +85,8 @@ internal class MovieLocalDataSourceTest : BaseTest() {
       assertEquals(
         PageList(
           listOf(
-            Movie.empty.copy(id = 3L),
-            Movie.empty.copy(id = 4L),
+            Media.empty.copy(id = 3L),
+            Media.empty.copy(id = 4L),
           ), Page(2)
         ),
         result

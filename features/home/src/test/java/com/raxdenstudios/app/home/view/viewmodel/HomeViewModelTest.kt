@@ -13,8 +13,8 @@ import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
-import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
@@ -170,8 +170,8 @@ private val aHomeModules = listOf(
   HomeModule.nowPlayingMovies
 )
 private val aMovies = listOf(
-  Movie.empty.copy(id = 1),
-  Movie.empty.copy(id = 2),
+  Media.empty.copy(id = 1),
+  Media.empty.copy(id = 2),
 )
 private val aPageMovieList = PageList(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)

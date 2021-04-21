@@ -1,16 +1,16 @@
 package com.raxdenstudios.app.movie.view.mapper
 
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.Picture
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.util.DataMapper
 
-class MovieListItemModelMapper : DataMapper<Movie, MovieListItemModel>() {
+class MovieListItemModelMapper : DataMapper<Media, MovieListItemModel>() {
 
-  override fun transform(source: Movie): MovieListItemModel = source.toModel()
+  override fun transform(source: Media): MovieListItemModel = source.toModel()
 
-  private fun Movie.toModel() = MovieListItemModel(
+  private fun Media.toModel() = MovieListItemModel(
     id = id,
     mediaType = mediaType,
     title = title,

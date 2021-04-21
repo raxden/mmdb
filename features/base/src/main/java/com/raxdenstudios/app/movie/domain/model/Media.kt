@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.domain.model
 import androidx.annotation.VisibleForTesting
 import org.threeten.bp.LocalDate
 
-data class Movie(
+data class Media(
   val id: Long,
   val mediaType: MediaType,
   val title: String,
@@ -15,7 +15,7 @@ data class Movie(
 ) {
 
   companion object {
-    fun withId(id: Long) = Movie(
+    fun withId(id: Long) = Media(
       id = id,
       mediaType = MediaType.Movie,
       title = "",
@@ -25,8 +25,9 @@ data class Movie(
       vote = Vote.empty,
       watchList = false,
     )
+
     @VisibleForTesting
-    val empty = Movie(
+    val empty = Media(
       id = 0L,
       mediaType = MediaType.Movie,
       title = "",
