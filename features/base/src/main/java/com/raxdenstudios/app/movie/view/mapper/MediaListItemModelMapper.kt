@@ -6,7 +6,7 @@ import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.util.DataMapper
 
-class MovieListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
+class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
 
   override fun transform(source: Media): MediaListItemModel = source.toModel()
 

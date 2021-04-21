@@ -11,7 +11,7 @@ import timber.log.Timber
 
 val baseFeatureModule = module {
 
-  factory { MovieListItemModelMapper() }
+  factory { MediaListItemModelMapper() }
   factory { MediaTypeToModelMapper() }
   factory { MediaTypeModelToDomainMapper() }
   factory { MediaFilterToModelMapper(get()) }
