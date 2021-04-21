@@ -6,7 +6,7 @@ import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapp
 import com.raxdenstudios.app.home.data.repository.HomeModuleRepository
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.view.mapper.CarouselMediaListModelMapper
-import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
+import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -25,7 +25,7 @@ val homeFeatureModule = module {
   factory { GetHomeModulesUseCase(get()) }
 
   factory { HomeModuleModelMapper(get()) }
-  factory { GetMoviesUseCaseParamsMapper() }
+  factory { GetMediasUseCaseParamsMapper() }
   factory { CarouselMediaListModelMapper(get(), get()) }
 
   viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }

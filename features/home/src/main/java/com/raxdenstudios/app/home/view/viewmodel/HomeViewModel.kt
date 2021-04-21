@@ -7,7 +7,7 @@ import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.mapper.GetMoviesUseCaseParamsMapper
+import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
@@ -33,7 +33,7 @@ internal class HomeViewModel(
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
-  private val getMoviesUseCaseParamsMapper: GetMoviesUseCaseParamsMapper,
+  private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper,
 ) : BaseViewModel() {
 
@@ -60,7 +60,7 @@ internal class HomeViewModel(
   }
 
   private suspend fun getDataFromModule(module: HomeModule): HomeModuleModel? {
-    val useCaseParams = getMoviesUseCaseParamsMapper.transform(module)
+    val useCaseParams = getMediasUseCaseParamsMapper.transform(module)
     val resultData = getMediasUseCase.execute(useCaseParams)
     return homeModuleModelMapper.transform(module, resultData)
   }
