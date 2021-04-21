@@ -11,7 +11,7 @@ import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.pagination.model.PageList
 
 internal class HomeModuleModelMapper(
-  private val carouselMovieListModelMapper: CarouselMovieListModelMapper
+  private val carouselMediaListModelMapper: CarouselMediaListModelMapper
 ) {
 
   fun transform(
@@ -19,7 +19,7 @@ internal class HomeModuleModelMapper(
     resultData: ResultData<PageList<Media>>
   ): HomeModuleModel? {
     val movieList = resultData.getValueOrNull()?.items ?: emptyList()
-    val carouselMoviesModel = carouselMovieListModelMapper.transform(homeModule, movieList)
+    val carouselMoviesModel = carouselMediaListModelMapper.transform(homeModule, movieList)
     val hasContent = carouselMoviesModel.hasMovies()
     return when (homeModule) {
       is HomeModule.NowPlaying -> when {
