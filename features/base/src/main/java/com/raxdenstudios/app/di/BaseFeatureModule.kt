@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.di
 
 import com.raxdenstudios.app.movie.view.mapper.*
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -26,7 +26,7 @@ val baseFeatureModule = module {
   }
 
   factory { (coroutineScope: CoroutineScope) ->
-    Pagination<MovieListItemModel>(
+    Pagination<MediaListItemModel>(
       config = get(),
       logger = { message -> Timber.tag("Pagination").d(message) },
       coroutineScope = coroutineScope

@@ -1,30 +1,30 @@
 package com.raxdenstudios.app.list.view.model
 
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class MediaListModel(
   val mediaFilterModel: MediaFilterModel,
   val logged: Boolean,
-  val movies: List<MovieListItemModel>,
+  val media: List<MediaListItemModel>,
 ) {
 
-  fun replaceMovie(movieListItemModel: MovieListItemModel): MediaListModel = this.copy(
-    movies = this.movies.replaceItem(movieListItemModel) { it.id == movieListItemModel.id }
+  fun replaceMovie(mediaListItemModel: MediaListItemModel): MediaListModel = this.copy(
+    media = this.media.replaceItem(mediaListItemModel) { it.id == mediaListItemModel.id }
   )
 
   companion object {
     val empty = MediaListModel(
       logged = false,
       mediaFilterModel = MediaFilterModel.Popular.popularMoviesMediaFilter,
-      movies = emptyList()
+      media = emptyList()
     )
 
     fun withFilter(mediaFilterModel: MediaFilterModel) = MediaListModel(
       logged = false,
       mediaFilterModel = mediaFilterModel,
-      movies = emptyList()
+      media = emptyList()
     )
   }
 }

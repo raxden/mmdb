@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.movie.view.component.MovieListItemView
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class CarouselMovieListAdapter :
-  BaseListAdapter<MovieListItemModel, CarouselMovieListAdapter.MovieListAdapterHolder>(
+  BaseListAdapter<MediaListItemModel, CarouselMovieListAdapter.MovieListAdapterHolder>(
     areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
   ) {
 
-  var onAddMovieToWatchListClickListener: (MovieListItemModel) -> Unit = {}
-  var onRemoveMovieFromWatchListClickListener: (MovieListItemModel) -> Unit = {}
-  var onMovieClickListener: (MovieListItemModel) -> Unit = {}
+  var onAddMovieToWatchListClickListener: (MediaListItemModel) -> Unit = {}
+  var onRemoveMovieFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+  var onMovieClickListener: (MediaListItemModel) -> Unit = {}
 
   override fun getItemViewType(position: Int) = R.layout.carousel_list_item
 
@@ -37,7 +37,7 @@ internal class CarouselMovieListAdapter :
     private val view: View
   ) : RecyclerView.ViewHolder(view) {
 
-    fun bind(item: MovieListItemModel) {
+    fun bind(item: MediaListItemModel) {
       val component = view.findViewById<MovieListItemView>(R.id.item_view)
       component.setSafeOnClickListener { onMovieClickListener(item) }
       component.onAddToWatchListClickListener = { onAddMovieToWatchListClickListener(item) }

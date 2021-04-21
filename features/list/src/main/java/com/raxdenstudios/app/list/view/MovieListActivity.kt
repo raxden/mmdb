@@ -14,7 +14,7 @@ import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
 import com.raxdenstudios.commons.util.SDK
@@ -67,7 +67,7 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun MovieListAdapter.populateAdapter(model: MediaListModel) {
-    submitList(model.movies)
+    submitList(model.media)
     onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item ->
       checkIfLoggedAndAddMovieToWatchList(model, item)
@@ -79,23 +79,23 @@ class MovieListActivity : BaseActivity() {
 
   private fun checkIfLoggedAndRemoveMovieFromWatchList(
     model: MediaListModel,
-    item: MovieListItemModel
+    item: MediaListItemModel
   ) {
     if (!model.logged) navigator.login { removeMovieFromWatchList(model, item) }
     else removeMovieFromWatchList(model, item)
   }
 
-  private fun removeMovieFromWatchList(model: MediaListModel, item: MovieListItemModel) {
+  private fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) {
     this@MovieListActivity.setResultOK()
     viewModel.removeMovieFromWatchList(model, item)
   }
 
-  private fun checkIfLoggedAndAddMovieToWatchList(model: MediaListModel, item: MovieListItemModel) {
+  private fun checkIfLoggedAndAddMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
     if (!model.logged) navigator.login { addMovieToWatchList(model, item) }
     else addMovieToWatchList(model, item)
   }
 
-  private fun addMovieToWatchList(model: MediaListModel, item: MovieListItemModel) {
+  private fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
     this@MovieListActivity.setResultOK()
     viewModel.addMovieToWatchList(model, item)
   }

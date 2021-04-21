@@ -7,7 +7,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
 import com.raxdenstudios.app.home.view.adapter.CarouselMovieListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
@@ -23,11 +23,11 @@ internal class CarouselMovieListView @JvmOverloads constructor(
 
   private val adapter: CarouselMovieListAdapter by lazy { CarouselMovieListAdapter() }
 
-  var onAddMovieToWatchListClickListener: (CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onAddMovieToWatchListClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onRemoveMovieFromWatchListClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onMovieClickListener: (CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onMovieClickListener: (CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
   var onSeeAllClickListener: (CarouselMovieListModel) -> Unit = {}
 
@@ -45,7 +45,7 @@ internal class CarouselMovieListView @JvmOverloads constructor(
 
   private fun CarouselMovieListViewBinding.populate(model: CarouselMovieListModel) {
     carouselTitleView.text = model.label
-    adapter.submitList(model.movies)
+    adapter.submitList(model.medias)
     adapter.onMovieClickListener = { item -> onMovieClickListener(model, item) }
     adapter.onAddMovieToWatchListClickListener =
       { item -> onAddMovieToWatchListClickListener(model, item) }
