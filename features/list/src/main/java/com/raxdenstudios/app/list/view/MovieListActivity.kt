@@ -10,8 +10,8 @@ import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MovieListNavigator
 import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
+import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListModel
-import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
@@ -25,7 +25,7 @@ import org.koin.core.parameter.parametersOf
 class MovieListActivity : BaseActivity() {
 
   companion object {
-    fun createIntent(context: Context, params: MovieListParams) =
+    fun createIntent(context: Context, params: MediaListParams) =
       Intent(context, MovieListActivity::class.java).apply {
         putExtra("params", params)
       }
@@ -35,7 +35,7 @@ class MovieListActivity : BaseActivity() {
   private val viewModel: MovieListViewModel by viewModel()
   private val navigator: MovieListNavigator by inject { parametersOf(this) }
   private val errorManager: ErrorManager by inject { parametersOf(this) }
-  private val params: MovieListParams by argument()
+  private val params: MediaListParams by argument()
 
   private var onScrolledListener: RecyclerView.OnScrollListener? = null
   private val adapter: MovieListAdapter by lazy { MovieListAdapter() }
