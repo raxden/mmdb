@@ -10,8 +10,8 @@ import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MovieListNavigator
 import com.raxdenstudios.app.list.databinding.MovieListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
+import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MovieListModel
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
@@ -66,7 +66,7 @@ class MovieListActivity : BaseActivity() {
     adapter.populateAdapter(state.model)
   }
 
-  private fun MovieListAdapter.populateAdapter(model: MovieListModel) {
+  private fun MovieListAdapter.populateAdapter(model: MediaListModel) {
     submitList(model.movies)
     onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item ->
@@ -78,29 +78,29 @@ class MovieListActivity : BaseActivity() {
   }
 
   private fun checkIfLoggedAndRemoveMovieFromWatchList(
-    model: MovieListModel,
+    model: MediaListModel,
     item: MovieListItemModel
   ) {
     if (!model.logged) navigator.login { removeMovieFromWatchList(model, item) }
     else removeMovieFromWatchList(model, item)
   }
 
-  private fun removeMovieFromWatchList(model: MovieListModel, item: MovieListItemModel) {
+  private fun removeMovieFromWatchList(model: MediaListModel, item: MovieListItemModel) {
     this@MovieListActivity.setResultOK()
     viewModel.removeMovieFromWatchList(model, item)
   }
 
-  private fun checkIfLoggedAndAddMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
+  private fun checkIfLoggedAndAddMovieToWatchList(model: MediaListModel, item: MovieListItemModel) {
     if (!model.logged) navigator.login { addMovieToWatchList(model, item) }
     else addMovieToWatchList(model, item)
   }
 
-  private fun addMovieToWatchList(model: MovieListModel, item: MovieListItemModel) {
+  private fun addMovieToWatchList(model: MediaListModel, item: MovieListItemModel) {
     this@MovieListActivity.setResultOK()
     viewModel.addMovieToWatchList(model, item)
   }
 
-  private fun MovieListActivityBinding.loadMoreMoviesWhenScrollDown(model: MovieListModel) {
+  private fun MovieListActivityBinding.loadMoreMoviesWhenScrollDown(model: MediaListModel) {
     onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
     onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
       val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
