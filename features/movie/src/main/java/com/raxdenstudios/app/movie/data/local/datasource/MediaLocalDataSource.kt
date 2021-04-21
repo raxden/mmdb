@@ -1,8 +1,8 @@
 package com.raxdenstudios.app.movie.data.local.datasource
 
 import com.raxdenstudios.app.movie.data.local.MediaDao
+import com.raxdenstudios.app.movie.data.local.mapper.MediaToEntityMapper
 import com.raxdenstudios.app.movie.data.local.mapper.MovieEntityToDomainMapper
-import com.raxdenstudios.app.movie.data.local.mapper.MovieToEntityMapper
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -10,7 +10,7 @@ import com.raxdenstudios.commons.pagination.model.PageSize
 
 internal class MediaLocalDataSource(
   private val dao: MediaDao,
-  private val movieToEntityMapper: MovieToEntityMapper,
+  private val mediaToEntityMapper: MediaToEntityMapper,
   private val movieEntityToDomainMapper: MovieEntityToDomainMapper,
 ) {
 
@@ -36,12 +36,12 @@ internal class MediaLocalDataSource(
   }
 
   suspend fun insert(media: List<Media>) {
-    val entityList = movieToEntityMapper.transform(media)
+    val entityList = mediaToEntityMapper.transform(media)
     dao.insert(entityList)
   }
 
   suspend fun insert(media: Media) {
-    val entity = movieToEntityMapper.transform(media)
+    val entity = mediaToEntityMapper.transform(media)
     dao.insert(entity)
   }
 
