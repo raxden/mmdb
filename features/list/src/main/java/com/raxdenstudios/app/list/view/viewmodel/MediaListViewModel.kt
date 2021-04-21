@@ -27,7 +27,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 
-internal class MovieListViewModel(
+internal class MediaListViewModel(
   private val getMoviesUseCase: GetMoviesUseCase,
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,

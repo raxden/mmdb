@@ -13,7 +13,7 @@ import com.raxdenstudios.app.list.view.adapter.MovieListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
-import com.raxdenstudios.app.list.view.viewmodel.MovieListViewModel
+import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
@@ -32,7 +32,7 @@ class MovieListActivity : BaseActivity() {
   }
 
   private val binding: MovieListActivityBinding by viewBinding()
-  private val viewModel: MovieListViewModel by viewModel()
+  private val viewModel: MediaListViewModel by viewModel()
   private val navigator: MovieListNavigator by inject { parametersOf(this) }
   private val errorManager: ErrorManager by inject { parametersOf(this) }
   private val params: MediaListParams by argument()

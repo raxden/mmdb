@@ -59,7 +59,7 @@ internal class MediaListViewModelTest : BaseTest() {
       }
     )
 
-  private val viewModel: MovieListViewModel by inject()
+  private val viewModel: MediaListViewModel by inject()
 
   @Test
   fun `when movie is added to watchlist, movie is replaced in model`() {
