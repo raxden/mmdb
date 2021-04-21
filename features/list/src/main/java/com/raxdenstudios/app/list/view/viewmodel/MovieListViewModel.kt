@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
+import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MovieListModel
-import com.raxdenstudios.app.list.view.model.MovieListParams
 import com.raxdenstudios.app.list.view.model.MovieListUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
@@ -64,12 +64,12 @@ internal class MovieListViewModel(
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
-  fun refreshMovies(params: MovieListParams) {
+  fun refreshMovies(params: MediaListParams) {
     pagination.clear()
     requestFirstPage(params)
   }
 
-  fun loadMovies(params: MovieListParams) {
+  fun loadMovies(params: MediaListParams) {
     if (dataIsReadyOrLoading()) return
     requestFirstPage(params)
   }
@@ -77,7 +77,7 @@ internal class MovieListViewModel(
   private fun dataIsReadyOrLoading() =
     mState.value is MovieListUIState.Content || mState.value is MovieListUIState.Loading
 
-  private fun requestFirstPage(params: MovieListParams) {
+  private fun requestFirstPage(params: MediaListParams) {
     requestPage(PageIndex.first, MovieListModel.withFilter(params.mediaFilterModel))
   }
 
