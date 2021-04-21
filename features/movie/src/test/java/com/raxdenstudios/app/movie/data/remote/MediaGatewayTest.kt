@@ -18,7 +18,7 @@ import org.junit.Test
 import org.koin.core.module.Module
 
 @ExperimentalCoroutinesApi
-internal class MovieGatewayTest : BaseTest() {
+internal class MediaGatewayTest : BaseTest() {
 
   override val modules: List<Module>
     get() = emptyList()

@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.local.datasource
 import com.raxdenstudios.app.movie.data.local.MovieDao
 import com.raxdenstudios.app.movie.data.local.mapper.MovieEntityToDomainMapper
 import com.raxdenstudios.app.movie.data.local.mapper.MovieToEntityMapper
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -14,12 +14,12 @@ internal class MovieLocalDataSource(
   private val movieEntityToDomainMapper: MovieEntityToDomainMapper,
 ) {
 
-  suspend fun watchList(): List<Movie> {
+  suspend fun watchList(): List<Media> {
     val entityList = dao.watchList()
     return movieEntityToDomainMapper.transform(entityList)
   }
 
-  suspend fun watchList(page: Page, pageSize: PageSize): PageList<Movie> {
+  suspend fun watchList(page: Page, pageSize: PageSize): PageList<Media> {
     val dtoList = dao.watchList()
     val startIndex = (page.value - 1) * pageSize.value
     val endIndex = when {
@@ -35,13 +35,13 @@ internal class MovieLocalDataSource(
     }
   }
 
-  suspend fun insert(movies: List<Movie>) {
-    val entityList = movieToEntityMapper.transform(movies)
+  suspend fun insert(media: List<Media>) {
+    val entityList = movieToEntityMapper.transform(media)
     dao.insert(entityList)
   }
 
-  suspend fun insert(movie: Movie) {
-    val entity = movieToEntityMapper.transform(movie)
+  suspend fun insert(media: Media) {
+    val entity = movieToEntityMapper.transform(media)
     dao.insert(entity)
   }
 

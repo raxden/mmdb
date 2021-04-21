@@ -1,8 +1,8 @@
 package com.raxdenstudios.app.movie.data.remote.mapper
 
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaType
-import com.raxdenstudios.app.movie.domain.model.Movie
 
 internal class MovieDtoToDomainMapper(
   private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
@@ -10,9 +10,9 @@ internal class MovieDtoToDomainMapper(
   private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
 ) {
 
-  fun transform(mediaType: MediaType, source: MovieDto): Movie = source.toDomain(mediaType)
+  fun transform(mediaType: MediaType, source: MovieDto): Media = source.toDomain(mediaType)
 
-  private fun MovieDto.toDomain(mediaType: MediaType) = Movie(
+  private fun MovieDto.toDomain(mediaType: MediaType) = Media(
     id = id.toLong(),
     mediaType = mediaType,
     title = title,

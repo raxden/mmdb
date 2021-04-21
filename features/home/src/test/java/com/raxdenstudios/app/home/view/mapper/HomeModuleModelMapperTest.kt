@@ -6,7 +6,7 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.domain.model.Movie
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
 import com.raxdenstudios.app.movie.view.model.MovieListItemModel
 import com.raxdenstudios.app.test.BaseTest
@@ -116,14 +116,14 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 private val aResultDataWithMovies = ResultData.Success(
   PageList(
     items = listOf(
-      Movie.empty.copy(id = 1L)
+      Media.empty.copy(id = 1L)
     ),
     page = Page(1)
   )
 )
 private val aResultDataWithoutMovies = ResultData.Success(
   PageList(
-    items = emptyList<Movie>(),
+    items = emptyList<Media>(),
     page = Page(1)
   )
 )

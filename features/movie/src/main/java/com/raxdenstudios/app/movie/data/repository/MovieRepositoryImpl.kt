@@ -5,9 +5,9 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
-import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coFlatMap
 import com.raxdenstudios.commons.coMap
@@ -62,12 +62,12 @@ internal class MovieRepositoryImpl(
     movieId: Long,
     mediaType: MediaType,
     watched: Boolean
-  ): ResultData<Movie> =
+  ): ResultData<Media> =
     movieRemoteDataSource.movieById(movieId, mediaType)
       .map { movie -> movie.copy(watchList = watched) }
 
-  private suspend fun updateMovie(movie: Movie): ResultData.Success<Boolean> {
-    movieLocalDataSource.insert(movie)
+  private suspend fun updateMovie(media: Media): ResultData.Success<Boolean> {
+    movieLocalDataSource.insert(media)
     return ResultData.Success(true)
   }
 
@@ -75,20 +75,20 @@ internal class MovieRepositoryImpl(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Movie>> =
+  ): ResultData<PageList<Media>> =
     moviesFromRemote(mediaFilter, page, pageSize)
 
   private suspend fun moviesFromRemote(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Movie>> {
+  ): ResultData<PageList<Media>> {
     val account = accountLocalDataSource.getAccount()
     return movieRemoteDataSource.movies(mediaFilter, account, page)
       .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
   }
 
-  private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Movie>) =
+  private suspend fun markMoviesAsWatchedIfWereWatched(pageList: PageList<Media>) =
     pageList.copy(
       items = pageList.items.map { movie ->
         movie.copy(watchList = movieLocalDataSource.isWatchList(movie.id))
@@ -110,8 +110,8 @@ internal class MovieRepositoryImpl(
     movieRemoteDataSource.watchList(account, mediaType)
       .coFlatMap { movies -> updateMovies(movies) }
 
-  private suspend fun updateMovies(movies: List<Movie>): ResultData.Success<Boolean> {
-    movieLocalDataSource.insert(movies)
+  private suspend fun updateMovies(media: List<Media>): ResultData.Success<Boolean> {
+    movieLocalDataSource.insert(media)
     return ResultData.Success(true)
   }
 }

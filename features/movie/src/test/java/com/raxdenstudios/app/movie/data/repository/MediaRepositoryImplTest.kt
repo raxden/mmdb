@@ -7,9 +7,9 @@ import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
-import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -28,7 +28,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
-internal class MovieRepositoryImplTest : BaseTest() {
+internal class MediaRepositoryImplTest : BaseTest() {
 
   private val accountLocalDataSource: AccountLocalDataSource = mockk {
     coEvery { getAccount() } returns aAccountLogged
@@ -45,14 +45,14 @@ internal class MovieRepositoryImplTest : BaseTest() {
     } returns ResultData.Success(aPageList)
     coEvery {
       movieById(aMovieId, aMediaType)
-    } returns ResultData.Success(Movie.empty.copy(id = aMovieId))
+    } returns ResultData.Success(Media.empty.copy(id = aMovieId))
     coEvery {
       watchList(aAccountLogged, aMediaType)
     } returns ResultData.Success(aMovies)
   }
   private val movieLocalDataSource: MovieLocalDataSource = mockk {
-    coEvery { insert(any<Movie>()) } returns Unit
-    coEvery { insert(any<List<Movie>>()) } returns Unit
+    coEvery { insert(any<Media>()) } returns Unit
+    coEvery { insert(any<List<Media>>()) } returns Unit
     coEvery { isWatchList(any()) } returns false
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
@@ -99,8 +99,8 @@ internal class MovieRepositoryImplTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Movie.empty.copy(id = 1L),
-              Movie.empty.copy(id = 2L, watchList = true),
+              Media.empty.copy(id = 1L),
+              Media.empty.copy(id = 2L, watchList = true),
             ),
             page = Page(1),
           )
@@ -132,8 +132,8 @@ internal class MovieRepositoryImplTest : BaseTest() {
 
 private val aMediaType = MediaType.Movie
 private val aMovies = listOf(
-  Movie.empty.copy(id = 1L),
-  Movie.empty.copy(id = 2L),
+  Media.empty.copy(id = 1L),
+  Media.empty.copy(id = 2L),
 )
 private val aPage = Page(1)
 private val aPageSize = PageSize.defaultSize
@@ -149,4 +149,4 @@ private val aAccountLogged = Account.Logged.empty.copy(
   )
 )
 private const val aMovieId = 1L
-private val aMovie = Movie.empty.copy(id = aMovieId)
+private val aMovie = Media.empty.copy(id = aMovieId)

@@ -5,8 +5,8 @@ import com.raxdenstudios.app.movie.data.remote.MovieGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.model.MovieDto
 import com.raxdenstudios.app.movie.di.movieDataModule
+import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
-import com.raxdenstudios.app.movie.domain.model.Movie
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.network.model.PageDto
@@ -26,7 +26,7 @@ import org.koin.dsl.module
 import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
-internal class MovieRemoteDataSourceTest : BaseTest() {
+internal class MediaRemoteDataSourceTest : BaseTest() {
 
   private val movieGateway: MovieGateway = mockk() {
     coEvery {
@@ -56,8 +56,8 @@ internal class MovieRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Movie.empty.copy(id = 1L, watchList = true),
-              Movie.empty.copy(id = 2L, watchList = true),
+              Media.empty.copy(id = 1L, watchList = true),
+              Media.empty.copy(id = 2L, watchList = true),
             ),
             page = Page(1)
           )
