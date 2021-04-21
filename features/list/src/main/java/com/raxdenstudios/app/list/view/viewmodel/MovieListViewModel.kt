@@ -14,7 +14,7 @@ import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
 import com.raxdenstudios.app.movie.view.mapper.MediaFilterModelToDomainMapper
 import com.raxdenstudios.app.movie.view.mapper.MovieListItemModelMapper
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
@@ -36,7 +36,7 @@ internal class MovieListViewModel(
   private val movieListItemModelMapper: MovieListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
 
-  private val pagination: Pagination<MovieListItemModel> by inject { parametersOf(viewModelScope) }
+  private val pagination: Pagination<MediaListItemModel> by inject { parametersOf(viewModelScope) }
 
   private val mState = MutableLiveData<MovieListUIState>()
   val state: LiveData<MovieListUIState> = mState
@@ -46,7 +46,7 @@ internal class MovieListViewModel(
     super.onCleared()
   }
 
-  fun addMovieToWatchList(model: MediaListModel, item: MovieListItemModel) =
+  fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
       val params = AddMovieToWatchListUseCase.Params(item.id, item.mediaType)
@@ -55,7 +55,7 @@ internal class MovieListViewModel(
         .onSuccess { mState.value = MovieListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
-  fun removeMovieFromWatchList(model: MediaListModel, item: MovieListItemModel) =
+  fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       val params = RemoveMovieFromWatchListUseCase.Params(item.id, item.mediaType)
@@ -93,7 +93,7 @@ internal class MovieListViewModel(
     requestPage(pageIndex, model)
   }
 
-  private fun pageResponse(model: MediaListModel, pageResult: PageResult<MovieListItemModel>) =
+  private fun pageResponse(model: MediaListModel, pageResult: PageResult<MediaListItemModel>) =
     when (pageResult) {
       is PageResult.Content -> handlePageResultContent(model, pageResult)
       is PageResult.Error -> mState.value = MovieListUIState.Error(pageResult.throwable)
@@ -104,14 +104,14 @@ internal class MovieListViewModel(
 
   private fun handlePageResultContent(
     model: MediaListModel,
-    pageResult: PageResult.Content<MovieListItemModel>
+    pageResult: PageResult.Content<MediaListItemModel>
   ) {
     viewModelScope.safeLaunch {
       val isAccountLogged = isAccountLoggedUseCase.execute()
       mState.value = MovieListUIState.Content(
         model.copy(
           logged = isAccountLogged,
-          movies = pageResult.items
+          media = pageResult.items
         )
       )
     }
@@ -121,7 +121,7 @@ internal class MovieListViewModel(
     mediaFilterModel: MediaFilterModel,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<MovieListItemModel>> {
+  ): ResultData<PageList<MediaListItemModel>> {
     val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
     val useCaseParams = GetMoviesUseCase.Params(mediaFilter, page, pageSize)
     return getMoviesUseCase.execute(useCaseParams)

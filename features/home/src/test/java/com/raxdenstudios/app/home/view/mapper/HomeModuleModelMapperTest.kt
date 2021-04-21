@@ -8,7 +8,7 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -46,8 +46,8 @@ internal class HomeModuleModelMapperTest : BaseTest() {
       HomeModuleModel.CarouselMovies(
         mediaFilterModel = MediaFilterModel.nowPlayingMovies,
         carouselMovieListModel = CarouselMovieListModel.empty.copy(
-          movies = listOf(
-            MovieListItemModel.empty.copy(id = 1L)
+          medias = listOf(
+            MediaListItemModel.empty.copy(id = 1L)
           )
         )
       ),
@@ -94,8 +94,8 @@ internal class HomeModuleModelMapperTest : BaseTest() {
       HomeModuleModel.CarouselMovies(
         mediaFilterModel = MediaFilterModel.watchlistMovies,
         carouselMovieListModel = CarouselMovieListModel.empty.copy(
-          movies = listOf(
-            MovieListItemModel.empty.copy(id = 1L)
+          medias = listOf(
+            MediaListItemModel.empty.copy(id = 1L)
           )
         )
       ),

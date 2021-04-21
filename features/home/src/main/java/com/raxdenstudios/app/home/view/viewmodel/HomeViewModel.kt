@@ -16,7 +16,7 @@ import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.movie.domain.AddMovieToWatchListUseCase
 import com.raxdenstudios.app.movie.domain.GetMoviesUseCase
 import com.raxdenstudios.app.movie.domain.RemoveMovieFromWatchListUseCase
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.app.movie.view.model.WatchButtonModel
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.replaceItem
@@ -73,7 +73,7 @@ internal class HomeViewModel(
     model: HomeModel,
     homeModuleModel: HomeModuleModel.CarouselMovies,
     carouselMoviesModel: CarouselMovieListModel,
-    movieItemModel: MovieListItemModel,
+    mediaItemModel: MediaListItemModel,
   ) {
 
   }
@@ -82,17 +82,17 @@ internal class HomeViewModel(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
     carouselMovieList: CarouselMovieListModel,
-    movieListItem: MovieListItemModel,
+    mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
     updateMovieWithWatchButton(
       home = home,
       homeModule = homeModule,
       carouselMovieList = carouselMovieList,
-      movieListItem = movieListItem,
+      mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Selected,
     )
     addMovieToWatchListUseCase.execute(
-      AddMovieToWatchListUseCase.Params(movieListItem.id, movieListItem.mediaType)
+      AddMovieToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onSuccess { refreshData() }
   }
 
@@ -100,17 +100,17 @@ internal class HomeViewModel(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
     carouselMovieList: CarouselMovieListModel,
-    movieListItem: MovieListItemModel,
+    mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
     updateMovieWithWatchButton(
       home = home,
       homeModule = homeModule,
       carouselMovieList = carouselMovieList,
-      movieListItem = movieListItem,
+      mediaListItem = mediaListItem,
       watchButton = WatchButtonModel.Unselected,
     )
     removeMovieFromWatchListUseCase.execute(
-      RemoveMovieFromWatchListUseCase.Params(movieListItem.id, movieListItem.mediaType)
+      RemoveMovieFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onSuccess { refreshData() }
   }
 
@@ -118,11 +118,11 @@ internal class HomeViewModel(
     home: HomeModel,
     homeModule: HomeModuleModel.CarouselMovies,
     carouselMovieList: CarouselMovieListModel,
-    movieListItem: MovieListItemModel,
+    mediaListItem: MediaListItemModel,
     watchButton: WatchButtonModel,
   ) {
     val homeUpdated = withContext(dispatcher.default()) {
-      val movieListItemUpdated = movieListItem.copy(watchButtonModel = watchButton)
+      val movieListItemUpdated = mediaListItem.copy(watchButtonModel = watchButton)
       val carouselMovieListUpdated = carouselMovieList.replaceMovie(movieListItemUpdated)
       val homeModuleUpdated = homeModule.copy(carouselMovieListModel = carouselMovieListUpdated)
       home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })

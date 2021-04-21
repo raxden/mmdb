@@ -10,7 +10,7 @@ import com.raxdenstudios.app.home.view.component.CarouselMovieListView
 import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.movie.view.model.MediaFilterModel
-import com.raxdenstudios.app.movie.view.model.MovieListItemModel
+import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class HomeModuleListAdapter :
@@ -24,11 +24,11 @@ internal class HomeModuleListAdapter :
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
 
-  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onMovieClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MovieListItemModel) -> Unit =
+  var onMovieClickListener: (HomeModuleModel.CarouselMovies, CarouselMovieListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
   var onCarouselMoviesModel: (HomeModuleModel.CarouselMovies, CarouselMovieListModel) -> Unit =
     { _, _ -> }
