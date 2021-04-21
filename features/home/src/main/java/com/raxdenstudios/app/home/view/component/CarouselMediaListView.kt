@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.databinding.CarouselMovieListViewBinding
+import com.raxdenstudios.app.home.databinding.CarouselMediaListViewBinding
 import com.raxdenstudios.app.home.view.adapter.CarouselMediaListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
@@ -19,7 +19,7 @@ internal class CarouselMediaListView @JvmOverloads constructor(
   defStyleRes: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-  private val binding: CarouselMovieListViewBinding by viewBinding()
+  private val binding: CarouselMediaListViewBinding by viewBinding()
 
   private val adapter: CarouselMediaListAdapter by lazy { CarouselMediaListAdapter() }
 
@@ -33,7 +33,7 @@ internal class CarouselMediaListView @JvmOverloads constructor(
 
   init {
     if (isInEditMode) {
-      inflateView(R.layout.carousel_movie_list_view, true)
+      inflateView(R.layout.carousel_media_list_view, true)
     } else {
       binding.recyclerView.adapter = adapter
     }
@@ -43,7 +43,7 @@ internal class CarouselMediaListView @JvmOverloads constructor(
     binding.populate(model)
   }
 
-  private fun CarouselMovieListViewBinding.populate(model: CarouselMediaListModel) {
+  private fun CarouselMediaListViewBinding.populate(model: CarouselMediaListModel) {
     carouselTitleView.text = model.label
     adapter.submitList(model.medias)
     adapter.onMovieClickListener = { item -> onMovieClickListener(model, item) }

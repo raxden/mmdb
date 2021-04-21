@@ -27,11 +27,11 @@ import kotlin.coroutines.Continuation;
 public final class MediaDao_Impl implements MediaDao {
   private final RoomDatabase __db;
 
-  private final EntityInsertionAdapter<MediaEntity> __insertionAdapterOfMovieEntity;
+  private final EntityInsertionAdapter<MediaEntity> __insertionAdapterOfMediaEntity;
 
   public MediaDao_Impl(RoomDatabase __db) {
     this.__db = __db;
-    this.__insertionAdapterOfMovieEntity = new EntityInsertionAdapter<MediaEntity>(__db) {
+    this.__insertionAdapterOfMediaEntity = new EntityInsertionAdapter<MediaEntity>(__db) {
       @Override
       public String createQuery() {
         return "INSERT OR REPLACE INTO `movie` (`id`,`title`,`release`,`watch_list`,`backdrop_thumbnail_url`,`backdrop_thumbnail_type`,`backdrop_original_url`,`backdrop_original_type`,`poster_thumbnail_url`,`poster_thumbnail_type`,`poster_original_url`,`poster_original_type`,`vote_average`,`vote_count`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -148,7 +148,7 @@ public final class MediaDao_Impl implements MediaDao {
       public Unit call() throws Exception {
         __db.beginTransaction();
         try {
-          __insertionAdapterOfMovieEntity.insert(data);
+          __insertionAdapterOfMediaEntity.insert(data);
           __db.setTransactionSuccessful();
           return Unit.INSTANCE;
         } finally {
@@ -159,13 +159,13 @@ public final class MediaDao_Impl implements MediaDao {
   }
 
   @Override
-  public Object insert(final MediaEntity movie, final Continuation<? super Unit> p1) {
+  public Object insert(final MediaEntity media, final Continuation<? super Unit> p1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       public Unit call() throws Exception {
         __db.beginTransaction();
         try {
-          __insertionAdapterOfMovieEntity.insert(movie);
+          __insertionAdapterOfMediaEntity.insert(media);
           __db.setTransactionSuccessful();
           return Unit.INSTANCE;
         } finally {

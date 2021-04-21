@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/carousel_movie_list_view" />
+            tools:listitem="@layout/carousel_media_list_view" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
