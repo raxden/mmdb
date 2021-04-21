@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.repository
 import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSource
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
-import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
+import com.raxdenstudios.app.movie.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
@@ -17,7 +17,7 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
 internal class MediaRepositoryImpl(
-  private val movieRemoteDataSource: MovieRemoteDataSource,
+  private val mediaRemoteDataSource: MediaRemoteDataSource,
   private val mediaLocalDataSource: MediaLocalDataSource,
   private val accountLocalDataSource: AccountLocalDataSource,
 ) : MediaRepository {
@@ -36,7 +36,7 @@ internal class MediaRepositoryImpl(
     mediaType: MediaType,
     movieId: Long
   ): ResultData<Boolean> =
-    movieRemoteDataSource.addMovieToWatchList(account, mediaType, movieId)
+    mediaRemoteDataSource.addMediaToWatchList(account, mediaType, movieId)
       .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, true) }
       .coFlatMap { movie -> updateMovie(movie) }
 
@@ -54,7 +54,7 @@ internal class MediaRepositoryImpl(
     mediaType: MediaType,
     movieId: Long
   ): ResultData<Boolean> =
-    movieRemoteDataSource.removeMovieFromWatchList(account, mediaType, movieId)
+    mediaRemoteDataSource.removeMediaFromWatchList(account, mediaType, movieId)
       .coFlatMap { getMovieAndMarkAsWatched(movieId, mediaType, false) }
       .coFlatMap { movie -> updateMovie(movie) }
 
@@ -63,7 +63,7 @@ internal class MediaRepositoryImpl(
     mediaType: MediaType,
     watched: Boolean
   ): ResultData<Media> =
-    movieRemoteDataSource.movieById(movieId, mediaType)
+    mediaRemoteDataSource.mediaById(movieId, mediaType)
       .map { movie -> movie.copy(watchList = watched) }
 
   private suspend fun updateMovie(media: Media): ResultData.Success<Boolean> {
@@ -84,7 +84,7 @@ internal class MediaRepositoryImpl(
     pageSize: PageSize
   ): ResultData<PageList<Media>> {
     val account = accountLocalDataSource.getAccount()
-    return movieRemoteDataSource.movies(mediaFilter, account, page)
+    return mediaRemoteDataSource.medias(mediaFilter, account, page)
       .coMap { pageList -> markMoviesAsWatchedIfWereWatched(pageList) }
   }
 
@@ -107,7 +107,7 @@ internal class MediaRepositoryImpl(
     account: Account.Logged,
     mediaType: MediaType,
   ): ResultData<Boolean> =
-    movieRemoteDataSource.watchList(account, mediaType)
+    mediaRemoteDataSource.watchList(account, mediaType)
       .coFlatMap { movies -> updateMovies(movies) }
 
   private suspend fun updateMovies(media: List<Media>): ResultData.Success<Boolean> {

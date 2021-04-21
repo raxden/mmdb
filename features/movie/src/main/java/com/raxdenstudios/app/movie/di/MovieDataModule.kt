@@ -4,7 +4,7 @@ import com.raxdenstudios.app.movie.data.local.MediaDatabase
 import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
-import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
+import com.raxdenstudios.app.movie.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.mapper.*
 import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
@@ -42,7 +42,7 @@ val movieDataModule = module {
   factory { DateDtoToLocalDateMapper() }
   factory { MediaDtoToDomainMapper(get(), get(), get()) }
 
-  factory { MovieRemoteDataSource(get(), get(), get()) }
+  factory { MediaRemoteDataSource(get(), get(), get()) }
 
   factory<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
 
