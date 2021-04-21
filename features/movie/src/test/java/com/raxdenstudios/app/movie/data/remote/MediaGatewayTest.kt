@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.data.remote
 
 import com.haroldadmin.cnradapter.NetworkResponse
-import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.network.model.PageDto
@@ -54,12 +54,12 @@ internal class MediaGatewayTest : BaseTest() {
       assertEquals(
         ResultData.Success(
           listOf(
-            MovieDto.empty.copy(id = 1),
-            MovieDto.empty.copy(id = 2),
-            MovieDto.empty.copy(id = 3),
-            MovieDto.empty.copy(id = 4),
-            MovieDto.empty.copy(id = 5),
-            MovieDto.empty.copy(id = 6),
+            MediaDto.empty.copy(id = 1),
+            MediaDto.empty.copy(id = 2),
+            MediaDto.empty.copy(id = 3),
+            MediaDto.empty.copy(id = 4),
+            MediaDto.empty.copy(id = 5),
+            MediaDto.empty.copy(id = 6),
           )
         ), resultData
       )
@@ -74,8 +74,8 @@ private val aNetworkResponseSuccessFirstPage = NetworkResponse.Success(
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MovieDto.empty.copy(id = 1),
-      MovieDto.empty.copy(id = 2),
+      MediaDto.empty.copy(id = 1),
+      MediaDto.empty.copy(id = 2),
     )
   ),
   headers = null,
@@ -87,8 +87,8 @@ private val aNetworkResponseSuccessSecondPage = NetworkResponse.Success(
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MovieDto.empty.copy(id = 3),
-      MovieDto.empty.copy(id = 4),
+      MediaDto.empty.copy(id = 3),
+      MediaDto.empty.copy(id = 4),
     )
   ),
   headers = null,
@@ -100,8 +100,8 @@ private val aNetworkResponseSuccessThirdPage = NetworkResponse.Success(
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MovieDto.empty.copy(id = 5),
-      MovieDto.empty.copy(id = 6),
+      MediaDto.empty.copy(id = 5),
+      MediaDto.empty.copy(id = 6),
     )
   ),
   headers = null,
