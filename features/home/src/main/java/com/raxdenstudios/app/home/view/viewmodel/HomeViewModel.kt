@@ -71,7 +71,7 @@ internal class HomeViewModel(
 
   fun movieSelected(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel.CarouselMovies,
+    homeModuleModel: HomeModuleModel.CarouselMedias,
     carouselMoviesModel: CarouselMediaListModel,
     mediaItemModel: MediaListItemModel,
   ) {
@@ -80,7 +80,7 @@ internal class HomeViewModel(
 
   fun addMovieToWatchList(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMovies,
+    homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
@@ -98,7 +98,7 @@ internal class HomeViewModel(
 
   fun removeMovieFromWatchList(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMovies,
+    homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
@@ -116,7 +116,7 @@ internal class HomeViewModel(
 
   private suspend fun updateMovieWithWatchButton(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMovies,
+    homeModule: HomeModuleModel.CarouselMedias,
     carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
     watchButton: WatchButtonModel,

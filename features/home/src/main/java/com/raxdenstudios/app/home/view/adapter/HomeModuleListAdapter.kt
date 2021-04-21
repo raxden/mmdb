@@ -24,18 +24,18 @@ internal class HomeModuleListAdapter :
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
 
-  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onAddMovieToWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMovies, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onRemoveMovieFromWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onMovieClickListener: (HomeModuleModel.CarouselMovies, CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onMovieClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _, _ -> }
-  var onCarouselMoviesModel: (HomeModuleModel.CarouselMovies, CarouselMediaListModel) -> Unit =
+  var onCarouselMoviesModel: (HomeModuleModel.CarouselMedias, CarouselMediaListModel) -> Unit =
     { _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
   override fun getItemId(position: Int): Long = when (val item = getItem(position)) {
-    is HomeModuleModel.CarouselMovies -> when (item.mediaFilterModel) {
+    is HomeModuleModel.CarouselMedias -> when (item.mediaFilterModel) {
       is MediaFilterModel.NowPlaying -> 1
       is MediaFilterModel.Popular -> 2
       is MediaFilterModel.TopRated -> 3
@@ -47,7 +47,7 @@ internal class HomeModuleListAdapter :
   }
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-    is HomeModuleModel.CarouselMovies -> CAROUSEL_MOVIES_LAYOUT
+    is HomeModuleModel.CarouselMedias -> CAROUSEL_MOVIES_LAYOUT
     HomeModuleModel.WatchlistNotLogged -> WATCHLIST_NOT_LOGGED
     HomeModuleModel.WatchlistWithoutContent -> WATCHLIST_WITHOUT_CONTENT
   }
@@ -68,7 +68,7 @@ internal class HomeModuleListAdapter :
   ) : RecyclerView.ViewHolder(view) {
 
     fun bind(model: HomeModuleModel) = when (model) {
-      is HomeModuleModel.CarouselMovies -> bindCarousel(model, model.carouselMediaListModel)
+      is HomeModuleModel.CarouselMedias -> bindCarousel(model, model.carouselMediaListModel)
       HomeModuleModel.WatchlistNotLogged -> bindWatchListNotLogged()
       HomeModuleModel.WatchlistWithoutContent -> bindWatchListWithoutContent()
     }
@@ -80,7 +80,7 @@ internal class HomeModuleListAdapter :
       view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener() }
     }
 
-    private fun bindCarousel(model: HomeModuleModel.CarouselMovies, item: CarouselMediaListModel) {
+    private fun bindCarousel(model: HomeModuleModel.CarouselMedias, item: CarouselMediaListModel) {
       val component = view.findViewById<CarouselMediaListView>(R.id.item_view)
       component.onSeeAllClickListener = { carouselMoviesModel ->
         onCarouselMoviesModel(model, carouselMoviesModel)

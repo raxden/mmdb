@@ -43,7 +43,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
     val result = mapper.transform(module, aResultDataWithMovies)
 
     assertEquals(
-      HomeModuleModel.CarouselMovies(
+      HomeModuleModel.CarouselMedias(
         mediaFilterModel = MediaFilterModel.nowPlayingMovies,
         carouselMediaListModel = CarouselMediaListModel.empty.copy(
           medias = listOf(
@@ -91,7 +91,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
     val result = mapper.transform(module, aResultDataWithMovies)
 
     assertEquals(
-      HomeModuleModel.CarouselMovies(
+      HomeModuleModel.CarouselMedias(
         mediaFilterModel = MediaFilterModel.watchlistMovies,
         carouselMediaListModel = CarouselMediaListModel.empty.copy(
           medias = listOf(

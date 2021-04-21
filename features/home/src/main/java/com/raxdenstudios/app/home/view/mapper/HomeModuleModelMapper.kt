@@ -23,28 +23,28 @@ internal class HomeModuleModelMapper(
     val hasContent = carouselMoviesModel.hasMovies()
     return when (homeModule) {
       is HomeModule.NowPlaying -> when {
-        hasContent -> HomeModuleModel.CarouselMovies(
+        hasContent -> HomeModuleModel.CarouselMedias(
           mediaFilterModel = MediaFilterModel.NowPlaying(MediaTypeModel.Movie),
           carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.Popular -> when {
-        hasContent -> HomeModuleModel.CarouselMovies(
+        hasContent -> HomeModuleModel.CarouselMedias(
           mediaFilterModel = MediaFilterModel.Popular(MediaTypeModel.Movie),
           carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.TopRated -> when {
-        hasContent -> HomeModuleModel.CarouselMovies(
+        hasContent -> HomeModuleModel.CarouselMedias(
           mediaFilterModel = MediaFilterModel.TopRated(MediaTypeModel.Movie),
           carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.Upcoming -> when {
-        hasContent -> HomeModuleModel.CarouselMovies(
+        hasContent -> HomeModuleModel.CarouselMedias(
           mediaFilterModel = MediaFilterModel.Upcoming,
           carouselMediaListModel = carouselMoviesModel
         )
@@ -56,7 +56,7 @@ internal class HomeModuleModelMapper(
           else null
         }
         is ResultData.Success -> when {
-          hasContent -> HomeModuleModel.CarouselMovies(
+          hasContent -> HomeModuleModel.CarouselMedias(
             mediaFilterModel = MediaFilterModel.WatchList(MediaTypeModel.Movie),
             carouselMediaListModel = carouselMoviesModel
           )

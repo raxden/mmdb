@@ -88,7 +88,7 @@ internal class HomeViewModelTest : BaseTest() {
         HomeUIState.Content(
           HomeModel.empty.copy(
             modules = listOf(
-              HomeModuleModel.CarouselMovies(
+              HomeModuleModel.CarouselMedias(
                 mediaFilterModel = MediaFilterModel.popularMovies,
                 carouselMediaListModel = CarouselMediaListModel.empty.copy(
                   medias = listOf(
@@ -97,7 +97,7 @@ internal class HomeViewModelTest : BaseTest() {
                   )
                 )
               ),
-              HomeModuleModel.CarouselMovies(
+              HomeModuleModel.CarouselMedias(
                 mediaFilterModel = MediaFilterModel.nowPlayingMovies,
                 carouselMediaListModel = CarouselMediaListModel.empty.copy(
                   medias = listOf(
@@ -130,7 +130,7 @@ internal class HomeViewModelTest : BaseTest() {
           HomeUIState.Content(
             HomeModel.empty.copy(
               modules = listOf(
-                HomeModuleModel.CarouselMovies(
+                HomeModuleModel.CarouselMedias(
                   mediaFilterModel = MediaFilterModel.popularMovies,
                   carouselMediaListModel = CarouselMediaListModel.empty.copy(
                     medias = listOf(
@@ -155,7 +155,7 @@ private val aCarouselMovieListModel = CarouselMediaListModel.empty.copy(
   medias = listOf(aMovieModel)
 )
 private val aCarouselMoviesPopularModuleModel =
-  HomeModuleModel.CarouselMovies(
+  HomeModuleModel.CarouselMedias(
     mediaFilterModel = MediaFilterModel.popularMovies,
     carouselMediaListModel = aCarouselMovieListModel
   )
