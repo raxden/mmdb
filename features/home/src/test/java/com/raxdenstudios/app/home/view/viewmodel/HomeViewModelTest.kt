@@ -6,7 +6,7 @@ import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.CarouselMovieListModel
+import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
@@ -90,7 +90,7 @@ internal class HomeViewModelTest : BaseTest() {
             modules = listOf(
               HomeModuleModel.CarouselMovies(
                 mediaFilterModel = MediaFilterModel.popularMovies,
-                carouselMovieListModel = CarouselMovieListModel.empty.copy(
+                carouselMediaListModel = CarouselMediaListModel.empty.copy(
                   medias = listOf(
                     MediaListItemModel.empty.copy(id = 1L),
                     MediaListItemModel.empty.copy(id = 2L),
@@ -99,7 +99,7 @@ internal class HomeViewModelTest : BaseTest() {
               ),
               HomeModuleModel.CarouselMovies(
                 mediaFilterModel = MediaFilterModel.nowPlayingMovies,
-                carouselMovieListModel = CarouselMovieListModel.empty.copy(
+                carouselMediaListModel = CarouselMediaListModel.empty.copy(
                   medias = listOf(
                     MediaListItemModel.empty.copy(id = 1L),
                     MediaListItemModel.empty.copy(id = 2L),
@@ -132,7 +132,7 @@ internal class HomeViewModelTest : BaseTest() {
               modules = listOf(
                 HomeModuleModel.CarouselMovies(
                   mediaFilterModel = MediaFilterModel.popularMovies,
-                  carouselMovieListModel = CarouselMovieListModel.empty.copy(
+                  carouselMediaListModel = CarouselMediaListModel.empty.copy(
                     medias = listOf(
                       MediaListItemModel.empty.copy(
                         id = 1L,
@@ -151,13 +151,13 @@ internal class HomeViewModelTest : BaseTest() {
 }
 
 private val aMovieModel = MediaListItemModel.empty.copy(id = 1L)
-private val aCarouselMovieListModel = CarouselMovieListModel.empty.copy(
+private val aCarouselMovieListModel = CarouselMediaListModel.empty.copy(
   medias = listOf(aMovieModel)
 )
 private val aCarouselMoviesPopularModuleModel =
   HomeModuleModel.CarouselMovies(
     mediaFilterModel = MediaFilterModel.popularMovies,
-    carouselMovieListModel = aCarouselMovieListModel
+    carouselMediaListModel = aCarouselMovieListModel
   )
 private val aHomeModelModules = listOf(
   aCarouselMoviesPopularModuleModel

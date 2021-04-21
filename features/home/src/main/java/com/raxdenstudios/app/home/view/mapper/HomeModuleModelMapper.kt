@@ -25,28 +25,28 @@ internal class HomeModuleModelMapper(
       is HomeModule.NowPlaying -> when {
         hasContent -> HomeModuleModel.CarouselMovies(
           mediaFilterModel = MediaFilterModel.NowPlaying(MediaTypeModel.Movie),
-          carouselMovieListModel = carouselMoviesModel
+          carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.Popular -> when {
         hasContent -> HomeModuleModel.CarouselMovies(
           mediaFilterModel = MediaFilterModel.Popular(MediaTypeModel.Movie),
-          carouselMovieListModel = carouselMoviesModel
+          carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.TopRated -> when {
         hasContent -> HomeModuleModel.CarouselMovies(
           mediaFilterModel = MediaFilterModel.TopRated(MediaTypeModel.Movie),
-          carouselMovieListModel = carouselMoviesModel
+          carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
       is HomeModule.Upcoming -> when {
         hasContent -> HomeModuleModel.CarouselMovies(
           mediaFilterModel = MediaFilterModel.Upcoming,
-          carouselMovieListModel = carouselMoviesModel
+          carouselMediaListModel = carouselMoviesModel
         )
         else -> null
       }
@@ -58,7 +58,7 @@ internal class HomeModuleModelMapper(
         is ResultData.Success -> when {
           hasContent -> HomeModuleModel.CarouselMovies(
             mediaFilterModel = MediaFilterModel.WatchList(MediaTypeModel.Movie),
-            carouselMovieListModel = carouselMoviesModel
+            carouselMediaListModel = carouselMoviesModel
           )
           else -> HomeModuleModel.WatchlistWithoutContent
         }
