@@ -55,11 +55,11 @@ internal class MediaGateway(
   suspend fun addToWatchList(
     accountId: String,
     mediaType: String,
-    movieId: Long
+    mediaId: Long
   ): ResultData<WatchListDto.Response> =
     mediaV3Service.watchList(
       accountId,
-      WatchListDto.Request.Add(movieId, mediaType)
+      WatchListDto.Request.Add(mediaId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
     ) { body -> body }
@@ -67,11 +67,11 @@ internal class MediaGateway(
   suspend fun removeFromWatchList(
     accountId: String,
     mediaType: String,
-    movieId: Long
+    mediaId: Long
   ): ResultData<WatchListDto.Response> =
     mediaV3Service.watchList(
       accountId,
-      WatchListDto.Request.Remove(movieId, mediaType)
+      WatchListDto.Request.Remove(mediaId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
     ) { body -> body }
@@ -96,8 +96,8 @@ internal class MediaGateway(
       "Error occurred during fetching upcoming movies"
     ) { body -> body }
 
-  suspend fun detail(movieId: String, mediaType: String): ResultData<MediaDto> =
-    mediaV3Service.detail(mediaType, movieId).toResultData(
-      "Error ocurred during fetching detail movie with id: $movieId"
+  suspend fun detail(mediaId: String, mediaType: String): ResultData<MediaDto> =
+    mediaV3Service.detail(mediaType, mediaId).toResultData(
+      "Error ocurred during fetching detail movie with id: $mediaId"
     ) { body -> body }
 }

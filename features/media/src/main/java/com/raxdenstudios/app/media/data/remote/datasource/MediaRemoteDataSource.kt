@@ -23,7 +23,7 @@ internal class MediaRemoteDataSource(
 
   suspend fun mediaById(mediaId: Long, mediaType: MediaType): ResultData<Media> =
     mediaGateway.detail(
-      movieId = mediaId.toString(),
+      mediaId = mediaId.toString(),
       mediaType = mediaTypeToDtoMapper.transform(mediaType)
     )
       .map { dto -> mediaDtoToDomainMapper.transform(mediaType, dto) }
@@ -31,23 +31,23 @@ internal class MediaRemoteDataSource(
   suspend fun addMediaToWatchList(
     account: Account.Logged,
     mediaType: MediaType,
-    movieId: Long
+    mediaId: Long
   ): ResultData<Boolean> =
     mediaGateway.addToWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
-      movieId = movieId
+      mediaId = mediaId
     ).map { true }
 
   suspend fun removeMediaFromWatchList(
     account: Account.Logged,
     mediaType: MediaType,
-    movieId: Long
+    mediaId: Long
   ): ResultData<Boolean> =
     mediaGateway.removeFromWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
-      movieId = movieId
+      mediaId = mediaId
     ).map { true }
 
   suspend fun watchList(account: Account.Logged, mediaType: MediaType): ResultData<List<Media>> =
