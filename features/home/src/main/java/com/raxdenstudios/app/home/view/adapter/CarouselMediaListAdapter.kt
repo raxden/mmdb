@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
 import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.movie.view.component.MovieListItemView
+import com.raxdenstudios.app.movie.view.component.MediaListItemView
 import com.raxdenstudios.app.movie.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
@@ -38,7 +38,7 @@ internal class CarouselMediaListAdapter :
   ) : RecyclerView.ViewHolder(view) {
 
     fun bind(item: MediaListItemModel) {
-      val component = view.findViewById<MovieListItemView>(R.id.item_view)
+      val component = view.findViewById<MediaListItemView>(R.id.item_view)
       component.setSafeOnClickListener { onMovieClickListener(item) }
       component.onAddToWatchListClickListener = { onAddMovieToWatchListClickListener(item) }
       component.onRemoveFromWatchListClickListener =

@@ -12,7 +12,7 @@ import com.raxdenstudios.commons.ext.loadImage
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
 
-class MovieListItemView @JvmOverloads constructor(
+class MediaListItemView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0,
