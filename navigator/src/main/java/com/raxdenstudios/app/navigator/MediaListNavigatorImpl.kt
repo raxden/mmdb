@@ -4,12 +4,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
-import com.raxdenstudios.app.list.MovieListNavigator
+import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
 
-internal class MovieListNavigatorImpl(
+internal class MediaListNavigatorImpl(
   activity: FragmentActivity
-) : MovieListNavigator {
+) : MediaListNavigator {
 
   companion object {
     private const val LOGIN_KEY = "login"
