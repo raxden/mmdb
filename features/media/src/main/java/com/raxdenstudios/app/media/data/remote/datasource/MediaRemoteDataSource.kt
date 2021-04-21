@@ -53,13 +53,16 @@ internal class MediaRemoteDataSource(
       mediaId = mediaId
     ).map { true }
 
-  suspend fun watchList(account: Account.Logged, mediaType: MediaType): ResultData<List<Media>> =
+  suspend fun watchList(
+    account: Account.Logged,
+    mediaType: MediaType
+  ): ResultData<List<Media>> =
     mediaGateway.watchList(
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       accountId = account.credentials.accountId
     )
-      .map { dtoList ->
-        dtoList.map { dto ->
+      .map { list ->
+        list.map { dto ->
           mediaDtoToDomainMapper.transform(mediaType, dto).copy(watchList = true)
         }
       }
