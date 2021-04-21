@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.remote.datasource
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
-import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.di.movieDataModule
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
@@ -77,8 +77,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 }
 
 private val aPageDtoList = listOf(
-  MovieDto.empty.copy(id = 1),
-  MovieDto.empty.copy(id = 2),
+  MediaDto.empty.copy(id = 1),
+  MediaDto.empty.copy(id = 2),
 )
 private val aPageDto = PageDto(
   page = 1,

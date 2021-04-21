@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.movie.data.remote
 
-import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.data.remote.model.WatchListDto
 import com.raxdenstudios.app.movie.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.movie.data.remote.service.MediaV4Service
@@ -25,7 +25,7 @@ internal class MediaGateway(
   suspend fun watchList(
     accountId: String,
     mediaType: String,
-  ): ResultData<List<MovieDto>> =
+  ): ResultData<List<MediaDto>> =
     when (val resultData = watchList(accountId, mediaType, FIRST_PAGE)) {
       is ResultData.Error -> resultData
       is ResultData.Success -> {
@@ -47,7 +47,7 @@ internal class MediaGateway(
     accountId: String,
     mediaType: String,
     page: Int
-  ): ResultData<PageDto<MovieDto>> =
+  ): ResultData<PageDto<MediaDto>> =
     mediaV4Service.watchList(accountId, mediaType, page).toResultData(
       "Error occurred during fetching watch list movies"
     ) { body -> body }
@@ -76,27 +76,27 @@ internal class MediaGateway(
       "Error occurred during adding movie to watch list"
     ) { body -> body }
 
-  suspend fun popular(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+  suspend fun popular(mediaType: String, page: Int): ResultData<PageDto<MediaDto>> =
     mediaV3Service.popular(mediaType, page).toResultData(
       "Error occurred during fetching popular movies"
     ) { body -> body }
 
-  suspend fun nowPlaying(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+  suspend fun nowPlaying(mediaType: String, page: Int): ResultData<PageDto<MediaDto>> =
     mediaV3Service.nowPlaying(mediaType, page).toResultData(
       "Error occurred during fetching now playing movies"
     ) { body -> body }
 
-  suspend fun topRated(mediaType: String, page: Int): ResultData<PageDto<MovieDto>> =
+  suspend fun topRated(mediaType: String, page: Int): ResultData<PageDto<MediaDto>> =
     mediaV3Service.topRated(mediaType, page).toResultData(
       "Error occurred during fetching top rated movies"
     ) { body -> body }
 
-  suspend fun upcoming(page: Int): ResultData<PageDto<MovieDto>> =
+  suspend fun upcoming(page: Int): ResultData<PageDto<MediaDto>> =
     mediaV3Service.upcoming(page).toResultData(
       "Error occurred during fetching upcoming movies"
     ) { body -> body }
 
-  suspend fun detail(movieId: String, mediaType: String): ResultData<MovieDto> =
+  suspend fun detail(movieId: String, mediaType: String): ResultData<MediaDto> =
     mediaV3Service.detail(mediaType, movieId).toResultData(
       "Error ocurred during fetching detail movie with id: $movieId"
     ) { body -> body }

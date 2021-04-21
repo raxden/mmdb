@@ -5,7 +5,7 @@ import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.movie.data.remote.mapper.MovieDtoToDomainMapper
-import com.raxdenstudios.app.movie.data.remote.model.MovieDto
+import com.raxdenstudios.app.movie.data.remote.model.MediaDto
 import com.raxdenstudios.app.movie.domain.model.Media
 import com.raxdenstudios.app.movie.domain.model.MediaFilter
 import com.raxdenstudios.app.movie.domain.model.MediaType
@@ -108,7 +108,7 @@ internal class MovieRemoteDataSource(
     mediaGateway.nowPlaying(mediaTypeToDtoMapper.transform(mediaType), page.value)
       .map { pageDto -> transformPageData(mediaType, pageDto) }
 
-  private fun transformPageData(mediaType: MediaType, pageDto: PageDto<MovieDto>): PageList<Media> =
+  private fun transformPageData(mediaType: MediaType, pageDto: PageDto<MediaDto>): PageList<Media> =
     pageDto.toPageList { movieDtoList ->
       movieDtoList.map { movieDto -> movieDtoToDomainMapper.transform(mediaType, movieDto) }
     }

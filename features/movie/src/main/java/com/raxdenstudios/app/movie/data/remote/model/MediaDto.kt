@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.remote.model
 import androidx.annotation.VisibleForTesting
 import com.google.gson.annotations.Expose
 
-data class MovieDto(
+data class MediaDto(
   @Expose val adult: Boolean,
   @Expose val backdrop_path: String?,
   @Expose val genre_ids: List<Int>,
@@ -22,7 +22,7 @@ data class MovieDto(
 
   companion object {
     @VisibleForTesting
-    val empty = MovieDto(
+    val empty = MediaDto(
       adult = false,
       backdrop_path = "",
       genre_ids = emptyList(),
