@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.movie.di
 
 import com.raxdenstudios.app.movie.data.local.MediaDatabase
-import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
+import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.movie.data.local.mapper.*
 import com.raxdenstudios.app.movie.data.remote.MediaGateway
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
@@ -29,7 +29,7 @@ val movieDataModule = module {
   factory { PictureEntityToDomainMapper(get()) }
   factory { SizeToEntityMapper() }
   factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
-  factory { MovieLocalDataSource(get(), get(), get()) }
+  factory { MediaLocalDataSource(get(), get(), get()) }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MediaV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MediaV4Service::class.java) }

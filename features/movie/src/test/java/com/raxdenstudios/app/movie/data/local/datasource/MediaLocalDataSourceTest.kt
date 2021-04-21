@@ -36,7 +36,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
       }
     )
 
-  private val dataSource: MovieLocalDataSource by inject()
+  private val dataSource: MediaLocalDataSource by inject()
 
   @Test
   fun `Given a database empty, When a 'watchList' method is called return a pageList empty`() =

@@ -3,7 +3,7 @@ package com.raxdenstudios.app.movie.data.repository
 import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSource
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
-import com.raxdenstudios.app.movie.data.local.datasource.MovieLocalDataSource
+import com.raxdenstudios.app.movie.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.movie.data.remote.datasource.MovieRemoteDataSource
 import com.raxdenstudios.app.movie.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.movie.di.movieDataModule
@@ -50,7 +50,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
       watchList(aAccountLogged, aMediaType)
     } returns ResultData.Success(aMovies)
   }
-  private val movieLocalDataSource: MovieLocalDataSource = mockk {
+  private val mediaLocalDataSource: MediaLocalDataSource = mockk {
     coEvery { insert(any<Media>()) } returns Unit
     coEvery { insert(any<List<Media>>()) } returns Unit
     coEvery { isWatchList(any()) } returns false
@@ -63,7 +63,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
       module {
         factory(override = true) { accountLocalDataSource }
         factory(override = true) { movieRemoteDataSource }
-        factory(override = true) { movieLocalDataSource }
+        factory(override = true) { mediaLocalDataSource }
         factory(override = true) { apiDataProvider }
       }
     )
@@ -75,7 +75,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       val result = repository.addMovieToWatchList(aMovieId, aMediaType)
 
-      coVerify { movieLocalDataSource.insert(aMovie.copy(watchList = true)) }
+      coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = true)) }
       assertEquals(ResultData.Success(true), result)
     }
 
@@ -84,14 +84,14 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       val result = repository.removeMovieFromWatchList(aMovieId, aMediaType)
 
-      coVerify { movieLocalDataSource.insert(aMovie.copy(watchList = false)) }
+      coVerify { mediaLocalDataSource.insert(aMovie.copy(watchList = false)) }
       assertEquals(ResultData.Success(true), result)
     }
 
   @Test
   fun `Given a movies returned by the server, When movies are called, Then movies returned should be marked as watched if requires`() =
     testDispatcher.runBlockingTest {
-      coEvery { movieLocalDataSource.isWatchList(2L) } returns true
+      coEvery { mediaLocalDataSource.isWatchList(2L) } returns true
 
       val result = repository.movies(MediaFilter.popularMovies, aPage, aPageSize)
 
