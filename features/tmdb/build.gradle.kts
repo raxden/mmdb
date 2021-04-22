@@ -8,6 +8,7 @@ dependencies {
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
+  implementation(project(Modules.libraryNetwork))
 
   testImplementation(project(Modules.baseTest))
   androidTestImplementation(project(Modules.baseAndroidTest))

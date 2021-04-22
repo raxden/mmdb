@@ -4,7 +4,6 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
-import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
@@ -69,7 +68,7 @@ internal class MediaGatewayTest : BaseTest() {
 private const val aCategory = "movie"
 private const val aAccountId = "aAccountId"
 private val aNetworkResponseSuccessFirstPage = NetworkResponse.Success(
-  body = PageDto(
+  body = com.raxdenstudios.app.network.model.PageDto(
     page = 1,
     total_pages = 3,
     total_results = 6,
@@ -82,7 +81,7 @@ private val aNetworkResponseSuccessFirstPage = NetworkResponse.Success(
   code = 200
 )
 private val aNetworkResponseSuccessSecondPage = NetworkResponse.Success(
-  body = PageDto(
+  body = com.raxdenstudios.app.network.model.PageDto(
     page = 2,
     total_pages = 3,
     total_results = 6,
@@ -95,7 +94,7 @@ private val aNetworkResponseSuccessSecondPage = NetworkResponse.Success(
   code = 200
 )
 private val aNetworkResponseSuccessThirdPage = NetworkResponse.Success(
-  body = PageDto(
+  body = com.raxdenstudios.app.network.model.PageDto(
     page = 3,
     total_pages = 3,
     total_results = 6,
