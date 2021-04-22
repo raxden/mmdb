@@ -1,14 +1,18 @@
-include ':features:list'
-include ':features:base'
-include ':features:error'
-include ':features:account'
-include ':navigator'
+include ':app'
+
+include ':base'
+include ':base-test'
+include ':base-android-test'
+
 include ':features:tmdb'
 include ':features:login'
 include ':features:home'
 include ':features:media'
-include ':app'
-include ':base'
-include ':base-test'
-include ':base-android-test'
-include ':features:network'
+include ':features:list'
+include ':features:base'
+include ':features:error'
+include ':features:account'
+
+include ':libraries:network'
+
+include ':navigator'

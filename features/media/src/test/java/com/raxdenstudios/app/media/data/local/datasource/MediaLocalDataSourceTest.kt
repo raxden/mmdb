@@ -4,8 +4,6 @@ import com.raxdenstudios.app.media.data.local.WatchListDao
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
-import com.raxdenstudios.app.network.APIDataProvider
-import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.test.BaseTest
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -23,14 +21,17 @@ import org.koin.dsl.module
 internal class MediaLocalDataSourceTest : BaseTest() {
 
   private val dao: WatchListDao = mockk()
-  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
+  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>
     get() = listOf(
       mediaDataModule,
       module {
         factory(override = true) { dao }
-        factory(override = true, qualifier = named(APIVersion.V3)) { apiDataProvider }
+        factory(
+          override = true,
+          qualifier = named(com.raxdenstudios.app.network.model.APIVersion.V3)
+        ) { apiDataProvider }
       }
     )
 

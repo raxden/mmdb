@@ -9,6 +9,7 @@ dependencies {
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
+  implementation(project(Modules.libraryNetwork))
 
   implementation(Libraries.roomRunTime)
   kapt(Libraries.roomCompiler)
