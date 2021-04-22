@@ -51,7 +51,7 @@ internal class MediaRemoteDataSource(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       mediaId = mediaId
-    ).map { true }
+    )
 
   suspend fun watchList(
     account: Account.Logged,
