@@ -2,11 +2,10 @@ package com.raxdenstudios.app.media.data.remote.mapper
 
 import com.raxdenstudios.app.media.domain.model.Picture
 import com.raxdenstudios.app.media.domain.model.Size
-import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.commons.util.DataMapper
 
 internal class PictureDtoToDomainMapper(
-  private val apiDataProvider: APIDataProvider,
+  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider,
 ) : DataMapper<String?, Picture>() {
 
   override fun transform(source: String?): Picture =

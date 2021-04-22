@@ -9,9 +9,6 @@ import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.app.network.APIDataProvider
-import com.raxdenstudios.app.network.model.APIVersion
-import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -51,14 +48,17 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       removeFromWatchList(aTMDBAccountId, "movie", aMediaId)
     } returns ResultData.Success(true)
   }
-  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
+  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>
     get() = listOf(
       mediaDataModule,
       module {
         factory(override = true) { mediaGateway }
-        factory(override = true, qualifier = named(APIVersion.V3)) { apiDataProvider }
+        factory(
+          override = true,
+          qualifier = named(com.raxdenstudios.app.network.model.APIVersion.V3)
+        ) { apiDataProvider }
       }
     )
 
@@ -233,7 +233,7 @@ private val aPageDtoList = listOf(
   MediaDto.empty.copy(id = 1),
   MediaDto.empty.copy(id = 2),
 )
-private val aPageDto = PageDto(
+private val aPageDto = com.raxdenstudios.app.network.model.PageDto(
   page = 1,
   total_pages = 1,
   total_results = 2,

@@ -1,12 +1,11 @@
 package com.raxdenstudios.app.tmdb.data.remote
 
-import com.raxdenstudios.app.network.APIDataProvider
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 
 internal class AuthorizationBearerInterceptor(
-  private val apiDataProvider: APIDataProvider
+  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider
 ) : Interceptor {
 
   companion object {

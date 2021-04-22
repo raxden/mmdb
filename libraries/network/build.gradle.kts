@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+  implementation(RaxdenLibraries.paginationCo)
   implementation(RaxdenLibraries.okhttp3)
   implementation(RaxdenLibraries.retrofitCo)
   implementation(RaxdenLibraries.threeten)

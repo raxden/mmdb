@@ -5,7 +5,7 @@ object Modules {
   const val baseAndroidTest = ":base-android-test"
   const val navigator = ":navigator"
 
-  const val featureNetwork = ":features:network"
+  const val libraryNetwork = ":libraries:network"
 
   const val featureBase = ":features:base"
   const val featureAccount = ":features:account"

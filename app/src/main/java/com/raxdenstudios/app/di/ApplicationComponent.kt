@@ -8,7 +8,7 @@ import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.login.di.loginFeatureModule
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.navigator.di.navigatorModule
-import com.raxdenstudios.app.network.di.networkDataModule
+import com.raxdenstudios.app.network.di.networkLibraryModule
 import com.raxdenstudios.app.tmdb.di.tmdbFeatureModule
 import org.koin.core.module.Module
 
@@ -18,9 +18,12 @@ val appModules: List<Module> = listOf(
 )
 
 val dataModules: List<Module> = listOf(
-  networkDataModule,
   mediaDataModule,
   accountDataModule,
+)
+
+val libraryModules: List<Module> = listOf(
+  networkLibraryModule,
 )
 
 val featureModules: List<Module> = listOf(
@@ -35,5 +38,6 @@ val featureModules: List<Module> = listOf(
 val appComponent: List<Module> = mutableListOf<Module>().apply {
   addAll(appModules)
   addAll(dataModules)
+  addAll(libraryModules)
   addAll(featureModules)
 }

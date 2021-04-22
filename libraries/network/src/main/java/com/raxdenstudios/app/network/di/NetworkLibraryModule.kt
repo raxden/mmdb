@@ -24,7 +24,7 @@ import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-val networkDataModule = module {
+val networkLibraryModule = module {
 
   val cacheDirectory = "responses"
   val cacheSize = 10 * 1024 * 1024  // 10 MiB;
