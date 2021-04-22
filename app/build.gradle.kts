@@ -77,6 +77,7 @@ dependencies {
   implementation(FirebaseLibraries.firebaseCrashlytics)
 
   debugImplementation(DebugLibraries.leakcanary)
+
   debugImplementation(DebugLibraries.ganderDebug)
   releaseImplementation(DebugLibraries.ganderRelease)
 }

@@ -12,5 +12,8 @@ dependencies {
 
   implementation(Libraries.gson)
 
+  debugImplementation(DebugLibraries.ganderDebug)
+  releaseImplementation(DebugLibraries.ganderRelease)
+
   testImplementation(project(Modules.baseTest))
 }
