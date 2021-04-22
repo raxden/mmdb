@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.media.data.local.model
 
+import androidx.annotation.VisibleForTesting
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,6 +11,7 @@ data class WatchListEntity(
 ) {
 
   companion object {
+    @VisibleForTesting
     val empty = WatchListEntity(
       mediaId = 0L,
     )
