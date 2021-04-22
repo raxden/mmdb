@@ -27,7 +27,16 @@ sealed class WatchListDto {
     @Expose val success: Boolean,
     @Expose val status_code: Int,
     @Expose val status_message: String,
-  ) : WatchListDto()
+  ) : WatchListDto() {
+
+    companion object {
+      val empty = Response(
+        success = true,
+        status_code = 200,
+        status_message = ""
+      )
+    }
+  }
 }
 
 
