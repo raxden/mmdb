@@ -56,25 +56,25 @@ internal class MediaGateway(
     accountId: String,
     mediaType: String,
     mediaId: Long
-  ): ResultData<WatchListDto.Response> =
+  ): ResultData<Boolean> =
     mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Add(mediaId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
-    ) { body -> body }
+    ) { true }
 
   suspend fun removeFromWatchList(
     accountId: String,
     mediaType: String,
     mediaId: Long
-  ): ResultData<WatchListDto.Response> =
+  ): ResultData<Boolean> =
     mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Remove(mediaId, mediaType)
     ).toResultData(
       "Error occurred during adding movie to watch list"
-    ) { body -> body }
+    ) { true }
 
   suspend fun popular(mediaType: String, page: Int): ResultData<PageDto<MediaDto>> =
     mediaV3Service.popular(mediaType, page).toResultData(
