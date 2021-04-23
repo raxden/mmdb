@@ -76,6 +76,9 @@ internal class HomeActivity : BaseActivity() {
     adapter.onCarouselSeeAllClickListener = { _, carouselMediaListModel ->
       navigator.mediaList(carouselMediaListModel.mediaFilterModel) { viewModel.refreshData() }
     }
+    adapter.onCarouselFilterChanged = { carouselMedias, carouselMediaListModel, mediaFilterModel ->
+      viewModel.filterChanged(model, carouselMedias, carouselMediaListModel, mediaFilterModel)
+    }
   }
 
   private fun doLoginAndRefreshDataIfSuccess() {

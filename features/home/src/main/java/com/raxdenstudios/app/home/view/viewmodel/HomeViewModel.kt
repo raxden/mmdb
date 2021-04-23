@@ -16,11 +16,16 @@ import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
+import com.raxdenstudios.app.media.view.mapper.MediaFilterModelToDomainMapper
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.getValueOrDefault
+import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.onSuccess
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
@@ -35,6 +40,8 @@ internal class HomeViewModel(
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper,
+  private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
+  private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) : BaseViewModel() {
 
   private val mState = MutableLiveData<HomeUIState>()
@@ -76,6 +83,27 @@ internal class HomeViewModel(
     mediaItemModel: MediaListItemModel,
   ) {
 
+  }
+
+  fun filterChanged(
+    home: HomeModel,
+    homeModule: HomeModuleModel.CarouselMedias,
+    carouselMediaList: CarouselMediaListModel,
+    mediaFilterModel: MediaFilterModel
+  ) = viewModelScope.safeLaunch {
+    val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
+    val medias = getMediasUseCase.execute(GetMediasUseCase.Params(mediaFilter))
+      .map { pageList -> pageList.items }
+      .map { medias -> mediaListItemModelMapper.transform(medias) }
+      .getValueOrDefault(emptyList())
+    val carouselMediaListUpdated = carouselMediaList.copy(
+      mediaFilterModel = mediaFilterModel,
+      medias = medias,
+    )
+    val homeModuleUpdated = homeModule.copy(carouselMediaListModel = carouselMediaListUpdated)
+    val homeUpdated =
+      home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
+    mState.value = HomeUIState.Content(homeUpdated)
   }
 
   fun addMediaToWatchList(
