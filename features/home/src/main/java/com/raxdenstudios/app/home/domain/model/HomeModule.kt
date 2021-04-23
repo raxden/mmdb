@@ -2,7 +2,9 @@ package com.raxdenstudios.app.home.domain.model
 
 import com.raxdenstudios.app.media.domain.model.MediaType
 
-sealed class HomeModule {
+sealed class HomeModule(
+  open val mediaType: MediaType
+) {
 
   companion object {
     val popularMovies = Popular(
@@ -21,20 +23,20 @@ sealed class HomeModule {
   }
 
   data class Popular(
-    val mediaType: MediaType,
-  ) : HomeModule()
+    override val mediaType: MediaType,
+  ) : HomeModule(mediaType)
 
   data class NowPlaying(
-    val mediaType: MediaType,
-  ) : HomeModule()
+    override val mediaType: MediaType,
+  ) : HomeModule(mediaType)
 
   data class TopRated(
-    val mediaType: MediaType,
-  ) : HomeModule()
+    override val mediaType: MediaType,
+  ) : HomeModule(mediaType)
 
-  object Upcoming : HomeModule()
+  object Upcoming : HomeModule(MediaType.Movie)
 
   data class WatchList(
-    val mediaType: MediaType,
-  ) : HomeModule()
+    override val mediaType: MediaType,
+  ) : HomeModule(mediaType)
 }
