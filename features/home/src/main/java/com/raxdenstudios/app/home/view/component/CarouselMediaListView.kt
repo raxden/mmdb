@@ -23,9 +23,9 @@ internal class CarouselMediaListView @JvmOverloads constructor(
 
   private val adapter: CarouselMediaListAdapter by lazy { CarouselMediaListAdapter() }
 
-  var onAddMediaToWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onAddToWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
-  var onRemoveMediaFromWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
+  var onRemoveFromWatchListClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
   var onMediaClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
@@ -46,11 +46,11 @@ internal class CarouselMediaListView @JvmOverloads constructor(
   private fun CarouselMediaListViewBinding.populate(model: CarouselMediaListModel) {
     carouselTitleView.text = model.label
     adapter.submitList(model.medias)
-    adapter.onMediaClickListener = { item -> onMediaClickListener(model, item) }
-    adapter.onAddMediaToWatchListClickListener =
-      { item -> onAddMediaToWatchListClickListener(model, item) }
-    adapter.onRemoveMediaFromWatchListClickListener =
-      { item -> onRemoveMediaFromWatchListClickListener(model, item) }
+    adapter.onClickListener = { item -> onMediaClickListener(model, item) }
+    adapter.onAddToWatchListClickListener =
+      { item -> onAddToWatchListClickListener(model, item) }
+    adapter.onRemoveFromWatchListClickListener =
+      { item -> onRemoveFromWatchListClickListener(model, item) }
     carouselSeeAllArrowViewGroup.setSafeOnClickListener { onSeeAllClickListener(model) }
   }
 }

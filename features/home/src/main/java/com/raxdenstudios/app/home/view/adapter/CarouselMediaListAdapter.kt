@@ -15,9 +15,9 @@ internal class CarouselMediaListAdapter :
     areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
   ) {
 
-  var onAddMediaToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-  var onRemoveMediaFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
-  var onMediaClickListener: (MediaListItemModel) -> Unit = {}
+  var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
+  var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+  var onClickListener: (MediaListItemModel) -> Unit = {}
 
   override fun getItemViewType(position: Int) = R.layout.carousel_list_item
 
@@ -39,10 +39,9 @@ internal class CarouselMediaListAdapter :
 
     fun bind(item: MediaListItemModel) {
       val component = view.findViewById<MediaListItemView>(R.id.item_view)
-      component.setSafeOnClickListener { onMediaClickListener(item) }
-      component.onAddToWatchListClickListener = { onAddMediaToWatchListClickListener(item) }
-      component.onRemoveFromWatchListClickListener =
-        { onRemoveMediaFromWatchListClickListener(item) }
+      component.setSafeOnClickListener { onClickListener(item) }
+      component.onAddToWatchListClickListener = { onAddToWatchListClickListener(item) }
+      component.onRemoveFromWatchListClickListener = { onRemoveFromWatchListClickListener(item) }
       component.setModel(item)
     }
   }
