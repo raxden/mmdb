@@ -61,20 +61,20 @@ internal class HomeActivity : BaseActivity() {
     swipeRefreshLayout.isRefreshing = false
     adapter.submitList(model.modules)
     adapter.onSigInClickListener = { doLoginAndRefreshDataIfSuccess() }
-    adapter.onMediaClickListener =
+    adapter.onCarouselMediaClickListener =
       { moduleModel, carouselMediaListModel, mediaListItemModel ->
         mediaSelected(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onAddMediaToWatchListClickListener =
+    adapter.onCarouselAddToWatchListClickListener =
       { moduleModel, carouselMediaListModel, mediaListItemModel ->
         addMediaToWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onRemoveMediaFromWatchListClickListener =
+    adapter.onCarouselRemoveFromWatchListClickListener =
       { moduleModel, carouselMediaListModel, mediaListItemModel ->
         removeMediaFromWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onCarouselMediasModel = { moduleModel, _ ->
-      navigator.medias(moduleModel.mediaFilterModel) { viewModel.refreshData() }
+    adapter.onCarouselSeeAllClickListener = { _, carouselMediaListModel ->
+      navigator.mediaList(carouselMediaListModel.mediaFilterModel) { viewModel.refreshData() }
     }
   }
 

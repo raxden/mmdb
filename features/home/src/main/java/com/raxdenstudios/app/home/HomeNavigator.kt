@@ -6,5 +6,5 @@ import com.raxdenstudios.app.media.view.model.MediaFilterModel
 interface HomeNavigator : DefaultLifecycleObserver {
 
   fun login(onSuccess: () -> Unit = {})
-  fun medias(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit = {})
+  fun mediaList(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit = {})
 }

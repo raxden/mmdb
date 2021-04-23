@@ -89,8 +89,8 @@ internal class HomeViewModelTest : BaseTest() {
           HomeModel.empty.copy(
             modules = listOf(
               HomeModuleModel.CarouselMedias(
-                mediaFilterModel = MediaFilterModel.popularMovies,
                 carouselMediaListModel = CarouselMediaListModel.empty.copy(
+                  mediaFilterModel = MediaFilterModel.popularMovies,
                   medias = listOf(
                     MediaListItemModel.empty.copy(id = 1L),
                     MediaListItemModel.empty.copy(id = 2L),
@@ -98,8 +98,8 @@ internal class HomeViewModelTest : BaseTest() {
                 )
               ),
               HomeModuleModel.CarouselMedias(
-                mediaFilterModel = MediaFilterModel.nowPlayingMovies,
                 carouselMediaListModel = CarouselMediaListModel.empty.copy(
+                  mediaFilterModel = MediaFilterModel.nowPlayingMovies,
                   medias = listOf(
                     MediaListItemModel.empty.copy(id = 1L),
                     MediaListItemModel.empty.copy(id = 2L),
@@ -131,8 +131,8 @@ internal class HomeViewModelTest : BaseTest() {
             HomeModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias(
-                  mediaFilterModel = MediaFilterModel.popularMovies,
                   carouselMediaListModel = CarouselMediaListModel.empty.copy(
+                    mediaFilterModel = MediaFilterModel.popularMovies,
                     medias = listOf(
                       MediaListItemModel.empty.copy(
                         id = 1L,
@@ -152,11 +152,11 @@ internal class HomeViewModelTest : BaseTest() {
 
 private val aMovieModel = MediaListItemModel.empty.copy(id = 1L)
 private val aCarouselMovieListModel = CarouselMediaListModel.empty.copy(
+  mediaFilterModel = MediaFilterModel.popularMovies,
   medias = listOf(aMovieModel)
 )
 private val aCarouselMoviesPopularModuleModel =
   HomeModuleModel.CarouselMedias(
-    mediaFilterModel = MediaFilterModel.popularMovies,
     carouselMediaListModel = aCarouselMovieListModel
   )
 private val aHomeModelModules = listOf(
