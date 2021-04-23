@@ -9,6 +9,7 @@ import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
+import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coFlatMap
 import com.raxdenstudios.commons.map
@@ -115,7 +116,7 @@ internal class MediaRemoteDataSource(
 
   private fun transformPageData(
     mediaType: MediaType,
-    pageDto: com.raxdenstudios.app.network.model.PageDto<MediaDto>
+    pageDto: PageDto<MediaDto>
   ): PageList<Media> =
     pageDto.toPageList { movieDtoList ->
       movieDtoList.map { movieDto -> mediaDtoToDomainMapper.transform(mediaType, movieDto) }
