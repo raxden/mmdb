@@ -7,6 +7,14 @@ sealed class MediaFilterModel(
   open val mediaTypeModel: MediaTypeModel
 ) : Parcelable {
 
+  fun copyWith(mediaTypeModel: MediaTypeModel): MediaFilterModel = when (this) {
+    is NowPlaying -> copy(mediaTypeModel = mediaTypeModel)
+    is Popular -> copy(mediaTypeModel = mediaTypeModel)
+    is TopRated -> copy(mediaTypeModel = mediaTypeModel)
+    Upcoming -> this
+    is WatchList -> copy(mediaTypeModel = mediaTypeModel)
+  }
+
   companion object {
     val popularMovies = Popular(
       mediaTypeModel = MediaTypeModel.Movie

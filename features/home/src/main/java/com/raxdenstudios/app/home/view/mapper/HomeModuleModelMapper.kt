@@ -4,6 +4,8 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaTypeModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.pagination.model.PageList

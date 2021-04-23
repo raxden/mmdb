@@ -7,7 +7,9 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.CarouselMediaListViewBinding
 import com.raxdenstudios.app.home.view.adapter.CarouselMediaListAdapter
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
+import com.raxdenstudios.app.media.view.model.MediaTypeModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
@@ -30,6 +32,7 @@ internal class CarouselMediaListView @JvmOverloads constructor(
   var onMediaClickListener: (CarouselMediaListModel, MediaListItemModel) -> Unit =
     { _, _ -> }
   var onSeeAllClickListener: (CarouselMediaListModel) -> Unit = {}
+  var onFilterChanged: (CarouselMediaListModel, MediaFilterModel) -> Unit = { _, _ -> }
 
   init {
     if (isInEditMode) {
@@ -52,5 +55,16 @@ internal class CarouselMediaListView @JvmOverloads constructor(
     adapter.onRemoveFromWatchListClickListener =
       { item -> onRemoveFromWatchListClickListener(model, item) }
     carouselSeeAllArrowViewGroup.setSafeOnClickListener { onSeeAllClickListener(model) }
+    moviesChip.isChecked = model.mediaFilterModel.mediaTypeModel is MediaTypeModel.Movie
+    tvSeriesChip.isChecked = model.mediaFilterModel.mediaTypeModel is MediaTypeModel.TVShow
+    mediaTypeChipGroup.setOnCheckedChangeListener { _, checkedId ->
+      val mediaTypeModel = when (checkedId) {
+        R.id.movies_chip -> MediaTypeModel.Movie
+        R.id.tv_series_chip -> MediaTypeModel.TVShow
+        else -> throw IllegalStateException("Invalid mediaType option selected")
+      }
+      val mediaFilterModel = model.mediaFilterModel.copyWith(mediaTypeModel)
+      onFilterChanged(model, mediaFilterModel)
+    }
   }
 }
