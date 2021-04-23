@@ -1,12 +1,14 @@
 package com.raxdenstudios.app.home.view.model
 
 import androidx.annotation.VisibleForTesting
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class CarouselMediaListModel(
   val label: String,
   val description: String,
+  val mediaFilterModel: MediaFilterModel,
   val medias: List<MediaListItemModel>,
 ) {
 
@@ -21,6 +23,7 @@ data class CarouselMediaListModel(
     val empty = CarouselMediaListModel(
       label = "",
       description = "",
+      mediaFilterModel = MediaFilterModel.popularMovies,
       medias = emptyList(),
     )
   }

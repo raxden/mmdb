@@ -11,7 +11,7 @@ data class MediaListParams(
 
   companion object {
     val popularMovies = MediaListParams(
-      mediaFilterModel = MediaFilterModel.Popular.popularMoviesMediaFilter
+      mediaFilterModel = MediaFilterModel.popularMovies
     )
   }
 }
