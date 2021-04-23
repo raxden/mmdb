@@ -44,8 +44,8 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias(
-        mediaFilterModel = MediaFilterModel.nowPlayingMovies,
         carouselMediaListModel = CarouselMediaListModel.empty.copy(
+          mediaFilterModel = MediaFilterModel.nowPlayingMovies,
           medias = listOf(
             MediaListItemModel.empty.copy(id = 1L)
           )
@@ -92,8 +92,8 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias(
-        mediaFilterModel = MediaFilterModel.watchlistMovies,
         carouselMediaListModel = CarouselMediaListModel.empty.copy(
+          mediaFilterModel = MediaFilterModel.watchlistMovies,
           medias = listOf(
             MediaListItemModel.empty.copy(id = 1L)
           )

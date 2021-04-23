@@ -11,6 +11,9 @@ sealed class MediaFilterModel(
     val popularMovies = Popular(
       mediaTypeModel = MediaTypeModel.Movie
     )
+    val topRatedMovies = TopRated(
+      mediaTypeModel = MediaTypeModel.Movie
+    )
     val nowPlayingMovies = NowPlaying(
       mediaTypeModel = MediaTypeModel.Movie
     )
@@ -30,7 +33,7 @@ sealed class MediaFilterModel(
   ) : MediaFilterModel(mediaTypeModel) {
 
     companion object {
-      val popularMoviesMediaFilter = Popular(
+      val popularMovies = Popular(
         mediaTypeModel = MediaTypeModel.Movie
       )
     }

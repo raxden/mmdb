@@ -17,7 +17,7 @@ data class MediaListModel(
   companion object {
     val empty = MediaListModel(
       logged = false,
-      mediaFilterModel = MediaFilterModel.Popular.popularMoviesMediaFilter,
+      mediaFilterModel = MediaFilterModel.popularMovies,
       media = emptyList()
     )
 
