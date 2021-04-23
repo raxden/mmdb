@@ -9,6 +9,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.view.component.CarouselMediaListView
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
+import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
@@ -42,6 +43,11 @@ internal class HomeModuleListAdapter :
     HomeModuleModel.CarouselMedias,
     CarouselMediaListModel
   ) -> Unit = { _, _ -> }
+  var onCarouselFilterChanged: (
+    HomeModuleModel.CarouselMedias,
+    CarouselMediaListModel,
+    MediaFilterModel
+  ) -> Unit = { _, _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
   override fun getItemId(position: Int): Long = getItem(position).getModuleItemId()
@@ -97,6 +103,9 @@ internal class HomeModuleListAdapter :
           carouselMediaListModel,
           mediaListItemModel
         )
+      }
+      component.onFilterChanged = { carouselMediaListModel, mediaFilterModel ->
+        onCarouselFilterChanged(model, carouselMediaListModel, mediaFilterModel)
       }
       component.setModel(item)
     }
