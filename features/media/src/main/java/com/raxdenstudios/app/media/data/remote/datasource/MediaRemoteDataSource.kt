@@ -22,12 +22,13 @@ internal class MediaRemoteDataSource(
   private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,
 ) {
 
-  suspend fun mediaById(mediaId: Long, mediaType: MediaType): ResultData<Media> =
-    mediaGateway.detail(
-      mediaId = mediaId.toString(),
-      mediaType = mediaTypeToDtoMapper.transform(mediaType)
-    )
-      .map { dto -> mediaDtoToDomainMapper.transform(mediaType, dto) }
+  suspend fun mediaById(
+    mediaId: Long,
+    mediaType: MediaType
+  ): ResultData<Media> = when (mediaType) {
+    MediaType.Movie -> mediaGateway.detailMovie(mediaId.toString())
+    MediaType.TVShow -> mediaGateway.detailTVShow(mediaId.toString())
+  }.map { dto -> mediaDtoToDomainMapper.transform(dto) }
 
   suspend fun addMediaToWatchList(
     account: Account.Logged,
@@ -40,7 +41,7 @@ internal class MediaRemoteDataSource(
       mediaId = mediaId
     )
       .coFlatMap { mediaById(mediaId, mediaType) }
-      .map { media -> media.copy(watchList = true) }
+      .map { media -> media.copyWith(watchList = true) }
 
   suspend fun removeMediaFromWatchList(
     account: Account.Logged,
@@ -56,29 +57,24 @@ internal class MediaRemoteDataSource(
   suspend fun watchList(
     account: Account.Logged,
     mediaType: MediaType
-  ): ResultData<List<Media>> =
-    mediaGateway.watchList(
-      mediaType = mediaTypeToDtoMapper.transform(mediaType),
-      accountId = account.credentials.accountId
-    )
-      .map { list ->
-        list.map { dto ->
-          mediaDtoToDomainMapper.transform(mediaType, dto).copy(watchList = true)
-        }
-      }
+  ): ResultData<List<Media>> = when (mediaType) {
+    MediaType.Movie -> mediaGateway.watchListMovies(account.credentials.accountId)
+    MediaType.TVShow -> mediaGateway.watchListTVShows(account.credentials.accountId)
+  }.map { list ->
+    list.map { dto -> mediaDtoToDomainMapper.transform(dto).copyWith(watchList = true) }
+  }
 
   suspend fun medias(
     mediaFilter: MediaFilter,
     account: Account,
     page: Page,
-  ): ResultData<PageList<Media>> =
-    when (mediaFilter) {
-      is MediaFilter.NowPlaying -> nowPlaying(mediaFilter.mediaType, page)
-      is MediaFilter.Popular -> popular(mediaFilter.mediaType, page)
-      is MediaFilter.TopRated -> topRated(mediaFilter.mediaType, page)
-      MediaFilter.Upcoming -> upcoming(page)
-      is MediaFilter.WatchList -> watchList(account, mediaFilter.mediaType, page)
-    }
+  ): ResultData<PageList<Media>> = when (mediaFilter) {
+    is MediaFilter.NowPlaying -> nowPlaying(mediaFilter.mediaType, page)
+    is MediaFilter.Popular -> popular(mediaFilter.mediaType, page)
+    is MediaFilter.TopRated -> topRated(mediaFilter.mediaType, page)
+    MediaFilter.Upcoming -> upcoming(page)
+    is MediaFilter.WatchList -> watchList(account, mediaFilter.mediaType, page)
+  }
 
   private suspend fun watchList(
     account: Account,
@@ -86,39 +82,49 @@ internal class MediaRemoteDataSource(
     page: Page
   ): ResultData<PageList<Media>> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
-    is Account.Logged -> mediaGateway.watchList(
-      accountId = account.credentials.accountId,
-      mediaType = mediaTypeToDtoMapper.transform(mediaType),
-      page = page.value
-    )
-      .map { pageDto -> transformPageData(mediaType, pageDto) }
+    is Account.Logged -> when (mediaType) {
+      MediaType.Movie -> mediaGateway.watchListMovies(
+        accountId = account.credentials.accountId,
+        page = page.value
+      )
+      MediaType.TVShow -> mediaGateway.watchListTVShows(
+        accountId = account.credentials.accountId,
+        page = page.value
+      )
+    }
+      .map { pageDto -> transformMediaDtoPageData(pageDto) }
       .map { pageList -> markMediasAsWatched(pageList) }
   }
 
   private fun markMediasAsWatched(pageList: PageList<Media>) =
-    pageList.copy(items = pageList.items.map { movie -> movie.copy(watchList = true) })
+    pageList.copy(items = pageList.items.map { movie -> movie.copyWith(watchList = true) })
 
   private suspend fun upcoming(page: Page): ResultData<PageList<Media>> =
     mediaGateway.upcoming(page.value)
-      .map { pageDto -> transformPageData(MediaType.Movie, pageDto) }
+      .map { pageDto -> transformMediaDtoPageData(pageDto) }
 
   private suspend fun topRated(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    mediaGateway.topRated(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(mediaType, pageDto) }
+    when (mediaType) {
+      MediaType.Movie -> mediaGateway.topRatedMovies(page.value)
+      MediaType.TVShow -> mediaGateway.topRatedTVShows(page.value)
+    }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
   private suspend fun popular(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    mediaGateway.popular(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(mediaType, pageDto) }
+    when (mediaType) {
+      MediaType.Movie -> mediaGateway.popularMovies(page.value)
+      MediaType.TVShow -> mediaGateway.popularTVShows(page.value)
+    }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
   private suspend fun nowPlaying(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    mediaGateway.nowPlaying(mediaTypeToDtoMapper.transform(mediaType), page.value)
-      .map { pageDto -> transformPageData(mediaType, pageDto) }
+    when (mediaType) {
+      MediaType.Movie -> mediaGateway.nowPlayingMovies(page.value)
+      MediaType.TVShow -> mediaGateway.nowPlayingTVShows(page.value)
+    }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
-  private fun transformPageData(
-    mediaType: MediaType,
-    pageDto: PageDto<MediaDto>
+  private fun transformMediaDtoPageData(
+    pageDto: PageDto<out MediaDto>
   ): PageList<Media> =
-    pageDto.toPageList { movieDtoList ->
-      movieDtoList.map { movieDto -> mediaDtoToDomainMapper.transform(mediaType, movieDto) }
+    pageDto.toPageList { mediaDtoList ->
+      mediaDtoList.map { mediaDto -> mediaDtoToDomainMapper.transform(mediaDto) }
     }
 }

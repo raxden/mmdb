@@ -44,7 +44,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     } returns ResultData.Success(aPageList)
     coEvery {
       mediaById(aMovieId, aMediaType)
-    } returns ResultData.Success(Media.empty.copy(id = aMovieId))
+    } returns ResultData.Success(Media.Movie.empty.copy(id = aMovieId))
     coEvery {
       watchList(aAccountLogged, aMediaType)
     } returns ResultData.Success(aMovies)
@@ -99,8 +99,8 @@ internal class MediaRepositoryImplTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.empty.copy(id = 1L),
-              Media.empty.copy(id = 2L, watchList = true),
+              Media.Movie.empty.copy(id = 1L),
+              Media.Movie.empty.copy(id = 2L, watchList = true),
             ),
             page = Page(1),
           )
@@ -132,12 +132,12 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
 private val aMediaType = MediaType.Movie
 private val aMovies = listOf(
-  Media.empty.copy(id = 1L),
-  Media.empty.copy(id = 2L),
+  Media.Movie.empty.copy(id = 1L),
+  Media.Movie.empty.copy(id = 2L),
 )
 private val aPage = Page(1)
 private val aPageSize = PageSize.defaultSize
-private val aPageList = PageList(
+private val aPageList = PageList<Media>(
   items = aMovies,
   page = aPage,
 )
@@ -149,4 +149,4 @@ private val aAccountLogged = Account.Logged.empty.copy(
   )
 )
 private const val aMovieId = 1L
-private val aMovie = Media.empty.copy(id = aMovieId)
+private val aMovie = Media.Movie.empty.copy(id = aMovieId)

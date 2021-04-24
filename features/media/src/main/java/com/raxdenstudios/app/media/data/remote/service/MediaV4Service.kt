@@ -11,11 +11,17 @@ import retrofit2.http.Query
 
 interface MediaV4Service {
 
-  @GET("account/{account_id}/{media_type}/watchlist")
+  @GET("account/{account_id}/movie/watchlist")
   @Headers("Cache-Control: no-cache")
-  suspend fun watchList(
+  suspend fun watchListMovies(
     @Path("account_id") accountId: String,
-    @Path("media_type") mediaType: String,
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
+
+  @GET("account/{account_id}/tv/watchlist")
+  @Headers("Cache-Control: no-cache")
+  suspend fun watchListTVShows(
+    @Path("account_id") accountId: String,
+    @Query("page") page: Int
+  ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
 }
