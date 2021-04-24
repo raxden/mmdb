@@ -9,28 +9,40 @@ import retrofit2.http.*
 
 interface MediaV3Service {
 
-  @GET("{media_type}/popular")
-  suspend fun popular(
-    @Path("media_type") mediaType: String,
+  @GET("movie/popular")
+  suspend fun popularMovies(
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
 
-  @GET("{media_type}/now_playing")
-  suspend fun nowPlaying(
-    @Path("media_type") mediaType: String,
+  @GET("tv/popular")
+  suspend fun popularTVShows(
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
 
-  @GET("{media_type}/top_rated")
-  suspend fun topRated(
-    @Path("media_type") mediaType: String,
+  @GET("movie/now_playing")
+  suspend fun nowPlayingMovies(
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
+
+  @GET("tv/now_playing")
+  suspend fun nowPlayingTVShows(
+    @Query("page") page: Int
+  ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
+
+  @GET("movie/top_rated")
+  suspend fun topRatedMovies(
+    @Query("page") page: Int
+  ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
+
+  @GET("tv/top_rated")
+  suspend fun topRatedTVShows(
+    @Query("page") page: Int
+  ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
 
   @GET("movie/upcoming")
   suspend fun upcoming(
     @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto>, ErrorDto>
+  ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
 
   @POST("account/{account_id}/watchlist")
   suspend fun watchList(
@@ -38,9 +50,13 @@ interface MediaV3Service {
     @Body request: WatchListDto.Request
   ): NetworkResponse<WatchListDto.Response, ErrorDto>
 
-  @GET("{media_type}/{movie_id}")
-  suspend fun detail(
-    @Path("media_type") mediaType: String,
+  @GET("movie/{movie_id}")
+  suspend fun detailMovie(
     @Path("movie_id") movieId: String,
-  ): NetworkResponse<MediaDto, ErrorDto>
+  ): NetworkResponse<MediaDto.Movie, ErrorDto>
+
+  @GET("tv/{movie_id}")
+  suspend fun detailTVShow(
+    @Path("movie_id") movieId: String,
+  ): NetworkResponse<MediaDto.TVShow, ErrorDto>
 }

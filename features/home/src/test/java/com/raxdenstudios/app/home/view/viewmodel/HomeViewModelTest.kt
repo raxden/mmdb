@@ -51,7 +51,7 @@ internal class HomeViewModelTest : BaseTest() {
     coEvery { execute() } returns false
   }
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
-    coEvery { execute(any()) } returns ResultData.Success(Media.empty)
+    coEvery { execute(any()) } returns ResultData.Success(Media.Movie.empty)
   }
   private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
@@ -170,10 +170,10 @@ private val aHomeModules = listOf(
   HomeModule.nowPlayingMovies
 )
 private val aMovies = listOf(
-  Media.empty.copy(id = 1),
-  Media.empty.copy(id = 2),
+  Media.Movie.empty.copy(id = 1),
+  Media.Movie.empty.copy(id = 2),
 )
-private val aPageMovieList = PageList(aMovies, Page(1))
+private val aPageMovieList = PageList<Media>(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)
 private val aGetUpcomingMoviesUseCaseParams =
   GetMediasUseCase.Params(MediaFilter.Upcoming, Page(1))

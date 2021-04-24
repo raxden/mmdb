@@ -22,34 +22,60 @@ internal class MediaGateway(
     private const val FIRST_PAGE = 1
   }
 
-  suspend fun watchList(
+  suspend fun watchListMovies(
     accountId: String,
-    mediaType: String,
-  ): ResultData<List<MediaDto>> =
-    when (val resultData = watchList(accountId, mediaType, FIRST_PAGE)) {
+  ): ResultData<List<MediaDto.Movie>> =
+    when (val resultData = watchListMovies(accountId, FIRST_PAGE)) {
       is ResultData.Error -> resultData
       is ResultData.Success -> {
         withContext(dispatcher.io()) {
-          val allMovies = resultData.value.results.toMutableList()
+          val allMedias = resultData.value.results.toMutableList()
           val totalPages = resultData.value.total_pages
           val movies = (FIRST_PAGE + 1..totalPages)
-            .map { page -> async { watchList(accountId, mediaType, page) } }
+            .map { page -> async { watchListMovies(accountId, page) } }
             .mapNotNull { deferred -> deferred.await().getValueOrNull() }
             .map { resultData -> resultData.results }
             .flatten()
-          allMovies.addAll(movies)
-          ResultData.Success(allMovies)
+          allMedias.addAll(movies)
+          ResultData.Success(allMedias)
         }
       }
     }
 
-  suspend fun watchList(
+  suspend fun watchListTVShows(
     accountId: String,
-    mediaType: String,
+  ): ResultData<List<MediaDto.TVShow>> =
+    when (val resultData = watchListTVShows(accountId, FIRST_PAGE)) {
+      is ResultData.Error -> resultData
+      is ResultData.Success -> {
+        withContext(dispatcher.io()) {
+          val allMedias = resultData.value.results.toMutableList()
+          val totalPages = resultData.value.total_pages
+          val movies = (FIRST_PAGE + 1..totalPages)
+            .map { page -> async { watchListTVShows(accountId, page) } }
+            .mapNotNull { deferred -> deferred.await().getValueOrNull() }
+            .map { resultData -> resultData.results }
+            .flatten()
+          allMedias.addAll(movies)
+          ResultData.Success(allMedias)
+        }
+      }
+    }
+
+  suspend fun watchListMovies(
+    accountId: String,
     page: Int
-  ): ResultData<PageDto<MediaDto>> =
-    mediaV4Service.watchList(accountId, mediaType, page).toResultData(
+  ): ResultData<PageDto<MediaDto.Movie>> =
+    mediaV4Service.watchListMovies(accountId, page).toResultData(
       "Error occurred during fetching watch list movies"
+    ) { body -> body }
+
+  suspend fun watchListTVShows(
+    accountId: String,
+    page: Int
+  ): ResultData<PageDto<MediaDto.TVShow>> =
+    mediaV4Service.watchListTVShows(accountId, page).toResultData(
+      "Error occurred during fetching watch list tv shows"
     ) { body -> body }
 
   suspend fun addToWatchList(
@@ -76,37 +102,60 @@ internal class MediaGateway(
       "Error occurred during adding movie to watch list"
     ) { true }
 
-  suspend fun popular(
-    mediaType: String,
+  suspend fun popularMovies(
     page: Int
-  ): ResultData<PageDto<MediaDto>> =
-    mediaV3Service.popular(mediaType, page).toResultData(
+  ): ResultData<PageDto<MediaDto.Movie>> =
+    mediaV3Service.popularMovies(page).toResultData(
       "Error occurred during fetching popular movies"
     ) { body -> body }
 
-  suspend fun nowPlaying(
-    mediaType: String,
+  suspend fun popularTVShows(
     page: Int
-  ): ResultData<PageDto<MediaDto>> =
-    mediaV3Service.nowPlaying(mediaType, page).toResultData(
+  ): ResultData<PageDto<MediaDto.TVShow>> =
+    mediaV3Service.popularTVShows(page).toResultData(
+      "Error occurred during fetching popular tv shows"
+    ) { body -> body }
+
+  suspend fun nowPlayingMovies(
+    page: Int
+  ): ResultData<PageDto<MediaDto.Movie>> =
+    mediaV3Service.nowPlayingMovies(page).toResultData(
       "Error occurred during fetching now playing movies"
     ) { body -> body }
 
-  suspend fun topRated(
-    mediaType: String,
+  suspend fun nowPlayingTVShows(
     page: Int
-  ): ResultData<PageDto<MediaDto>> =
-    mediaV3Service.topRated(mediaType, page).toResultData(
+  ): ResultData<PageDto<MediaDto.TVShow>> =
+    mediaV3Service.nowPlayingTVShows(page).toResultData(
+      "Error occurred during fetching now playing tv shows"
+    ) { body -> body }
+
+  suspend fun topRatedMovies(
+    page: Int
+  ): ResultData<PageDto<MediaDto.Movie>> =
+    mediaV3Service.topRatedMovies(page).toResultData(
       "Error occurred during fetching top rated movies"
     ) { body -> body }
 
-  suspend fun upcoming(page: Int): ResultData<PageDto<MediaDto>> =
+  suspend fun topRatedTVShows(
+    page: Int
+  ): ResultData<PageDto<MediaDto.TVShow>> =
+    mediaV3Service.topRatedTVShows(page).toResultData(
+      "Error occurred during fetching top rated tv shows"
+    ) { body -> body }
+
+  suspend fun upcoming(page: Int): ResultData<PageDto<MediaDto.Movie>> =
     mediaV3Service.upcoming(page).toResultData(
       "Error occurred during fetching upcoming movies"
     ) { body -> body }
 
-  suspend fun detail(mediaId: String, mediaType: String): ResultData<MediaDto> =
-    mediaV3Service.detail(mediaType, mediaId).toResultData(
+  suspend fun detailMovie(mediaId: String): ResultData<MediaDto> =
+    mediaV3Service.detailMovie(mediaId).toResultData(
       "Error ocurred during fetching detail movie with id: $mediaId"
+    ) { body -> body }
+
+  suspend fun detailTVShow(mediaId: String): ResultData<MediaDto> =
+    mediaV3Service.detailTVShow(mediaId).toResultData(
+      "Error ocurred during fetching detail tvShow with id: $mediaId"
     ) { body -> body }
 }

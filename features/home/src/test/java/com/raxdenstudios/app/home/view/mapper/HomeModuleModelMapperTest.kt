@@ -114,9 +114,9 @@ internal class HomeModuleModelMapperTest : BaseTest() {
 }
 
 private val aResultDataWithMovies = ResultData.Success(
-  PageList(
+  PageList<Media>(
     items = listOf(
-      Media.empty.copy(id = 1L)
+      Media.Movie.empty.copy(id = 1L)
     ),
     page = Page(1)
   )
