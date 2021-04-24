@@ -5,16 +5,16 @@ sealed class MediaFilter(
 ) {
 
   companion object {
-    val watchListMovies = WatchList(
+    val popularMovies = Popular(
       mediaType = MediaType.Movie
     )
     val topRatedMovies = TopRated(
       mediaType = MediaType.Movie
     )
-    val popularMovies = Popular(
+    val nowPlayingMovies = NowPlaying(
       mediaType = MediaType.Movie
     )
-    val nowPlayingMovies = NowPlaying(
+    val watchListMovies = WatchList(
       mediaType = MediaType.Movie
     )
   }

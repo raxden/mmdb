@@ -37,7 +37,7 @@ internal class HomeNavigatorImpl(
     loginActivityResultLauncher.launch(Unit)
   }
 
-  override fun medias(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit) {
+  override fun mediaList(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit) {
     onMoviesRefresh = onRefresh
     mediaListActivityResultLauncher.launch(mediaFilterModel)
   }

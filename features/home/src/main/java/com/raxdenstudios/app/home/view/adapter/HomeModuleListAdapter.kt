@@ -9,7 +9,6 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.view.component.CarouselMediaListView
 import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
@@ -24,27 +23,28 @@ internal class HomeModuleListAdapter :
     private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
   }
 
-  var onAddMediaToWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
-    { _, _, _ -> }
-  var onRemoveMediaFromWatchListClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
-    { _, _, _ -> }
-  var onMediaClickListener: (HomeModuleModel.CarouselMedias, CarouselMediaListModel, MediaListItemModel) -> Unit =
-    { _, _, _ -> }
-  var onCarouselMediasModel: (HomeModuleModel.CarouselMedias, CarouselMediaListModel) -> Unit =
-    { _, _ -> }
+  var onCarouselAddToWatchListClickListener: (
+    HomeModuleModel.CarouselMedias,
+    CarouselMediaListModel,
+    MediaListItemModel
+  ) -> Unit = { _, _, _ -> }
+  var onCarouselRemoveFromWatchListClickListener: (
+    HomeModuleModel.CarouselMedias,
+    CarouselMediaListModel,
+    MediaListItemModel
+  ) -> Unit = { _, _, _ -> }
+  var onCarouselMediaClickListener: (
+    HomeModuleModel.CarouselMedias,
+    CarouselMediaListModel,
+    MediaListItemModel
+  ) -> Unit = { _, _, _ -> }
+  var onCarouselSeeAllClickListener: (
+    HomeModuleModel.CarouselMedias,
+    CarouselMediaListModel
+  ) -> Unit = { _, _ -> }
   var onSigInClickListener: () -> Unit = {}
 
-  override fun getItemId(position: Int): Long = when (val item = getItem(position)) {
-    is HomeModuleModel.CarouselMedias -> when (item.mediaFilterModel) {
-      is MediaFilterModel.NowPlaying -> 1
-      is MediaFilterModel.Popular -> 2
-      is MediaFilterModel.TopRated -> 3
-      MediaFilterModel.Upcoming -> 4
-      is MediaFilterModel.WatchList -> 5
-    }
-    HomeModuleModel.WatchlistNotLogged -> 6
-    HomeModuleModel.WatchlistWithoutContent -> 7
-  }
+  override fun getItemId(position: Int): Long = getItem(position).getModuleItemId()
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
     is HomeModuleModel.CarouselMedias -> CAROUSEL_MOVIES_LAYOUT
@@ -83,22 +83,21 @@ internal class HomeModuleListAdapter :
     private fun bindCarousel(model: HomeModuleModel.CarouselMedias, item: CarouselMediaListModel) {
       val component = view.findViewById<CarouselMediaListView>(R.id.item_view)
       component.onSeeAllClickListener = { carouselMediasModel ->
-        onCarouselMediasModel(model, carouselMediasModel)
+        onCarouselSeeAllClickListener(model, carouselMediasModel)
       }
       component.onMediaClickListener = { carouselMediasModel, mediaItemModel ->
-        onMediaClickListener(model, carouselMediasModel, mediaItemModel)
+        onCarouselMediaClickListener(model, carouselMediasModel, mediaItemModel)
       }
-      component.onAddMediaToWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
-        onAddMediaToWatchListClickListener(model, carouselMediaListModel, mediaListItemModel)
+      component.onAddToWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
+        onCarouselAddToWatchListClickListener(model, carouselMediaListModel, mediaListItemModel)
       }
-      component.onRemoveMediaFromWatchListClickListener =
-        { carouselMediaListModel, mediaListItemModel ->
-          onRemoveMediaFromWatchListClickListener(
-            model,
-            carouselMediaListModel,
-            mediaListItemModel
-          )
-        }
+      component.onRemoveFromWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
+        onCarouselRemoveFromWatchListClickListener(
+          model,
+          carouselMediaListModel,
+          mediaListItemModel
+        )
+      }
       component.setModel(item)
     }
   }
