@@ -21,18 +21,15 @@ import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.getValueOrDefault
 import com.raxdenstudios.commons.map
-import com.raxdenstudios.commons.onSuccess
+import com.raxdenstudios.commons.onFailure
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.withContext
 
 internal class HomeViewModel(
-  private val dispatcher: DispatcherFacade,
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
@@ -108,53 +105,31 @@ internal class HomeViewModel(
 
   fun addMediaToWatchList(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMedias,
-    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
-    updateMediaWithWatchButton(
-      home = home,
-      homeModule = homeModule,
-      carouselMediaList = carouselMediaList,
-      mediaListItem = mediaListItem,
-      watchButton = WatchButtonModel.Selected,
-    )
+    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Selected)
+    mediaListItemHasChangedThusUpdateHomeModel(home, itemUpdated)
     addMediaToWatchListUseCase.execute(
       AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-    ).onSuccess { refreshData() }
+    ).onFailure { mediaListItemHasChangedThusUpdateHomeModel(home, mediaListItem) }
   }
 
   fun removeMediaFromWatchList(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMedias,
-    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
   ) = viewModelScope.safeLaunch {
-    updateMediaWithWatchButton(
-      home = home,
-      homeModule = homeModule,
-      carouselMediaList = carouselMediaList,
-      mediaListItem = mediaListItem,
-      watchButton = WatchButtonModel.Unselected,
-    )
+    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Unselected)
+    mediaListItemHasChangedThusUpdateHomeModel(home, itemUpdated)
     removeMediaFromWatchListUseCase.execute(
       RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-    ).onSuccess { refreshData() }
+    ).onFailure { mediaListItemHasChangedThusUpdateHomeModel(home, mediaListItem) }
   }
 
-  private suspend fun updateMediaWithWatchButton(
+  private fun mediaListItemHasChangedThusUpdateHomeModel(
     home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMedias,
-    carouselMediaList: CarouselMediaListModel,
     mediaListItem: MediaListItemModel,
-    watchButton: WatchButtonModel,
   ) {
-    val homeUpdated = withContext(dispatcher.default()) {
-      val movieListItemUpdated = mediaListItem.copy(watchButtonModel = watchButton)
-      val carouselMovieListUpdated = carouselMediaList.replaceMedia(movieListItemUpdated)
-      val homeModuleUpdated = homeModule.copy(carouselMediaListModel = carouselMovieListUpdated)
-      home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
-    }
+    val homeUpdated = home.updateMedia(mediaListItem)
     mState.value = HomeUIState.Content(homeUpdated)
   }
 }

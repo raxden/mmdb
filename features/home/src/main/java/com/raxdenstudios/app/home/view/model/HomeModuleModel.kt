@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.home.view.model
 
 import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.view.model.MediaListItemModel
 
 sealed class HomeModuleModel {
 
@@ -10,6 +11,12 @@ sealed class HomeModuleModel {
 
   object WatchlistNotLogged : HomeModuleModel()
   object WatchlistWithoutContent : HomeModuleModel()
+
+  fun updateMedia(media: MediaListItemModel): HomeModuleModel = when (this) {
+    is CarouselMedias -> copy(carouselMediaListModel = carouselMediaListModel.updateMedia(media))
+    WatchlistNotLogged -> this
+    WatchlistWithoutContent -> this
+  }
 
   fun getModuleItemId(): Long = when (this) {
     is CarouselMedias -> when (carouselMediaListModel.mediaFilterModel) {
