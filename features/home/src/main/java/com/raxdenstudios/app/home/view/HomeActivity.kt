@@ -65,14 +65,12 @@ internal class HomeActivity : BaseActivity() {
       { moduleModel, carouselMediaListModel, mediaListItemModel ->
         mediaSelected(model, moduleModel, carouselMediaListModel, mediaListItemModel)
       }
-    adapter.onCarouselAddToWatchListClickListener =
-      { moduleModel, carouselMediaListModel, mediaListItemModel ->
-        addMediaToWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
-      }
-    adapter.onCarouselRemoveFromWatchListClickListener =
-      { moduleModel, carouselMediaListModel, mediaListItemModel ->
-        removeMediaFromWatchList(model, moduleModel, carouselMediaListModel, mediaListItemModel)
-      }
+    adapter.onCarouselAddToWatchListClickListener = { _, _, mediaListItemModel ->
+      addMediaToWatchListAndSigInIfRequires(model, mediaListItemModel)
+    }
+    adapter.onCarouselRemoveFromWatchListClickListener = { _, _, mediaListItemModel ->
+      viewModel.removeMediaFromWatchList(model, mediaListItemModel)
+    }
     adapter.onCarouselSeeAllClickListener = { _, carouselMediaListModel ->
       navigator.mediaList(carouselMediaListModel.mediaFilterModel) { viewModel.refreshData() }
     }
@@ -85,41 +83,14 @@ internal class HomeActivity : BaseActivity() {
     navigator.login { viewModel.refreshData() }
   }
 
-  private fun addMediaToWatchList(
+  private fun addMediaToWatchListAndSigInIfRequires(
     model: HomeModel,
-    moduleModel: HomeModuleModel.CarouselMedias,
-    carouselMediaListModel: CarouselMediaListModel,
     mediaListItemModel: MediaListItemModel
   ) {
-    if (model.logged)
-      viewModel.addMediaToWatchList(
-        model,
-        moduleModel,
-        carouselMediaListModel,
-        mediaListItemModel
-      )
+    if (model.logged) viewModel.addMediaToWatchList(model, mediaListItemModel)
     else navigator.login {
-      viewModel.addMediaToWatchList(
-        model.copy(logged = true),
-        moduleModel,
-        carouselMediaListModel,
-        mediaListItemModel
-      )
+      viewModel.addMediaToWatchList(model.copy(logged = true), mediaListItemModel)
     }
-  }
-
-  private fun removeMediaFromWatchList(
-    model: HomeModel,
-    moduleModel: HomeModuleModel.CarouselMedias,
-    carouselMediaListModel: CarouselMediaListModel,
-    mediaListItemModel: MediaListItemModel
-  ) {
-    viewModel.removeMediaFromWatchList(
-      model,
-      moduleModel,
-      carouselMediaListModel,
-      mediaListItemModel
-    )
   }
 
   private fun mediaSelected(
