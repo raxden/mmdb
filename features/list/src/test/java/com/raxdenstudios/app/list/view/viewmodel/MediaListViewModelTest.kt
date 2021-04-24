@@ -34,7 +34,7 @@ internal class MediaListViewModelTest : BaseTest() {
     coEvery { execute() } returns false
   }
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk() {
-    coEvery { execute(any()) } returns ResultData.Success(Media.empty)
+    coEvery { execute(any()) } returns ResultData.Success(Media.Movie.empty)
   }
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk() {
     coEvery { execute(any()) } returns ResultData.Success(true)
@@ -222,34 +222,34 @@ private val aSecondPageMoviesModel = listOf(
   MediaListItemModel.empty.copy(id = 20L),
 )
 private val aFirstPageMovies = listOf(
-  Media.empty.copy(id = 1L),
-  Media.empty.copy(id = 2L),
-  Media.empty.copy(id = 3L),
-  Media.empty.copy(id = 4L),
-  Media.empty.copy(id = 5L),
-  Media.empty.copy(id = 6L),
-  Media.empty.copy(id = 7L),
-  Media.empty.copy(id = 8L),
-  Media.empty.copy(id = 9L),
-  Media.empty.copy(id = 10L),
+  Media.Movie.empty.copy(id = 1L),
+  Media.Movie.empty.copy(id = 2L),
+  Media.Movie.empty.copy(id = 3L),
+  Media.Movie.empty.copy(id = 4L),
+  Media.Movie.empty.copy(id = 5L),
+  Media.Movie.empty.copy(id = 6L),
+  Media.Movie.empty.copy(id = 7L),
+  Media.Movie.empty.copy(id = 8L),
+  Media.Movie.empty.copy(id = 9L),
+  Media.Movie.empty.copy(id = 10L),
 )
 private val aSecondPageMovies = listOf(
-  Media.empty.copy(id = 11L),
-  Media.empty.copy(id = 12L),
-  Media.empty.copy(id = 13L),
-  Media.empty.copy(id = 14L),
-  Media.empty.copy(id = 15L),
-  Media.empty.copy(id = 16L),
-  Media.empty.copy(id = 17L),
-  Media.empty.copy(id = 18L),
-  Media.empty.copy(id = 19L),
-  Media.empty.copy(id = 20L),
+  Media.Movie.empty.copy(id = 11L),
+  Media.Movie.empty.copy(id = 12L),
+  Media.Movie.empty.copy(id = 13L),
+  Media.Movie.empty.copy(id = 14L),
+  Media.Movie.empty.copy(id = 15L),
+  Media.Movie.empty.copy(id = 16L),
+  Media.Movie.empty.copy(id = 17L),
+  Media.Movie.empty.copy(id = 18L),
+  Media.Movie.empty.copy(id = 19L),
+  Media.Movie.empty.copy(id = 20L),
 )
-private val aFirstPageList = PageList(
+private val aFirstPageList = PageList<Media>(
   items = aFirstPageMovies,
   aFirstPage,
 )
-private val aSecondPageList = PageList(
+private val aSecondPageList = PageList<Media>(
   items = aSecondPageMovies,
   aSecondPage,
 )

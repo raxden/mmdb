@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
+import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
@@ -24,9 +25,9 @@ internal class MediaGatewayTest : BaseTest() {
 
   private val mediaV3Service: MediaV3Service = mockk(relaxed = true)
   private val mediaV4Service: MediaV4Service = mockk(relaxed = true) {
-    coEvery { watchList(aAccountId, aCategory, 1) } returns aNetworkResponseSuccessFirstPage
-    coEvery { watchList(aAccountId, aCategory, 2) } returns aNetworkResponseSuccessSecondPage
-    coEvery { watchList(aAccountId, aCategory, 3) } returns aNetworkResponseSuccessThirdPage
+    coEvery { watchListMovies(aAccountId, 1) } returns aNetworkResponseSuccessFirstPage
+    coEvery { watchListMovies(aAccountId, 2) } returns aNetworkResponseSuccessSecondPage
+    coEvery { watchListMovies(aAccountId, 3) } returns aNetworkResponseSuccessThirdPage
   }
 
   private val gateway: MediaGateway by lazy {
@@ -43,64 +44,63 @@ internal class MediaGatewayTest : BaseTest() {
   @Test
   fun `Given a movie results split in pages, When watchList is called with a valid accountId, Then return all movies`() =
     testDispatcher.runBlockingTest {
-      val resultData = gateway.watchList(aAccountId, aCategory)
+      val resultData = gateway.watchListMovies(aAccountId)
 
       coVerify {
-        mediaV4Service.watchList(aAccountId, aCategory, 1)
-        mediaV4Service.watchList(aAccountId, aCategory, 2)
-        mediaV4Service.watchList(aAccountId, aCategory, 3)
+        mediaV4Service.watchListMovies(aAccountId, 1)
+        mediaV4Service.watchListMovies(aAccountId, 2)
+        mediaV4Service.watchListMovies(aAccountId, 3)
       }
       assertEquals(
         ResultData.Success(
           listOf(
-            MediaDto.empty.copy(id = 1),
-            MediaDto.empty.copy(id = 2),
-            MediaDto.empty.copy(id = 3),
-            MediaDto.empty.copy(id = 4),
-            MediaDto.empty.copy(id = 5),
-            MediaDto.empty.copy(id = 6),
+            MediaDto.Movie.empty.copy(id = 1),
+            MediaDto.Movie.empty.copy(id = 2),
+            MediaDto.Movie.empty.copy(id = 3),
+            MediaDto.Movie.empty.copy(id = 4),
+            MediaDto.Movie.empty.copy(id = 5),
+            MediaDto.Movie.empty.copy(id = 6),
           )
         ), resultData
       )
     }
 }
 
-private const val aCategory = "movie"
 private const val aAccountId = "aAccountId"
 private val aNetworkResponseSuccessFirstPage = NetworkResponse.Success(
-  body = com.raxdenstudios.app.network.model.PageDto(
+  body = PageDto(
     page = 1,
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MediaDto.empty.copy(id = 1),
-      MediaDto.empty.copy(id = 2),
+      MediaDto.Movie.empty.copy(id = 1),
+      MediaDto.Movie.empty.copy(id = 2),
     )
   ),
   headers = null,
   code = 200
 )
 private val aNetworkResponseSuccessSecondPage = NetworkResponse.Success(
-  body = com.raxdenstudios.app.network.model.PageDto(
+  body = PageDto(
     page = 2,
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MediaDto.empty.copy(id = 3),
-      MediaDto.empty.copy(id = 4),
+      MediaDto.Movie.empty.copy(id = 3),
+      MediaDto.Movie.empty.copy(id = 4),
     )
   ),
   headers = null,
   code = 200
 )
 private val aNetworkResponseSuccessThirdPage = NetworkResponse.Success(
-  body = com.raxdenstudios.app.network.model.PageDto(
+  body = PageDto(
     page = 3,
     total_pages = 3,
     total_results = 6,
     results = listOf(
-      MediaDto.empty.copy(id = 5),
-      MediaDto.empty.copy(id = 6),
+      MediaDto.Movie.empty.copy(id = 5),
+      MediaDto.Movie.empty.copy(id = 6),
     )
   ),
   headers = null,

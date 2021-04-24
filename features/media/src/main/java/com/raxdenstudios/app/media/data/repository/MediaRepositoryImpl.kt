@@ -71,7 +71,7 @@ internal class MediaRepositoryImpl(
   private suspend fun markMediasAsWatchedIfNecessary(pageList: PageList<Media>) =
     pageList.copy(
       items = pageList.items.map { media ->
-        media.copy(watchList = mediaLocalDataSource.containsInWatchList(media.id))
+        media.copyWith(watchList = mediaLocalDataSource.containsInWatchList(media.id))
       }
     )
 

@@ -31,7 +31,9 @@ val mediaDataModule = module {
   factory { VoteDtoToDomainMapper() }
   factory { PictureDtoToDomainMapper(get(named(APIVersion.V3))) }
   factory { DateDtoToLocalDateMapper() }
-  factory { MediaDtoToDomainMapper(get(), get(), get()) }
+  factory { MovieDtoToDomainMapper(get(), get(), get()) }
+  factory { TVShowDtoToDomainMapper(get(), get(), get()) }
+  factory { MediaDtoToDomainMapper(get(), get()) }
 
   factory { MediaRemoteDataSource(get(), get(), get()) }
 
