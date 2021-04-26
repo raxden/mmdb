@@ -114,15 +114,13 @@ internal class HomeViewModelTest : BaseTest() {
   }
 
   @Test
-  fun `Given a Home model populated, When addMovieToWatchList is called, Then movie is replaced in home model with watchButton as selected`() {
+  fun `Given a home model already populated and a media selected marked as watchlist, When addMovieToWatchList is called, Then movie is replaced in home model with watchButton as selected`() {
     testDispatcher.runBlockingTest {
       viewModel.state.observeForever(stateObserver)
 
       viewModel.addMediaToWatchList(
         aHomeModel,
-        aCarouselMoviesPopularModuleModel,
-        aCarouselMovieListModel,
-        aMovieModel,
+        MediaListItemModel.empty.copy(id = 1L),
       )
 
       coVerify {
@@ -138,6 +136,19 @@ internal class HomeViewModelTest : BaseTest() {
                         id = 1L,
                         watchButtonModel = WatchButtonModel.Selected
                       ),
+                      MediaListItemModel.empty.copy(id = 2L),
+                    )
+                  )
+                ),
+                HomeModuleModel.CarouselMedias(
+                  carouselMediaListModel = CarouselMediaListModel.empty.copy(
+                    mediaFilterModel = MediaFilterModel.topRatedMovies,
+                    medias = listOf(
+                      MediaListItemModel.empty.copy(
+                        id = 1L,
+                        watchButtonModel = WatchButtonModel.Selected
+                      ),
+                      MediaListItemModel.empty.copy(id = 2L),
                     )
                   )
                 )
@@ -150,20 +161,31 @@ internal class HomeViewModelTest : BaseTest() {
   }
 }
 
-private val aMovieModel = MediaListItemModel.empty.copy(id = 1L)
-private val aCarouselMovieListModel = CarouselMediaListModel.empty.copy(
+private val aCarouselPopularMovieListModel = CarouselMediaListModel.empty.copy(
   mediaFilterModel = MediaFilterModel.popularMovies,
-  medias = listOf(aMovieModel)
-)
-private val aCarouselMoviesPopularModuleModel =
-  HomeModuleModel.CarouselMedias(
-    carouselMediaListModel = aCarouselMovieListModel
+  medias = listOf(
+    MediaListItemModel.empty.copy(id = 1L),
+    MediaListItemModel.empty.copy(id = 2L)
   )
-private val aHomeModelModules = listOf(
-  aCarouselMoviesPopularModuleModel
+)
+private val aCarouselTopRatedMovieListModel = CarouselMediaListModel.empty.copy(
+  mediaFilterModel = MediaFilterModel.topRatedMovies,
+  medias = listOf(
+    MediaListItemModel.empty.copy(id = 1L),
+    MediaListItemModel.empty.copy(id = 2L)
+  )
+)
+private val aCarouselPopularMoviesModuleModel = HomeModuleModel.CarouselMedias(
+  carouselMediaListModel = aCarouselPopularMovieListModel
+)
+private val aCarouselTopPopularMoviesModuleModel = HomeModuleModel.CarouselMedias(
+  carouselMediaListModel = aCarouselTopRatedMovieListModel
 )
 private val aHomeModel = HomeModel.empty.copy(
-  modules = aHomeModelModules
+  modules = listOf(
+    aCarouselPopularMoviesModuleModel,
+    aCarouselTopPopularMoviesModuleModel
+  )
 )
 private val aHomeModules = listOf(
   HomeModule.popularMovies,
