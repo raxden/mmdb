@@ -2,6 +2,15 @@ plugins {
   id("com.raxdenstudios.android-feature")
 }
 
+android {
+
+  buildTypes {
+    getByName("debug") {
+      isTestCoverageEnabled = true
+    }
+  }
+}
+
 dependencies {
   implementation(RaxdenLibraries.okhttp3)
   implementation(RaxdenLibraries.retrofitCo)

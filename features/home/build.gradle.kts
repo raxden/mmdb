@@ -3,6 +3,13 @@ plugins {
 }
 
 android {
+
+  buildTypes {
+    getByName("debug") {
+      isTestCoverageEnabled = true
+    }
+  }
+
   defaultConfig {
     javaCompileOptions {
       annotationProcessorOptions {
