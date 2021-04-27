@@ -22,17 +22,17 @@ internal class CarouselMediasModelMapper(
       medias = mediaListItemModelMapper.transform(media),
     )
     is HomeModule.Popular -> HomeModuleModel.CarouselMedias.Popular(
-      label = stringProvider.getString(R.string.home_carousel_popular_movies),
+      label = stringProvider.getString(R.string.home_carousel_popular),
       medias = mediaListItemModelMapper.transform(media),
       mediaType = homeModule.mediaType,
     )
     is HomeModule.TopRated -> HomeModuleModel.CarouselMedias.TopRated(
-      label = stringProvider.getString(R.string.home_carousel_top_rated_movies),
+      label = stringProvider.getString(R.string.home_carousel_top_rated),
       medias = mediaListItemModelMapper.transform(media),
       mediaType = homeModule.mediaType,
     )
     is HomeModule.Upcoming -> HomeModuleModel.CarouselMedias.Upcoming(
-      label = stringProvider.getString(R.string.home_carousel_upcoming_movies),
+      label = stringProvider.getString(R.string.home_carousel_upcoming),
       medias = mediaListItemModelMapper.transform(media),
     )
     is HomeModule.WatchList -> HomeModuleModel.CarouselMedias.WatchList(
