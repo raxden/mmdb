@@ -12,7 +12,7 @@ interface MediaRepository {
   suspend fun addToWatchList(mediaId: Long, mediaType: MediaType): ResultData<Media>
   suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean>
   suspend fun removeFromWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
-  suspend fun watchList(mediaType: MediaType): ResultData<List<Media>>
+  suspend fun watchListFromRemote(mediaType: MediaType): ResultData<List<Media>>
   suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
