@@ -34,16 +34,16 @@ internal class MediaRepositoryImplTest : BaseTest() {
   }
   private val mediaRemoteDataSource: MediaRemoteDataSource = mockk {
     coEvery {
-      addMediaToWatchList(aAccountLogged, aMediaType, aMovieId)
+      addToWatchList(aAccountLogged, aMediaType, aMovieId)
     } returns ResultData.Success(aMovie.copy(watchList = true))
     coEvery {
-      removeMediaFromWatchList(aAccountLogged, aMediaType, aMovieId)
+      removeFromWatchList(aAccountLogged, aMediaType, aMovieId)
     } returns ResultData.Success(true)
     coEvery {
       medias(any(), aAccountLogged, aPage)
     } returns ResultData.Success(aPageList)
     coEvery {
-      mediaById(aMovieId, aMediaType)
+      findById(aMovieId, aMediaType)
     } returns ResultData.Success(Media.Movie.empty.copy(id = aMovieId))
     coEvery {
       watchList(aAccountLogged, aMediaType)

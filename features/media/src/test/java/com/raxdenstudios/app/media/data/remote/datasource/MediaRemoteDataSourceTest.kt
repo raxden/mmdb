@@ -68,7 +68,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
   @Test
   fun `Given a mediaId and mediaType, When mediaById is called, Then returns a ResultData success with Media`() =
     testDispatcher.runBlockingTest {
-      val result = dataSource.mediaById(aMediaId, aMediaType)
+      val result = dataSource.findById(aMediaId, aMediaType)
 
       assertEquals(
         ResultData.Success(Media.Movie.empty.copy(id = 1L)),
@@ -79,7 +79,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
   @Test
   fun `Given a account logged, mediaId and mediaType, When addMediaToWatchList is called, Then returns a ResultData success with Media`() =
     testDispatcher.runBlockingTest {
-      val result = dataSource.addMediaToWatchList(aAccountLogged, aMediaType, aMediaId)
+      val result = dataSource.addToWatchList(aAccountLogged, aMediaType, aMediaId)
 
       assertEquals(
         ResultData.Success(
@@ -95,7 +95,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
   @Test
   fun `Given a account logged, mediaId and mediaType, When removeMediaFromWatchList is called, Then returns a ResultData success`() =
     testDispatcher.runBlockingTest {
-      val result = dataSource.removeMediaFromWatchList(aAccountLogged, aMediaType, aMediaId)
+      val result = dataSource.removeFromWatchList(aAccountLogged, aMediaType, aMediaId)
 
       assertEquals(
         ResultData.Success(true),
