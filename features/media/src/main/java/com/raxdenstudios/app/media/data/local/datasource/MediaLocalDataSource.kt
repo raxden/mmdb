@@ -9,6 +9,7 @@ import com.raxdenstudios.app.media.data.local.mapper.MediaToWatchListEntityMappe
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.runCatching
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -27,32 +28,23 @@ internal class MediaLocalDataSource(
       .map { medias -> ResultData.Success(medias) }
 
   @Transaction
-  suspend fun addToWatchList(media: Media): ResultData<Boolean> =
-    try {
-      mediaDao.insert(mediaToEntityMapper.transform(media))
-      watchListDao.insert(mediaToWatchListEntityMapper.transform(media))
-      ResultData.Success(true)
-    } catch (e: Exception) {
-      ResultData.Error(e)
-    }
+  suspend fun addToWatchList(media: Media): ResultData<Boolean> = runCatching {
+    mediaDao.insert(mediaToEntityMapper.transform(media))
+    watchListDao.insert(mediaToWatchListEntityMapper.transform(media))
+    true
+  }
 
   @Transaction
-  suspend fun addToWatchList(medias: List<Media>): ResultData<Boolean> =
-    try {
-      mediaDao.insert(mediaToEntityMapper.transform(medias))
-      watchListDao.insert(mediaToWatchListEntityMapper.transform(medias))
-      ResultData.Success(true)
-    } catch (e: Exception) {
-      ResultData.Error(e)
-    }
+  suspend fun addToWatchList(medias: List<Media>): ResultData<Boolean> = runCatching {
+    mediaDao.insert(mediaToEntityMapper.transform(medias))
+    watchListDao.insert(mediaToWatchListEntityMapper.transform(medias))
+    true
+  }
 
-  suspend fun clearWatchList(): ResultData<Boolean> =
-    try {
-      watchListDao.clear()
-      ResultData.Success(true)
-    } catch (e: Exception) {
-      ResultData.Error(e)
-    }
+  suspend fun clearWatchList(): ResultData<Boolean> = runCatching {
+    watchListDao.clear()
+    true
+  }
 
   suspend fun removeFromWatchList(mediaId: Long) {
     watchListDao.delete(mediaId)
