@@ -26,8 +26,8 @@ internal class MediaRemoteDataSource(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Media> = when (mediaType) {
-    MediaType.Movie -> mediaGateway.detailMovie(mediaId.toString())
-    MediaType.TVShow -> mediaGateway.detailTVShow(mediaId.toString())
+    MediaType.MOVIE -> mediaGateway.detailMovie(mediaId.toString())
+    MediaType.TV_SHOW -> mediaGateway.detailTVShow(mediaId.toString())
   }.map { dto -> mediaDtoToDomainMapper.transform(dto) }
 
   suspend fun addMediaToWatchList(
@@ -58,8 +58,8 @@ internal class MediaRemoteDataSource(
     account: Account.Logged,
     mediaType: MediaType
   ): ResultData<List<Media>> = when (mediaType) {
-    MediaType.Movie -> mediaGateway.watchListMovies(account.credentials.accountId)
-    MediaType.TVShow -> mediaGateway.watchListTVShows(account.credentials.accountId)
+    MediaType.MOVIE -> mediaGateway.watchListMovies(account.credentials.accountId)
+    MediaType.TV_SHOW -> mediaGateway.watchListTVShows(account.credentials.accountId)
   }.map { list ->
     list.map { dto -> mediaDtoToDomainMapper.transform(dto).copyWith(watchList = true) }
   }
@@ -84,11 +84,11 @@ internal class MediaRemoteDataSource(
   ): ResultData<PageList<Media>> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
     is Account.Logged -> when (mediaType) {
-      MediaType.Movie -> mediaGateway.watchListMovies(
+      MediaType.MOVIE -> mediaGateway.watchListMovies(
         accountId = account.credentials.accountId,
         page = page.value
       )
-      MediaType.TVShow -> mediaGateway.watchListTVShows(
+      MediaType.TV_SHOW -> mediaGateway.watchListTVShows(
         accountId = account.credentials.accountId,
         page = page.value
       )
@@ -107,14 +107,14 @@ internal class MediaRemoteDataSource(
 
   private suspend fun topRated(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
     when (mediaType) {
-      MediaType.Movie -> mediaGateway.topRatedMovies(page.value)
-      MediaType.TVShow -> mediaGateway.topRatedTVShows(page.value)
+      MediaType.MOVIE -> mediaGateway.topRatedMovies(page.value)
+      MediaType.TV_SHOW -> mediaGateway.topRatedTVShows(page.value)
     }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
   private suspend fun popular(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
     when (mediaType) {
-      MediaType.Movie -> mediaGateway.popularMovies(page.value)
-      MediaType.TVShow -> mediaGateway.popularTVShows(page.value)
+      MediaType.MOVIE -> mediaGateway.popularMovies(page.value)
+      MediaType.TV_SHOW -> mediaGateway.popularTVShows(page.value)
     }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
   @Suppress("UNCHECKED_CAST")

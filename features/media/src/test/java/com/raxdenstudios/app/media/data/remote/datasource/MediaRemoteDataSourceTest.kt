@@ -228,7 +228,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 private const val aTMDBAccountId = "aTMDBAccountId"
 private const val aMediaId = 1L
 private val aMediaDto = MediaDto.Movie.empty.copy(id = 1)
-private val aMediaType = MediaType.Movie
+private val aMediaType = MediaType.MOVIE
 private val aPageDtoList = listOf(
   MediaDto.Movie.empty.copy(id = 1),
   MediaDto.Movie.empty.copy(id = 2),

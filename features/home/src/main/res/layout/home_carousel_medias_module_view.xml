@@ -112,6 +112,26 @@
             app:layout_constraintTop_toBottomOf="@+id/media_type_chip_group"
             tools:listitem="@layout/media_list_item_view" />
 
+        <include
+            android:id="@+id/empty_watch_list_view"
+            layout="@layout/empty_watch_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/media_type_chip_group" />
+
+        <include
+            android:id="@+id/sigin_watch_list_view"
+            layout="@layout/sigin_watch_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/media_type_chip_group" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -4,15 +4,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
+import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.list.view.MediaListActivity
-import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.navigator.mapper.MediaListParamsMapper
 
-internal class MediaListActivityResultContract :
-  ActivityResultContract<MediaFilterModel, Boolean>() {
+internal class MediaListActivityResultContract(
+  private val mediaListParamsMapper: MediaListParamsMapper
+) : ActivityResultContract<HomeModuleModel.CarouselMedias, Boolean>() {
 
-  override fun createIntent(context: Context, mediaFilterModel: MediaFilterModel): Intent {
-    val params = MediaListParams(mediaFilterModel)
+  override fun createIntent(
+    context: Context,
+    carouselMedias: HomeModuleModel.CarouselMedias
+  ): Intent {
+    val params = mediaListParamsMapper.transform(carouselMedias)
     return MediaListActivity.createIntent(context, params)
   }
 
