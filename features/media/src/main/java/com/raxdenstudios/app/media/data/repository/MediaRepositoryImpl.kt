@@ -1,16 +1,13 @@
 package com.raxdenstudios.app.media.data.repository
 
 import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSource
-import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
-import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
-import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -22,7 +19,7 @@ internal class MediaRepositoryImpl(
   private val accountLocalDataSource: AccountLocalDataSource,
 ) : MediaRepository {
 
-  override suspend fun addMediaToWatchList(
+  override suspend fun addToWatchList(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Media> =
@@ -32,7 +29,10 @@ internal class MediaRepositoryImpl(
       mediaId = mediaId
     ).onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
 
-  override suspend fun removeMediaFromWatchList(
+  override suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean> =
+    mediaLocalDataSource.addToWatchList(medias)
+
+  override suspend fun removeFromWatchList(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Boolean> =
@@ -41,6 +41,12 @@ internal class MediaRepositoryImpl(
       mediaType = mediaType,
       mediaId = mediaId
     ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
+
+  override suspend fun watchList(mediaType: MediaType): ResultData<List<Media>> =
+    mediaRemoteDataSource.watchList(
+      account = accountLocalDataSource.getAccount(),
+      mediaType = mediaType,
+    )
 
   override suspend fun medias(
     mediaFilter: MediaFilter,
@@ -59,20 +65,4 @@ internal class MediaRepositoryImpl(
         media.copyWith(watchList = mediaLocalDataSource.containsInWatchList(media.id))
       }
     )
-
-  override suspend fun loadWatchListFromRemoteAndPersistInLocal(
-    mediaType: MediaType
-  ): ResultData<Boolean> =
-    when (val account = accountLocalDataSource.getAccount()) {
-      is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> loadWatchListFromRemoteAndPersistInLocal(account, mediaType)
-    }
-
-  private suspend fun loadWatchListFromRemoteAndPersistInLocal(
-    account: Account.Logged,
-    mediaType: MediaType,
-  ): ResultData<Boolean> =
-    mediaRemoteDataSource.watchList(account, mediaType)
-      .coMap { medias -> mediaLocalDataSource.addToWatchList(medias) }
-      .map { true }
 }

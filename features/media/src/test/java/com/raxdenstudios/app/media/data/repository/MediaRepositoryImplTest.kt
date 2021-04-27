@@ -5,7 +5,6 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
-import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
@@ -52,7 +51,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val mediaLocalDataSource: MediaLocalDataSource = mockk {
     coEvery { containsInWatchList(any()) } returns false
     coEvery { addToWatchList(any<Media>()) } returns Unit
-    coEvery { addToWatchList(any<List<Media>>()) } returns Unit
+    coEvery { addToWatchList(any<List<Media>>()) } returns ResultData.Success(true)
     coEvery { removeFromWatchList(any()) } returns Unit
   }
   private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider = mockk(relaxed = true)
@@ -71,9 +70,33 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val repository: MediaRepository by inject()
 
   @Test
+  fun `Given a list of medias, When addToLocalWatchList is called, Then medias are persisted`() =
+    testDispatcher.runBlockingTest {
+      val result = repository.addToLocalWatchList(aMovies)
+
+      coVerify { mediaLocalDataSource.addToWatchList(aMovies) }
+      assertEquals(ResultData.Success(true), result)
+    }
+
+  @Test
+  fun `Given a mediaType, When watchList is called, Then watchList is returned`() =
+    testDispatcher.runBlockingTest {
+      val result = repository.watchList(MediaType.MOVIE)
+
+      assertEquals(
+        ResultData.Success(
+          listOf(
+            Media.Movie.empty.copy(id = 1L),
+            Media.Movie.empty.copy(id = 2L),
+          )
+        ), result
+      )
+    }
+
+  @Test
   fun `Given a movie, When addMovieToWatchList is called, Then movie is added to watchlist`() =
     testDispatcher.runBlockingTest {
-      val result = repository.addMediaToWatchList(aMovieId, aMediaType)
+      val result = repository.addToWatchList(aMovieId, aMediaType)
 
       coVerify { mediaLocalDataSource.addToWatchList(aMovie.copy(watchList = true)) }
       assertEquals(ResultData.Success(aMovie.copy(watchList = true)), result)
@@ -82,7 +105,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   @Test
   fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() =
     testDispatcher.runBlockingTest {
-      val result = repository.removeMediaFromWatchList(aMovieId, aMediaType)
+      val result = repository.removeFromWatchList(aMovieId, aMediaType)
 
       coVerify { mediaLocalDataSource.removeFromWatchList(aMovieId) }
       assertEquals(ResultData.Success(true), result)
@@ -107,26 +130,6 @@ internal class MediaRepositoryImplTest : BaseTest() {
         ),
         result
       )
-    }
-
-  @Test
-  fun `Given an account logged, When loadWatchListFromRemoteAndPersistInLocal is called, Then load data from remote and persist in local`() =
-    testDispatcher.runBlockingTest {
-
-      val result = repository.loadWatchListFromRemoteAndPersistInLocal(aMediaType)
-
-      assertEquals(ResultData.Success(true), result)
-    }
-
-  @Test
-  fun `Given an account not logged, When loadWatchListFromRemoteAndPersistInLocal is called, Then and exception raised`() =
-    testDispatcher.runBlockingTest {
-      coEvery { accountLocalDataSource.getAccount() } returns aAccountGuest
-
-      val result = repository.loadWatchListFromRemoteAndPersistInLocal(aMediaType)
-
-      result as ResultData.Error
-      assert(result.throwable is UserNotLoggedException)
     }
 }
 

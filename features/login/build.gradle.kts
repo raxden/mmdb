@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
   implementation(RaxdenLibraries.threeten)
+  implementation(RaxdenLibraries.paginationCo)
 
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))

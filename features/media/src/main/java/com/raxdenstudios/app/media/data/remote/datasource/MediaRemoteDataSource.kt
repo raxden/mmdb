@@ -59,13 +59,16 @@ internal class MediaRemoteDataSource(
   }
 
   suspend fun watchList(
-    account: Account.Logged,
+    account: Account,
     mediaType: MediaType
-  ): ResultData<List<Media>> = when (mediaType) {
-    MediaType.MOVIE -> mediaGateway.watchListMovies(account.credentials.accountId)
-    MediaType.TV_SHOW -> mediaGateway.watchListTVShows(account.credentials.accountId)
-  }.map { list ->
-    list.map { dto -> mediaDtoToDomainMapper.transform(dto).copyWith(watchList = true) }
+  ): ResultData<List<Media>> = when (account) {
+    is Account.Guest -> ResultData.Error(UserNotLoggedException())
+    is Account.Logged -> when (mediaType) {
+      MediaType.MOVIE -> mediaGateway.watchListMovies(account.credentials.accountId)
+      MediaType.TV_SHOW -> mediaGateway.watchListTVShows(account.credentials.accountId)
+    }.map { list ->
+      list.map { dto -> mediaDtoToDomainMapper.transform(dto).copyWith(watchList = true) }
+    }
   }
 
   @Suppress("UNCHECKED_CAST")

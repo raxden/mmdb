@@ -9,13 +9,13 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
 interface MediaRepository {
-  suspend fun addMediaToWatchList(mediaId: Long, mediaType: MediaType): ResultData<Media>
-  suspend fun removeMediaFromWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
+  suspend fun addToWatchList(mediaId: Long, mediaType: MediaType): ResultData<Media>
+  suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean>
+  suspend fun removeFromWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
+  suspend fun watchList(mediaType: MediaType): ResultData<List<Media>>
   suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<Media>>
-
-  suspend fun loadWatchListFromRemoteAndPersistInLocal(mediaType: MediaType): ResultData<Boolean>
 }
