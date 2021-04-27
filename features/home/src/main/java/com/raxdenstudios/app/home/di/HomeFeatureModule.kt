@@ -5,7 +5,7 @@ import com.raxdenstudios.app.home.data.local.datasource.HomeModuleLocalDataSourc
 import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapper
 import com.raxdenstudios.app.home.data.repository.HomeModuleRepository
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
-import com.raxdenstudios.app.home.view.mapper.CarouselMediaListModelMapper
+import com.raxdenstudios.app.home.view.mapper.CarouselMediasModelMapper
 import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
@@ -26,7 +26,7 @@ val homeFeatureModule = module {
 
   factory { HomeModuleModelMapper(get()) }
   factory { GetMediasUseCaseParamsMapper() }
-  factory { CarouselMediaListModelMapper(get(), get()) }
+  factory { CarouselMediasModelMapper(get(), get()) }
 
-  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }

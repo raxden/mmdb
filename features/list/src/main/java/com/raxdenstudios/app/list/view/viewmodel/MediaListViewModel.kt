@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
+import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
-import com.raxdenstudios.app.media.view.mapper.MediaFilterModelToDomainMapper
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ResultData
@@ -32,7 +31,7 @@ internal class MediaListViewModel(
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
-  private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
+  private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) : BaseViewModel(), KoinComponent {
 
@@ -78,38 +77,35 @@ internal class MediaListViewModel(
     mState.value is MediaListUIState.Content || mState.value is MediaListUIState.Loading
 
   private fun requestFirstPage(params: MediaListParams) {
-    requestPage(PageIndex.first, MediaListModel.withFilter(params.mediaFilterModel))
+    requestPage(PageIndex.first, params)
   }
 
-  private fun requestPage(pageIndex: PageIndex, model: MediaListModel) {
+  private fun requestPage(pageIndex: PageIndex, params: MediaListParams) {
     pagination.requestPage(
       pageIndex = pageIndex,
-      pageRequest = { page, pageSize -> pageRequest(model.mediaFilterModel, page, pageSize) },
-      pageResponse = { pageResult -> pageResponse(model, pageResult) }
+      pageRequest = { page, pageSize -> pageRequest(params, page, pageSize) },
+      pageResponse = { pageResult -> pageResponse(pageResult) }
     )
   }
 
-  fun loadMoreMovies(pageIndex: PageIndex, model: MediaListModel) {
-    requestPage(pageIndex, model)
+  fun loadMoreMovies(pageIndex: PageIndex, params: MediaListParams) {
+    requestPage(pageIndex, params)
   }
 
-  private fun pageResponse(model: MediaListModel, pageResult: PageResult<MediaListItemModel>) =
+  private fun pageResponse(pageResult: PageResult<MediaListItemModel>) =
     when (pageResult) {
-      is PageResult.Content -> handlePageResultContent(model, pageResult)
+      is PageResult.Content -> handlePageResultContent(pageResult)
       is PageResult.Error -> mState.value = MediaListUIState.Error(pageResult.throwable)
       PageResult.Loading -> mState.value = MediaListUIState.Loading
       PageResult.NoMoreResults -> Unit
       PageResult.NoResults -> mState.value = MediaListUIState.EmptyContent
     }
 
-  private fun handlePageResultContent(
-    model: MediaListModel,
-    pageResult: PageResult.Content<MediaListItemModel>
-  ) {
+  private fun handlePageResultContent(pageResult: PageResult.Content<MediaListItemModel>) {
     viewModelScope.safeLaunch {
       val isAccountLogged = isAccountLoggedUseCase.execute()
       mState.value = MediaListUIState.Content(
-        model.copy(
+        MediaListModel(
           logged = isAccountLogged,
           media = pageResult.items
         )
@@ -118,12 +114,11 @@ internal class MediaListViewModel(
   }
 
   private suspend fun pageRequest(
-    mediaFilterModel: MediaFilterModel,
+    params: MediaListParams,
     page: Page,
     pageSize: PageSize
   ): ResultData<PageList<MediaListItemModel>> {
-    val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
-    val useCaseParams = GetMediasUseCase.Params(mediaFilter, page, pageSize)
+    val useCaseParams = getMediasUseCaseParamsMapper.transform(params, page, pageSize)
     return getMediasUseCase.execute(useCaseParams)
       .coMap { pageList -> pageList.map { items -> mediaListItemModelMapper.transform(items) } }
   }

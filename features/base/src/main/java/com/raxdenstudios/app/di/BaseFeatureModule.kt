@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.di
 
-import com.raxdenstudios.app.media.view.mapper.*
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
@@ -12,10 +12,6 @@ import timber.log.Timber
 val baseFeatureModule = module {
 
   factory { MediaListItemModelMapper() }
-  factory { MediaTypeToModelMapper() }
-  factory { MediaTypeModelToDomainMapper() }
-  factory { MediaFilterToModelMapper(get()) }
-  factory { MediaFilterModelToDomainMapper(get()) }
 
   factory {
     Pagination.Config.default.copy(

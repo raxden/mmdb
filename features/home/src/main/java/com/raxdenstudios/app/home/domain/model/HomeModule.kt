@@ -8,17 +8,17 @@ sealed class HomeModule(
 
   companion object {
     val popularMovies = Popular(
-      mediaType = MediaType.Movie
+      mediaType = MediaType.MOVIE
     )
     val nowPlayingMovies = NowPlaying(
-      mediaType = MediaType.Movie
+      mediaType = MediaType.MOVIE
     )
     val topRatedMovies = TopRated(
-      mediaType = MediaType.Movie
+      mediaType = MediaType.MOVIE
     )
     val upcomingMovies = Upcoming
     val watchListMovies = WatchList(
-      mediaType = MediaType.Movie
+      mediaType = MediaType.MOVIE
     )
   }
 
@@ -34,7 +34,7 @@ sealed class HomeModule(
     override val mediaType: MediaType,
   ) : HomeModule(mediaType)
 
-  object Upcoming : HomeModule(MediaType.Movie)
+  object Upcoming : HomeModule(MediaType.MOVIE)
 
   data class WatchList(
     override val mediaType: MediaType,

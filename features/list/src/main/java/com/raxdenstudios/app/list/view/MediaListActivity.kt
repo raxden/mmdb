@@ -62,7 +62,7 @@ class MediaListActivity : BaseActivity() {
   private fun MediaListActivityBinding.handleContentState(state: MediaListUIState.Content) {
     swipeRefreshLayout.isRefreshing = false
 
-    loadMoreMoviesWhenScrollDown(state.model)
+    loadMoreMoviesWhenScrollDown()
     adapter.populateAdapter(state.model)
   }
 
@@ -100,11 +100,11 @@ class MediaListActivity : BaseActivity() {
     viewModel.addMovieToWatchList(model, item)
   }
 
-  private fun MediaListActivityBinding.loadMoreMoviesWhenScrollDown(model: MediaListModel) {
+  private fun MediaListActivityBinding.loadMoreMoviesWhenScrollDown() {
     onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
     onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
       val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-      viewModel.loadMoreMovies(gridLayoutManager.toPageIndex(), model)
+      viewModel.loadMoreMovies(gridLayoutManager.toPageIndex(), params)
     }
   }
 

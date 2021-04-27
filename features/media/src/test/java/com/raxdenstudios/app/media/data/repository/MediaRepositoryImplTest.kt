@@ -130,7 +130,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     }
 }
 
-private val aMediaType = MediaType.Movie
+private val aMediaType = MediaType.MOVIE
 private val aMovies = listOf(
   Media.Movie.empty.copy(id = 1L),
   Media.Movie.empty.copy(id = 2L),

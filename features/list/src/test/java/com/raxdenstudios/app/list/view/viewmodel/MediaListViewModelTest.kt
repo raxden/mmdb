@@ -16,6 +16,7 @@ import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageIndex
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -46,6 +47,11 @@ internal class MediaListViewModelTest : BaseTest() {
     )
   }
   private val stateObserver: Observer<MediaListUIState> = mockk(relaxed = true)
+  private val paginationConfig = Pagination.Config.default.copy(
+    initialPage = aFirstPage,
+    pageSize = aPageSize,
+    prefetchDistance = 0
+  )
 
   override val modules: List<Module>
     get() = listOf(
@@ -56,6 +62,7 @@ internal class MediaListViewModelTest : BaseTest() {
         factory(override = true) { getMediasUseCase }
         factory(override = true) { addMediaToWatchListUseCase }
         factory(override = true) { removeMediaFromWatchListUseCase }
+        factory(override = true) { paginationConfig }
       }
     )
 
@@ -76,14 +83,6 @@ internal class MediaListViewModelTest : BaseTest() {
             media = listOf(
               MediaListItemModel.empty.copy(id = 1L),
               MediaListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
-              MediaListItemModel.empty.copy(id = 3L),
-              MediaListItemModel.empty.copy(id = 4L),
-              MediaListItemModel.empty.copy(id = 5L),
-              MediaListItemModel.empty.copy(id = 6L),
-              MediaListItemModel.empty.copy(id = 7L),
-              MediaListItemModel.empty.copy(id = 8L),
-              MediaListItemModel.empty.copy(id = 9L),
-              MediaListItemModel.empty.copy(id = 10L),
             )
           )
         )
@@ -111,14 +110,6 @@ internal class MediaListViewModelTest : BaseTest() {
                 id = 2L,
                 watchButtonModel = WatchButtonModel.Unselected
               ),
-              MediaListItemModel.empty.copy(id = 3L),
-              MediaListItemModel.empty.copy(id = 4L),
-              MediaListItemModel.empty.copy(id = 5L),
-              MediaListItemModel.empty.copy(id = 6L),
-              MediaListItemModel.empty.copy(id = 7L),
-              MediaListItemModel.empty.copy(id = 8L),
-              MediaListItemModel.empty.copy(id = 9L),
-              MediaListItemModel.empty.copy(id = 10L),
             )
           )
         )
@@ -138,7 +129,10 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = aFirstPageMoviesModel
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = 2L),
+            )
           )
         )
       )
@@ -157,7 +151,10 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = aFirstPageMoviesModel
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = 2L),
+            )
           )
         )
       )
@@ -165,19 +162,36 @@ internal class MediaListViewModelTest : BaseTest() {
   }
 
   @Test
-  fun `Given a model with results from first page and pageIndex with value 8, When loadMoreMovies is called, Then second page with movies is returned`() {
-    val model = givenAMovieListModelWithResultsFromFirstPage()
-    val pageIndex = PageIndex(20)
+  fun `Given a pageIndex with value 20, When loadMoreMovies is called, Then second page with movies are returned`() {
+    val params = MediaListParams.popularMovies
+    val pageIndex = PageIndex(2)
     viewModel.state.observeForever(stateObserver)
 
-    viewModel.loadMoreMovies(pageIndex, model)
+    viewModel.loadMedias(params)
+    viewModel.loadMoreMovies(pageIndex, params)
 
     coVerifyOrder {
       stateObserver.onChanged(MediaListUIState.Loading)
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = aSecondPageMoviesModel
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = 2L),
+            )
+          )
+        )
+      )
+      stateObserver.onChanged(MediaListUIState.Loading)
+      stateObserver.onChanged(
+        MediaListUIState.Content(
+          MediaListModel.empty.copy(
+            media = listOf(
+              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = 2L),
+              MediaListItemModel.empty.copy(id = 3L),
+              MediaListItemModel.empty.copy(id = 4L),
+            )
           )
         )
       )
@@ -192,7 +206,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
 private val aFirstPage = Page(1)
 private val aSecondPage = Page(2)
-private val aPageSize = PageSize(20)
+private val aPageSize = PageSize(2)
 private val aGetMoviesUseCaseFirstPageParams =
   GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
 private val aGetMoviesUseCaseSecondPageParams =
@@ -200,50 +214,14 @@ private val aGetMoviesUseCaseSecondPageParams =
 private val aFirstPageMoviesModel = listOf(
   MediaListItemModel.empty.copy(id = 1L),
   MediaListItemModel.empty.copy(id = 2L),
-  MediaListItemModel.empty.copy(id = 3L),
-  MediaListItemModel.empty.copy(id = 4L),
-  MediaListItemModel.empty.copy(id = 5L),
-  MediaListItemModel.empty.copy(id = 6L),
-  MediaListItemModel.empty.copy(id = 7L),
-  MediaListItemModel.empty.copy(id = 8L),
-  MediaListItemModel.empty.copy(id = 9L),
-  MediaListItemModel.empty.copy(id = 10L),
-)
-private val aSecondPageMoviesModel = listOf(
-  MediaListItemModel.empty.copy(id = 11L),
-  MediaListItemModel.empty.copy(id = 12L),
-  MediaListItemModel.empty.copy(id = 13L),
-  MediaListItemModel.empty.copy(id = 14L),
-  MediaListItemModel.empty.copy(id = 15L),
-  MediaListItemModel.empty.copy(id = 16L),
-  MediaListItemModel.empty.copy(id = 17L),
-  MediaListItemModel.empty.copy(id = 18L),
-  MediaListItemModel.empty.copy(id = 19L),
-  MediaListItemModel.empty.copy(id = 20L),
 )
 private val aFirstPageMovies = listOf(
   Media.Movie.empty.copy(id = 1L),
   Media.Movie.empty.copy(id = 2L),
-  Media.Movie.empty.copy(id = 3L),
-  Media.Movie.empty.copy(id = 4L),
-  Media.Movie.empty.copy(id = 5L),
-  Media.Movie.empty.copy(id = 6L),
-  Media.Movie.empty.copy(id = 7L),
-  Media.Movie.empty.copy(id = 8L),
-  Media.Movie.empty.copy(id = 9L),
-  Media.Movie.empty.copy(id = 10L),
 )
 private val aSecondPageMovies = listOf(
-  Media.Movie.empty.copy(id = 11L),
-  Media.Movie.empty.copy(id = 12L),
-  Media.Movie.empty.copy(id = 13L),
-  Media.Movie.empty.copy(id = 14L),
-  Media.Movie.empty.copy(id = 15L),
-  Media.Movie.empty.copy(id = 16L),
-  Media.Movie.empty.copy(id = 17L),
-  Media.Movie.empty.copy(id = 18L),
-  Media.Movie.empty.copy(id = 19L),
-  Media.Movie.empty.copy(id = 20L),
+  Media.Movie.empty.copy(id = 3L),
+  Media.Movie.empty.copy(id = 4L),
 )
 private val aFirstPageList = PageList<Media>(
   items = aFirstPageMovies,

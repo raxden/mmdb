@@ -6,12 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
 import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.view.component.CarouselMediaListView
-import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
+import com.raxdenstudios.app.home.view.component.HomeCarouselMediasModuleView
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
 internal class HomeModuleListAdapter :
   BaseListAdapter<HomeModuleModel, HomeModuleListAdapter.HomeListAdapterHolder>(
@@ -19,43 +17,34 @@ internal class HomeModuleListAdapter :
   ) {
 
   companion object {
-    private val CAROUSEL_MOVIES_LAYOUT = R.layout.home_module_list_item
-    private val WATCHLIST_NOT_LOGGED = R.layout.sigin_watch_list_view
-    private val WATCHLIST_WITHOUT_CONTENT = R.layout.empty_watch_list_view
+    private val CAROUSEL_MOVIES_LAYOUT = R.layout.home_carousel_medias_module_list_item
   }
 
   var onCarouselAddToWatchListClickListener: (
     HomeModuleModel.CarouselMedias,
-    CarouselMediaListModel,
     MediaListItemModel
-  ) -> Unit = { _, _, _ -> }
+  ) -> Unit = { _, _ -> }
   var onCarouselRemoveFromWatchListClickListener: (
     HomeModuleModel.CarouselMedias,
-    CarouselMediaListModel,
     MediaListItemModel
-  ) -> Unit = { _, _, _ -> }
+  ) -> Unit = { _, _ -> }
   var onCarouselMediaClickListener: (
     HomeModuleModel.CarouselMedias,
-    CarouselMediaListModel,
     MediaListItemModel
-  ) -> Unit = { _, _, _ -> }
+  ) -> Unit = { _, _ -> }
   var onCarouselSeeAllClickListener: (
     HomeModuleModel.CarouselMedias,
-    CarouselMediaListModel
-  ) -> Unit = { _, _ -> }
+  ) -> Unit = { _ -> }
   var onCarouselFilterChanged: (
     HomeModuleModel.CarouselMedias,
-    CarouselMediaListModel,
-    MediaFilterModel
-  ) -> Unit = { _, _, _ -> }
-  var onSigInClickListener: () -> Unit = {}
+    MediaType
+  ) -> Unit = { _, _ -> }
+  var onCarouselSigInClickListener: (HomeModuleModel.CarouselMedias) -> Unit = {}
 
   override fun getItemId(position: Int): Long = getItem(position).getModuleItemId()
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
     is HomeModuleModel.CarouselMedias -> CAROUSEL_MOVIES_LAYOUT
-    HomeModuleModel.WatchlistNotLogged -> WATCHLIST_NOT_LOGGED
-    HomeModuleModel.WatchlistWithoutContent -> WATCHLIST_WITHOUT_CONTENT
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListAdapterHolder {
@@ -74,40 +63,29 @@ internal class HomeModuleListAdapter :
   ) : RecyclerView.ViewHolder(view) {
 
     fun bind(model: HomeModuleModel) = when (model) {
-      is HomeModuleModel.CarouselMedias -> bindCarousel(model, model.carouselMediaListModel)
-      HomeModuleModel.WatchlistNotLogged -> bindWatchListNotLogged()
-      HomeModuleModel.WatchlistWithoutContent -> bindWatchListWithoutContent()
+      is HomeModuleModel.CarouselMedias -> bindCarousel(model)
     }
 
-    private fun bindWatchListWithoutContent() {
-    }
-
-    private fun bindWatchListNotLogged() {
-      view.findViewById<View>(R.id.sig_in).setSafeOnClickListener { onSigInClickListener() }
-    }
-
-    private fun bindCarousel(model: HomeModuleModel.CarouselMedias, item: CarouselMediaListModel) {
-      val component = view.findViewById<CarouselMediaListView>(R.id.item_view)
-      component.onSeeAllClickListener = { carouselMediasModel ->
-        onCarouselSeeAllClickListener(model, carouselMediasModel)
+    private fun bindCarousel(model: HomeModuleModel.CarouselMedias) {
+      view.findViewById<HomeCarouselMediasModuleView>(R.id.item_view).run {
+        onSeeAllClickListener = { carouselMedias ->
+          onCarouselSeeAllClickListener(carouselMedias)
+        }
+        onMediaClickListener = { carouselMedias, mediaItemModel ->
+          onCarouselMediaClickListener(carouselMedias, mediaItemModel)
+        }
+        onAddToWatchListClickListener = { carouselMedias, mediaListItemModel ->
+          onCarouselAddToWatchListClickListener(carouselMedias, mediaListItemModel)
+        }
+        onRemoveFromWatchListClickListener = { carouselMedias, mediaListItemModel ->
+          onCarouselRemoveFromWatchListClickListener(carouselMedias, mediaListItemModel)
+        }
+        onMediaTypeFilterChanged = { carouselMedias, mediaFilterModel ->
+          onCarouselFilterChanged(carouselMedias, mediaFilterModel)
+        }
+        onSigInClickListener = onCarouselSigInClickListener
+        setModel(model)
       }
-      component.onMediaClickListener = { carouselMediasModel, mediaItemModel ->
-        onCarouselMediaClickListener(model, carouselMediasModel, mediaItemModel)
-      }
-      component.onAddToWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
-        onCarouselAddToWatchListClickListener(model, carouselMediaListModel, mediaListItemModel)
-      }
-      component.onRemoveFromWatchListClickListener = { carouselMediaListModel, mediaListItemModel ->
-        onCarouselRemoveFromWatchListClickListener(
-          model,
-          carouselMediaListModel,
-          mediaListItemModel
-        )
-      }
-      component.onFilterChanged = { carouselMediaListModel, mediaFilterModel ->
-        onCarouselFilterChanged(model, carouselMediaListModel, mediaFilterModel)
-      }
-      component.setModel(item)
     }
   }
 }

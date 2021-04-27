@@ -1,11 +1,9 @@
 package com.raxdenstudios.app.list.view.model
 
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class MediaListModel(
-  val mediaFilterModel: MediaFilterModel,
   val logged: Boolean,
   val media: List<MediaListItemModel>,
 ) {
@@ -17,13 +15,6 @@ data class MediaListModel(
   companion object {
     val empty = MediaListModel(
       logged = false,
-      mediaFilterModel = MediaFilterModel.popularMovies,
-      media = emptyList()
-    )
-
-    fun withFilter(mediaFilterModel: MediaFilterModel) = MediaListModel(
-      logged = false,
-      mediaFilterModel = mediaFilterModel,
       media = emptyList()
     )
   }

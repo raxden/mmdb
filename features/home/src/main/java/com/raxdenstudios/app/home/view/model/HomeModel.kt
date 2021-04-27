@@ -9,7 +9,11 @@ data class HomeModel(
 ) {
 
   fun updateMedia(media: MediaListItemModel): HomeModel = copy(
-    modules = modules.map { module -> module.updateMedia(media) }
+    modules = modules.map { module ->
+      when (module) {
+        is HomeModuleModel.CarouselMedias -> module.updateMedia(media)
+      }
+    }
   )
 
   companion object {
