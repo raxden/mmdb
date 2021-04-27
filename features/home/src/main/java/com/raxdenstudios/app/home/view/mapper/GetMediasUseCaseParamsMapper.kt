@@ -9,7 +9,7 @@ internal class GetMediasUseCaseParamsMapper : DataMapper<HomeModule, GetMediasUs
 
   override fun transform(source: HomeModule): GetMediasUseCase.Params {
     val mediaFilter = when (source) {
-      is HomeModule.NowPlaying -> MediaFilter.NowPlaying(source.mediaType)
+      is HomeModule.NowPlaying -> MediaFilter.NowPlaying
       is HomeModule.Popular -> MediaFilter.Popular(source.mediaType)
       is HomeModule.TopRated -> MediaFilter.TopRated(source.mediaType)
       is HomeModule.Upcoming -> MediaFilter.Upcoming

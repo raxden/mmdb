@@ -24,11 +24,6 @@ interface MediaV3Service {
     @Query("page") page: Int
   ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
 
-  @GET("tv/now_playing")
-  suspend fun nowPlayingTVShows(
-    @Query("page") page: Int
-  ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
-
   @GET("movie/top_rated")
   suspend fun topRatedMovies(
     @Query("page") page: Int

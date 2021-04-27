@@ -45,7 +45,7 @@ internal class HomeModuleModelMapperTest : BaseTest() {
     assertEquals(
       HomeModuleModel.CarouselMedias(
         carouselMediaListModel = CarouselMediaListModel.empty.copy(
-          mediaFilterModel = MediaFilterModel.nowPlayingMovies,
+          mediaFilterModel = MediaFilterModel.NowPlaying,
           medias = listOf(
             MediaListItemModel.empty.copy(id = 1L)
           )

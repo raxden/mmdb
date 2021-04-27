@@ -32,7 +32,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
     coEvery { upcoming(any()) } returns ResultData.Success(aPageDto)
     coEvery { topRatedMovies(any()) } returns ResultData.Success(aPageDto)
     coEvery { popularMovies(any()) } returns ResultData.Success(aPageDto)
-    coEvery { nowPlayingMovies(any()) } returns ResultData.Success(aPageDto)
+    coEvery { nowPlaying(any()) } returns ResultData.Success(aPageDto)
     coEvery {
       watchListMovies(aAccountLogged.credentials.accountId, any())
     } returns ResultData.Success(aPageDto)
@@ -180,7 +180,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
   fun `Given a mediaFilter of type nowPlaying, When movies is called, Then load movies`() =
     testDispatcher.runBlockingTest {
 
-      val result = dataSource.medias(MediaFilter.nowPlayingMovies, aAccountLogged, aFirstPage)
+      val result = dataSource.medias(MediaFilter.NowPlaying, aAccountLogged, aFirstPage)
 
       assertEquals(
         ResultData.Success(

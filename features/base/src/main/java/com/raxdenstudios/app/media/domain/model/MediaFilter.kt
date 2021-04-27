@@ -11,17 +11,12 @@ sealed class MediaFilter(
     val topRatedMovies = TopRated(
       mediaType = MediaType.Movie
     )
-    val nowPlayingMovies = NowPlaying(
-      mediaType = MediaType.Movie
-    )
     val watchListMovies = WatchList(
       mediaType = MediaType.Movie
     )
   }
 
-  data class NowPlaying(
-    override val mediaType: MediaType
-  ) : MediaFilter(mediaType)
+  object NowPlaying : MediaFilter(MediaType.Movie)
 
   data class Popular(
     override val mediaType: MediaType
