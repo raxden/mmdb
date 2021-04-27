@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.raxdenstudios.app.media.data.local.model.MediaEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MediaDao {
@@ -22,5 +23,5 @@ interface MediaDao {
   suspend fun find(mediaId: Long): MediaEntity?
 
   @Query("SELECT * FROM media INNER JOIN watch_list ON media.id == watch_list.media_id WHERE type == :mediaType")
-  suspend fun watchList(mediaType: Int): List<MediaEntity>
+  fun watchList(mediaType: Int): Flow<List<MediaEntity>>
 }

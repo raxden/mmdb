@@ -12,12 +12,24 @@ import com.raxdenstudios.commons.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
+import kotlinx.coroutines.flow.*
 
 internal class MediaRepositoryImpl(
   private val mediaRemoteDataSource: MediaRemoteDataSource,
   private val mediaLocalDataSource: MediaLocalDataSource,
   private val accountLocalDataSource: AccountLocalDataSource,
 ) : MediaRepository {
+
+  override fun observeWatchList(mediaType: MediaType): Flow<ResultData<List<Media>>> = flow {
+    emit(mediaLocalDataSource.watchList(mediaType).first())
+    emit(fetchWatchListFromRemoteAndUpdateLocalWatchList(mediaType))
+    emitAll(mediaLocalDataSource.watchList(mediaType))
+  }.distinctUntilChanged()
+
+  override fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>> = flow {
+    emit(mediaLocalDataSource.watchList(mediaType).first())
+    emit(fetchWatchListFromRemoteAndUpdateLocalWatchList(mediaType))
+  }.distinctUntilChanged()
 
   override suspend fun addToWatchList(
     mediaId: Long,
@@ -42,12 +54,6 @@ internal class MediaRepositoryImpl(
       mediaId = mediaId
     ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
 
-  override suspend fun watchListFromRemote(mediaType: MediaType): ResultData<List<Media>> =
-    mediaRemoteDataSource.watchList(
-      account = accountLocalDataSource.getAccount(),
-      mediaType = mediaType,
-    )
-
   override suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
@@ -65,4 +71,14 @@ internal class MediaRepositoryImpl(
         media.copyWith(watchList = mediaLocalDataSource.containsInWatchList(media.id))
       }
     )
+
+  private suspend fun fetchWatchListFromRemoteAndUpdateLocalWatchList(
+    mediaType: MediaType
+  ): ResultData<List<Media>> = mediaRemoteDataSource.watchList(
+    account = accountLocalDataSource.getAccount(),
+    mediaType = mediaType,
+  ).onCoSuccess { medias ->
+    mediaLocalDataSource.clearWatchList()
+    mediaLocalDataSource.addToWatchList(medias)
+  }
 }
