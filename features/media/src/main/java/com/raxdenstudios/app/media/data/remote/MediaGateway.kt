@@ -116,18 +116,11 @@ internal class MediaGateway(
       "Error occurred during fetching popular tv shows"
     ) { body -> body }
 
-  suspend fun nowPlayingMovies(
+  suspend fun nowPlaying(
     page: Int
   ): ResultData<PageDto<MediaDto.Movie>> =
     mediaV3Service.nowPlayingMovies(page).toResultData(
       "Error occurred during fetching now playing movies"
-    ) { body -> body }
-
-  suspend fun nowPlayingTVShows(
-    page: Int
-  ): ResultData<PageDto<MediaDto.TVShow>> =
-    mediaV3Service.nowPlayingTVShows(page).toResultData(
-      "Error occurred during fetching now playing tv shows"
     ) { body -> body }
 
   suspend fun topRatedMovies(

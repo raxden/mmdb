@@ -20,7 +20,7 @@ internal class CarouselMediaListModelMapper(
     is HomeModule.NowPlaying -> CarouselMediaListModel(
       label = stringProvider.getString(R.string.home_carousel_now_playing_movies),
       description = "",
-      mediaFilterModel = MediaFilterModel.nowPlayingMovies,
+      mediaFilterModel = MediaFilterModel.NowPlaying,
       medias = mediaListItemModelMapper.transform(media),
     )
     is HomeModule.Popular -> CarouselMediaListModel(

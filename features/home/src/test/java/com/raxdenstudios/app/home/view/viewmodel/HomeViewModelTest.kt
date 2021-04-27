@@ -99,7 +99,7 @@ internal class HomeViewModelTest : BaseTest() {
               ),
               HomeModuleModel.CarouselMedias(
                 carouselMediaListModel = CarouselMediaListModel.empty.copy(
-                  mediaFilterModel = MediaFilterModel.nowPlayingMovies,
+                  mediaFilterModel = MediaFilterModel.NowPlaying,
                   medias = listOf(
                     MediaListItemModel.empty.copy(id = 1L),
                     MediaListItemModel.empty.copy(id = 2L),
@@ -204,6 +204,6 @@ private val aGetTopRatedMoviesUseCaseParams =
 private val aGetPopularMoviesUseCaseParams =
   GetMediasUseCase.Params(MediaFilter.popularMovies, Page(1))
 private val aGetNowPlayingMoviesUseCaseParams =
-  GetMediasUseCase.Params(MediaFilter.nowPlayingMovies, Page(1))
+  GetMediasUseCase.Params(MediaFilter.NowPlaying, Page(1))
 private val aGetWatchListMoviesUseCaseParams =
   GetMediasUseCase.Params(MediaFilter.watchListMovies, Page(1))

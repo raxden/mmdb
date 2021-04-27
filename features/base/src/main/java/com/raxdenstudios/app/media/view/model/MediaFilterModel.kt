@@ -8,7 +8,7 @@ sealed class MediaFilterModel(
 ) : Parcelable {
 
   fun copyWith(mediaTypeModel: MediaTypeModel): MediaFilterModel = when (this) {
-    is NowPlaying -> copy(mediaTypeModel = mediaTypeModel)
+    NowPlaying -> this
     is Popular -> copy(mediaTypeModel = mediaTypeModel)
     is TopRated -> copy(mediaTypeModel = mediaTypeModel)
     Upcoming -> this
@@ -22,18 +22,13 @@ sealed class MediaFilterModel(
     val topRatedMovies = TopRated(
       mediaTypeModel = MediaTypeModel.Movie
     )
-    val nowPlayingMovies = NowPlaying(
-      mediaTypeModel = MediaTypeModel.Movie
-    )
     val watchlistMovies = WatchList(
       mediaTypeModel = MediaTypeModel.Movie
     )
   }
 
   @Parcelize
-  data class NowPlaying(
-    override val mediaTypeModel: MediaTypeModel
-  ) : MediaFilterModel(mediaTypeModel)
+  object NowPlaying : MediaFilterModel(MediaTypeModel.Movie)
 
   @Parcelize
   data class Popular(
