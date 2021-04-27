@@ -15,8 +15,9 @@ internal class AccountRepositoryImpl(
   override suspend fun getAccount(): Account =
     accountLocalDataSource.getAccount()
 
-  override suspend fun createAccountWithCredentials(credentials: Credentials) {
+  override suspend fun createAccountWithCredentials(credentials: Credentials): Account {
     val account = Account.Logged.withCredentials(credentials)
     accountLocalDataSource.createAccount(account)
+    return account
   }
 }
