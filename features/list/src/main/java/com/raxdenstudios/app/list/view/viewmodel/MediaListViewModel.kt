@@ -32,7 +32,7 @@ internal class MediaListViewModel(
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
-  private val mediaListItemModelMapper: MediaListItemModelMapper,
+  private val mediaListItemModelMapper: MediaListItemModelMapper
 ) : BaseViewModel(), KoinComponent {
 
   private val pagination: Pagination<MediaListItemModel> by inject { parametersOf(viewModelScope) }

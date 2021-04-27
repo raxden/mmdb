@@ -20,4 +20,7 @@ interface WatchListDao {
 
   @Query("SELECT * FROM watch_list WHERE media_id == :mediaId")
   suspend fun find(mediaId: Long): WatchListEntity?
+
+  @Query("DELETE FROM watch_list")
+  suspend fun clear()
 }
