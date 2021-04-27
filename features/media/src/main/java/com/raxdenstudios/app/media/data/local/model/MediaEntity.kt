@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.raxdenstudios.commons.threeten.ext.toMilliseconds
+import org.threeten.bp.LocalDate
 
 @Entity(tableName = "media")
 data class MediaEntity(
@@ -23,7 +25,7 @@ data class MediaEntity(
       type = 0,
       backdrop = PictureEntity.empty,
       poster = PictureEntity.empty,
-      release = -3600000L,
+      release = LocalDate.of(1970, 1, 1).toMilliseconds(),
       vote = VoteEntity.empty
     )
   }
