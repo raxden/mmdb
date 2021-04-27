@@ -5,7 +5,6 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.DispatcherFacade
-import com.raxdenstudios.commons.coMap
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,12 +21,8 @@ internal class LoginUseCase(
 
   private suspend fun loadWatchListFromRemoteAndPersistInLocal() {
     withContext(dispatcher.io()) {
-      launch { loadWatchListFromRemoteAndPersistInLocal(MediaType.MOVIE) }
-      launch { loadWatchListFromRemoteAndPersistInLocal(MediaType.TV_SHOW) }
+      launch { mediaRepository.watchList(MediaType.MOVIE) }
+      launch { mediaRepository.watchList(MediaType.TV_SHOW) }
     }
   }
-
-  private suspend fun loadWatchListFromRemoteAndPersistInLocal(mediaType: MediaType) =
-    mediaRepository.watchListFromRemote(mediaType)
-      .coMap { medias -> mediaRepository.addToLocalWatchList(medias) }
 }
