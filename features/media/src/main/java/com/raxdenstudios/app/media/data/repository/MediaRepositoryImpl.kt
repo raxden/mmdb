@@ -42,7 +42,7 @@ internal class MediaRepositoryImpl(
       mediaId = mediaId
     ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
 
-  override suspend fun watchList(mediaType: MediaType): ResultData<List<Media>> =
+  override suspend fun watchListFromRemote(mediaType: MediaType): ResultData<List<Media>> =
     mediaRemoteDataSource.watchList(
       account = accountLocalDataSource.getAccount(),
       mediaType = mediaType,

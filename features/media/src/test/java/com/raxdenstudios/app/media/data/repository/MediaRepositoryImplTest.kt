@@ -50,7 +50,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   }
   private val mediaLocalDataSource: MediaLocalDataSource = mockk {
     coEvery { containsInWatchList(any()) } returns false
-    coEvery { addToWatchList(any<Media>()) } returns Unit
+    coEvery { addToWatchList(any<Media>()) } returns ResultData.Success(true)
     coEvery { addToWatchList(any<List<Media>>()) } returns ResultData.Success(true)
     coEvery { removeFromWatchList(any()) } returns Unit
   }
@@ -81,7 +81,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   @Test
   fun `Given a mediaType, When watchList is called, Then watchList is returned`() =
     testDispatcher.runBlockingTest {
-      val result = repository.watchList(MediaType.MOVIE)
+      val result = repository.watchListFromRemote(MediaType.MOVIE)
 
       assertEquals(
         ResultData.Success(

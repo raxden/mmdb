@@ -28,6 +28,6 @@ internal class LoginUseCase(
   }
 
   private suspend fun loadWatchListFromRemoteAndPersistInLocal(mediaType: MediaType) =
-    mediaRepository.watchList(mediaType)
+    mediaRepository.watchListFromRemote(mediaType)
       .coMap { medias -> mediaRepository.addToLocalWatchList(medias) }
 }
