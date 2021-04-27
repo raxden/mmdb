@@ -9,5 +9,5 @@ internal class AddMediaToWatchListUseCaseImpl(
 ) : AddMediaToWatchListUseCase {
 
   override suspend fun execute(params: AddMediaToWatchListUseCase.Params): ResultData<Media> =
-    mediaRepository.addMediaToWatchList(params.mediaId, params.mediaType)
+    mediaRepository.addToWatchList(params.mediaId, params.mediaType)
 }
