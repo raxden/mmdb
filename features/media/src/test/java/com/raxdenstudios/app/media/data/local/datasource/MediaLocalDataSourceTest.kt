@@ -12,7 +12,6 @@ import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -53,10 +52,6 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
       val result = dataSource.addToWatchList(aMedia)
 
-      coVerifyOrder {
-        mediaDao.insert(MediaEntity.empty.copy(id = aMediaId))
-        watchListDao.insert(WatchListEntity(aMediaId))
-      }
       assertEquals(ResultData.Success(true), result)
     }
 
@@ -66,12 +61,9 @@ internal class MediaLocalDataSourceTest : BaseTest() {
       coEvery { mediaDao.insert(aMediaEntityList) } returns Unit
       coEvery { watchListDao.insert(aWatchListEntityList) } returns Unit
 
-      dataSource.addToWatchList(aMediaList)
+      val result = dataSource.addToWatchList(aMediaList)
 
-      coVerifyOrder {
-        mediaDao.insert(listOf(MediaEntity.empty.copy(id = aMediaId)))
-        watchListDao.insert(listOf(WatchListEntity.empty.copy(mediaId = aMediaId)))
-      }
+      assertEquals(ResultData.Success(true), result)
     }
 
   @Test
