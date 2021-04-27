@@ -64,15 +64,16 @@ internal class MediaRemoteDataSource(
     list.map { dto -> mediaDtoToDomainMapper.transform(dto).copyWith(watchList = true) }
   }
 
+  @Suppress("UNCHECKED_CAST")
   suspend fun medias(
     mediaFilter: MediaFilter,
     account: Account,
     page: Page,
   ): ResultData<PageList<Media>> = when (mediaFilter) {
-    is MediaFilter.NowPlaying -> nowPlaying(mediaFilter.mediaType, page)
+    is MediaFilter.NowPlaying -> nowPlaying(page) as ResultData<PageList<Media>>
     is MediaFilter.Popular -> popular(mediaFilter.mediaType, page)
     is MediaFilter.TopRated -> topRated(mediaFilter.mediaType, page)
-    MediaFilter.Upcoming -> upcoming(page)
+    MediaFilter.Upcoming -> upcoming(page) as ResultData<PageList<Media>>
     is MediaFilter.WatchList -> watchList(account, mediaFilter.mediaType, page)
   }
 
@@ -99,9 +100,10 @@ internal class MediaRemoteDataSource(
   private fun markMediasAsWatched(pageList: PageList<Media>) =
     pageList.copy(items = pageList.items.map { movie -> movie.copyWith(watchList = true) })
 
-  private suspend fun upcoming(page: Page): ResultData<PageList<Media>> =
+  @Suppress("UNCHECKED_CAST")
+  private suspend fun upcoming(page: Page): ResultData<PageList<Media.Movie>> =
     mediaGateway.upcoming(page.value)
-      .map { pageDto -> transformMediaDtoPageData(pageDto) }
+      .map { pageDto -> transformMediaDtoPageData(pageDto) as PageList<Media.Movie> }
 
   private suspend fun topRated(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
     when (mediaType) {
@@ -115,11 +117,10 @@ internal class MediaRemoteDataSource(
       MediaType.TVShow -> mediaGateway.popularTVShows(page.value)
     }.map { pageDto -> transformMediaDtoPageData(pageDto) }
 
-  private suspend fun nowPlaying(mediaType: MediaType, page: Page): ResultData<PageList<Media>> =
-    when (mediaType) {
-      MediaType.Movie -> mediaGateway.nowPlayingMovies(page.value)
-      MediaType.TVShow -> mediaGateway.nowPlayingTVShows(page.value)
-    }.map { pageDto -> transformMediaDtoPageData(pageDto) }
+  @Suppress("UNCHECKED_CAST")
+  private suspend fun nowPlaying(page: Page): ResultData<PageList<Media.Movie>> =
+    mediaGateway.nowPlaying(page.value)
+      .map { pageDto -> transformMediaDtoPageData(pageDto) as PageList<Media.Movie> }
 
   private fun transformMediaDtoPageData(
     pageDto: PageDto<out MediaDto>
