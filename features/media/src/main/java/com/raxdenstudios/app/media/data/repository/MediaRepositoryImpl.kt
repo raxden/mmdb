@@ -26,35 +26,21 @@ internal class MediaRepositoryImpl(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Media> =
-    when (val account = accountLocalDataSource.getAccount()) {
-      is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> addMediaToWatchList(account, mediaType, mediaId)
-    }
-
-  private suspend fun addMediaToWatchList(
-    account: Account.Logged,
-    mediaType: MediaType,
-    mediaId: Long
-  ): ResultData<Media> =
-    mediaRemoteDataSource.addMediaToWatchList(account, mediaType, mediaId)
-      .onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
+    mediaRemoteDataSource.addToWatchList(
+      account = accountLocalDataSource.getAccount(),
+      mediaType = mediaType,
+      mediaId = mediaId
+    ).onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
 
   override suspend fun removeMediaFromWatchList(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Boolean> =
-    when (val account = accountLocalDataSource.getAccount()) {
-      is Account.Guest -> ResultData.Error(UserNotLoggedException())
-      is Account.Logged -> removeMovieFromWatchList(account, mediaType, mediaId)
-    }
-
-  private suspend fun removeMovieFromWatchList(
-    account: Account.Logged,
-    mediaType: MediaType,
-    mediaId: Long
-  ): ResultData<Boolean> =
-    mediaRemoteDataSource.removeMediaFromWatchList(account, mediaType, mediaId)
-      .onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
+    mediaRemoteDataSource.removeFromWatchList(
+      account = accountLocalDataSource.getAccount(),
+      mediaType = mediaType,
+      mediaId = mediaId
+    ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
 
   override suspend fun medias(
     mediaFilter: MediaFilter,
@@ -65,8 +51,7 @@ internal class MediaRepositoryImpl(
       mediaFilter = mediaFilter,
       account = accountLocalDataSource.getAccount(),
       page = page
-    )
-      .coMap { pageList -> markMediasAsWatchedIfNecessary(pageList) }
+    ).coMap { pageList -> markMediasAsWatchedIfNecessary(pageList) }
 
   private suspend fun markMediasAsWatchedIfNecessary(pageList: PageList<Media>) =
     pageList.copy(

@@ -22,7 +22,7 @@ internal class MediaRemoteDataSource(
   private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,
 ) {
 
-  suspend fun mediaById(
+  suspend fun findById(
     mediaId: Long,
     mediaType: MediaType
   ): ResultData<Media> = when (mediaType) {
@@ -30,29 +30,33 @@ internal class MediaRemoteDataSource(
     MediaType.TV_SHOW -> mediaGateway.detailTVShow(mediaId.toString())
   }.map { dto -> mediaDtoToDomainMapper.transform(dto) }
 
-  suspend fun addMediaToWatchList(
-    account: Account.Logged,
+  suspend fun addToWatchList(
+    account: Account,
     mediaType: MediaType,
     mediaId: Long
-  ): ResultData<Media> =
-    mediaGateway.addToWatchList(
+  ): ResultData<Media> = when (account) {
+    is Account.Guest -> ResultData.Error(UserNotLoggedException())
+    is Account.Logged -> mediaGateway.addToWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       mediaId = mediaId
     )
-      .coFlatMap { mediaById(mediaId, mediaType) }
+      .coFlatMap { findById(mediaId, mediaType) }
       .map { media -> media.copyWith(watchList = true) }
+  }
 
-  suspend fun removeMediaFromWatchList(
-    account: Account.Logged,
+  suspend fun removeFromWatchList(
+    account: Account,
     mediaType: MediaType,
     mediaId: Long
-  ): ResultData<Boolean> =
-    mediaGateway.removeFromWatchList(
+  ): ResultData<Boolean> = when (account) {
+    is Account.Guest -> ResultData.Error(UserNotLoggedException())
+    is Account.Logged -> mediaGateway.removeFromWatchList(
       accountId = account.credentials.accountId,
       mediaType = mediaTypeToDtoMapper.transform(mediaType),
       mediaId = mediaId
     )
+  }
 
   suspend fun watchList(
     account: Account.Logged,
