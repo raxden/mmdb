@@ -2,50 +2,44 @@ package com.raxdenstudios.app.home.view.mapper
 
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
+import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.commons.provider.StringProvider
 
-internal class CarouselMediaListModelMapper(
+internal class CarouselMediasModelMapper(
   private val stringProvider: StringProvider,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) {
 
   fun transform(
     homeModule: HomeModule,
+    accountIsLogged: Boolean,
     media: List<Media>
-  ): CarouselMediaListModel = when (homeModule) {
-    is HomeModule.NowPlaying -> CarouselMediaListModel(
+  ): HomeModuleModel.CarouselMedias = when (homeModule) {
+    is HomeModule.NowPlaying -> HomeModuleModel.CarouselMedias.NowPlaying(
       label = stringProvider.getString(R.string.home_carousel_now_playing_movies),
-      description = "",
-      mediaFilterModel = MediaFilterModel.NowPlaying,
       medias = mediaListItemModelMapper.transform(media),
     )
-    is HomeModule.Popular -> CarouselMediaListModel(
+    is HomeModule.Popular -> HomeModuleModel.CarouselMedias.Popular(
       label = stringProvider.getString(R.string.home_carousel_popular_movies),
-      description = "",
-      mediaFilterModel = MediaFilterModel.popularMovies,
       medias = mediaListItemModelMapper.transform(media),
+      mediaType = homeModule.mediaType,
     )
-    is HomeModule.TopRated -> CarouselMediaListModel(
+    is HomeModule.TopRated -> HomeModuleModel.CarouselMedias.TopRated(
       label = stringProvider.getString(R.string.home_carousel_top_rated_movies),
-      description = "",
-      mediaFilterModel = MediaFilterModel.topRatedMovies,
       medias = mediaListItemModelMapper.transform(media),
+      mediaType = homeModule.mediaType,
     )
-    is HomeModule.Upcoming -> CarouselMediaListModel(
+    is HomeModule.Upcoming -> HomeModuleModel.CarouselMedias.Upcoming(
       label = stringProvider.getString(R.string.home_carousel_upcoming_movies),
-      description = "",
-      mediaFilterModel = MediaFilterModel.Upcoming,
       medias = mediaListItemModelMapper.transform(media),
     )
-    is HomeModule.WatchList -> CarouselMediaListModel(
+    is HomeModule.WatchList -> HomeModuleModel.CarouselMedias.WatchList(
       label = stringProvider.getString(R.string.home_carousel_from_your_watchlist),
-      description = "",
-      mediaFilterModel = MediaFilterModel.watchlistMovies,
       medias = mediaListItemModelMapper.transform(media),
+      mediaType = homeModule.mediaType,
+      requireSigIn = !accountIsLogged,
     )
   }
 }

@@ -1,10 +1,10 @@
 package com.raxdenstudios.app.home
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.home.view.model.HomeModuleModel
 
 interface HomeNavigator : DefaultLifecycleObserver {
 
-  fun login(onSuccess: () -> Unit = {})
-  fun mediaList(mediaFilterModel: MediaFilterModel, onRefresh: () -> Unit = {})
+  fun launchLogin(onSuccess: () -> Unit = {})
+  fun launchMediaList(carouselMedias: HomeModuleModel.CarouselMedias, onRefresh: () -> Unit = {})
 }

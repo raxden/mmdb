@@ -6,7 +6,8 @@ import com.raxdenstudios.commons.util.DataMapper
 internal class MediaTypeToDtoMapper : DataMapper<MediaType, String>() {
 
   override fun transform(source: MediaType): String = when (source) {
-    MediaType.Movie -> "movie"
-    MediaType.TVShow -> "tv"
+    MediaType.MOVIE -> "movie"
+    MediaType.TV_SHOW -> "tv"
+    else -> throw IllegalStateException("MediaType doesn't allowed")
   }
 }

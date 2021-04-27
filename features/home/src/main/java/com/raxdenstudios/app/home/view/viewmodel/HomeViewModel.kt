@@ -9,16 +9,14 @@ import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.home.view.model.CarouselMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
-import com.raxdenstudios.app.media.view.mapper.MediaFilterModelToDomainMapper
+import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.replaceItem
@@ -37,7 +35,6 @@ internal class HomeViewModel(
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val homeModuleModelMapper: HomeModuleModelMapper,
-  private val mediaFilterModelToDomainMapper: MediaFilterModelToDomainMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) : BaseViewModel() {
 
@@ -54,19 +51,20 @@ internal class HomeViewModel(
     getHomeModulesUseCase.execute().collect { modules ->
       val accountIsLogged = isAccountLoggedUseCase.execute()
       val homeModuleListModel = modules.map { homeModule ->
-        async { getDataFromModule(homeModule) }
-      }.mapNotNull { deferred ->
-        deferred.await()
-      }
+        async { getDataFromModule(accountIsLogged, homeModule) }
+      }.map { deferred -> deferred.await() }
       val model = HomeModel(accountIsLogged, homeModuleListModel)
       mState.value = HomeUIState.Content(model)
     }
   }
 
-  private suspend fun getDataFromModule(module: HomeModule): HomeModuleModel? {
+  private suspend fun getDataFromModule(
+    accountIsLogged: Boolean,
+    module: HomeModule
+  ): HomeModuleModel {
     val useCaseParams = getMediasUseCaseParamsMapper.transform(module)
     val resultData = getMediasUseCase.execute(useCaseParams)
-    return homeModuleModelMapper.transform(module, resultData)
+    return homeModuleModelMapper.transform(module, accountIsLogged, resultData)
   }
 
   fun refreshData() {
@@ -75,31 +73,25 @@ internal class HomeViewModel(
 
   fun mediaSelected(
     model: HomeModel,
-    homeModuleModel: HomeModuleModel.CarouselMedias,
-    carouselMoviesModel: CarouselMediaListModel,
+    carouselMedias: HomeModuleModel.CarouselMedias,
     mediaItemModel: MediaListItemModel,
   ) {
 
   }
 
   fun filterChanged(
-    home: HomeModel,
-    homeModule: HomeModuleModel.CarouselMedias,
-    carouselMediaList: CarouselMediaListModel,
-    mediaFilterModel: MediaFilterModel
+    model: HomeModel,
+    carouselMedias: HomeModuleModel.CarouselMedias,
+    mediaType: MediaType
   ) = viewModelScope.safeLaunch {
-    val mediaFilter = mediaFilterModelToDomainMapper.transform(mediaFilterModel)
-    val medias = getMediasUseCase.execute(GetMediasUseCase.Params(mediaFilter))
+    val useCaseParams = getMediasUseCaseParamsMapper.transform(carouselMedias, mediaType)
+    val medias = getMediasUseCase.execute(useCaseParams)
       .map { pageList -> pageList.items }
       .map { medias -> mediaListItemModelMapper.transform(medias) }
       .getValueOrDefault(emptyList())
-    val carouselMediaListUpdated = carouselMediaList.copy(
-      mediaFilterModel = mediaFilterModel,
-      medias = medias,
-    )
-    val homeModuleUpdated = homeModule.copy(carouselMediaListModel = carouselMediaListUpdated)
+    val carouselMediasUpdated = carouselMedias.copyWith(mediaType, medias)
     val homeUpdated =
-      home.copy(modules = home.modules.replaceItem(homeModuleUpdated) { it == homeModule })
+      model.copy(modules = model.modules.replaceItem(carouselMediasUpdated) { it == carouselMedias })
     mState.value = HomeUIState.Content(homeUpdated)
   }
 

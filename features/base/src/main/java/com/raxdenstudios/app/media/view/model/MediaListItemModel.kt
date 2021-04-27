@@ -17,7 +17,7 @@ data class MediaListItemModel(
     @VisibleForTesting
     val empty = MediaListItemModel(
       id = 0L,
-      mediaType = MediaType.Movie,
+      mediaType = MediaType.MOVIE,
       title = "",
       image = "",
       rating = "0.0",

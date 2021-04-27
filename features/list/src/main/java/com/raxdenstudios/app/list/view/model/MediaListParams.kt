@@ -1,17 +1,37 @@
 package com.raxdenstudios.app.list.view.model
 
 import android.os.Parcelable
-import com.raxdenstudios.app.media.view.model.MediaFilterModel
+import com.raxdenstudios.app.media.domain.model.MediaType
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class MediaListParams(
-  val mediaFilterModel: MediaFilterModel
+sealed class MediaListParams(
+  open val mediaType: MediaType
 ) : Parcelable {
 
+  @Parcelize
+  data class Popular(
+    override val mediaType: MediaType
+  ) : MediaListParams(mediaType)
+
+  @Parcelize
+  data class WatchList(
+    override val mediaType: MediaType
+  ) : MediaListParams(mediaType)
+
+  @Parcelize
+  data class TopRated(
+    override val mediaType: MediaType
+  ) : MediaListParams(mediaType)
+
+  @Parcelize
+  object NowPlaying : MediaListParams(MediaType.MOVIE)
+
+  @Parcelize
+  object Upcoming : MediaListParams(MediaType.MOVIE)
+
   companion object {
-    val popularMovies = MediaListParams(
-      mediaFilterModel = MediaFilterModel.popularMovies
+    val popularMovies = Popular(
+      mediaType = MediaType.MOVIE
     )
   }
 }

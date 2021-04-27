@@ -14,7 +14,7 @@ class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
   private fun Media.toModel() = when (this) {
     is Media.Movie -> MediaListItemModel(
       id = id,
-      mediaType = MediaType.Movie,
+      mediaType = MediaType.MOVIE,
       title = title,
       image = when (val poster = poster) {
         Picture.Empty -> ""
@@ -29,7 +29,7 @@ class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
     )
     is Media.TVShow -> MediaListItemModel(
       id = id,
-      mediaType = MediaType.TVShow,
+      mediaType = MediaType.TV_SHOW,
       title = name,
       image = when (val poster = poster) {
         Picture.Empty -> ""
