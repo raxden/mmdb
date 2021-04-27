@@ -2,6 +2,7 @@ package com.raxdenstudios.app.media.di
 
 import com.raxdenstudios.app.media.data.local.MediaDatabase
 import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
+import com.raxdenstudios.app.media.data.local.mapper.*
 import com.raxdenstudios.app.media.data.remote.MediaGateway
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.media.data.remote.mapper.*
@@ -18,9 +19,20 @@ import retrofit2.Retrofit
 val mediaDataModule = module {
 
   single { MediaDatabase.getInstance(get()) }
+  factory { get<MediaDatabase>().mediaDao() }
   factory { get<MediaDatabase>().watchListDao() }
 
-  factory { MediaLocalDataSource(get()) }
+  factory { MediaToEntityMapper(get(), get()) }
+  factory { MediaEntityToDomainMapper(get(), get()) }
+  factory { VoteToEntityMapper() }
+  factory { VoteEntityToDomainMapper() }
+  factory { PictureToEntityMapper(get()) }
+  factory { PictureEntityToDomainMapper(get()) }
+  factory { SizeToEntityMapper() }
+  factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
+  factory { MediaToWatchListEntityMapper() }
+
+  factory { MediaLocalDataSource(get(), get(), get(), get(), get()) }
 
   single { get<Retrofit>(named(APIVersion.V3)).create(MediaV3Service::class.java) }
   single { get<Retrofit>(named(APIVersion.V4)).create(MediaV4Service::class.java) }

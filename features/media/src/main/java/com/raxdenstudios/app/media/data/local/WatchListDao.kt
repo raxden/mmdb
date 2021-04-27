@@ -15,9 +15,9 @@ interface WatchListDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(entity: WatchListEntity)
 
+  @Query("DELETE FROM watch_list WHERE media_id == :mediaId")
+  suspend fun delete(mediaId: Long)
+
   @Query("SELECT * FROM watch_list WHERE media_id == :mediaId")
   suspend fun find(mediaId: Long): WatchListEntity?
-
-  @Query("DELETE FROM watch_list WHERE media_id == :mediaId")
-  suspend fun remove(mediaId: Long)
 }
