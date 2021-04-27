@@ -34,7 +34,7 @@
             app:layout_constraintEnd_toStartOf="@+id/carousel_see_all_view"
             app:layout_constraintStart_toEndOf="@+id/carousel_arrows_view"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/home_carousel_popular_movies" />
+            tools:text="@string/home_carousel_popular" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/carousel_see_all_view"
