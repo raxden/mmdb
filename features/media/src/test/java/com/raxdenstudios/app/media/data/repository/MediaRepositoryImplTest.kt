@@ -21,9 +21,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.inject
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class MediaRepositoryImplTest : BaseTest() {

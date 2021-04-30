@@ -49,8 +49,8 @@ object FirebaseLibraries {
 
 object Libraries {
   // Koin
-  const val koinScope = "org.koin:koin-androidx-scope:${Versions.koin}"
-  const val koinViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+  const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
+  const val koinAndroidExtensions = "io.insert-koin:koin-android-ext:${Versions.koin}"
 
   // Room
   const val roomRunTime = "androidx.room:room-runtime:${Versions.room}"
@@ -60,7 +60,8 @@ object Libraries {
   // Retrofit
   const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
   const val retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-  const val retrofitNetworkResponseAdapter = "com.github.haroldadmin:NetworkResponseAdapter:${Versions.retrofitNetworkResponseAdapter}"
+  const val retrofitNetworkResponseAdapter =
+    "com.github.haroldadmin:NetworkResponseAdapter:${Versions.retrofitNetworkResponseAdapter}"
 
   // OkHttp
   const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okHttp}"
@@ -106,7 +107,8 @@ object TestLibraries {
   const val mockkAndroid = "io.mockk:mockk-android:${Versions.mockk}"
 
   // Koin
-  const val koinTest = "org.koin:koin-test:${Versions.koin}"
+  const val koinTest = "io.insert-koin:koin-test:${Versions.koin}"
+  const val koinTestJunit = "io.insert-koin:koin-test-junit4:${Versions.koin}"
 
   // MOCK WEBSERVER
   const val restMock = "com.github.andrzejchm.RESTMock:android:${Versions.restMock}"
