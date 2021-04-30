@@ -6,9 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
-import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
-import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
+import com.raxdenstudios.app.home.view.mapper.HomeModelMapper
 import com.raxdenstudios.app.home.view.model.HomeModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.home.view.model.HomeUIState
@@ -24,7 +23,6 @@ import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.getValueOrDefault
 import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.onFailure
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 
 internal class HomeViewModel(
@@ -34,8 +32,8 @@ internal class HomeViewModel(
   private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
-  private val homeModuleModelMapper: HomeModuleModelMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
+  private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
 
   private val mState = MutableLiveData<HomeUIState>()
@@ -50,21 +48,9 @@ internal class HomeViewModel(
 
     getHomeModulesUseCase.execute().collect { modules ->
       val accountIsLogged = isAccountLoggedUseCase.execute()
-      val homeModuleListModel = modules.map { homeModule ->
-        async { getDataFromModule(accountIsLogged, homeModule) }
-      }.map { deferred -> deferred.await() }
-      val model = HomeModel(accountIsLogged, homeModuleListModel)
-      mState.value = HomeUIState.Content(model)
+      val homeModel = homeModelMapper.transform(accountIsLogged, modules)
+      mState.value = HomeUIState.Content(homeModel)
     }
-  }
-
-  private suspend fun getDataFromModule(
-    accountIsLogged: Boolean,
-    module: HomeModule
-  ): HomeModuleModel {
-    val useCaseParams = getMediasUseCaseParamsMapper.transform(module)
-    val resultData = getMediasUseCase.execute(useCaseParams)
-    return homeModuleModelMapper.transform(module, accountIsLogged, resultData)
   }
 
   fun refreshData() {
