@@ -15,4 +15,5 @@ object Modules {
   const val featureLogin = ":features:login"
   const val featureTMDBConnect = ":features:tmdb"
   const val featureError = ":features:error"
+  const val featureSplash = ":features:splash"
 }

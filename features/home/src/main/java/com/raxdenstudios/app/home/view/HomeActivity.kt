@@ -1,5 +1,7 @@
 package com.raxdenstudios.app.home.view
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
@@ -15,7 +17,11 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-internal class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity() {
+
+  companion object {
+    fun createIntent(context: Context) = Intent(context, HomeActivity::class.java)
+  }
 
   private val binding: HomeActivityBinding by viewBinding()
   private val viewModel: HomeViewModel by viewModel()

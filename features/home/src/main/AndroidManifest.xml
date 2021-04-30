@@ -2,18 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.raxdenstudios.app.home">
 
-    <application>
+    <application android:theme="@style/Theme.App">
 
         <activity
             android:name=".view.HomeActivity"
             android:theme="@style/Theme.App.Home"
-            android:windowSoftInputMode="adjustPan">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
     </application>
 </manifest>
