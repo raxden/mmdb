@@ -108,6 +108,7 @@ object TestLibraries {
 
   // Koin
   const val koinTest = "io.insert-koin:koin-test:${Versions.koin}"
+  const val koinTestJunit = "io.insert-koin:koin-test-junit4:${Versions.koin}"
 
   // MOCK WEBSERVER
   const val restMock = "com.github.andrzejchm.RESTMock:android:${Versions.restMock}"

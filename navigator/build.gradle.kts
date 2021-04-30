@@ -8,6 +8,7 @@ dependencies {
   implementation(project(Modules.base))
 
   implementation(project(Modules.featureBase))
+  implementation(project(Modules.featureSplash))
   implementation(project(Modules.featureHome))
   implementation(project(Modules.featureMediaList))
   implementation(project(Modules.featureLogin))

@@ -9,6 +9,7 @@ import com.raxdenstudios.app.login.di.loginFeatureModule
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.navigator.di.navigatorModule
 import com.raxdenstudios.app.network.di.networkLibraryModule
+import com.raxdenstudios.app.splash.di.splashFeatureModule
 import com.raxdenstudios.app.tmdb.di.tmdbFeatureModule
 import org.koin.core.module.Module
 
@@ -28,6 +29,7 @@ val libraryModules: List<Module> = listOf(
 
 val featureModules: List<Module> = listOf(
   baseFeatureModule,
+  splashFeatureModule,
   homeFeatureModule,
   loginFeatureModule,
   tmdbFeatureModule,
