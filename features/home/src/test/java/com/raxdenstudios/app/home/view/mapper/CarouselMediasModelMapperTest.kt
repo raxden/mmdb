@@ -32,9 +32,9 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a NowPlaying module and resultData with movies, When transform is called, Then return a NowPlaying carousel`() {
-    val module = HomeModule.nowPlayingMovies
+    val module = HomeModule.nowPlayingMovies.copy(medias = aMedias)
 
-    val result = mapper.transform(module, false, aMedias)
+    val result = mapper.transform(module, false)
 
     assertEquals(
       HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
@@ -46,9 +46,9 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a Popular module and resultData with movies, When transform is called, Then return a Popular carousel`() {
-    val module = HomeModule.popularMovies
+    val module = HomeModule.popularMovies.copy(medias = aMedias)
 
-    val result = mapper.transform(module, false, aMedias)
+    val result = mapper.transform(module, false)
 
     assertEquals(
       HomeModuleModel.CarouselMedias.Popular.empty.copy(
@@ -60,9 +60,9 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a TopRated module and resultData with movies, When transform is called, Then return a TopRated carousel`() {
-    val module = HomeModule.topRatedMovies
+    val module = HomeModule.topRatedMovies.copy(medias = aMedias)
 
-    val result = mapper.transform(module, false, aMedias)
+    val result = mapper.transform(module, false)
 
     assertEquals(
       HomeModuleModel.CarouselMedias.TopRated.empty.copy(
@@ -74,9 +74,9 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a Upcoming module and resultData with movies, When transform is called, Then return a Upcoming carousel`() {
-    val module = HomeModule.upcomingMovies
+    val module = HomeModule.upcomingMovies.copy(medias = aMedias)
 
-    val result = mapper.transform(module, false, aMedias)
+    val result = mapper.transform(module, false)
 
     assertEquals(
       HomeModuleModel.CarouselMedias.Upcoming.empty.copy(
@@ -88,9 +88,9 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
   @Test
   fun `Given a WatchList module and resultData with movies, When transform is called, Then return a WatchList carousel`() {
-    val module = HomeModule.watchListMovies
+    val module = HomeModule.watchListMovies.copy(medias = aMedias)
 
-    val result = mapper.transform(module, false, aMedias)
+    val result = mapper.transform(module, false)
 
     assertEquals(
       HomeModuleModel.CarouselMedias.WatchList.empty.copy(

@@ -78,32 +78,33 @@ internal class HomeViewModelTest : BaseTest() {
   private val viewModel: HomeViewModel by inject()
 
   @Test
-  fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() {
-    viewModel.state.observeForever(stateObserver)
+  fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
+    testDispatcher.runBlockingTest {
+      viewModel.state.observeForever(stateObserver)
 
-    verify {
-      stateObserver.onChanged(
-        HomeUIState.Content(
-          HomeModel.empty.copy(
-            modules = listOf(
-              HomeModuleModel.CarouselMedias.Popular.empty.copy(
-                medias = listOf(
-                  MediaListItemModel.empty.copy(id = 1L),
-                  MediaListItemModel.empty.copy(id = 2L),
-                )
-              ),
-              HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
-                medias = listOf(
-                  MediaListItemModel.empty.copy(id = 1L),
-                  MediaListItemModel.empty.copy(id = 2L),
+      verify {
+        stateObserver.onChanged(
+          HomeUIState.Content(
+            HomeModel.empty.copy(
+              modules = listOf(
+                HomeModuleModel.CarouselMedias.Popular.empty.copy(
+                  medias = listOf(
+                    MediaListItemModel.empty.copy(id = 1L),
+                    MediaListItemModel.empty.copy(id = 2L),
+                  )
+                ),
+                HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
+                  medias = listOf(
+                    MediaListItemModel.empty.copy(id = 1L),
+                    MediaListItemModel.empty.copy(id = 2L),
+                  )
                 )
               )
             )
           )
         )
-      )
+      }
     }
-  }
 
   @Test
   fun `Given a home model already populated and a media selected marked as watchlist, When addMovieToWatchList is called, Then movie is replaced in home model with watchButton as selected`() {
@@ -147,17 +148,15 @@ internal class HomeViewModelTest : BaseTest() {
   }
 }
 
+private val aMediaListItemModelList = listOf(
+  MediaListItemModel.empty.copy(id = 1L),
+  MediaListItemModel.empty.copy(id = 2L)
+)
 private val aCarouselMediasPopular = HomeModuleModel.CarouselMedias.Popular.empty.copy(
-  medias = listOf(
-    MediaListItemModel.empty.copy(id = 1L),
-    MediaListItemModel.empty.copy(id = 2L)
-  )
+  medias = aMediaListItemModelList
 )
 private val aCarouselMediasTopRated = HomeModuleModel.CarouselMedias.TopRated.empty.copy(
-  medias = listOf(
-    MediaListItemModel.empty.copy(id = 1L),
-    MediaListItemModel.empty.copy(id = 2L)
-  )
+  medias = aMediaListItemModelList
 )
 private val aHomeModel = HomeModel.empty.copy(
   modules = listOf(
@@ -165,13 +164,13 @@ private val aHomeModel = HomeModel.empty.copy(
     aCarouselMediasTopRated
   )
 )
-private val aHomeModules = listOf(
-  HomeModule.popularMovies,
-  HomeModule.nowPlayingMovies
-)
 private val aMovies = listOf(
   Media.Movie.empty.copy(id = 1),
   Media.Movie.empty.copy(id = 2),
+)
+private val aHomeModules = listOf(
+  HomeModule.popularMovies.copy(medias = aMovies),
+  HomeModule.nowPlayingMovies.copy(medias = aMovies),
 )
 private val aPageMovieList = PageList<Media>(aMovies, Page(1))
 private val aResultPageMovieListSuccess = ResultData.Success(aPageMovieList)
