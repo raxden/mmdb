@@ -14,6 +14,7 @@ dependencies {
   api(TestLibraries.mockkAndroid)
 
   api(TestLibraries.koinTest)
+  api(TestLibraries.koinTestJunit)
   api(TestLibraries.timberJunit)
   api(TestLibraries.threetenabp)
 }

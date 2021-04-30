@@ -17,7 +17,7 @@ object Versions {
   const val browser = "1.3.0"
   const val kotlin = "1.4.30"
   const val coroutines = "1.4.3"
-  const val koin = "2.1.6"
+  const val koin = "3.0.1"
   const val room = "2.2.5"
   const val firebase = "26.2.0"
   const val gson = "2.8.6"
