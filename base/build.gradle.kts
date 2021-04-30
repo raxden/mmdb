@@ -6,6 +6,6 @@ dependencies {
   api(RaxdenLibraries.android)
   api(RaxdenLibraries.coroutines)
 
-  api(Libraries.koinScope)
-  api(Libraries.koinViewModel)
+  api(Libraries.koinAndroid)
+  api(Libraries.koinAndroidExtensions)
 }

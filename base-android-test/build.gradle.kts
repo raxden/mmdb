@@ -8,5 +8,6 @@ dependencies {
   api(RaxdenLibraries.threeten)
 
   api(TestLibraries.koinTest)
+  api(TestLibraries.koinTestJunit)
   api(TestLibraries.timberJunit)
 }

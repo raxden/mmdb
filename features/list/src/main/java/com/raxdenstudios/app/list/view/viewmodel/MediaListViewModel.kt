@@ -22,8 +22,8 @@ import com.raxdenstudios.commons.onFailure
 import com.raxdenstudios.commons.onSuccess
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.*
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
 internal class MediaListViewModel(

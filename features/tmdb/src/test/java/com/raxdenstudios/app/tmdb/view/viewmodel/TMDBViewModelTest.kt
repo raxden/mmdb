@@ -7,18 +7,15 @@ import com.raxdenstudios.app.tmdb.di.tmdbFeatureModule
 import com.raxdenstudios.app.tmdb.domain.ConnectUseCase
 import com.raxdenstudios.app.tmdb.domain.RequestTokenUseCase
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.test.rules.CoroutineTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertTrue
-import org.junit.Rule
 import org.junit.Test
-import org.koin.core.inject
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.koin.test.inject
 
 internal class TMDBViewModelTest : BaseTest() {
 
