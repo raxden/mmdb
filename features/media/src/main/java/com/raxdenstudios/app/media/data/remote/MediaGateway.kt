@@ -66,17 +66,15 @@ internal class MediaGateway(
     accountId: String,
     page: Int
   ): ResultData<PageDto<MediaDto.Movie>> =
-    mediaV4Service.watchListMovies(accountId, page).toResultData(
-      "Error occurred during fetching watch list movies"
-    ) { body -> body }
+    mediaV4Service.watchListMovies(accountId, page)
+      .toResultData("Error occurred during fetching watch list movies")
 
   suspend fun watchListTVShows(
     accountId: String,
     page: Int
   ): ResultData<PageDto<MediaDto.TVShow>> =
-    mediaV4Service.watchListTVShows(accountId, page).toResultData(
-      "Error occurred during fetching watch list tv shows"
-    ) { body -> body }
+    mediaV4Service.watchListTVShows(accountId, page)
+      .toResultData("Error occurred during fetching watch list tv shows")
 
   suspend fun addToWatchList(
     accountId: String,
@@ -86,9 +84,7 @@ internal class MediaGateway(
     mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Add(mediaId, mediaType)
-    ).toResultData(
-      "Error occurred during adding movie to watch list"
-    ) { true }
+    ).toResultData("Error occurred during adding movie to watch list") { true }
 
   suspend fun removeFromWatchList(
     accountId: String,
@@ -98,57 +94,47 @@ internal class MediaGateway(
     mediaV3Service.watchList(
       accountId,
       WatchListDto.Request.Remove(mediaId, mediaType)
-    ).toResultData(
-      "Error occurred during adding movie to watch list"
-    ) { true }
+    ).toResultData("Error occurred during adding movie to watch list") { true }
 
   suspend fun popularMovies(
     page: Int
   ): ResultData<PageDto<MediaDto.Movie>> =
-    mediaV3Service.popularMovies(page).toResultData(
-      "Error occurred during fetching popular movies"
-    ) { body -> body }
+    mediaV3Service.popularMovies(page)
+      .toResultData("Error occurred during fetching popular movies")
 
   suspend fun popularTVShows(
     page: Int
   ): ResultData<PageDto<MediaDto.TVShow>> =
-    mediaV3Service.popularTVShows(page).toResultData(
-      "Error occurred during fetching popular tv shows"
-    ) { body -> body }
+    mediaV3Service.popularTVShows(page)
+      .toResultData("Error occurred during fetching popular tv shows")
 
   suspend fun nowPlaying(
     page: Int
   ): ResultData<PageDto<MediaDto.Movie>> =
-    mediaV3Service.nowPlayingMovies(page).toResultData(
-      "Error occurred during fetching now playing movies"
-    ) { body -> body }
+    mediaV3Service.nowPlayingMovies(page)
+      .toResultData("Error occurred during fetching now playing movies")
 
   suspend fun topRatedMovies(
     page: Int
   ): ResultData<PageDto<MediaDto.Movie>> =
-    mediaV3Service.topRatedMovies(page).toResultData(
-      "Error occurred during fetching top rated movies"
-    ) { body -> body }
+    mediaV3Service.topRatedMovies(page)
+      .toResultData("Error occurred during fetching top rated movies")
 
   suspend fun topRatedTVShows(
     page: Int
   ): ResultData<PageDto<MediaDto.TVShow>> =
-    mediaV3Service.topRatedTVShows(page).toResultData(
-      "Error occurred during fetching top rated tv shows"
-    ) { body -> body }
+    mediaV3Service.topRatedTVShows(page)
+      .toResultData("Error occurred during fetching top rated tv shows")
 
   suspend fun upcoming(page: Int): ResultData<PageDto<MediaDto.Movie>> =
-    mediaV3Service.upcoming(page).toResultData(
-      "Error occurred during fetching upcoming movies"
-    ) { body -> body }
+    mediaV3Service.upcoming(page)
+      .toResultData("Error occurred during fetching upcoming movies")
 
   suspend fun detailMovie(mediaId: String): ResultData<MediaDto> =
-    mediaV3Service.detailMovie(mediaId).toResultData(
-      "Error ocurred during fetching detail movie with id: $mediaId"
-    ) { body -> body }
+    mediaV3Service.detailMovie(mediaId)
+      .toResultData("Error ocurred during fetching detail movie with id: $mediaId")
 
   suspend fun detailTVShow(mediaId: String): ResultData<MediaDto> =
-    mediaV3Service.detailTVShow(mediaId).toResultData(
-      "Error ocurred during fetching detail tvShow with id: $mediaId"
-    ) { body -> body }
+    mediaV3Service.detailTVShow(mediaId)
+      .toResultData("Error ocurred during fetching detail tvShow with id: $mediaId")
 }
