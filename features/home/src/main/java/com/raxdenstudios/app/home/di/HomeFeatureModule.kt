@@ -30,5 +30,5 @@ val homeFeatureModule = module {
   factory { GetMediasUseCaseParamsMapper() }
   factory { CarouselMediasModelMapper(get(), get()) }
 
-  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 }
