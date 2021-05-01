@@ -7,6 +7,7 @@ import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.coMap
 import com.raxdenstudios.commons.getValueOrNull
 import com.raxdenstudios.commons.retrofit.toResultData
 import kotlinx.coroutines.async
@@ -25,42 +26,38 @@ internal class MediaGateway(
   suspend fun watchListMovies(
     accountId: String,
   ): ResultData<List<MediaDto.Movie>> =
-    when (val resultData = watchListMovies(accountId, FIRST_PAGE)) {
-      is ResultData.Error -> resultData
-      is ResultData.Success -> {
+    watchListMovies(accountId, FIRST_PAGE)
+      .coMap { pageDto ->
         withContext(dispatcher.io()) {
-          val allMedias = resultData.value.results.toMutableList()
-          val totalPages = resultData.value.total_pages
+          val allMedias = pageDto.results.toMutableList()
+          val totalPages = pageDto.total_pages
           val movies = (FIRST_PAGE + 1..totalPages)
             .map { page -> async { watchListMovies(accountId, page) } }
             .mapNotNull { deferred -> deferred.await().getValueOrNull() }
             .map { resultData -> resultData.results }
             .flatten()
           allMedias.addAll(movies)
-          ResultData.Success(allMedias)
+          allMedias
         }
       }
-    }
 
   suspend fun watchListTVShows(
     accountId: String,
   ): ResultData<List<MediaDto.TVShow>> =
-    when (val resultData = watchListTVShows(accountId, FIRST_PAGE)) {
-      is ResultData.Error -> resultData
-      is ResultData.Success -> {
+    watchListTVShows(accountId, FIRST_PAGE)
+      .coMap { pageDto ->
         withContext(dispatcher.io()) {
-          val allMedias = resultData.value.results.toMutableList()
-          val totalPages = resultData.value.total_pages
+          val allMedias = pageDto.results.toMutableList()
+          val totalPages = pageDto.total_pages
           val movies = (FIRST_PAGE + 1..totalPages)
             .map { page -> async { watchListTVShows(accountId, page) } }
             .mapNotNull { deferred -> deferred.await().getValueOrNull() }
             .map { resultData -> resultData.results }
             .flatten()
           allMedias.addAll(movies)
-          ResultData.Success(allMedias)
+          allMedias
         }
       }
-    }
 
   suspend fun watchListMovies(
     accountId: String,
