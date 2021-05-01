@@ -33,6 +33,7 @@ internal class HomeViewModel(
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
+  private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
 
   private val mState = MutableLiveData<HomeUIState>()
