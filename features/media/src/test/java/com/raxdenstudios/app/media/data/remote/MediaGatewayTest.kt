@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
+import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
@@ -15,13 +16,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.koin.core.component.inject
 import org.koin.core.module.Module
+import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
 internal class MediaGatewayTest : BaseTest() {
-
-  override val modules: List<Module>
-    get() = emptyList()
 
   private val mediaV3Service: MediaV3Service = mockk(relaxed = true)
   private val mediaV4Service: MediaV4Service = mockk(relaxed = true) {
@@ -29,20 +29,25 @@ internal class MediaGatewayTest : BaseTest() {
     coEvery { watchListMovies(aAccountId, 2) } returns aNetworkResponseSuccessSecondPage
     coEvery { watchListMovies(aAccountId, 3) } returns aNetworkResponseSuccessThirdPage
   }
-
-  private val gateway: MediaGateway by lazy {
-    MediaGateway(
-      dispatcher = object : DispatcherFacade {
-        override fun io() = testDispatcher
-        override fun default() = testDispatcher
-      },
-      mediaV3Service = mediaV3Service,
-      mediaV4Service = mediaV4Service,
-    )
+  private val dispatcher: DispatcherFacade = object : DispatcherFacade {
+    override fun io() = testDispatcher
+    override fun default() = testDispatcher
   }
 
+  override val modules: List<Module>
+    get() = listOf(
+      mediaDataModule,
+      module {
+        factory(override = true) { dispatcher }
+        factory(override = true) { mediaV3Service }
+        factory(override = true) { mediaV4Service }
+      }
+    )
+
+  private val gateway: MediaGateway by inject()
+
   @Test
-  fun `Given a movie results split in pages, When watchList is called with a valid accountId, Then return all movies`() =
+  fun `Given a movie results splitted in pages, When watchList is called with a valid accountId, Then return all movies`() =
     testDispatcher.runBlockingTest {
       val resultData = gateway.watchListMovies(aAccountId)
 
