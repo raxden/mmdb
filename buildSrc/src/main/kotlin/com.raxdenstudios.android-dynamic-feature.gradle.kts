@@ -1,10 +1,13 @@
+import gradle.kotlin.dsl.accessors._a20556e8777b0df05cf484c9f759b14a.testlogger
+
 plugins {
   id("com.android.dynamic-feature")
-  id("com.raxdenstudios.android-detekt")
-  id("kotlin-android")
-  id("kotlin-kapt")
-  id("kotlin-parcelize")
-  id("project-report")
+  id("com.raxdenstudios.android-quality")
+  id("com.raxdenstudios.android-commons")
+}
+
+testlogger {
+  setTheme("mocha")
 }
 
 android {
