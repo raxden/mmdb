@@ -1,11 +1,7 @@
 plugins {
   id("com.android.library")
-  id("com.raxdenstudios.android-detekt")
-  id("com.adarshr.test-logger")
-  id("kotlin-android")
-  id("kotlin-kapt")
-  id("kotlin-parcelize")
-  id("project-report")
+  id("com.raxdenstudios.android-quality")
+  id("com.raxdenstudios.android-commons")
 }
 
 testlogger {
