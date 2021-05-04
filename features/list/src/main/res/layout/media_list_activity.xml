@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
-            app:spanCount="2"
+            app:spanCount="@integer/media_list_columns"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/media_list_item_view" />
 
