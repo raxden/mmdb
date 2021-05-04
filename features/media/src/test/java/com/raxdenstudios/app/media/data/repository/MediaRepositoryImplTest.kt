@@ -9,6 +9,7 @@ import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
+import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -18,6 +19,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -49,12 +53,14 @@ internal class MediaRepositoryImplTest : BaseTest() {
     } returns ResultData.Success(aMovies)
   }
   private val mediaLocalDataSource: MediaLocalDataSource = mockk {
+    coEvery { watchList(any()) } returns flowOf(ResultData.Success(aMovies))
+    coEvery { clearWatchList() } returns ResultData.Success(true)
     coEvery { containsInWatchList(any()) } returns false
     coEvery { addToWatchList(any<Media>()) } returns ResultData.Success(true)
     coEvery { addToWatchList(any<List<Media>>()) } returns ResultData.Success(true)
     coEvery { removeFromWatchList(any()) } returns Unit
   }
-  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider = mockk(relaxed = true)
+  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>
     get() = listOf(
@@ -79,17 +85,28 @@ internal class MediaRepositoryImplTest : BaseTest() {
     }
 
   @Test
-  fun `Given a mediaType, When watchList is called, Then watchList is returned`() =
+  fun `Given a movie mediaType, When watchList is called, Then watchList is recovered from local, and updated from remote`() =
     testDispatcher.runBlockingTest {
-      val result = repository.watchListFromRemote(MediaType.MOVIE)
+      coEvery {
+        mediaLocalDataSource.watchList(MediaType.MOVIE)
+      } returns flowOf(ResultData.Success(listOf(Media.Movie.withId(1L))))
+
+      val flow = repository.watchList(MediaType.MOVIE)
 
       assertEquals(
-        ResultData.Success(
-          listOf(
-            Media.Movie.empty.copy(id = 1L),
-            Media.Movie.empty.copy(id = 2L),
+        listOf(
+          ResultData.Success(
+            listOf(
+              Media.Movie.empty.copy(id = 1L),
+            )
+          ),
+          ResultData.Success(
+            listOf(
+              Media.Movie.empty.copy(id = 1L),
+              Media.Movie.empty.copy(id = 2L),
+            )
           )
-        ), result
+        ), flow.take(2).toList()
       )
     }
 
