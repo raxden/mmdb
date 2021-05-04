@@ -9,6 +9,7 @@ import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
+import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -49,7 +50,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       removeFromWatchList(aTMDBAccountId, "movie", aMediaId)
     } returns ResultData.Success(true)
   }
-  private val apiDataProvider: com.raxdenstudios.app.network.APIDataProvider = mockk(relaxed = true)
+  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>
     get() = listOf(
