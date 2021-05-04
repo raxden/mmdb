@@ -6,6 +6,7 @@ import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.test.BaseTest
@@ -15,6 +16,8 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -26,8 +29,12 @@ import org.koin.test.inject
 @ExperimentalCoroutinesApi
 internal class MediaLocalDataSourceTest : BaseTest() {
 
-  private val mediaDao: MediaDao = mockk()
-  private val watchListDao: WatchListDao = mockk()
+  private val mediaDao: MediaDao = mockk() {
+    coEvery { watchList(any()) } returns flowOf(aMediaEntityList)
+  }
+  private val watchListDao: WatchListDao = mockk() {
+    coEvery { clear() } returns Unit
+  }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
   override val modules: List<Module>
@@ -44,6 +51,33 @@ internal class MediaLocalDataSourceTest : BaseTest() {
     )
 
   private val dataSource: MediaLocalDataSource by inject()
+
+  @Test
+  fun `Given a mediaType, When watchList is called, return a ResultData_success with media data`() {
+    testDispatcher.runBlockingTest {
+
+      val flow = dataSource.watchList(MediaType.MOVIE)
+
+      assertEquals(
+        ResultData.Success(
+          listOf(
+            Media.Movie.empty.copy(id = 1L, watchList = true)
+          )
+        ),
+        flow.first()
+      )
+    }
+  }
+
+  @Test
+  fun `When clearWatchList is called, Then clear watchlist database`() {
+    testDispatcher.runBlockingTest {
+
+      dataSource.clearWatchList()
+
+      coVerify { watchListDao.clear() }
+    }
+  }
 
   @Test
   fun `Given a media, When addToWatchList is called, Then media is added`() =
