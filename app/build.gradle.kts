@@ -1,5 +1,20 @@
 plugins {
   id("com.raxdenstudios.android-application")
+  id("com.google.gms.google-services")
+  id("com.google.firebase.crashlytics")
+  id("com.google.firebase.appdistribution")
+}
+
+android {
+
+  buildTypes {
+    getByName("release") {
+      firebaseAppDistribution {
+        releaseNotesFile = "$rootDir/release_notes.txt"
+        groups = "mmdb-team"
+      }
+    }
+  }
 }
 
 dependencies {

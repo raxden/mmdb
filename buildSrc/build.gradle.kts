@@ -14,10 +14,6 @@ dependencies {
   implementation("com.android.tools.build:gradle:4.1.1")
   implementation(kotlin("gradle-plugin", version = "1.4.32"))
 
-  implementation("com.google.gms:google-services:4.3.5")
-  implementation("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
-  implementation("com.google.firebase:firebase-appdistribution-gradle:2.1.0")
-
   implementation("org.ajoberstar.grgit:grgit-gradle:4.1.0")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
   implementation("com.adarshr:gradle-test-logger-plugin:3.0.0")
