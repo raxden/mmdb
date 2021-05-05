@@ -14,8 +14,8 @@ buildscript {
 }
 
 plugins {
-  id("com.raxdenstudios.android-releasing").version("0.42")
-  id("com.raxdenstudios.android-versioning").version("0.42") apply false
+  id("com.raxdenstudios.android-releasing").version("0.41")
+  id("com.raxdenstudios.android-versioning").version("0.41") apply false
   id("com.vanniktech.android.junit.jacoco").version("0.16.0")
   id("com.adarshr.test-logger").version("3.0.0")
   id("io.gitlab.arturbosch.detekt").version("1.15.0")
