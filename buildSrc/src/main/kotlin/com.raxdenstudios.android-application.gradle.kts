@@ -1,21 +1,9 @@
 plugins {
-  id("com.raxdenstudios.android-versioning")
   id("com.android.application")
-  id("com.raxdenstudios.android-quality")
-  id("com.raxdenstudios.android-commons")
-  id("com.github.triplet.play")
-}
-
-play {
-  track.set("beta")
-}
-
-testlogger {
-  setTheme("mocha")
-}
-
-versioning {
-  versionFilePath = "$rootDir/version.properties"
+  id("kotlin-android")
+  id("kotlin-kapt")
+  id("kotlin-parcelize")
+  id("project-report")
 }
 
 android {
