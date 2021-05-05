@@ -68,4 +68,6 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Publish
+        env:
+          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
         run: bash ./gradlew publishBundle
