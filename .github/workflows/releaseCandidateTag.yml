@@ -1,14 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Release Candidate
+name: Release Candidate Tag
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ 'releases/release-[0-9]+.[0-9]+' ]
-  pull_request:
-    branches: [ 'releases/release-[0-9]+.[0-9]+' ]
+    tags: [ '[0-9]+.[0-9]+.[0-9]+' ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -47,7 +45,7 @@ jobs:
         uses: codecov/codecov-action@v1 # https://github.com/codecov/codecov-action
 
   deploy:
-    name: Build & Upload to Firebase App Distribution
+    name: Build & Upload to Playstore
     runs-on: ubuntu-latest
 
     steps:
@@ -68,10 +66,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build
-        run: bash ./gradlew assembleRelease
-
-      - name: Deploy in Firebase App Distribution
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: bash ./gradlew appDistributionUploadRelease
+      - name: Publish
+        run: bash ./gradlew publishBundle

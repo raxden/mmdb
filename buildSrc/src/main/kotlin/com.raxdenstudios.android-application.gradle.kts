@@ -6,6 +6,12 @@ plugins {
   id("com.google.firebase.crashlytics")
   id("com.google.firebase.appdistribution")
   id("com.raxdenstudios.android-commons")
+  id("com.github.triplet.play")
+}
+
+play {
+  serviceAccountCredentials.set(file("$rootDir/config/service_account.json"))
+  track.set("beta")
 }
 
 testlogger {
