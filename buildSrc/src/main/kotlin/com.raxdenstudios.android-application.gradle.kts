@@ -10,7 +10,6 @@ plugins {
 }
 
 play {
-  serviceAccountCredentials.set(file("$rootDir/config/service_account.json"))
   track.set("beta")
 }
 
