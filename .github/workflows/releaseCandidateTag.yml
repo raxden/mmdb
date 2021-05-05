@@ -45,6 +45,7 @@ jobs:
         uses: codecov/codecov-action@v1 # https://github.com/codecov/codecov-action
 
   deploy:
+    needs: test
     name: Build & Upload to Playstore
     runs-on: ubuntu-latest
 
