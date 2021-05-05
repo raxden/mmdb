@@ -22,7 +22,7 @@ dependencies {
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
   implementation("com.adarshr:gradle-test-logger-plugin:3.0.0")
   implementation("com.vanniktech:gradle-android-junit-jacoco-plugin:0.16.0")
-  implementation("com.raxdenstudios:android-plugins:0.41")
+  implementation("com.raxdenstudios:android-plugins:0.42")
   implementation("com.github.triplet.gradle:play-publisher:3.4.0")
 
   implementation(gradleApi())
