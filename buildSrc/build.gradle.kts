@@ -16,7 +16,7 @@ dependencies {
 
   implementation("com.google.gms:google-services:4.3.5")
   implementation("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
-  implementation("com.google.firebase:firebase-appdistribution-gradle:2.1.1")
+  implementation("com.google.firebase:firebase-appdistribution-gradle:2.1.0")
 
   implementation("org.ajoberstar.grgit:grgit-gradle:4.1.0")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.15.0")
