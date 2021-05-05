@@ -2,9 +2,6 @@ plugins {
   id("com.raxdenstudios.android-versioning")
   id("com.android.application")
   id("com.raxdenstudios.android-quality")
-  id("com.google.gms.google-services")
-  id("com.google.firebase.crashlytics")
-  id("com.google.firebase.appdistribution")
   id("com.raxdenstudios.android-commons")
   id("com.github.triplet.play")
 }
@@ -73,10 +70,6 @@ android {
         "proguard-android-optimize.txt",
         "proguard-rules.pro"
       )
-      firebaseAppDistribution {
-        releaseNotesFile = "$rootDir/release_notes.txt"
-        groups = "mmdb-team"
-      }
     }
   }
 
