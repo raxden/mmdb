@@ -1,0 +1,5 @@
+MMDb accesses the public and free database The Movie Database (TMDB).
+
+Features:
+★ Discover movies
+★ lists: watchlist.
