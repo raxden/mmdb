@@ -44,4 +44,4 @@ jobs:
       - name: Deploy in Firebase App Distribution
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: bash ./gradlew appDistributionUploadRelease
+        run: bash ./gradlew appDistributionUploadRelease --stacktrace
