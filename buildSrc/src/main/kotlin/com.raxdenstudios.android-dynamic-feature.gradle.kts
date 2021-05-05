@@ -1,11 +1,9 @@
 plugins {
   id("com.android.dynamic-feature")
-  id("com.raxdenstudios.android-quality")
-  id("com.raxdenstudios.android-commons")
-}
-
-testlogger {
-  setTheme("mocha")
+  id("kotlin-android")
+  id("kotlin-kapt")
+  id("kotlin-parcelize")
+  id("project-report")
 }
 
 android {

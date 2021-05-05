@@ -1,8 +1,18 @@
 plugins {
+  id("com.raxdenstudios.android-versioning")
   id("com.raxdenstudios.android-application")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
   id("com.google.firebase.appdistribution")
+  id("com.github.triplet.play")
+}
+
+versioning {
+  versionFilePath = "$rootDir/version.properties"
+}
+
+play {
+  track.set("beta")
 }
 
 android {
