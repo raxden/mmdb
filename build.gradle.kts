@@ -1,4 +1,5 @@
 buildscript {
+  val kotlin_version by extra("1.4.32")
   repositories {
     google()
     jcenter()
@@ -10,6 +11,7 @@ buildscript {
     classpath("com.google.gms:google-services:4.3.5")
     classpath("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
     classpath("com.google.firebase:firebase-appdistribution-gradle:2.1.1")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
   }
 }
 

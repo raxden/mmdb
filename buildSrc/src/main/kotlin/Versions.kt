@@ -3,7 +3,7 @@ object Versions {
   const val compileSdk = 29
   const val targetSdk = 29
 
-  const val commonsVersion = "4.9.3"
+  const val commonsVersion = "4.9.4"
 
   const val playCore = "1.9.0"
   const val material = "1.2.1"
@@ -15,6 +15,7 @@ object Versions {
   const val kotlinPreferences = "1.1.1"
   const val lifecycle = "2.2.0"
   const val browser = "1.3.0"
+  const val navigation = "2.3.5"
   const val kotlin = "1.4.30"
   const val coroutines = "1.4.3"
   const val koin = "3.0.1"

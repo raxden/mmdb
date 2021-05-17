@@ -11,4 +11,8 @@
     <string name="add_more_shows_and_movies">Add more shows and movies to keep track of what you want to watch</string>
     <string name="home_carousel_watch_list_sig_in">Sign in to access your Watchlist</string>
     <string name="home_carousel_watch_list_sig_in_button">Sign in</string>
+    <string name="home_navigation_movies">Movies</string>
+    <string name="home_navigation_tv_shows">TV Shows</string>
+    <string name="home_navigation_search">Search</string>
+    <string name="home_navigation_account">Account</string>
 </resources>

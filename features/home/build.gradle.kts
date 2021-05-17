@@ -1,5 +1,6 @@
 plugins {
   id("com.raxdenstudios.android-feature")
+  id("kotlin-android")
 }
 
 android {
@@ -32,6 +33,8 @@ dependencies {
   implementation(project(Modules.featureBase))
 
   implementation(Libraries.roomRunTime)
+  implementation(AndroidLibraries.navigationUI)
+  implementation(AndroidLibraries.navigationFragment)
   kapt(Libraries.roomCompiler)
   implementation(Libraries.roomKtx)
 
