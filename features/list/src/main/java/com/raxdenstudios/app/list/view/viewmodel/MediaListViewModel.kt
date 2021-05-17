@@ -15,13 +15,17 @@ import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
 import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.getValueOrDefault
 import com.raxdenstudios.commons.onFailure
 import com.raxdenstudios.commons.onSuccess
 import com.raxdenstudios.commons.pagination.Pagination
-import com.raxdenstudios.commons.pagination.model.*
+import com.raxdenstudios.commons.pagination.model.Page
+import com.raxdenstudios.commons.pagination.model.PageIndex
+import com.raxdenstudios.commons.pagination.model.PageList
+import com.raxdenstudios.commons.pagination.model.PageResult
+import com.raxdenstudios.commons.pagination.model.PageSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -117,10 +121,11 @@ internal class MediaListViewModel(
     params: MediaListParams,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<MediaListItemModel>> {
+  ): PageList<MediaListItemModel> {
     val useCaseParams = getMediasUseCaseParamsMapper.transform(params, page, pageSize)
     return getMediasUseCase.execute(useCaseParams)
       .coMap { pageList -> pageList.map { items -> mediaListItemModelMapper.transform(items) } }
+      .getValueOrDefault(PageList(emptyList(), page))
   }
 }
 

@@ -8,5 +8,11 @@
             android:name=".view.HomeActivity"
             android:theme="@style/Theme.App.Home"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".view.HomeV2Activity"
+            android:theme="@style/Theme.App.Home"
+            android:windowSoftInputMode="adjustPan" />
+
     </application>
 </manifest>

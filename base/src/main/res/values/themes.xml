@@ -41,7 +41,7 @@
     <!-- https://material.io/develop/android/components/text-input-layout/ -->
     <style name="AppTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" >
         <item name="materialThemeOverlay">@style/TextInputEditText</item>
-<!--        <item name="boxBackgroundColor">@color/edit_text_background_color</item>-->
+        <!--        <item name="boxBackgroundColor">@color/edit_text_background_color</item>-->
     </style>
 
     <style name="TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense" />
@@ -50,16 +50,18 @@
     <style name="AppCard" parent="Widget.MaterialComponents.CardView" />
 
     <!-- https://material.io/develop/android/components/bottom-navigation-view/ -->
-    <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored" />
+    <style name="AppBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+
+    </style>
 
     <style name="AppToolbar" parent="Widget.MaterialComponents.Toolbar.Primary" />
 
     <!-- https://material.io/develop/android/components/floating-action-button/ -->
     <style name="AppFloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton" />
 
-    <style name="AppTabStyle" parent="Widget.MaterialComponents.TabLayout.Colored" >
+    <style name="AppTabStyle" parent="Widget.MaterialComponents.TabLayout.Colored">
         <item name="android:elevation">4dp</item>
-<!--        <item name="tabTextAppearance">@style/CodeFont.Tabs</item>-->
+        <!--        <item name="tabTextAppearance">@style/CodeFont.Tabs</item>-->
     </style>
 
     <!-- https://material.io/develop/android/components/radiobutton/ -->
