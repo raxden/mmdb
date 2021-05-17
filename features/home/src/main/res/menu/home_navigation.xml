@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home_navigation_movies"
+            android:icon="@drawable/ic_baseline_movie_24"
+            android:title="@string/home_navigation_movies" />
+        <item
+            android:id="@+id/home_navigation_tv_shows"
+            android:icon="@drawable/ic_baseline_tv_24"
+            android:title="@string/home_navigation_tv_shows" />
+        <item
+            android:id="@+id/home_navigation_search"
+            android:icon="@drawable/ic_baseline_search_24"
+            android:title="@string/home_navigation_search" />
+        <item
+            android:id="@+id/home_navigation_account"
+            android:icon="@drawable/ic_baseline_account_box_24"
+            android:title="@string/home_navigation_account" />
+    </group>
+</menu>
