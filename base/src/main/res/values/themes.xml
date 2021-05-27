@@ -54,7 +54,9 @@
 
     </style>
 
-    <style name="AppToolbar" parent="Widget.MaterialComponents.Toolbar.Primary" />
+    <style name="AppToolbar" parent="Widget.MaterialComponents.Toolbar.Surface">
+
+    </style>
 
     <!-- https://material.io/develop/android/components/floating-action-button/ -->
     <style name="AppFloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton" />

@@ -4,7 +4,6 @@ import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.replaceItem
 
 data class MediaListModel(
-  val logged: Boolean,
   val media: List<MediaListItemModel>,
 ) {
 
@@ -14,7 +13,6 @@ data class MediaListModel(
 
   companion object {
     val empty = MediaListModel(
-      logged = false,
       media = emptyList()
     )
   }

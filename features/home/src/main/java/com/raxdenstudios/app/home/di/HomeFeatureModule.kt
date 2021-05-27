@@ -9,7 +9,7 @@ import com.raxdenstudios.app.home.view.mapper.CarouselMediasModelMapper
 import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModelMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.home.view.viewmodel.HomeViewModel
+import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -30,5 +30,5 @@ val homeFeatureModule = module {
   factory { GetMediasUseCaseParamsMapper() }
   factory { CarouselMediasModelMapper(get(), get()) }
 
-  viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel { HomeMediaListViewModel(get(), get(), get(), get(), get(), get(), get()) }
 }

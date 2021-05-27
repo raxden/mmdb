@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/media_backdrop_image_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="h,16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/media_backdrop_play_image_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/media_backdrop_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/media_backdrop_image_view"
+        app:layout_constraintTop_toTopOf="@+id/media_backdrop_image_view"
+        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
+
+    <View
+        android:id="@+id/guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/media_backdrop_image_view" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/media_image_card_view"
+        style="@style/AppCard.MovieListItem"
+        android:layout_width="128dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guide"
+        app:layout_constraintDimensionRatio="w,13:9"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/media_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars" />
+
+        <com.raxdenstudios.app.media.view.component.WatchButtonView
+            android:id="@+id/watch_button_view"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="@+id/media_image_view"
+            app:layout_constraintTop_toTopOf="@+id/media_image_view" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/movie_title_view"
+        style="@style/CodeFont.MovieTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/movie_description_view"
+        app:layout_constraintEnd_toEndOf="@+id/movie_description_view"
+        app:layout_constraintStart_toStartOf="@+id/movie_description_view"
+        tools:text="Greenland" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/movie_description_view"
+        style="@style/CodeFont.MovieSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/media_image_card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/media_image_card_view"
+        tools:text="The Rise of Sacha Baron Cohen" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -50,7 +50,6 @@ sealed class HomeModuleModel {
       override val label: String,
       override val medias: List<MediaListItemModel>,
       override val mediaType: MediaType,
-      val requireSigIn: Boolean,
     ) : CarouselMedias(mediaType, true) {
 
       companion object {
@@ -59,7 +58,6 @@ sealed class HomeModuleModel {
           label = "",
           medias = emptyList(),
           mediaType = MediaType.MOVIE,
-          requireSigIn = false,
         )
       }
 

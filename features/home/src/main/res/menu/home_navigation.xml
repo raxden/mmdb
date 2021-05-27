@@ -3,13 +3,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/home_navigation_movies"
-            android:icon="@drawable/ic_baseline_movie_24"
-            android:title="@string/home_navigation_movies" />
-        <item
-            android:id="@+id/home_navigation_tv_shows"
-            android:icon="@drawable/ic_baseline_tv_24"
-            android:title="@string/home_navigation_tv_shows" />
+            android:id="@+id/home_navigation_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/home_navigation_home" />
         <item
             android:id="@+id/home_navigation_search"
             android:icon="@drawable/ic_baseline_search_24"
