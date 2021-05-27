@@ -6,9 +6,8 @@ import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.HomeModel
+import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
-import com.raxdenstudios.app.home.view.model.HomeUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
@@ -32,7 +31,7 @@ import org.koin.dsl.module
 import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
-internal class HomeViewModelTest : BaseTest() {
+internal class HomeMediaListViewModelTest : BaseTest() {
 
   private val stringProvider: StringProvider = mockk(relaxed = true)
   private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
@@ -54,7 +53,7 @@ internal class HomeViewModelTest : BaseTest() {
   private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
-  private val stateObserver: Observer<HomeUIState> = mockk(relaxed = true)
+  private val stateObserver: Observer<HomeMediaListUIState> = mockk(relaxed = true)
   private val dispatcher: DispatcherFacade = object : DispatcherFacade {
     override fun io() = testDispatcher
     override fun default() = testDispatcher
@@ -75,7 +74,7 @@ internal class HomeViewModelTest : BaseTest() {
       }
     )
 
-  private val viewModel: HomeViewModel by inject()
+  private val viewModel: HomeMediaListViewModel by inject()
 
   @Test
   fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
@@ -84,8 +83,8 @@ internal class HomeViewModelTest : BaseTest() {
 
       verify {
         stateObserver.onChanged(
-          HomeUIState.Content(
-            HomeModel.empty.copy(
+          HomeMediaListUIState.Content(
+            HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
                   medias = listOf(
@@ -118,8 +117,8 @@ internal class HomeViewModelTest : BaseTest() {
 
       coVerify {
         stateObserver.onChanged(
-          HomeUIState.Content(
-            HomeModel.empty.copy(
+          HomeMediaListUIState.Content(
+            HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
                   medias = listOf(
@@ -158,7 +157,7 @@ private val aCarouselMediasPopular = HomeModuleModel.CarouselMedias.Popular.empt
 private val aCarouselMediasTopRated = HomeModuleModel.CarouselMedias.TopRated.empty.copy(
   medias = aMediaListItemModelList
 )
-private val aHomeModel = HomeModel.empty.copy(
+private val aHomeModel = HomeMediaListModel.empty.copy(
   modules = listOf(
     aCarouselMediasPopular,
     aCarouselMediasTopRated

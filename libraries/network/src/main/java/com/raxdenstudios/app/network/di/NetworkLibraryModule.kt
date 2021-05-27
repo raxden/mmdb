@@ -5,7 +5,12 @@ import com.ashokvarma.gander.GanderInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
-import com.raxdenstudios.app.network.*
+import com.raxdenstudios.app.network.APIDataProvider
+import com.raxdenstudios.app.network.APIDataProviderFactory
+import com.raxdenstudios.app.network.AccessTokenInterceptor
+import com.raxdenstudios.app.network.LanguageInterceptor
+import com.raxdenstudios.app.network.SessionInterceptor
+import com.raxdenstudios.app.network.TokenInterceptor
 import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.commons.okhttp3.CacheLoggerInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheNetworkInterceptor
@@ -42,15 +47,15 @@ val networkLibraryModule = module {
     ganderInterceptor: GanderInterceptor,
     cache: Cache
   ): OkHttpClient.Builder = OkHttpClient.Builder()
-    .cache(cache)
+//    .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(tokenInterceptor)
     .addInterceptor(sessionInterceptor)
     .addInterceptor(languageInterceptor)
-    .addInterceptor(cacheOfflineInterceptor)
-    .addNetworkInterceptor(cacheNetworkInterceptor)
-    .addInterceptor(cacheLoggerInterceptor)
-    .addInterceptor(ganderInterceptor)
+//    .addInterceptor(cacheOfflineInterceptor)
+//    .addNetworkInterceptor(cacheNetworkInterceptor)
+//    .addInterceptor(cacheLoggerInterceptor)
+//    .addInterceptor(ganderInterceptor)
     .retryOnConnectionFailure(true)
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
@@ -66,14 +71,14 @@ val networkLibraryModule = module {
     ganderInterceptor: GanderInterceptor,
     cache: Cache
   ): OkHttpClient.Builder = OkHttpClient.Builder()
-    .cache(cache)
+//    .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(accessTokenInterceptor)
     .addInterceptor(languageInterceptor)
-    .addInterceptor(cacheOfflineInterceptor)
-    .addNetworkInterceptor(cacheNetworkInterceptor)
-    .addInterceptor(cacheLoggerInterceptor)
-    .addInterceptor(ganderInterceptor)
+//    .addInterceptor(cacheOfflineInterceptor)
+//    .addNetworkInterceptor(cacheNetworkInterceptor)
+//    .addInterceptor(cacheLoggerInterceptor)
+//    .addInterceptor(ganderInterceptor)
     .retryOnConnectionFailure(true)
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)

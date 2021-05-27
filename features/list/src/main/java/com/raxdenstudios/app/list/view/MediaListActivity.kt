@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MediaListNavigator
+import com.raxdenstudios.app.list.R
 import com.raxdenstudios.app.list.databinding.MediaListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
+import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.*
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
-import com.raxdenstudios.commons.util.SDK
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -45,9 +46,9 @@ class MediaListActivity : BaseActivity() {
 
     binding.setUp()
 
-    observe(viewModel.state) { state -> binding.handleState(state) }
-
     viewModel.loadMedias(params)
+
+    observe(viewModel.state) { state -> binding.handleState(state) }
 
     lifecycle.addObserver(navigator)
   }
@@ -81,8 +82,7 @@ class MediaListActivity : BaseActivity() {
     model: MediaListModel,
     item: MediaListItemModel
   ) {
-    if (!model.logged) navigator.login { removeMovieFromWatchList(model, item) }
-    else removeMovieFromWatchList(model, item)
+    removeMovieFromWatchList(model, item)
   }
 
   private fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) {
@@ -91,8 +91,7 @@ class MediaListActivity : BaseActivity() {
   }
 
   private fun checkIfLoggedAndAddMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
-    if (!model.logged) navigator.login { addMovieToWatchList(model, item) }
-    else addMovieToWatchList(model, item)
+    addMovieToWatchList(model, item)
   }
 
   private fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
@@ -122,10 +121,22 @@ class MediaListActivity : BaseActivity() {
   }
 
   private fun MediaListActivityBinding.setUp() {
-    val statusBarHeight = SDK.getStatusBarHeight(this@MediaListActivity)
-    recyclerView.setPaddingTop(statusBarHeight)
+    setupToolbar(toolbarView)
+    val titleResourceId = when (params) {
+      MediaListParams.NowPlaying -> R.string.home_carousel_now_playing_movies
+      is MediaListParams.Popular -> when (params.mediaType) {
+        MediaType.MOVIE -> R.string.list_popular_movies
+        MediaType.TV_SHOW -> R.string.list_popular_tv_shows
+      }
+      is MediaListParams.TopRated -> when (params.mediaType) {
+        MediaType.MOVIE -> R.string.list_top_rated_movies
+        MediaType.TV_SHOW -> R.string.list_top_rated_tv_shows
+      }
+      MediaListParams.Upcoming -> R.string.home_carousel_upcoming
+      is MediaListParams.WatchList -> R.string.home_carousel_watch_list
+    }
+    titleValueView.text = getString(titleResourceId)
     recyclerView.adapter = adapter
-    swipeRefreshLayout.addProgressViewEndTarget(end = statusBarHeight)
     swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies(params) }
   }
 }

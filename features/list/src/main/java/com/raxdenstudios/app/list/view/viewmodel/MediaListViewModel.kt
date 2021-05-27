@@ -3,7 +3,6 @@ package com.raxdenstudios.app.list.view.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.list.view.model.MediaListModel
@@ -32,7 +31,6 @@ import org.koin.core.parameter.parametersOf
 
 internal class MediaListViewModel(
   private val getMediasUseCase: GetMediasUseCase,
-  private val isAccountLoggedUseCase: IsAccountLoggedUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
@@ -107,13 +105,7 @@ internal class MediaListViewModel(
 
   private fun handlePageResultContent(pageResult: PageResult.Content<MediaListItemModel>) {
     viewModelScope.safeLaunch {
-      val isAccountLogged = isAccountLoggedUseCase.execute()
-      mState.value = MediaListUIState.Content(
-        MediaListModel(
-          logged = isAccountLogged,
-          media = pageResult.items
-        )
-      )
+      mState.value = MediaListUIState.Content(MediaListModel(media = pageResult.items))
     }
   }
 
@@ -128,4 +120,3 @@ internal class MediaListViewModel(
       .getValueOrDefault(PageList(emptyList(), page))
   }
 }
-

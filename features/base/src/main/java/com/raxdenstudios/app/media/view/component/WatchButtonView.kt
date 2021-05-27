@@ -9,7 +9,7 @@ import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.viewBinding
 
-internal class WatchButtonView @JvmOverloads constructor(
+class WatchButtonView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0,

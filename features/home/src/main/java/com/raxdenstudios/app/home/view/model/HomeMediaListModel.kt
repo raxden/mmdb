@@ -3,12 +3,11 @@ package com.raxdenstudios.app.home.view.model
 import androidx.annotation.VisibleForTesting
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 
-data class HomeModel(
-  val logged: Boolean,
+data class HomeMediaListModel(
   val modules: List<HomeModuleModel>
 ) {
 
-  fun updateMedia(media: MediaListItemModel): HomeModel = copy(
+  fun updateMedia(media: MediaListItemModel): HomeMediaListModel = copy(
     modules = modules.map { module ->
       when (module) {
         is HomeModuleModel.CarouselMedias -> module.updateMedia(media)
@@ -18,8 +17,7 @@ data class HomeModel(
 
   companion object {
     @VisibleForTesting
-    val empty = HomeModel(
-      logged = false,
+    val empty = HomeMediaListModel(
       modules = emptyList()
     )
   }

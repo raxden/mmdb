@@ -1,19 +1,17 @@
 package com.raxdenstudios.app.home.view.mapper
 
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.home.view.model.HomeModel
+import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 
 internal class HomeModelMapper(
   private val homeModuleModelMapper: HomeModuleModelMapper,
 ) {
 
   fun transform(
-    accountIsLogged: Boolean,
     homeModules: List<HomeModule>,
-  ): HomeModel = HomeModel(
+  ): HomeMediaListModel = HomeMediaListModel(
     modules = homeModules.map { homeModule ->
-      homeModuleModelMapper.transform(accountIsLogged, homeModule)
+      homeModuleModelMapper.transform(homeModule)
     },
-    logged = accountIsLogged,
   )
 }

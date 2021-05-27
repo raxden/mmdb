@@ -16,6 +16,10 @@ class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
       id = id,
       mediaType = MediaType.MOVIE,
       title = title,
+      backdrop = when (val backdrop = backdrop) {
+        Picture.Empty -> ""
+        is Picture.WithImage -> backdrop.thumbnail.url
+      },
       image = when (val poster = poster) {
         Picture.Empty -> ""
         is Picture.WithImage -> poster.thumbnail.url
@@ -31,6 +35,10 @@ class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
       id = id,
       mediaType = MediaType.TV_SHOW,
       title = name,
+      backdrop = when (val backdrop = backdrop) {
+        Picture.Empty -> ""
+        is Picture.WithImage -> backdrop.thumbnail.url
+      },
       image = when (val poster = poster) {
         Picture.Empty -> ""
         is Picture.WithImage -> poster.thumbnail.url
