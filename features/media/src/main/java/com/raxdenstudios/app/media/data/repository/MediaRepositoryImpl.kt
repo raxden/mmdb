@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.media.data.repository
 
 import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSource
+import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.media.domain.model.Media
@@ -8,11 +9,16 @@ import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.map
 import com.raxdenstudios.commons.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 
 internal class MediaRepositoryImpl(
   private val mediaRemoteDataSource: MediaRemoteDataSource,
@@ -34,12 +40,17 @@ internal class MediaRepositoryImpl(
   override suspend fun addToWatchList(
     mediaId: Long,
     mediaType: MediaType
-  ): ResultData<Media> =
-    mediaRemoteDataSource.addToWatchList(
-      account = accountLocalDataSource.getAccount(),
-      mediaType = mediaType,
-      mediaId = mediaId
-    ).onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
+  ): ResultData<Media> = when (val account = accountLocalDataSource.getAccount()) {
+    is Account.Guest ->
+      mediaRemoteDataSource.findById(mediaId, mediaType)
+        .onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
+    is Account.Logged ->
+      mediaRemoteDataSource.addToWatchList(
+        account = account,
+        mediaType = mediaType,
+        mediaId = mediaId
+      ).onCoSuccess { media -> mediaLocalDataSource.addToWatchList(media) }
+  }
 
   override suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean> =
     mediaLocalDataSource.addToWatchList(medias)
@@ -47,23 +58,37 @@ internal class MediaRepositoryImpl(
   override suspend fun removeFromWatchList(
     mediaId: Long,
     mediaType: MediaType
-  ): ResultData<Boolean> =
-    mediaRemoteDataSource.removeFromWatchList(
-      account = accountLocalDataSource.getAccount(),
-      mediaType = mediaType,
-      mediaId = mediaId
-    ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
+  ): ResultData<Boolean> = when (val account = accountLocalDataSource.getAccount()) {
+    is Account.Guest -> {
+      mediaLocalDataSource.removeFromWatchList(mediaId)
+      ResultData.Success(true)
+    }
+    is Account.Logged ->
+      mediaRemoteDataSource.removeFromWatchList(
+        account = account,
+        mediaType = mediaType,
+        mediaId = mediaId
+      ).onCoSuccess { mediaLocalDataSource.removeFromWatchList(mediaId) }
+  }
 
   override suspend fun medias(
     mediaFilter: MediaFilter,
     page: Page,
     pageSize: PageSize
-  ): ResultData<PageList<Media>> =
-    mediaRemoteDataSource.medias(
-      mediaFilter = mediaFilter,
-      account = accountLocalDataSource.getAccount(),
-      page = page
-    ).coMap { pageList -> markMediasAsWatchedIfNecessary(pageList) }
+  ): ResultData<PageList<Media>> {
+    val isAccountLogged = accountLocalDataSource.getAccount() is Account.Logged
+    val isWatchList = mediaFilter is MediaFilter.WatchList
+    return when {
+      isWatchList && !isAccountLogged ->
+        mediaLocalDataSource.watchList(mediaFilter.mediaType).first()
+          .map { medias -> PageList(medias, page) }
+      else -> mediaRemoteDataSource.medias(
+        mediaFilter = mediaFilter,
+        account = accountLocalDataSource.getAccount(),
+        page = page
+      ).coMap { pageList -> markMediasAsWatchedIfNecessary(pageList) }
+    }
+  }
 
   private suspend fun markMediasAsWatchedIfNecessary(pageList: PageList<Media>) =
     pageList.copy(

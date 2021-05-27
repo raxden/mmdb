@@ -19,7 +19,7 @@ internal class CarouselMediaListAdapter :
   var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
   var onClickListener: (MediaListItemModel) -> Unit = {}
 
-  override fun getItemViewType(position: Int) = R.layout.carousel_list_item
+  override fun getItemViewType(position: Int) = R.layout.carousel_media_list_item
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaListAdapterHolder {
     val view = inflateView(parent, viewType)

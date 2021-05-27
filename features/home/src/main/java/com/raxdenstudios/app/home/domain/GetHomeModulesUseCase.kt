@@ -36,7 +36,7 @@ internal class GetHomeModulesUseCase(
         }
       }
 
-  private suspend fun fetchMediasFromModule(module: HomeModule) =
+  private suspend fun fetchMediasFromModule(module: HomeModule): HomeModule =
     when (module) {
       is HomeModule.NowPlaying ->
         module.copy(medias = fetchMedias(MediaFilter.NowPlaying) as List<Media.Movie>)

@@ -9,7 +9,12 @@ import com.raxdenstudios.app.home.view.adapter.CarouselMediaListAdapter
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.commons.ext.*
+import com.raxdenstudios.commons.ext.doItGone
+import com.raxdenstudios.commons.ext.doItVisible
+import com.raxdenstudios.commons.ext.inflateView
+import com.raxdenstudios.commons.ext.setSafeOnClickListener
+import com.raxdenstudios.commons.ext.viewBinding
+import com.raxdenstudios.commons.ext.visibleGone
 
 internal class HomeCarouselMediasModuleView @JvmOverloads constructor(
   context: Context,
@@ -30,7 +35,6 @@ internal class HomeCarouselMediasModuleView @JvmOverloads constructor(
     { _, _ -> }
   var onSeeAllClickListener: (HomeModuleModel.CarouselMedias) -> Unit = {}
   var onMediaTypeFilterChanged: (HomeModuleModel.CarouselMedias, MediaType) -> Unit = { _, _ -> }
-  var onSigInClickListener: (HomeModuleModel.CarouselMedias) -> Unit = {}
 
   init {
     if (isInEditMode) {
@@ -46,53 +50,47 @@ internal class HomeCarouselMediasModuleView @JvmOverloads constructor(
 
   private fun HomeCarouselMediasModuleViewBinding.populate(model: HomeModuleModel.CarouselMedias) {
     setTitle(model)
-    populateRecyclerView(model)
+    adapter.populate(model)
     seeAllButton(model)
     filterSelector(model)
-  }
-
-  private fun HomeCarouselMediasModuleViewBinding.setTitle(model: HomeModuleModel.CarouselMedias) {
-    carouselTitleView.text = model.label
-  }
-
-  private fun HomeCarouselMediasModuleViewBinding.populateRecyclerView(model: HomeModuleModel.CarouselMedias) {
-    adapter.submitList(model.medias)
-    adapter.onClickListener = { item -> onMediaClickListener(model, item) }
-    adapter.onAddToWatchListClickListener = { item -> onAddToWatchListClickListener(model, item) }
-    adapter.onRemoveFromWatchListClickListener = { item ->
-      onRemoveFromWatchListClickListener(model, item)
-    }
 
     val hasMedias = model.hasMedias()
     val modelIsWatchList = model is HomeModuleModel.CarouselMedias.WatchList
-    val modelIsWatchListAndUserIsNotLogged =
-      model is HomeModuleModel.CarouselMedias.WatchList && model.requireSigIn
     when {
       hasMedias -> {
         recyclerView.doItVisible()
         emptyWatchListView.root.doItGone()
-        siginWatchListView.root.doItGone()
-      }
-      modelIsWatchListAndUserIsNotLogged -> {
-        recyclerView.doItGone()
-        emptyWatchListView.root.doItGone()
-        siginWatchListView.root.doItVisible()
-        siginWatchListView.sigIn.setSafeOnClickListener { onSigInClickListener(model) }
       }
       modelIsWatchList -> {
         recyclerView.doItGone()
         emptyWatchListView.root.doItVisible()
-        siginWatchListView.root.doItGone()
       }
     }
   }
 
-  private fun HomeCarouselMediasModuleViewBinding.seeAllButton(model: HomeModuleModel.CarouselMedias) {
-    carouselSeeAllArrowViewGroup.visibleGone(model.hasMedias())
-    carouselSeeAllArrowViewGroup.setSafeOnClickListener { onSeeAllClickListener(model) }
+  private fun HomeCarouselMediasModuleViewBinding.setTitle(model: HomeModuleModel.CarouselMedias) {
+    homeCarouselMediasTitleModuleView.carouselTitleView.text = model.label
   }
 
-  private fun HomeCarouselMediasModuleViewBinding.filterSelector(model: HomeModuleModel.CarouselMedias) {
+  private fun CarouselMediaListAdapter.populate(model: HomeModuleModel.CarouselMedias) {
+    submitList(model.medias)
+    onClickListener = { item -> onMediaClickListener(model, item) }
+    onAddToWatchListClickListener = { item -> onAddToWatchListClickListener(model, item) }
+    onRemoveFromWatchListClickListener = { item -> onRemoveFromWatchListClickListener(model, item) }
+  }
+
+  private fun HomeCarouselMediasModuleViewBinding.seeAllButton(
+    model: HomeModuleModel.CarouselMedias
+  ) {
+    homeCarouselMediasTitleModuleView.carouselSeeAllArrowViewGroup.apply {
+      visibleGone(model.hasMedias())
+      setSafeOnClickListener { onSeeAllClickListener(model) }
+    }
+  }
+
+  private fun HomeCarouselMediasModuleViewBinding.filterSelector(
+    model: HomeModuleModel.CarouselMedias
+  ) {
     mediaTypeChipGroup.visibleGone(model.hasMediaTypeFilter)
     moviesChip.isChecked = model.mediaType == MediaType.MOVIE
     tvSeriesChip.isChecked = model.mediaType == MediaType.TV_SHOW

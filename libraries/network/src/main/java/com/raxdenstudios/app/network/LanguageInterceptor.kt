@@ -8,16 +8,20 @@ internal class LanguageInterceptor : Interceptor {
 
   companion object {
     private const val LANGUAGE = "language"
+    private const val REGION = "region"
   }
 
   private val language: String
-    get() = "en-US"
+    get() = "es-ES"
+  private val region: String
+    get() = "ES"
 
   @Throws(IOException::class)
   override fun intercept(chain: Interceptor.Chain): Response {
     var request = chain.request()
     val url = request.url.newBuilder()
       .addQueryParameter(LANGUAGE, language)
+      .addQueryParameter(REGION, region)
       .build()
     request = request.newBuilder().url(url).build()
     return chain.proceed(request)

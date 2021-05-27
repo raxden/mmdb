@@ -13,7 +13,6 @@ internal class CarouselMediasModelMapper(
 
   fun transform(
     homeModule: HomeModule,
-    accountIsLogged: Boolean,
   ): HomeModuleModel.CarouselMedias = when (homeModule) {
     is HomeModule.NowPlaying -> HomeModuleModel.CarouselMedias.NowPlaying(
       label = stringProvider.getString(R.string.home_carousel_now_playing_movies),
@@ -37,7 +36,6 @@ internal class CarouselMediasModelMapper(
       label = stringProvider.getString(R.string.home_carousel_from_your_watchlist),
       medias = mediaListItemModelMapper.transform(homeModule.medias),
       mediaType = homeModule.mediaType,
-      requireSigIn = !accountIsLogged,
     )
   }
 }

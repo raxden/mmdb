@@ -12,73 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/carousel_arrows_view"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/home_carousel_medias_title_module_view"
+            layout="@layout/home_carousel_medias_title_module_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:tint="@color/blaze_orange"
-            app:layout_constraintBottom_toBottomOf="@+id/carousel_title_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/carousel_title_view"
-            app:srcCompat="@drawable/ic_baseline_double_arrow_24" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/carousel_title_view"
-            style="@style/CodeFont.CarouselTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/carousel_see_all_view"
-            app:layout_constraintStart_toEndOf="@+id/carousel_arrows_view"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/home_carousel_popular" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/carousel_see_all_view"
-            style="@style/CodeFont.CarouselSellAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/home_carousel_see_all"
-            app:layout_constraintBottom_toBottomOf="@+id/carousel_title_view"
-            app:layout_constraintEnd_toStartOf="@+id/carousel_see_all_arrow_view"
-            app:layout_constraintTop_toTopOf="@+id/carousel_title_view" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/carousel_see_all_arrow_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:tint="#3375b7"
-            app:layout_constraintBottom_toBottomOf="@+id/carousel_title_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/carousel_title_view"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/carousel_see_all_arrow_view_group"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:constraint_referenced_ids="carousel_see_all_view, carousel_see_all_arrow_view"
-            app:layout_constraintBottom_toBottomOf="@+id/carousel_see_all_view"
-            app:layout_constraintEnd_toEndOf="@+id/carousel_see_all_arrow_view"
-            app:layout_constraintStart_toStartOf="@+id/carousel_see_all_view"
-            app:layout_constraintTop_toTopOf="@+id/carousel_see_all_view" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/media_type_chip_group"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            app:chipSpacingHorizontal="4dp"
+            app:chipSpacing="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/carousel_title_view"
+            app:layout_constraintTop_toBottomOf="@+id/home_carousel_medias_title_module_view"
             app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true">
@@ -115,16 +68,6 @@
         <include
             android:id="@+id/empty_watch_list_view"
             layout="@layout/empty_watch_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/media_type_chip_group" />
-
-        <include
-            android:id="@+id/sigin_watch_list_view"
-            layout="@layout/sigin_watch_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"

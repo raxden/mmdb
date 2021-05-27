@@ -9,5 +9,5 @@ val listFeatureModule = module {
 
   factory { GetMediasUseCaseParamsMapper() }
 
-  viewModel { MediaListViewModel(get(), get(), get(), get(), get(), get()) }
+  viewModel { MediaListViewModel(get(), get(), get(), get(), get()) }
 }
