@@ -78,4 +78,6 @@
         <item name="android:textColor">@color/colorOnBackground</item>
     </style>
 
+    <style name="CodeFont.Toolbar" parent="CodeFont.H6"></style>
+
 </resources>

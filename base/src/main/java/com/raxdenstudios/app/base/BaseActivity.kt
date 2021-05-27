@@ -17,4 +17,8 @@ abstract class BaseActivity : AppCompatActivity() {
     activityHolder.detach(this)
     super.onStop()
   }
+
+  override fun onBackPressed() {
+    finishAfterTransition()
+  }
 }

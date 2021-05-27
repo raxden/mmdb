@@ -1,10 +1,10 @@
-package com.raxdenstudios.app.media.view.component
+package com.raxdenstudios.app.home.view.model
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.raxdenstudios.app.feature.base.R
-import com.raxdenstudios.app.feature.base.databinding.MediaListItemViewBinding
+import com.raxdenstudios.app.home.R
+import com.raxdenstudios.app.home.databinding.NowPlayingMediaListItemViewBinding
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView
@@ -12,21 +12,23 @@ import com.raxdenstudios.commons.ext.loadImage
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
 
-class MediaListItemView @JvmOverloads constructor(
+internal class NowPlayingMediaListItemView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0,
   defStyleRes: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-  private val binding: MediaListItemViewBinding by viewBinding()
+  val binding: NowPlayingMediaListItemViewBinding by viewBinding()
 
+  var onMediaClickListener: (MediaListItemModel) -> Unit = {}
+  var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
   var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
   var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
   init {
     if (isInEditMode) {
-      inflateView(R.layout.media_list_item_view, true)
+      inflateView(R.layout.now_playing_media_list_item_view, true)
     }
   }
 
@@ -34,11 +36,12 @@ class MediaListItemView @JvmOverloads constructor(
     binding.populate(model)
   }
 
-  private fun MediaListItemViewBinding.populate(model: MediaListItemModel) {
+  private fun NowPlayingMediaListItemViewBinding.populate(model: MediaListItemModel) {
+    mediaBackdropImageView.loadImage(model.backdrop)
+    mediaBackdropImageView.setSafeOnClickListener { onMediaClickListener(model) }
+    mediaBackdropPlayImageView.setSafeOnClickListener { onMediaPlayClickListener(model) }
+    mediaImageCardView.setSafeOnClickListener { onMediaClickListener(model) }
     mediaImageView.loadImage(model.image)
-    movieTitleView.text = model.title
-    movieRateView.text = model.rating
-    movieSubtitleView.text = model.releaseDate
     watchButtonView.setModel(model.watchButtonModel)
     watchButtonView.setSafeOnClickListener {
       when (model.watchButtonModel) {
@@ -46,5 +49,7 @@ class MediaListItemView @JvmOverloads constructor(
         WatchButtonModel.Unselected -> onAddToWatchListClickListener(model)
       }
     }
+    movieTitleView.text = model.title
+    movieDescriptionView.text = "The Rise of Sacha Baron Cohen"
   }
 }

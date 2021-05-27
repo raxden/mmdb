@@ -2,6 +2,7 @@ package com.raxdenstudios.app.navigator.di
 
 import androidx.fragment.app.FragmentActivity
 import com.raxdenstudios.app.home.HomeNavigator
+import com.raxdenstudios.app.home.view.HomeActivity
 import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.navigator.HomeNavigatorImpl
 import com.raxdenstudios.app.navigator.MediaListNavigatorImpl
@@ -20,12 +21,14 @@ val navigatorModule = module {
   factory { MediaListActivityResultContract(get()) }
 
   factory<SplashNavigator> { (activity: FragmentActivity) -> SplashNavigatorImpl(activity) }
-  factory<HomeNavigator> { (activity: FragmentActivity) ->
-    HomeNavigatorImpl(
-      activity,
-      get(),
-      get()
-    )
+  scope<HomeActivity> {
+    scoped<HomeNavigator> { (activity: FragmentActivity) ->
+      HomeNavigatorImpl(
+        activity,
+        get(),
+        get()
+      )
+    }
   }
   factory<MediaListNavigator> { (activity: FragmentActivity) -> MediaListNavigatorImpl(activity) }
 }

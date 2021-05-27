@@ -10,6 +10,7 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
+import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -59,7 +60,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         factory(override = true) { mediaGateway }
         factory(
           override = true,
-          qualifier = named(com.raxdenstudios.app.network.model.APIVersion.V3)
+          qualifier = named(APIVersion.V3)
         ) { apiDataProvider }
       }
     )

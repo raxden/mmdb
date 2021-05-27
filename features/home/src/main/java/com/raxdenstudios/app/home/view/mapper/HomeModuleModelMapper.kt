@@ -8,9 +8,8 @@ internal class HomeModuleModelMapper(
 ) {
 
   fun transform(
-    accountIsLogged: Boolean,
     homeModule: HomeModule,
   ): HomeModuleModel {
-    return carouselMediasModelMapper.transform(homeModule, accountIsLogged)
+    return carouselMediasModelMapper.transform(homeModule)
   }
 }
