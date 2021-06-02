@@ -6,6 +6,7 @@ import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
@@ -61,7 +62,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
       assertEquals(
         ResultData.Success(
           listOf(
-            Media.Movie.empty.copy(id = 1L, watchList = true)
+            Media.Movie.empty.copy(id = MediaId(1), watchList = true)
           )
         ),
         flow.first()
@@ -88,8 +89,8 @@ internal class MediaLocalDataSourceTest : BaseTest() {
       val result = dataSource.addToWatchList(aMedia)
 
       coVerifyOrder {
-        mediaDao.insert(MediaEntity.empty.copy(id = aMediaId))
-        watchListDao.insert(WatchListEntity(aMediaId))
+        mediaDao.insert(MediaEntity.empty.copy(id = aMediaId.value))
+        watchListDao.insert(WatchListEntity(aMediaId.value))
       }
       assertEquals(ResultData.Success(true), result)
     }
@@ -103,8 +104,8 @@ internal class MediaLocalDataSourceTest : BaseTest() {
       val result = dataSource.addToWatchList(aMediaList)
 
       coVerifyOrder {
-        mediaDao.insert(listOf(MediaEntity.empty.copy(id = aMediaId)))
-        watchListDao.insert(listOf(WatchListEntity.empty.copy(mediaId = aMediaId)))
+        mediaDao.insert(listOf(MediaEntity.empty.copy(id = aMediaId.value)))
+        watchListDao.insert(listOf(WatchListEntity.empty.copy(mediaId = aMediaId.value)))
       }
       assertEquals(ResultData.Success(true), result)
     }
@@ -112,17 +113,17 @@ internal class MediaLocalDataSourceTest : BaseTest() {
   @Test
   fun `Given a mediaId, When removeFromWatchList is called, Then media is removed`() =
     testDispatcher.runBlockingTest {
-      coEvery { watchListDao.delete(aMediaId) } returns Unit
+      coEvery { watchListDao.delete(aMediaId.value) } returns Unit
 
       dataSource.removeFromWatchList(aMediaId)
 
-      coVerify { watchListDao.delete(aMediaId) }
+      coVerify { watchListDao.delete(aMediaId.value) }
     }
 
   @Test
   fun `Given a media stored in local, When containsInWatchList is called, Then return true`() =
     testDispatcher.runBlockingTest {
-      coEvery { watchListDao.find(aMediaId) } returns WatchListEntity.empty
+      coEvery { watchListDao.find(aMediaId.value) } returns WatchListEntity.empty
 
       val result = dataSource.containsInWatchList(aMediaId)
 
@@ -130,16 +131,16 @@ internal class MediaLocalDataSourceTest : BaseTest() {
     }
 }
 
-private const val aMediaId = 1L
+private val aMediaId = MediaId(1L)
 private val aMedia = Media.Movie.withId(aMediaId)
 private val aMediaList = listOf(
   Media.Movie.withId(aMediaId),
 )
-private val aMediaEntity = MediaEntity.empty.copy(id = aMediaId)
-private val aWatchListEntity = WatchListEntity.empty.copy(mediaId = aMediaId)
+private val aMediaEntity = MediaEntity.empty.copy(id = aMediaId.value)
+private val aWatchListEntity = WatchListEntity.empty.copy(mediaId = aMediaId.value)
 private val aMediaEntityList = listOf(
-  MediaEntity.empty.copy(id = aMediaId),
+  MediaEntity.empty.copy(id = aMediaId.value),
 )
 private val aWatchListEntityList = listOf(
-  WatchListEntity.empty.copy(mediaId = aMediaId),
+  WatchListEntity.empty.copy(mediaId = aMediaId.value),
 )

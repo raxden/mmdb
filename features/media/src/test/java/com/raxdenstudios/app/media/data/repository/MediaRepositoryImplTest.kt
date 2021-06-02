@@ -8,6 +8,7 @@ import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.test.BaseTest
@@ -37,17 +38,17 @@ internal class MediaRepositoryImplTest : BaseTest() {
   }
   private val mediaRemoteDataSource: MediaRemoteDataSource = mockk {
     coEvery {
-      addToWatchList(aAccountLogged, aMediaType, aMovieId)
+      addToWatchList(aAccountLogged, aMediaType, aMediaId)
     } returns ResultData.Success(aMovie.copy(watchList = true))
     coEvery {
-      removeFromWatchList(aAccountLogged, aMediaType, aMovieId)
+      removeFromWatchList(aAccountLogged, aMediaType, aMediaId)
     } returns ResultData.Success(true)
     coEvery {
       medias(any(), aAccountLogged, aPage)
     } returns ResultData.Success(aPageList)
     coEvery {
-      findById(aMovieId, aMediaType)
-    } returns ResultData.Success(Media.Movie.empty.copy(id = aMovieId))
+      findById(aMediaId, aMediaType)
+    } returns ResultData.Success(Media.Movie.empty.copy(id = aMediaId))
     coEvery {
       watchList(aAccountLogged, aMediaType)
     } returns ResultData.Success(aMovies)
@@ -55,10 +56,10 @@ internal class MediaRepositoryImplTest : BaseTest() {
   private val mediaLocalDataSource: MediaLocalDataSource = mockk {
     coEvery { watchList(any()) } returns flowOf(ResultData.Success(aMovies))
     coEvery { clearWatchList() } returns ResultData.Success(true)
-    coEvery { containsInWatchList(any()) } returns false
+    coEvery { containsInWatchList(MediaId(any())) } returns false
     coEvery { addToWatchList(any<Media>()) } returns ResultData.Success(true)
     coEvery { addToWatchList(any<List<Media>>()) } returns ResultData.Success(true)
-    coEvery { removeFromWatchList(any()) } returns Unit
+    coEvery { removeFromWatchList(MediaId(any())) } returns Unit
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
 
@@ -89,7 +90,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
     testDispatcher.runBlockingTest {
       coEvery {
         mediaLocalDataSource.watchList(MediaType.MOVIE)
-      } returns flowOf(ResultData.Success(listOf(Media.Movie.withId(1L))))
+      } returns flowOf(ResultData.Success(listOf(Media.Movie.withId(MediaId(1L)))))
 
       val flow = repository.watchList(MediaType.MOVIE)
 
@@ -97,13 +98,13 @@ internal class MediaRepositoryImplTest : BaseTest() {
         listOf(
           ResultData.Success(
             listOf(
-              Media.Movie.empty.copy(id = 1L),
+              Media.Movie.empty.copy(id = MediaId(1)),
             )
           ),
           ResultData.Success(
             listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2)),
             )
           )
         ), flow.take(2).toList()
@@ -113,7 +114,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
   @Test
   fun `Given a movie, When addMovieToWatchList is called, Then movie is added to watchlist`() =
     testDispatcher.runBlockingTest {
-      val result = repository.addToWatchList(aMovieId, aMediaType)
+      val result = repository.addToWatchList(aMediaId, aMediaType)
 
       coVerify { mediaLocalDataSource.addToWatchList(aMovie.copy(watchList = true)) }
       assertEquals(ResultData.Success(aMovie.copy(watchList = true)), result)
@@ -122,16 +123,16 @@ internal class MediaRepositoryImplTest : BaseTest() {
   @Test
   fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() =
     testDispatcher.runBlockingTest {
-      val result = repository.removeFromWatchList(aMovieId, aMediaType)
+      val result = repository.removeFromWatchList(aMediaId, aMediaType)
 
-      coVerify { mediaLocalDataSource.removeFromWatchList(aMovieId) }
+      coVerify { mediaLocalDataSource.removeFromWatchList(aMediaId) }
       assertEquals(ResultData.Success(true), result)
     }
 
   @Test
   fun `Given a movies returned by the server, When movies are called, Then movies returned should be marked as watched if requires`() =
     testDispatcher.runBlockingTest {
-      coEvery { mediaLocalDataSource.containsInWatchList(2L) } returns true
+      coEvery { mediaLocalDataSource.containsInWatchList(MediaId(2L)) } returns true
 
       val result = repository.medias(MediaFilter.popularMovies, aPage, aPageSize)
 
@@ -139,8 +140,8 @@ internal class MediaRepositoryImplTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L, watchList = true),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2), watchList = true),
             ),
             page = Page(1),
           )
@@ -152,8 +153,8 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
 private val aMediaType = MediaType.MOVIE
 private val aMovies = listOf(
-  Media.Movie.empty.copy(id = 1L),
-  Media.Movie.empty.copy(id = 2L),
+  Media.Movie.empty.copy(id = MediaId(1)),
+  Media.Movie.empty.copy(id = MediaId(2)),
 )
 private val aPage = Page(1)
 private val aPageSize = PageSize.defaultSize
@@ -168,5 +169,5 @@ private val aAccountLogged = Account.Logged.empty.copy(
     accountId = aCredentialsAccountId
   )
 )
-private const val aMovieId = 1L
-private val aMovie = Media.Movie.empty.copy(id = aMovieId)
+private val aMediaId = MediaId(1)
+private val aMovie = Media.Movie.empty.copy(id = aMediaId)

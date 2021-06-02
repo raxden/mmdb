@@ -8,6 +8,7 @@ import com.raxdenstudios.app.media.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
@@ -23,17 +24,17 @@ internal class MediaRemoteDataSource(
 ) {
 
   suspend fun findById(
-    mediaId: Long,
+    mediaId: MediaId,
     mediaType: MediaType
   ): ResultData<Media> = when (mediaType) {
-    MediaType.MOVIE -> mediaGateway.detailMovie(mediaId.toString())
-    MediaType.TV_SHOW -> mediaGateway.detailTVShow(mediaId.toString())
+    MediaType.MOVIE -> mediaGateway.detailMovie(mediaId)
+    MediaType.TV_SHOW -> mediaGateway.detailTVShow(mediaId)
   }.map { dto -> mediaDtoToDomainMapper.transform(dto) }
 
   suspend fun addToWatchList(
     account: Account,
     mediaType: MediaType,
-    mediaId: Long
+    mediaId: MediaId
   ): ResultData<Media> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
     is Account.Logged -> mediaGateway.addToWatchList(
@@ -48,7 +49,7 @@ internal class MediaRemoteDataSource(
   suspend fun removeFromWatchList(
     account: Account,
     mediaType: MediaType,
-    mediaId: Long
+    mediaId: MediaId
   ): ResultData<Boolean> = when (account) {
     is Account.Guest -> ResultData.Error(UserNotLoggedException())
     is Account.Logged -> mediaGateway.removeFromWatchList(

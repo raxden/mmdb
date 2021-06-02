@@ -4,7 +4,12 @@ import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.PictureEntity
 import com.raxdenstudios.app.media.data.local.model.SizeEntity
 import com.raxdenstudios.app.media.data.local.model.VoteEntity
-import com.raxdenstudios.app.media.domain.model.*
+import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaId
+import com.raxdenstudios.app.media.domain.model.MediaType
+import com.raxdenstudios.app.media.domain.model.Picture
+import com.raxdenstudios.app.media.domain.model.Size
+import com.raxdenstudios.app.media.domain.model.Vote
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
@@ -17,7 +22,7 @@ internal class MediaToEntityMapper(
 
   override fun transform(source: Media): MediaEntity = when (source) {
     is Media.Movie -> MediaEntity(
-      id = source.id,
+      id = source.id.value,
       type = MediaType.MOVIE.ordinal,
       title = source.title,
       backdrop = pictureToEntityMapper.transform(source.backdrop),
@@ -26,7 +31,7 @@ internal class MediaToEntityMapper(
       vote = voteToEntityMapper.transform(source.vote),
     )
     is Media.TVShow -> MediaEntity(
-      id = source.id,
+      id = source.id.value,
       type = MediaType.TV_SHOW.ordinal,
       title = source.name,
       backdrop = pictureToEntityMapper.transform(source.backdrop),
@@ -44,7 +49,7 @@ internal class MediaEntityToDomainMapper(
 
   override fun transform(source: MediaEntity): Media = when (source.type) {
     MediaType.MOVIE.ordinal -> Media.Movie(
-      id = source.id,
+      id = MediaId(source.id),
       title = source.title,
       backdrop = pictureEntityToDomainMapper.transform(source.backdrop),
       poster = pictureEntityToDomainMapper.transform(source.poster),
@@ -53,7 +58,7 @@ internal class MediaEntityToDomainMapper(
       watchList = false,
     )
     MediaType.TV_SHOW.ordinal -> Media.TVShow(
-      id = source.id,
+      id = MediaId(source.id),
       name = source.title,
       backdrop = pictureEntityToDomainMapper.transform(source.backdrop),
       poster = pictureEntityToDomainMapper.transform(source.poster),

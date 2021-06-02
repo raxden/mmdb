@@ -6,6 +6,7 @@ import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.coMap
@@ -38,7 +39,7 @@ internal class MediaRepositoryImpl(
   }.distinctUntilChanged()
 
   override suspend fun addToWatchList(
-    mediaId: Long,
+    mediaId: MediaId,
     mediaType: MediaType
   ): ResultData<Media> = when (val account = accountLocalDataSource.getAccount()) {
     is Account.Guest ->
@@ -56,7 +57,7 @@ internal class MediaRepositoryImpl(
     mediaLocalDataSource.addToWatchList(medias)
 
   override suspend fun removeFromWatchList(
-    mediaId: Long,
+    mediaId: MediaId,
     mediaType: MediaType
   ): ResultData<Boolean> = when (val account = accountLocalDataSource.getAccount()) {
     is Account.Guest -> {

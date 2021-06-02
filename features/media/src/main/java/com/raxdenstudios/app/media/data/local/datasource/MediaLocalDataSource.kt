@@ -7,6 +7,7 @@ import com.raxdenstudios.app.media.data.local.mapper.MediaEntityToDomainMapper
 import com.raxdenstudios.app.media.data.local.mapper.MediaToEntityMapper
 import com.raxdenstudios.app.media.data.local.mapper.MediaToWatchListEntityMapper
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.runCatching
@@ -46,10 +47,10 @@ internal class MediaLocalDataSource(
     true
   }
 
-  suspend fun removeFromWatchList(mediaId: Long) {
-    watchListDao.delete(mediaId)
+  suspend fun removeFromWatchList(mediaId: MediaId) {
+    watchListDao.delete(mediaId.value)
   }
 
-  suspend fun containsInWatchList(mediaId: Long): Boolean =
-    watchListDao.find(mediaId) != null
+  suspend fun containsInWatchList(mediaId: MediaId): Boolean =
+    watchListDao.find(mediaId.value) != null
 }

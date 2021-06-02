@@ -5,7 +5,7 @@ import org.threeten.bp.LocalDate
 
 sealed class Media {
 
-  abstract val id: Long
+  abstract val id: MediaId
   abstract val backdrop: Picture
   abstract val poster: Picture
   abstract val vote: Vote
@@ -17,7 +17,7 @@ sealed class Media {
   }
 
   data class Movie(
-    override val id: Long,
+    override val id: MediaId,
     override val backdrop: Picture,
     override val poster: Picture,
     override val vote: Vote,
@@ -27,7 +27,7 @@ sealed class Media {
   ) : Media() {
 
     companion object {
-      fun withId(id: Long) = Movie(
+      fun withId(id: MediaId) = Movie(
         id = id,
         title = "",
         backdrop = Picture.Empty,
@@ -39,7 +39,7 @@ sealed class Media {
 
       @VisibleForTesting
       val empty = Movie(
-        id = 0L,
+        id = MediaId(0L),
         title = "",
         backdrop = Picture.Empty,
         poster = Picture.Empty,
@@ -51,7 +51,7 @@ sealed class Media {
   }
 
   data class TVShow(
-    override val id: Long,
+    override val id: MediaId,
     override val backdrop: Picture,
     override val poster: Picture,
     override val vote: Vote,

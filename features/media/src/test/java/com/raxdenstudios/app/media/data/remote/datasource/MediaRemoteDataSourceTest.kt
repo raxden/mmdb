@@ -8,6 +8,7 @@ import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.model.APIVersion
@@ -41,9 +42,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
     coEvery {
       watchListMovies(aAccountLogged.credentials.accountId)
     } returns ResultData.Success(aPageDtoList)
-    coEvery {
-      detailMovie(aMediaId.toString())
-    } returns ResultData.Success(aMediaDto)
+    coEvery { detailMovie(aMediaId) } returns ResultData.Success(aMediaDto)
     coEvery {
       addToWatchList(aTMDBAccountId, "movie", aMediaId)
     } returns ResultData.Success(true)
@@ -73,7 +72,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       val result = dataSource.findById(aMediaId, aMediaType)
 
       assertEquals(
-        ResultData.Success(Media.Movie.empty.copy(id = 1L)),
+        ResultData.Success(Media.Movie.empty.copy(id = MediaId(1))),
         result
       )
     }
@@ -86,7 +85,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       assertEquals(
         ResultData.Success(
           Media.Movie.empty.copy(
-            id = 1L,
+            id = MediaId(1),
             watchList = true
           )
         ),
@@ -113,8 +112,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       assertEquals(
         ResultData.Success(
           listOf(
-            Media.Movie.empty.copy(id = 1L, watchList = true),
-            Media.Movie.empty.copy(id = 2L, watchList = true)
+            Media.Movie.empty.copy(id = MediaId(1), watchList = true),
+            Media.Movie.empty.copy(id = MediaId(2), watchList = true)
           )
         ),
         result
@@ -131,8 +130,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2)),
             ),
             page = Page(1)
           )
@@ -150,8 +149,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2)),
             ),
             page = Page(1)
           )
@@ -169,8 +168,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2)),
             ),
             page = Page(1)
           )
@@ -188,8 +187,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L),
-              Media.Movie.empty.copy(id = 2L),
+              Media.Movie.empty.copy(id = MediaId(1)),
+              Media.Movie.empty.copy(id = MediaId(2)),
             ),
             page = Page(1)
           )
@@ -207,8 +206,8 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
         ResultData.Success(
           PageList(
             items = listOf(
-              Media.Movie.empty.copy(id = 1L, watchList = true),
-              Media.Movie.empty.copy(id = 2L, watchList = true),
+              Media.Movie.empty.copy(id = MediaId(1), watchList = true),
+              Media.Movie.empty.copy(id = MediaId(2), watchList = true),
             ),
             page = Page(1)
           )
@@ -228,7 +227,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 }
 
 private const val aTMDBAccountId = "aTMDBAccountId"
-private const val aMediaId = 1L
+private val aMediaId = MediaId(1L)
 private val aMediaDto = MediaDto.Movie.empty.copy(id = 1)
 private val aMediaType = MediaType.MOVIE
 private val aPageDtoList = listOf(
