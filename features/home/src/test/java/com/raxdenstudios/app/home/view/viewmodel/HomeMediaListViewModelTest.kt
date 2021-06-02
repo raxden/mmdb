@@ -13,6 +13,7 @@ import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -21,7 +22,11 @@ import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.provider.StringProvider
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
@@ -88,14 +93,14 @@ internal class HomeMediaListViewModelTest : BaseTest() {
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
                   medias = listOf(
-                    MediaListItemModel.empty.copy(id = 1L),
-                    MediaListItemModel.empty.copy(id = 2L),
+                    MediaListItemModel.empty.copy(id = MediaId(1L)),
+                    MediaListItemModel.empty.copy(id = MediaId(2L)),
                   )
                 ),
                 HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
                   medias = listOf(
-                    MediaListItemModel.empty.copy(id = 1L),
-                    MediaListItemModel.empty.copy(id = 2L),
+                    MediaListItemModel.empty.copy(id = MediaId(1L)),
+                    MediaListItemModel.empty.copy(id = MediaId(2L)),
                   )
                 )
               )
@@ -112,7 +117,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
       viewModel.addMediaToWatchList(
         aHomeModel,
-        MediaListItemModel.empty.copy(id = 1L),
+        MediaListItemModel.empty.copy(id = MediaId(1L)),
       )
 
       coVerify {
@@ -123,19 +128,19 @@ internal class HomeMediaListViewModelTest : BaseTest() {
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
                   medias = listOf(
                     MediaListItemModel.empty.copy(
-                      id = 1L,
+                      id = MediaId(1L),
                       watchButtonModel = WatchButtonModel.Selected
                     ),
-                    MediaListItemModel.empty.copy(id = 2L),
+                    MediaListItemModel.empty.copy(id = MediaId(2L)),
                   )
                 ),
                 HomeModuleModel.CarouselMedias.TopRated.empty.copy(
                   medias = listOf(
                     MediaListItemModel.empty.copy(
-                      id = 1L,
+                      id = MediaId(1L),
                       watchButtonModel = WatchButtonModel.Selected
                     ),
-                    MediaListItemModel.empty.copy(id = 2L),
+                    MediaListItemModel.empty.copy(id = MediaId(2L)),
                   )
                 )
               )
@@ -148,8 +153,8 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 }
 
 private val aMediaListItemModelList = listOf(
-  MediaListItemModel.empty.copy(id = 1L),
-  MediaListItemModel.empty.copy(id = 2L)
+  MediaListItemModel.empty.copy(id = MediaId(1L)),
+  MediaListItemModel.empty.copy(id = MediaId(2L))
 )
 private val aCarouselMediasPopular = HomeModuleModel.CarouselMedias.Popular.empty.copy(
   medias = aMediaListItemModelList
@@ -164,8 +169,8 @@ private val aHomeModel = HomeMediaListModel.empty.copy(
   )
 )
 private val aMovies = listOf(
-  Media.Movie.empty.copy(id = 1),
-  Media.Movie.empty.copy(id = 2),
+  Media.Movie.empty.copy(id = MediaId(1)),
+  Media.Movie.empty.copy(id = MediaId(2)),
 )
 private val aHomeModules = listOf(
   HomeModule.popularMovies.copy(medias = aMovies),

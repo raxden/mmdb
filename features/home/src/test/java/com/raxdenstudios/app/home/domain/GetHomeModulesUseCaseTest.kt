@@ -6,6 +6,7 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.DispatcherFacade
@@ -55,11 +56,11 @@ internal class GetHomeModulesUseCaseTest : BaseTest() {
     useCase.execute().collect { result ->
       assertEquals(
         listOf(
-          HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
-          HomeModule.NowPlaying(listOf(Media.Movie.empty.copy(id = 1))),
-          HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
-          HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = 1))),
-          HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
+          HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+          HomeModule.NowPlaying(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+          HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+          HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+          HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
         ), result
       )
     }
@@ -75,11 +76,11 @@ internal class GetHomeModulesUseCaseTest : BaseTest() {
       useCase.execute().collect { result ->
         assertEquals(
           listOf(
-            HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
+            HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
             HomeModule.NowPlaying(emptyList()),
-            HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
-            HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = 1))),
-            HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = 1))),
+            HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+            HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+            HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
           ), result
         )
       }
@@ -94,5 +95,5 @@ private val aModules = listOf(
   HomeModule.watchListMovies,
 )
 private val aPage = Page(1)
-private val aMedias = listOf(Media.Movie.empty.copy(id = 1))
+private val aMedias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
 private val aPageListOfMedias = PageList<Media>(aMedias, aPage)

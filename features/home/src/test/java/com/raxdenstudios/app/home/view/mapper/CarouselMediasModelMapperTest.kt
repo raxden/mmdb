@@ -5,6 +5,7 @@ import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.provider.StringProvider
@@ -38,7 +39,7 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
-        medias = listOf(MediaListItemModel.empty.copy(id = 1L))
+        medias = listOf(MediaListItemModel.empty.copy(id = MediaId(1L)))
       ),
       result
     )
@@ -52,7 +53,7 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias.Popular.empty.copy(
-        medias = listOf(MediaListItemModel.empty.copy(id = 1L))
+        medias = listOf(MediaListItemModel.empty.copy(id = MediaId(1L)))
       ),
       result
     )
@@ -66,7 +67,7 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias.TopRated.empty.copy(
-        medias = listOf(MediaListItemModel.empty.copy(id = 1L))
+        medias = listOf(MediaListItemModel.empty.copy(id = MediaId(1L)))
       ),
       result
     )
@@ -80,7 +81,7 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias.Upcoming.empty.copy(
-        medias = listOf(MediaListItemModel.empty.copy(id = 1L))
+        medias = listOf(MediaListItemModel.empty.copy(id = MediaId(1L)))
       ),
       result
     )
@@ -94,7 +95,7 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 
     assertEquals(
       HomeModuleModel.CarouselMedias.WatchList.empty.copy(
-        medias = listOf(MediaListItemModel.empty.copy(id = 1L))
+        medias = listOf(MediaListItemModel.empty.copy(id = MediaId(1L)))
       ),
       result
     )
@@ -102,5 +103,5 @@ internal class CarouselMediasModelMapperTest : BaseTest() {
 }
 
 private val aMedias = listOf(
-  Media.Movie.empty.copy(id = 1L)
+  Media.Movie.empty.copy(id = MediaId(1L))
 )

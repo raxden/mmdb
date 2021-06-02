@@ -2,6 +2,7 @@ package com.raxdenstudios.app.media.data.remote.mapper
 
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.domain.model.Media
+import com.raxdenstudios.app.media.domain.model.MediaId
 
 internal class MovieDtoToDomainMapper(
   private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
@@ -12,7 +13,7 @@ internal class MovieDtoToDomainMapper(
   fun transform(source: MediaDto.Movie): Media = source.toDomain()
 
   private fun MediaDto.Movie.toDomain() = Media.Movie(
-    id = id.toLong(),
+    id = MediaId(id.toLong()),
     title = title,
     backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
     poster = pictureDtoToDomainMapper.transform(poster_path),
