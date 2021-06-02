@@ -2,6 +2,7 @@ package com.raxdenstudios.app.media.data.repository
 
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -13,9 +14,9 @@ interface MediaRepository {
 
   fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
   fun observeWatchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
-  suspend fun addToWatchList(mediaId: Long, mediaType: MediaType): ResultData<Media>
+  suspend fun addToWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Media>
   suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean>
-  suspend fun removeFromWatchList(mediaId: Long, mediaType: MediaType): ResultData<Boolean>
+  suspend fun removeFromWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Boolean>
 
   suspend fun medias(
     mediaFilter: MediaFilter,

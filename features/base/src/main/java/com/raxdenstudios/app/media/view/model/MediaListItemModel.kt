@@ -1,10 +1,11 @@
 package com.raxdenstudios.app.media.view.model
 
 import androidx.annotation.VisibleForTesting
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 
 data class MediaListItemModel(
-  val id: Long,
+  val id: MediaId,
   val mediaType: MediaType,
   val title: String,
   val backdrop: String,
@@ -17,7 +18,7 @@ data class MediaListItemModel(
   companion object {
     @VisibleForTesting
     val empty = MediaListItemModel(
-      id = 0L,
+      id = MediaId(0L),
       mediaType = MediaType.MOVIE,
       title = "",
       backdrop = "",
