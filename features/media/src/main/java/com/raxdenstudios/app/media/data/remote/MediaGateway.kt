@@ -4,6 +4,7 @@ import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.data.remote.model.WatchListDto
 import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
@@ -76,21 +77,21 @@ internal class MediaGateway(
   suspend fun addToWatchList(
     accountId: String,
     mediaType: String,
-    mediaId: Long
+    mediaId: MediaId
   ): ResultData<Boolean> =
     mediaV3Service.watchList(
       accountId,
-      WatchListDto.Request.Add(mediaId, mediaType)
+      WatchListDto.Request.Add(mediaId.value, mediaType)
     ).toResultData("Error occurred during adding movie to watch list") { true }
 
   suspend fun removeFromWatchList(
     accountId: String,
     mediaType: String,
-    mediaId: Long
+    mediaId: MediaId
   ): ResultData<Boolean> =
     mediaV3Service.watchList(
       accountId,
-      WatchListDto.Request.Remove(mediaId, mediaType)
+      WatchListDto.Request.Remove(mediaId.value, mediaType)
     ).toResultData("Error occurred during adding movie to watch list") { true }
 
   suspend fun popularMovies(
@@ -127,11 +128,11 @@ internal class MediaGateway(
     mediaV3Service.upcoming(page)
       .toResultData("Error occurred during fetching upcoming movies")
 
-  suspend fun detailMovie(mediaId: String): ResultData<MediaDto> =
-    mediaV3Service.detailMovie(mediaId)
+  suspend fun detailMovie(mediaId: MediaId): ResultData<MediaDto> =
+    mediaV3Service.detailMovie(mediaId.value.toString())
       .toResultData("Error ocurred during fetching detail movie with id: $mediaId")
 
-  suspend fun detailTVShow(mediaId: String): ResultData<MediaDto> =
-    mediaV3Service.detailTVShow(mediaId)
+  suspend fun detailTVShow(mediaId: MediaId): ResultData<MediaDto> =
+    mediaV3Service.detailTVShow(mediaId.value.toString())
       .toResultData("Error ocurred during fetching detail tvShow with id: $mediaId")
 }

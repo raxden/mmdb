@@ -12,6 +12,7 @@ import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
+import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -71,7 +72,7 @@ internal class MediaListViewModelTest : BaseTest() {
   @Test
   fun `when movie is added to watchlist, movie is replaced in model`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
-    val itemToAddToWatchList = MediaListItemModel.empty.copy(id = 2L)
+    val itemToAddToWatchList = MediaListItemModel.empty.copy(id = MediaId(2L))
     viewModel.state.observeForever(stateObserver)
 
     viewModel.addMovieToWatchList(model, itemToAddToWatchList)
@@ -81,8 +82,11 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
-              MediaListItemModel.empty.copy(id = 2L, watchButtonModel = WatchButtonModel.Selected),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
+              MediaListItemModel.empty.copy(
+                id = MediaId(2L),
+                watchButtonModel = WatchButtonModel.Selected
+              ),
             )
           )
         )
@@ -94,7 +98,7 @@ internal class MediaListViewModelTest : BaseTest() {
   fun `when movie is removed from watchlist, movie is replaced in model`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
     val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(
-      id = 2L, watchButtonModel = WatchButtonModel.Selected
+      id = MediaId(2L), watchButtonModel = WatchButtonModel.Selected
     )
     viewModel.state.observeForever(stateObserver)
 
@@ -105,9 +109,9 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(
-                id = 2L,
+                id = MediaId(2L),
                 watchButtonModel = WatchButtonModel.Unselected
               ),
             )
@@ -130,8 +134,8 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
-              MediaListItemModel.empty.copy(id = 2L),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
+              MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
           )
         )
@@ -152,8 +156,8 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
-              MediaListItemModel.empty.copy(id = 2L),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
+              MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
           )
         )
@@ -176,8 +180,8 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
-              MediaListItemModel.empty.copy(id = 2L),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
+              MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
           )
         )
@@ -187,10 +191,10 @@ internal class MediaListViewModelTest : BaseTest() {
         MediaListUIState.Content(
           MediaListModel.empty.copy(
             media = listOf(
-              MediaListItemModel.empty.copy(id = 1L),
-              MediaListItemModel.empty.copy(id = 2L),
-              MediaListItemModel.empty.copy(id = 3L),
-              MediaListItemModel.empty.copy(id = 4L),
+              MediaListItemModel.empty.copy(id = MediaId(1L)),
+              MediaListItemModel.empty.copy(id = MediaId(2L)),
+              MediaListItemModel.empty.copy(id = MediaId(3L)),
+              MediaListItemModel.empty.copy(id = MediaId(4L)),
             )
           )
         )
@@ -212,16 +216,16 @@ private val aGetMoviesUseCaseFirstPageParams =
 private val aGetMoviesUseCaseSecondPageParams =
   GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
 private val aFirstPageMoviesModel = listOf(
-  MediaListItemModel.empty.copy(id = 1L),
-  MediaListItemModel.empty.copy(id = 2L),
+  MediaListItemModel.empty.copy(id = MediaId(1L)),
+  MediaListItemModel.empty.copy(id = MediaId(2L)),
 )
 private val aFirstPageMovies = listOf(
-  Media.Movie.empty.copy(id = 1L),
-  Media.Movie.empty.copy(id = 2L),
+  Media.Movie.empty.copy(id = MediaId(1)),
+  Media.Movie.empty.copy(id = MediaId(2)),
 )
 private val aSecondPageMovies = listOf(
-  Media.Movie.empty.copy(id = 3L),
-  Media.Movie.empty.copy(id = 4L),
+  Media.Movie.empty.copy(id = MediaId(3)),
+  Media.Movie.empty.copy(id = MediaId(4)),
 )
 private val aFirstPageList = PageList<Media>(
   items = aFirstPageMovies,
