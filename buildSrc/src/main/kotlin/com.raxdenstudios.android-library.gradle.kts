@@ -8,16 +8,16 @@ plugins {
 
 android {
 
-  compileSdkVersion(Versions.compileSdk)
+  compileSdk = Versions.compileSdk
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
 
   defaultConfig {
-    minSdkVersion(Versions.minSdk)
-    targetSdkVersion(Versions.targetSdk)
+    minSdk = Versions.minSdk
+    targetSdk = Versions.targetSdk
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFile("consumer-rules.pro")
@@ -34,8 +34,10 @@ android {
   }
 
   packagingOptions {
-    exclude("META-INF/AL2.0")
-    exclude("META-INF/LGPL2.1")
-    exclude("META-INF/*.kotlin_module")
+    resources {
+      excludes.add("META-INF/AL2.0")
+      excludes.add("META-INF/LGPL2.1")
+      excludes.add("META-INF/*.kotlin_module")
+    }
   }
 }

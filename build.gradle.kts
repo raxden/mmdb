@@ -20,7 +20,7 @@ plugins {
   id("com.vanniktech.android.junit.jacoco").version("0.16.0")
   id("com.adarshr.test-logger").version("3.0.0")
   id("io.gitlab.arturbosch.detekt").version("1.15.0")
-  id("com.github.triplet.play").version("3.4.0") apply false
+  id("com.github.triplet.play").version("3.6.0") apply false
 }
 
 releasing {

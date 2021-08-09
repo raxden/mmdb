@@ -1,7 +1,7 @@
 object Versions {
   const val minSdk = 21
-  const val compileSdk = 29
-  const val targetSdk = 29
+  const val compileSdk = 30
+  const val targetSdk = 30
 
   const val commonsVersion = "4.9.4"
 
