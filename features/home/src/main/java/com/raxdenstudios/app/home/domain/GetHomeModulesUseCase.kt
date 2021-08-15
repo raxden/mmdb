@@ -30,9 +30,10 @@ internal class GetHomeModulesUseCase(
     homeModuleRepository.observeModules()
       .map { modules ->
         withContext(dispatcherFacade.io()) {
-          modules
-            .map { module -> async { fetchMediasFromModule(module) } }
-            .map { deferred -> deferred.await() }
+          modules.map { homeModule ->
+            val deferred = async { fetchMediasFromModule(homeModule) }
+            deferred.await()
+          }
         }
       }
 
