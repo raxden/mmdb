@@ -551,6 +551,7 @@ style:
   MandatoryBracesLoops:
     active: false
   MaxLineLength:
+    excludes: [ '**/test/**', '**/*.Test.kt' ]
     active: true
     maxLineLength: 120
     excludePackageStatements: true
