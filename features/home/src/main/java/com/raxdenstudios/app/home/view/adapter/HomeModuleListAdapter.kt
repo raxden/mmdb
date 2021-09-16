@@ -1,25 +1,21 @@
 package com.raxdenstudios.app.home.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
-import com.raxdenstudios.app.home.R
-import com.raxdenstudios.app.home.view.component.HomeCarouselMediasModuleView
-import com.raxdenstudios.app.home.view.component.HomeCarouselNowPlayingMediasModuleView
+import com.raxdenstudios.app.home.databinding.HomeCarouselMediasModuleListItemBinding
+import com.raxdenstudios.app.home.databinding.HomeCarouselNowPlayingModuleListItemBinding
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 
 internal class HomeModuleListAdapter :
-  BaseListAdapter<HomeModuleModel, HomeModuleListAdapter.HomeListAdapterHolder>(
+  BaseListAdapter<HomeModuleModel, HomeModuleListAdapterHolder>(
     areItemsTheSame = { oldItem, newItem -> oldItem == newItem }
   ) {
 
-  companion object {
-    private val CAROUSEL_MEDIAS_LAYOUT = R.layout.home_carousel_medias_module_list_item
-    private val NOW_PLAYING_LAYOUT = R.layout.home_carousel_now_playing_module_list_item
+  private enum class ViewType {
+    CAROUSEL_MEDIAS_LAYOUT, NOW_PLAYING_LAYOUT
   }
 
   var onCarouselAddToWatchListClickListener: (
@@ -45,73 +41,43 @@ internal class HomeModuleListAdapter :
   override fun getItemId(position: Int): Long = getItem(position).getModuleItemId()
 
   override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-    is HomeModuleModel.CarouselMedias.NowPlaying -> NOW_PLAYING_LAYOUT
-    is HomeModuleModel.CarouselMedias.Popular -> CAROUSEL_MEDIAS_LAYOUT
-    is HomeModuleModel.CarouselMedias.TopRated -> CAROUSEL_MEDIAS_LAYOUT
-    is HomeModuleModel.CarouselMedias.Upcoming -> CAROUSEL_MEDIAS_LAYOUT
-    is HomeModuleModel.CarouselMedias.WatchList -> CAROUSEL_MEDIAS_LAYOUT
+    is HomeModuleModel.CarouselMedias.NowPlaying -> ViewType.NOW_PLAYING_LAYOUT.ordinal
+    else -> ViewType.CAROUSEL_MEDIAS_LAYOUT.ordinal
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListAdapterHolder {
-    val view = inflateView(parent, viewType)
-    return HomeListAdapterHolder(view)
-  }
-
-  private fun inflateView(parent: ViewGroup, viewType: Int) =
-    LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-
-  override fun onBindViewHolder(holder: HomeListAdapterHolder, position: Int) =
-    holder.bind(getItem(position))
-
-  inner class HomeListAdapterHolder(
-    private val view: View
-  ) : RecyclerView.ViewHolder(view) {
-
-    fun bind(model: HomeModuleModel) = when (model) {
-      is HomeModuleModel.CarouselMedias.NowPlaying -> bindNowPlayingCarousel(model)
-      is HomeModuleModel.CarouselMedias.Popular -> bindCarousel(model)
-      is HomeModuleModel.CarouselMedias.TopRated -> bindCarousel(model)
-      is HomeModuleModel.CarouselMedias.Upcoming -> bindCarousel(model)
-      is HomeModuleModel.CarouselMedias.WatchList -> bindCarousel(model)
-    }
-
-    private fun bindNowPlayingCarousel(model: HomeModuleModel.CarouselMedias.NowPlaying) {
-      view.findViewById<HomeCarouselNowPlayingMediasModuleView>(R.id.item_view).run {
-        onSeeAllClickListener = { carouselMedias ->
-          onCarouselSeeAllClickListener(carouselMedias)
-        }
-        onMediaClickListener = { carouselMedias, mediaItemModel ->
-          onCarouselMediaClickListener(carouselMedias, mediaItemModel)
-        }
-        onAddToWatchListClickListener = { carouselMedias, mediaListItemModel ->
-          onCarouselAddToWatchListClickListener(carouselMedias, mediaListItemModel)
-        }
-        onRemoveFromWatchListClickListener = { carouselMedias, mediaListItemModel ->
-          onCarouselRemoveFromWatchListClickListener(carouselMedias, mediaListItemModel)
-        }
-        setModel(model)
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeModuleListAdapterHolder {
+    val inflater = LayoutInflater.from(parent.context)
+    val holder = when (ViewType.values()[viewType]) {
+      ViewType.NOW_PLAYING_LAYOUT -> {
+        val binding = HomeCarouselNowPlayingModuleListItemBinding.inflate(inflater, parent, false)
+        HomeModuleListAdapterHolder.HomeCarouselNowPlayingModuleListAdapter(binding)
+      }
+      ViewType.CAROUSEL_MEDIAS_LAYOUT -> {
+        val binding = HomeCarouselMediasModuleListItemBinding.inflate(inflater, parent, false)
+        HomeModuleListAdapterHolder.HomeCarouselMediasModuleListAdapterHolder(binding)
       }
     }
+    return holder
+  }
 
-    private fun bindCarousel(model: HomeModuleModel.CarouselMedias) {
-      view.findViewById<HomeCarouselMediasModuleView>(R.id.item_view).run {
-        onSeeAllClickListener = { carouselMedias ->
-          onCarouselSeeAllClickListener(carouselMedias)
-        }
-        onMediaClickListener = { carouselMedias, mediaItemModel ->
-          onCarouselMediaClickListener(carouselMedias, mediaItemModel)
-        }
-        onAddToWatchListClickListener = { carouselMedias, mediaListItemModel ->
-          onCarouselAddToWatchListClickListener(carouselMedias, mediaListItemModel)
-        }
-        onRemoveFromWatchListClickListener = { carouselMedias, mediaListItemModel ->
-          onCarouselRemoveFromWatchListClickListener(carouselMedias, mediaListItemModel)
-        }
-        onMediaTypeFilterChanged = { carouselMedias, mediaFilterModel ->
-          onCarouselFilterChanged(carouselMedias, mediaFilterModel)
-        }
-        setModel(model)
+  override fun onBindViewHolder(holder: HomeModuleListAdapterHolder, position: Int) =
+    when (holder) {
+      is HomeModuleListAdapterHolder.HomeCarouselMediasModuleListAdapterHolder -> {
+        holder.onCarouselAddToWatchListClickListener = onCarouselAddToWatchListClickListener
+        holder.onCarouselRemoveFromWatchListClickListener =
+          onCarouselRemoveFromWatchListClickListener
+        holder.onCarouselMediaClickListener = onCarouselMediaClickListener
+        holder.onCarouselSeeAllClickListener = onCarouselSeeAllClickListener
+        holder.onCarouselFilterChanged = onCarouselFilterChanged
+        holder.bind(getItem(position) as HomeModuleModel.CarouselMedias)
+      }
+      is HomeModuleListAdapterHolder.HomeCarouselNowPlayingModuleListAdapter -> {
+        holder.onCarouselAddToWatchListClickListener = onCarouselAddToWatchListClickListener
+        holder.onCarouselRemoveFromWatchListClickListener =
+          onCarouselRemoveFromWatchListClickListener
+        holder.onCarouselMediaClickListener = onCarouselMediaClickListener
+        holder.onCarouselSeeAllClickListener = onCarouselSeeAllClickListener
+        holder.bind(getItem(position) as HomeModuleModel.CarouselMedias.NowPlaying)
       }
     }
-  }
 }
