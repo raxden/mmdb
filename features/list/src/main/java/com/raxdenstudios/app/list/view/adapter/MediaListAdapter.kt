@@ -1,12 +1,10 @@
 package com.raxdenstudios.app.list.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseListAdapter
-import com.raxdenstudios.app.list.R
-import com.raxdenstudios.app.media.view.component.MediaListItemView
+import com.raxdenstudios.app.list.databinding.MediaListItemBinding
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
 
@@ -19,31 +17,30 @@ internal class MediaListAdapter :
   var onRemoveMovieFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
   var onMovieClickListener: (MediaListItemModel) -> Unit = {}
 
-  override fun getItemViewType(position: Int) = R.layout.media_list_item
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaListAdapterHolder {
-    val view = inflateView(parent, viewType)
-    return MediaListAdapterHolder(view)
+    val inflater = LayoutInflater.from(parent.context)
+    val binding = MediaListItemBinding.inflate(inflater, parent, false)
+    return MediaListAdapterHolder(binding)
   }
-
-  private fun inflateView(parent: ViewGroup, viewType: Int) =
-    LayoutInflater.from(parent.context).inflate(viewType, parent, false)
 
   override fun onBindViewHolder(holder: MediaListAdapterHolder, position: Int) {
     holder.bind(getItem(position))
   }
 
   inner class MediaListAdapterHolder(
-    private val view: View
-  ) : RecyclerView.ViewHolder(view) {
+    private val binding: MediaListItemBinding
+  ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: MediaListItemModel) {
-      val component = view.findViewById<MediaListItemView>(R.id.item_view)
-      component.setSafeOnClickListener { onMovieClickListener(item) }
-      component.onAddToWatchListClickListener = { onAddMovieToWatchListClickListener(item) }
-      component.onRemoveFromWatchListClickListener =
+      binding.populate(item)
+    }
+
+    private fun MediaListItemBinding.populate(item: MediaListItemModel) {
+      itemView.setSafeOnClickListener { onMovieClickListener(item) }
+      itemView.onAddToWatchListClickListener = { onAddMovieToWatchListClickListener(item) }
+      itemView.onRemoveFromWatchListClickListener =
         { onRemoveMovieFromWatchListClickListener(item) }
-      component.setModel(item)
+      itemView.setModel(item)
     }
   }
 }
