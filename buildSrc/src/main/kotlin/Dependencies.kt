@@ -53,7 +53,7 @@ object FirebaseLibraries {
 object Libraries {
   // Koin
   const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
-  const val koinAndroidExtensions = "io.insert-koin:koin-android-ext:${Versions.koin}"
+//  const val koinAndroidExtensions = "io.insert-koin:koin-android-ext:${Versions.koin}"
 
   // Room
   const val roomRunTime = "androidx.room:room-runtime:${Versions.room}"

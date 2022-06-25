@@ -4,7 +4,7 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.tmdb.data.repository.AuthenticationRepository
 import com.raxdenstudios.app.tmdb.domain.model.AccessToken
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.map
+import com.raxdenstudios.commons.ext.map
 
 internal class ConnectUseCase(
   private val authenticationRepository: AuthenticationRepository

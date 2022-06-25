@@ -3,7 +3,7 @@ package com.raxdenstudios.app.tmdb.data.remote.datasource
 import com.raxdenstudios.app.tmdb.data.remote.AuthenticationGateway
 import com.raxdenstudios.app.tmdb.domain.model.AccessToken
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.map
+import com.raxdenstudios.commons.ext.map
 
 internal class AuthenticationRemoteDataSource(
   private val gateway: AuthenticationGateway

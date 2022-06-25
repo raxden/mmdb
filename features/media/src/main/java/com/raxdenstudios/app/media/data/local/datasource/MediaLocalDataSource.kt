@@ -10,7 +10,7 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.runCatching
+import com.raxdenstudios.commons.ext.runCatching
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
