@@ -5,10 +5,15 @@ name: Continuous Integration
 # Workflow events: Controls when the action will run.
 # More info: https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on pull request events but only for the master branch
+  create:
+    branches:
+      - 'release/**'
   push:
     branches:
       - master
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches:
       - '*'
@@ -19,6 +24,21 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
+  info:
+    name: Preliminary Information
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Information
+        run: |
+          echo "The job was automatically triggered by a ${{ github.event_name }} event."
+          echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+          echo "  "
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.sha = ${{ github.sha }}"
+          echo "  "
+
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
@@ -27,27 +47,42 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
 
-      - uses: actions/cache@v2 # https://github.com/actions/cache/blob/main/examples.md#java---gradle
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5.2
+
+      - name: Preparing variables
+        env:
+          IS_MASTER_BRANCH: ${{ steps.branch-name.outputs.current_branch == 'master' }}
+          IS_RELEASE: ${{ startsWith(steps.branch-name.outputs.current_branch, 'releases/') }}
+        run: |
+          echo "isMasterBranch=${IS_MASTER_BRANCH}" >> $GITHUB_ENV
+          echo "isRelease=${IS_RELEASE}" >> $GITHUB_ENV
+          echo "hasFilesChanged=${HAS_FILES_CHANGED}" >> $GITHUB_ENV
+
+      - name: Detekt
+        if: env.hasFilesChanged == 'true'
+        run: ./gradlew detekt
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest jacocoTestReportDebug --stacktrace
+        if: env.hasFilesChanged == 'true'
+        run: ./gradlew testDebugUnitTest --stacktrace
 
-      - name: Upload to Codecov
+      - name: Jacoco Reports :${{ matrix.module }}
+        if: env.isMasterBranch == 'true' || env.isRelease == 'true'
+        run: ./gradlew jacocoTestReportDebug
+
+      - name: Uploading reports to Codecov
+        if: env.isMasterBranch == 'true' || env.isRelease == 'true'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        uses: codecov/codecov-action@v1 # https://github.com/codecov/codecov-action
+        uses: codecov/codecov-action@v1
 
 #  instrumental:
 #    name: Run Android Instrumental Tests
@@ -72,12 +107,59 @@ jobs:
 #            ~/.gradle/caches
 #            ~/.gradle/wrapper
 #          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#
-#      - name: Instrumental tests
-#        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
-#        with:
-#          api-level: ${{ matrix.api-level }}
-#          disable-animations: true
-#          script: ./gradlew connectedAndroidTest --stacktrace
+  #          restore-keys: |
+  #            ${{ runner.os }}-gradle-
+  #
+  #      - name: Instrumental tests
+  #        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
+  #        with:
+  #          api-level: ${{ matrix.api-level }}
+  #          disable-animations: true
+  #          script: ./gradlew connectedAndroidTest --stacktrace
+
+  deploy-firebase:
+    name: Build & Upload to Firebase App Distribution
+    if: github.event.pull_request.base.ref == 'master' || startsWith(github.ref, 'refs/heads/release/')
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: Build
+        run: bash ./gradlew assembleRelease
+
+      - name: Deploy in Firebase App Distribution
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: bash ./gradlew appDistributionUploadRelease --stacktrace
+
+  deploy-playstore:
+    name: Build & Upload to Playstore
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: Publish
+        env:
+          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
+        run: bash ./gradlew publishBundle --stacktrace
