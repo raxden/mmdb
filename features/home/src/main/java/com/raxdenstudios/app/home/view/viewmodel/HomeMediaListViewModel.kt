@@ -16,12 +16,11 @@ import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
+import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
-import com.raxdenstudios.commons.getValueOrDefault
-import com.raxdenstudios.commons.map
-import com.raxdenstudios.commons.onFailure
-import kotlinx.coroutines.flow.collect
 
 internal sealed class HomeMediaListUIState {
   object Loading : HomeMediaListUIState()
@@ -40,10 +39,11 @@ internal class HomeMediaListViewModel(
 ) : BaseViewModel() {
 
   private val mState = MutableLiveData<HomeMediaListUIState>()
-  val state: LiveData<HomeMediaListUIState> get() {
-    if (mState.value == null) loadData()
-    return mState
-  }
+  val state: LiveData<HomeMediaListUIState>
+    get() {
+      if (mState.value == null) loadData()
+      return mState
+    }
 
   fun loadData() = viewModelScope.safeLaunch {
     mState.value = HomeMediaListUIState.Loading

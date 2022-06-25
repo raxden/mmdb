@@ -8,8 +8,8 @@ import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.coMap
-import com.raxdenstudios.commons.getValueOrNull
+import com.raxdenstudios.commons.ext.coMap
+import com.raxdenstudios.commons.ext.getValueOrNull
 import com.raxdenstudios.commons.retrofit.toResultData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext

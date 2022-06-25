@@ -14,11 +14,11 @@ import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.commons.coMap
+import com.raxdenstudios.commons.ext.coMap
+import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.onFailure
+import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
-import com.raxdenstudios.commons.getValueOrDefault
-import com.raxdenstudios.commons.onFailure
-import com.raxdenstudios.commons.onSuccess
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageIndex

@@ -4,7 +4,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(
+@Suppress("UnnecessaryAbstractClass")
+abstract class BaseListAdapter<T : Any, VH : RecyclerView.ViewHolder>(
   areItemsTheSame: (oldItem: T, newItem: T) -> Boolean,
   areContentsTheSame: (oldItem: T, newItem: T) -> Boolean = { oldItem, newItem -> oldItem == newItem }
 ) : ListAdapter<T, VH>(
@@ -13,7 +14,7 @@ abstract class BaseListAdapter<T, VH : RecyclerView.ViewHolder>(
     override fun areItemsTheSame(
       oldItem: T,
       newItem: T
-    ): Boolean = areItemsTheSame(oldItem, newItem)
+    ) = areItemsTheSame(oldItem, newItem)
 
     override fun areContentsTheSame(
       oldItem: T,
