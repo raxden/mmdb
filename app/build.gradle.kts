@@ -1,10 +1,14 @@
 plugins {
   id("com.raxdenstudios.android-versioning")
-  id("com.raxdenstudios.android-application")
+  id("com.android.application")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
   id("com.google.firebase.appdistribution")
   id("com.github.triplet.play")
+  kotlin("android")
+  kotlin("kapt")
+  id("kotlin-parcelize")
+  id("project-report")
 }
 
 versioning {
@@ -17,19 +21,82 @@ play {
 
 android {
 
+  compileSdk = Versions.compileSdk
+
+  compileOptions {
+    sourceCompatibility = Versions.sourceCompatibility
+    targetCompatibility = Versions.targetCompatibility
+  }
+
+  defaultConfig {
+    applicationId = ApplicationId.id
+
+    minSdk = Versions.minSdk
+    targetSdk = Versions.targetSdk
+
+    testInstrumentationRunner = Versions.testInstrumentationRunner
+
+    // apk name, is posible to add variables as version, date...
+    setProperty("archivesBaseName", "mmdb")
+  }
+
+  signingConfigs {
+    getByName("debug") {
+      keyAlias = "androiddebugkey"
+      keyPassword = "android"
+      storeFile = file("$rootDir/config/debug.keystore")
+      storePassword = "android"
+    }
+    create("release") {
+      keyAlias = "mmdb"
+      keyPassword = "bob1YTMqc5acHN9spcYI"
+      storeFile = file("$rootDir/config/release.jks")
+      storePassword = "bob1YTMqc5acHN9spcYI"
+    }
+  }
+
   buildTypes {
+    getByName("debug") {
+      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
+      isMinifyEnabled = false
+      isTestCoverageEnabled = true
+      signingConfig = signingConfigs.getByName("debug")
+    }
     getByName("release") {
+      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
+      isMinifyEnabled = true
+      isShrinkResources = true
+      signingConfig = signingConfigs.getByName("release")
+      proguardFiles(
+        "proguard-android-optimize.txt",
+        "proguard-rules.pro"
+      )
+
       firebaseAppDistribution {
         releaseNotesFile = "$rootDir/release_notes.txt"
         groups = "mmdb-team"
       }
     }
   }
+
+  buildFeatures {
+    viewBinding = true
+  }
+
+  kotlinOptions {
+    jvmTarget = Versions.jvmTarget
+  }
+
+  packagingOptions {
+    resources {
+      excludes.add("META-INF/AL2.0")
+      excludes.add("META-INF/LGPL2.1")
+      excludes.add("META-INF/*.kotlin_module")
+    }
+  }
 }
 
 dependencies {
-  implementation(RaxdenLibraries.threeten)
-
   implementation(project(Modules.base))
   implementation(project(Modules.featureBase))
   implementation(project(Modules.featureSplash))
@@ -43,11 +110,12 @@ dependencies {
   implementation(project(Modules.libraryNetwork))
   implementation(project(Modules.navigator))
 
+  implementation(RaxdenLibraries.threeten)
+
   implementation(platform(FirebaseLibraries.firebaseBoom))
   implementation(FirebaseLibraries.firebaseCrashlytics)
 
   debugImplementation(DebugLibraries.leakcanary)
-
-  debugImplementation(DebugLibraries.ganderDebug)
-  releaseImplementation(DebugLibraries.ganderRelease)
+//  debugImplementation(DebugLibraries.ganderDebug)
+//  releaseImplementation(DebugLibraries.ganderRelease)
 }

@@ -6,6 +6,7 @@
 
         <activity
             android:name=".view.SplashActivity"
+            android:exported="true"
             android:theme="@style/Theme.App.Splash"
             android:windowSoftInputMode="adjustPan">
 

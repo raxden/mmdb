@@ -36,6 +36,7 @@ val networkLibraryModule = module {
   val timeout = 35                  // 35 sec
   val connectionTimeout = 15        // 15 sec
 
+  @Suppress("LongParameterList")
   fun provideHttpClientV3Builder(
     cacheLoggerInterceptor: CacheLoggerInterceptor,
     cacheNetworkInterceptor: CacheNetworkInterceptor,
@@ -44,17 +45,17 @@ val networkLibraryModule = module {
     languageInterceptor: LanguageInterceptor,
     tokenInterceptor: TokenInterceptor,
     sessionInterceptor: SessionInterceptor,
-    ganderInterceptor: GanderInterceptor,
+//    ganderInterceptor: GanderInterceptor,
     cache: Cache
   ): OkHttpClient.Builder = OkHttpClient.Builder()
-//    .cache(cache)
+    .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(tokenInterceptor)
     .addInterceptor(sessionInterceptor)
     .addInterceptor(languageInterceptor)
-//    .addInterceptor(cacheOfflineInterceptor)
-//    .addNetworkInterceptor(cacheNetworkInterceptor)
-//    .addInterceptor(cacheLoggerInterceptor)
+    .addInterceptor(cacheOfflineInterceptor)
+    .addNetworkInterceptor(cacheNetworkInterceptor)
+    .addInterceptor(cacheLoggerInterceptor)
 //    .addInterceptor(ganderInterceptor)
     .retryOnConnectionFailure(true)
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
@@ -68,16 +69,16 @@ val networkLibraryModule = module {
     httpLoggingInterceptor: HttpLoggingInterceptor,
     languageInterceptor: LanguageInterceptor,
     accessTokenInterceptor: AccessTokenInterceptor,
-    ganderInterceptor: GanderInterceptor,
+//    ganderInterceptor: GanderInterceptor,
     cache: Cache
   ): OkHttpClient.Builder = OkHttpClient.Builder()
-//    .cache(cache)
+    .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(accessTokenInterceptor)
     .addInterceptor(languageInterceptor)
-//    .addInterceptor(cacheOfflineInterceptor)
-//    .addNetworkInterceptor(cacheNetworkInterceptor)
-//    .addInterceptor(cacheLoggerInterceptor)
+    .addInterceptor(cacheOfflineInterceptor)
+    .addNetworkInterceptor(cacheNetworkInterceptor)
+    .addInterceptor(cacheLoggerInterceptor)
 //    .addInterceptor(ganderInterceptor)
     .retryOnConnectionFailure(true)
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
@@ -129,7 +130,7 @@ val networkLibraryModule = module {
       cacheNetworkInterceptor = get(),
       httpLoggingInterceptor = get(),
       cacheLoggerInterceptor = get(),
-      ganderInterceptor = get(),
+//      ganderInterceptor = get(),
       cache = get(),
     )
   }
@@ -142,7 +143,7 @@ val networkLibraryModule = module {
       cacheNetworkInterceptor = get(),
       httpLoggingInterceptor = get(),
       cacheLoggerInterceptor = get(),
-      ganderInterceptor = get(),
+//      ganderInterceptor = get(),
       cache = get(),
     )
   }

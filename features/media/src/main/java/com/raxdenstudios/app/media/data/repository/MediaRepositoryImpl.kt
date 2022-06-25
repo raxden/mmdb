@@ -9,9 +9,9 @@ import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.coMap
-import com.raxdenstudios.commons.map
-import com.raxdenstudios.commons.onCoSuccess
+import com.raxdenstudios.commons.ext.coMap
+import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.ext.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize

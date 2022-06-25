@@ -6,8 +6,8 @@ import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.commons.DispatcherFacade
-import com.raxdenstudios.commons.getValueOrDefault
-import com.raxdenstudios.commons.map
+import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
 import kotlinx.coroutines.async

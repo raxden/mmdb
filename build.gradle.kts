@@ -1,30 +1,35 @@
+import com.adarshr.gradle.testlogger.theme.ThemeType
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+
 buildscript {
   repositories {
     google()
-    jcenter()
-    mavenCentral()
-    mavenLocal()
     maven("https://plugins.gradle.org/m2/")
   }
   dependencies {
-    classpath("com.google.gms:google-services:4.3.5")
-    classpath("com.google.firebase:firebase-crashlytics-gradle:2.5.2")
-    classpath("com.google.firebase:firebase-appdistribution-gradle:2.1.1")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
+    classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
+    classpath("com.raxdenstudios:android-plugins:${Versions.androidPlugins}")
+    classpath("com.google.gms:google-services:${Versions.playServices}")
+    classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlytics}")
+    classpath("com.google.firebase:firebase-appdistribution-gradle:${Versions.firebaseAppDistribution}")
   }
 }
 
 plugins {
-  id("com.raxdenstudios.android-releasing").version("0.41")
-  id("com.raxdenstudios.android-versioning").version("0.41") apply false
-  id("com.vanniktech.android.junit.jacoco").version("0.16.0")
-  id("com.adarshr.test-logger").version("3.0.0")
-  id("io.gitlab.arturbosch.detekt").version("1.15.0")
-  id("com.github.triplet.play").version("3.4.0") apply false
+  id("org.jetbrains.kotlin.android") version Versions.kotlin apply false
+
+  id("com.vanniktech.android.junit.jacoco") version Versions.jacocoPlugin
+  id("com.raxdenstudios.android-releasing") version Versions.androidPlugins
+  id("com.raxdenstudios.android-versioning") version Versions.androidPlugins apply false
+  id("com.adarshr.test-logger") version Versions.testLoggerPlugin
+  id("io.gitlab.arturbosch.detekt") version Versions.detektPlugin
+  id("com.github.ben-manes.versions") version Versions.benNamesPlugin
+  id("com.github.triplet.play") version Versions.tripletPlugin apply false
 }
 
-releasing {
-
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+  outputFormatter = "html"
 }
 
 junitJacoco {
@@ -37,26 +42,18 @@ junitJacoco {
   )
 }
 
-allprojects {
-  repositories {
-    google()
-    jcenter()
-    mavenCentral()
-    mavenLocal()
-    maven("https://jitpack.io")
-  }
-}
-
 subprojects {
   apply(plugin = "com.adarshr.test-logger")
   apply(plugin = "io.gitlab.arturbosch.detekt")
 
   testlogger {
-    setTheme("mocha")
+    theme = ThemeType.MOCHA
+    slowThreshold = 3000
   }
 
-  detekt {
-    toolVersion = "1.15.0"
+  configure<DetektExtension> {
+    // To create detekt.yml -> gradle detektGenerateConfig
+    toolVersion = Versions.detektPlugin
     config = files("${project.rootDir}/config/detekt/detekt.yml")
     buildUponDefaultConfig = true
     reports.html.enabled = true

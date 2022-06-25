@@ -12,8 +12,8 @@ import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.coFlatMap
-import com.raxdenstudios.commons.map
+import com.raxdenstudios.commons.ext.coFlatMap
+import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 
