@@ -3,6 +3,7 @@ package com.raxdenstudios.app.list.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
@@ -17,12 +18,17 @@ import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.commons.ext.*
+import com.raxdenstudios.commons.ext.addOnScrolledListener
+import com.raxdenstudios.commons.ext.argument
+import com.raxdenstudios.commons.ext.observe
+import com.raxdenstudios.commons.ext.setResultOK
+import com.raxdenstudios.commons.ext.setupToolbar
+import com.raxdenstudios.commons.ext.viewBinding
 import com.raxdenstudios.commons.pagination.ext.toPageIndex
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MediaListActivity : BaseActivity() {
 
   companion object {
@@ -32,10 +38,14 @@ class MediaListActivity : BaseActivity() {
       }
   }
 
+  @Inject
+  lateinit var navigator: MediaListNavigator
+
+  @Inject
+  lateinit var errorManager: ErrorManager
+
   private val binding: MediaListActivityBinding by viewBinding()
-  private val viewModel: MediaListViewModel by viewModel()
-  private val navigator: MediaListNavigator by inject { parametersOf(this) }
-  private val errorManager: ErrorManager by inject { parametersOf(this) }
+  private val viewModel: MediaListViewModel by viewModels()
   private val params: MediaListParams by argument()
 
   private var onScrolledListener: RecyclerView.OnScrollListener? = null

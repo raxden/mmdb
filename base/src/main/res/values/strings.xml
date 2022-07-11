@@ -22,4 +22,7 @@
     <string name="list_top_rated_tv_shows">Top rated TV Shows</string>
     <string name="list_upcoming_in_theaters">Upcoming in Theaters</string>
     <string name="list_from_your_watchlist">From your Watchlist</string>
+
+    <string name="media_list_item_chip_movies">Movies</string>
+    <string name="media_list_item_chip_tv_series">TV Series</string>
 </resources>

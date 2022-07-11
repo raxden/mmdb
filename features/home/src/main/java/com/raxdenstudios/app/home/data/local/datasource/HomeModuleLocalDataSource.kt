@@ -6,8 +6,9 @@ import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class HomeModuleLocalDataSource(
+internal class HomeModuleLocalDataSource @Inject constructor(
   private val dao: HomeModuleDao,
   private val homeModuleEntityToDomainMapper: HomeModuleEntityToDomainMapper,
 ) {

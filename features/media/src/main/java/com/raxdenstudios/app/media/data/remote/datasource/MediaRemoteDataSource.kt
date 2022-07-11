@@ -16,8 +16,9 @@ import com.raxdenstudios.commons.ext.coFlatMap
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
+import javax.inject.Inject
 
-internal class MediaRemoteDataSource(
+internal class MediaRemoteDataSource @Inject constructor(
   private val mediaGateway: MediaGateway,
   private val mediaTypeToDtoMapper: MediaTypeToDtoMapper,
   private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,

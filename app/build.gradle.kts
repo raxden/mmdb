@@ -7,6 +7,7 @@ plugins {
   id("com.github.triplet.play")
   kotlin("android")
   kotlin("kapt")
+  id("dagger.hilt.android.plugin")
   id("kotlin-parcelize")
   id("project-report")
 }
@@ -87,6 +88,11 @@ android {
     jvmTarget = Versions.jvmTarget
   }
 
+  // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
+  kapt {
+    correctErrorTypes = true
+  }
+
   packagingOptions {
     resources {
       excludes.add("META-INF/AL2.0")
@@ -98,7 +104,6 @@ android {
 
 dependencies {
   implementation(project(Modules.base))
-  implementation(project(Modules.featureBase))
   implementation(project(Modules.featureSplash))
   implementation(project(Modules.featureMedia))
   implementation(project(Modules.featureAccount))
@@ -110,10 +115,17 @@ dependencies {
   implementation(project(Modules.libraryNetwork))
   implementation(project(Modules.navigator))
 
+  implementation(RaxdenLibraries.android)
+  implementation(RaxdenLibraries.coroutines)
+  implementation(Libraries.timber)
   implementation(RaxdenLibraries.threeten)
+  implementation(RaxdenLibraries.paginationCo)
 
   implementation(platform(FirebaseLibraries.firebaseBoom))
   implementation(FirebaseLibraries.firebaseCrashlytics)
+
+  implementation(Libraries.hiltAndroid)
+  kapt(Libraries.hiltCompiler)
 
   debugImplementation(DebugLibraries.leakcanary)
 //  debugImplementation(DebugLibraries.ganderDebug)

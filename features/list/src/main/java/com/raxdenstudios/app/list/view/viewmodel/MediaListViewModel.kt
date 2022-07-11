@@ -25,19 +25,27 @@ import com.raxdenstudios.commons.pagination.model.PageIndex
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageResult
 import com.raxdenstudios.commons.pagination.model.PageSize
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
+import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
+import javax.inject.Inject
 
-internal class MediaListViewModel(
+@HiltViewModel
+internal class MediaListViewModel @Inject constructor(
+  private val paginationConfig: Pagination.Config,
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
   private val mediaListItemModelMapper: MediaListItemModelMapper
-) : BaseViewModel(), KoinComponent {
+) : BaseViewModel() {
 
-  private val pagination: Pagination<MediaListItemModel> by inject { parametersOf(viewModelScope) }
+  private val pagination: Pagination<MediaListItemModel> by lazy {
+    Pagination(
+      config = paginationConfig,
+      logger = { message -> Timber.tag("Pagination").d(message) },
+      coroutineScope = viewModelScope
+    )
+  }
 
   private val mState = MutableLiveData<MediaListUIState>()
   val state: LiveData<MediaListUIState> = mState

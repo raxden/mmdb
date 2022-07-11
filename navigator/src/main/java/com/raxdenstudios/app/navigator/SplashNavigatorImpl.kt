@@ -1,12 +1,13 @@
 package com.raxdenstudios.app.navigator
 
-import androidx.fragment.app.FragmentActivity
+import android.app.Activity
 import com.raxdenstudios.app.home.view.HomeActivity
 import com.raxdenstudios.app.splash.SplashNavigator
 import com.raxdenstudios.commons.ext.startActivityAndFinishCurrent
+import javax.inject.Inject
 
-internal class SplashNavigatorImpl(
-  private val activity: FragmentActivity
+internal class SplashNavigatorImpl @Inject constructor(
+  private val activity: Activity
 ) : SplashNavigator {
 
   override fun launchHome() {

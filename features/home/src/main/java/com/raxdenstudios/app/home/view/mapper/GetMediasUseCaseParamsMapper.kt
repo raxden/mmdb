@@ -5,8 +5,9 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaType
+import javax.inject.Inject
 
-internal class GetMediasUseCaseParamsMapper {
+internal class GetMediasUseCaseParamsMapper @Inject constructor() {
 
   fun transform(source: HomeModule): GetMediasUseCase.Params {
     val mediaFilter = when (source) {

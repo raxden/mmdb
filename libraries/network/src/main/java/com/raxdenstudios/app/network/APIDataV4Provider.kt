@@ -1,6 +1,8 @@
 package com.raxdenstudios.app.network
 
-class APIDataV4Provider : APIDataProvider {
+import javax.inject.Inject
+
+class APIDataV4Provider @Inject constructor() : APIDataProvider {
 
   override fun getDomain(): String = "https://api.themoviedb.org/4/"
 

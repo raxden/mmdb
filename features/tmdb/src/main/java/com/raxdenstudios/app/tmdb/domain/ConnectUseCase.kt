@@ -5,8 +5,9 @@ import com.raxdenstudios.app.tmdb.data.repository.AuthenticationRepository
 import com.raxdenstudios.app.tmdb.domain.model.AccessToken
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.map
+import javax.inject.Inject
 
-internal class ConnectUseCase(
+internal class ConnectUseCase @Inject constructor(
   private val authenticationRepository: AuthenticationRepository
 ) {
 

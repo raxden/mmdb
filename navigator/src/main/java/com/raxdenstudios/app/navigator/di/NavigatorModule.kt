@@ -1,34 +1,27 @@
 package com.raxdenstudios.app.navigator.di
 
-import androidx.fragment.app.FragmentActivity
+
 import com.raxdenstudios.app.home.HomeNavigator
-import com.raxdenstudios.app.home.view.HomeActivity
 import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.navigator.HomeNavigatorImpl
 import com.raxdenstudios.app.navigator.MediaListNavigatorImpl
 import com.raxdenstudios.app.navigator.SplashNavigatorImpl
-import com.raxdenstudios.app.navigator.mapper.MediaListParamsMapper
-import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
-import com.raxdenstudios.app.navigator.result.MediaListActivityResultContract
 import com.raxdenstudios.app.splash.SplashNavigator
-import org.koin.dsl.module
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 
-val navigatorModule = module {
+@Module
+@InstallIn(ActivityComponent::class)
+abstract class NavigatorModule {
 
-  factory { MediaListParamsMapper() }
+  @Binds
+  internal abstract fun splashNavigator(navigator: SplashNavigatorImpl): SplashNavigator
 
-  factory { LoginActivityResultContract() }
-  factory { MediaListActivityResultContract(get()) }
+  @Binds
+  internal abstract fun mediaListNavigator(navigator: MediaListNavigatorImpl): MediaListNavigator
 
-  factory<SplashNavigator> { (activity: FragmentActivity) -> SplashNavigatorImpl(activity) }
-  scope<HomeActivity> {
-    scoped<HomeNavigator> { (activity: FragmentActivity) ->
-      HomeNavigatorImpl(
-        activity,
-        get(),
-        get()
-      )
-    }
-  }
-  factory<MediaListNavigator> { (activity: FragmentActivity) -> MediaListNavigatorImpl(activity) }
+  @Binds
+  internal abstract fun homeNavigator(navigator: HomeNavigatorImpl): HomeNavigator
 }

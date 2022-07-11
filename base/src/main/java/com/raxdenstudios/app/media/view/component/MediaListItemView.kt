@@ -3,8 +3,8 @@ package com.raxdenstudios.app.media.view.component
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.raxdenstudios.app.feature.base.R
-import com.raxdenstudios.app.feature.base.databinding.MediaListItemViewBinding
+import com.raxdenstudios.app.base.R
+import com.raxdenstudios.app.base.databinding.MediaListItemViewBinding
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView

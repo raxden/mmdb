@@ -21,6 +21,8 @@ import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 internal sealed class HomeMediaListUIState {
   object Loading : HomeMediaListUIState()
@@ -28,7 +30,8 @@ internal sealed class HomeMediaListUIState {
   data class Error(val throwable: Throwable) : HomeMediaListUIState()
 }
 
-internal class HomeMediaListViewModel(
+@HiltViewModel
+internal class HomeMediaListViewModel @Inject constructor(
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,

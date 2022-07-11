@@ -7,7 +7,6 @@ object Modules {
 
   const val libraryNetwork = ":libraries:network"
 
-  const val featureBase = ":features:base"
   const val featureAccount = ":features:account"
   const val featureMedia = ":features:media"
   const val featureHome = ":features:home"

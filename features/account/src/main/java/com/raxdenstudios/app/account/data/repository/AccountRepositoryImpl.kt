@@ -4,8 +4,9 @@ import com.raxdenstudios.app.account.data.local.datasource.AccountLocalDataSourc
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-internal class AccountRepositoryImpl(
+internal class AccountRepositoryImpl @Inject constructor(
   private val accountLocalDataSource: AccountLocalDataSource
 ) : AccountRepository {
 

@@ -13,8 +13,9 @@ import com.raxdenstudios.commons.ext.getValueOrNull
 import com.raxdenstudios.commons.retrofit.toResultData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class MediaGateway(
+internal class MediaGateway @Inject constructor(
   private val dispatcher: DispatcherFacade,
   private val mediaV3Service: MediaV3Service,
   private val mediaV4Service: MediaV4Service,

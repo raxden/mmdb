@@ -11,11 +11,13 @@ import com.raxdenstudios.app.media.domain.model.Picture
 import com.raxdenstudios.app.media.domain.model.Size
 import com.raxdenstudios.app.media.domain.model.Vote
 import com.raxdenstudios.app.network.APIDataProvider
+import com.raxdenstudios.app.network.di.APIVersionV3
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
 import com.raxdenstudios.commons.util.DataMapper
+import javax.inject.Inject
 
-internal class MediaToEntityMapper(
+internal class MediaToEntityMapper @Inject constructor(
   private val pictureToEntityMapper: PictureToEntityMapper,
   private val voteToEntityMapper: VoteToEntityMapper,
 ) : DataMapper<Media, MediaEntity>() {
@@ -42,7 +44,7 @@ internal class MediaToEntityMapper(
   }
 }
 
-internal class MediaEntityToDomainMapper(
+internal class MediaEntityToDomainMapper @Inject constructor(
   private val pictureEntityToDomainMapper: PictureEntityToDomainMapper,
   private val voteEntityToDomainMapper: VoteEntityToDomainMapper,
 ) : DataMapper<MediaEntity, Media>() {
@@ -70,7 +72,7 @@ internal class MediaEntityToDomainMapper(
   }
 }
 
-internal class VoteToEntityMapper : DataMapper<Vote, VoteEntity>() {
+internal class VoteToEntityMapper @Inject constructor() : DataMapper<Vote, VoteEntity>() {
 
   override fun transform(source: Vote): VoteEntity = VoteEntity(
     average = source.average,
@@ -78,7 +80,7 @@ internal class VoteToEntityMapper : DataMapper<Vote, VoteEntity>() {
   )
 }
 
-internal class VoteEntityToDomainMapper : DataMapper<VoteEntity, Vote>() {
+internal class VoteEntityToDomainMapper @Inject constructor() : DataMapper<VoteEntity, Vote>() {
 
   override fun transform(source: VoteEntity): Vote = Vote(
     average = source.average,
@@ -86,7 +88,7 @@ internal class VoteEntityToDomainMapper : DataMapper<VoteEntity, Vote>() {
   )
 }
 
-internal class PictureToEntityMapper(
+internal class PictureToEntityMapper @Inject constructor(
   private val sizeToEntityMapper: SizeToEntityMapper
 ) : DataMapper<Picture, PictureEntity>() {
 
@@ -99,7 +101,7 @@ internal class PictureToEntityMapper(
   }
 }
 
-internal class PictureEntityToDomainMapper(
+internal class PictureEntityToDomainMapper @Inject constructor(
   private val sizeEntityToDomainMapper: SizeEntityToDomainMapper
 ) : DataMapper<PictureEntity?, Picture>() {
 
@@ -112,7 +114,7 @@ internal class PictureEntityToDomainMapper(
     } ?: Picture.Empty
 }
 
-internal class SizeToEntityMapper : DataMapper<Size, SizeEntity>() {
+internal class SizeToEntityMapper @Inject constructor() : DataMapper<Size, SizeEntity>() {
 
   override fun transform(source: Size): SizeEntity = when (source) {
     is Size.Original -> SizeEntity(source.source, "original")
@@ -120,8 +122,8 @@ internal class SizeToEntityMapper : DataMapper<Size, SizeEntity>() {
   }
 }
 
-internal class SizeEntityToDomainMapper(
-  private val apiDataProvider: APIDataProvider
+internal class SizeEntityToDomainMapper @Inject constructor(
+  @APIVersionV3 private val apiDataProvider: APIDataProvider
 ) : DataMapper<SizeEntity, Size>() {
 
   override fun transform(source: SizeEntity): Size = when (source.type) {
