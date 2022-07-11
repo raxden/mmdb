@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class AccountLocalDataSourceImpl(
+internal class AccountLocalDataSourceImpl @Inject constructor(
   private val dao: AccountDao,
   private val accountEntityToDomainMapper: AccountEntityToDomainMapper,
   private val accountToEntityMapper: AccountToEntityMapper,

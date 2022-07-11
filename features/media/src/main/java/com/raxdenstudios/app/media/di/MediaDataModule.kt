@@ -1,57 +1,71 @@
 package com.raxdenstudios.app.media.di
 
+import android.content.Context
+import com.raxdenstudios.app.media.data.local.MediaDao
 import com.raxdenstudios.app.media.data.local.MediaDatabase
-import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
-import com.raxdenstudios.app.media.data.local.mapper.*
-import com.raxdenstudios.app.media.data.remote.MediaGateway
-import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
-import com.raxdenstudios.app.media.data.remote.mapper.*
+import com.raxdenstudios.app.media.data.local.WatchListDao
 import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.data.repository.MediaRepositoryImpl
-import com.raxdenstudios.app.media.domain.*
-import com.raxdenstudios.app.network.model.APIVersion
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
+import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
+import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCaseImpl
+import com.raxdenstudios.app.media.domain.GetMediasUseCase
+import com.raxdenstudios.app.media.domain.GetMediasUseCaseImpl
+import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
+import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCaseImpl
+import com.raxdenstudios.app.network.di.APIVersionV3
+import com.raxdenstudios.app.network.di.APIVersionV4
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 
-val mediaDataModule = module {
+@Module
+@InstallIn(SingletonComponent::class)
+object MediaDataModule {
 
-  single { MediaDatabase.getInstance(get()) }
-  factory { get<MediaDatabase>().mediaDao() }
-  factory { get<MediaDatabase>().watchListDao() }
+  @Provides
+  fun provideMediaDatabase(@ApplicationContext context: Context): MediaDatabase =
+    MediaDatabase.getInstance(context)
 
-  factory { MediaToEntityMapper(get(), get()) }
-  factory { MediaEntityToDomainMapper(get(), get()) }
-  factory { VoteToEntityMapper() }
-  factory { VoteEntityToDomainMapper() }
-  factory { PictureToEntityMapper(get()) }
-  factory { PictureEntityToDomainMapper(get()) }
-  factory { SizeToEntityMapper() }
-  factory { SizeEntityToDomainMapper(get(named(APIVersion.V3))) }
-  factory { MediaToWatchListEntityMapper() }
+  @Provides
+  fun provideMediaDAO(mediaDatabase: MediaDatabase): MediaDao =
+    mediaDatabase.mediaDao()
 
-  factory { MediaLocalDataSource(get(), get(), get(), get(), get()) }
+  @Provides
+  fun provideWatchListDAO(mediaDatabase: MediaDatabase): WatchListDao =
+    mediaDatabase.watchListDao()
 
-  single { get<Retrofit>(named(APIVersion.V3)).create(MediaV3Service::class.java) }
-  single { get<Retrofit>(named(APIVersion.V4)).create(MediaV4Service::class.java) }
+  @Provides
+  fun provideMediaV3Service(@APIVersionV3 retrofit: Retrofit): MediaV3Service =
+    retrofit.create(MediaV3Service::class.java)
 
-  factory { MediaGateway(get(), get(), get()) }
+  @Provides
+  fun provideMediaV4Service(@APIVersionV4 retrofit: Retrofit): MediaV4Service =
+    retrofit.create(MediaV4Service::class.java)
+}
 
-  factory { MediaTypeToDtoMapper() }
-  factory { VoteDtoToDomainMapper() }
-  factory { PictureDtoToDomainMapper(get(named(APIVersion.V3))) }
-  factory { DateDtoToLocalDateMapper() }
-  factory { MovieDtoToDomainMapper(get(), get(), get()) }
-  factory { TVShowDtoToDomainMapper(get(), get(), get()) }
-  factory { MediaDtoToDomainMapper(get(), get()) }
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class MediaDataBindsModule {
 
-  factory { MediaRemoteDataSource(get(), get(), get()) }
+  @Binds
+  internal abstract fun bindMediaRepository(useCase: MediaRepositoryImpl): MediaRepository
 
-  factory<MediaRepository> { MediaRepositoryImpl(get(), get(), get()) }
+  @Binds
+  internal abstract fun bindAddMediaToWatchListUseCase(
+    useCase: AddMediaToWatchListUseCaseImpl
+  ): AddMediaToWatchListUseCase
 
-  factory<AddMediaToWatchListUseCase> { AddMediaToWatchListUseCaseImpl(get()) }
-  factory<RemoveMediaFromWatchListUseCase> { RemoveMediaFromWatchListUseCaseImpl(get()) }
-  factory<GetMediasUseCase> { GetMediasUseCaseImpl(get()) }
+  @Binds
+  internal abstract fun bindRemoveMediaFromWatchListUseCase(
+    useCase: RemoveMediaFromWatchListUseCaseImpl
+  ): RemoveMediaFromWatchListUseCase
+
+  @Binds
+  internal abstract fun bindGetMediasUseCase(useCase: GetMediasUseCaseImpl): GetMediasUseCase
 }

@@ -8,8 +8,9 @@ import com.raxdenstudios.app.home.HomeNavigator
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
 import com.raxdenstudios.app.navigator.result.MediaListActivityResultContract
+import javax.inject.Inject
 
-internal class HomeNavigatorImpl(
+internal class HomeNavigatorImpl @Inject constructor(
   activity: FragmentActivity,
   private val loginActivityResultContract: LoginActivityResultContract,
   private val mediaListActivityResultContract: MediaListActivityResultContract,

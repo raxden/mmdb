@@ -5,8 +5,9 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.commons.provider.StringProvider
+import javax.inject.Inject
 
-internal class CarouselMediasModelMapper(
+internal class CarouselMediasModelMapper @Inject constructor(
   private val stringProvider: StringProvider,
   private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) {

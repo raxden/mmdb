@@ -1,12 +1,16 @@
 package com.raxdenstudios.app.error
 
-import androidx.fragment.app.FragmentActivity
+import android.content.Context
 import com.raxdenstudios.commons.ext.showSimpleDialog
+import com.raxdenstudios.commons.provider.StringProvider
 import com.raxdenstudios.commons.retrofit.NetworkException
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
+import javax.inject.Inject
 
-internal class ErrorManagerImpl(
-  private val activity: FragmentActivity,
+internal class ErrorManagerImpl @Inject constructor(
+  @ApplicationContext private val context: Context,
+  private val stringProvider: StringProvider
 ) : ErrorManager {
 
   override fun handleError(throwable: Throwable) {
@@ -21,33 +25,33 @@ internal class ErrorManagerImpl(
 
   private fun handleServerException(exception: NetworkException.Server) {
     showErrorDialog(
-      activity.getString(R.string.feature_error_information),
+      stringProvider.getString(R.string.feature_error_information),
       exception.message,
     )
   }
 
   private fun handleClientException(exception: NetworkException.Client) {
     showErrorDialog(
-      activity.getString(R.string.feature_error_information),
+      stringProvider.getString(R.string.feature_error_information),
       exception.message,
     )
   }
 
   private fun handleUnknownException() {
     showErrorDialog(
-      activity.getString(R.string.feature_error_information),
-      activity.getString(R.string.feature_error_unespected_error_message)
+      stringProvider.getString(R.string.feature_error_information),
+      stringProvider.getString(R.string.feature_error_unespected_error_message)
     )
   }
 
   private fun handleNetworkException() {
     showErrorDialog(
-      activity.getString(R.string.feature_error_information),
-      activity.getString(R.string.feature_error_lost_connection)
+      stringProvider.getString(R.string.feature_error_information),
+      stringProvider.getString(R.string.feature_error_lost_connection)
     )
   }
 
   private fun showErrorDialog(title: String, message: String) {
-    activity.showSimpleDialog(title, message)
+    context.showSimpleDialog(title, message)
   }
 }

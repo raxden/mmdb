@@ -10,6 +10,7 @@ buildscript {
   dependencies {
     classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
     classpath("com.raxdenstudios:android-plugins:${Versions.androidPlugins}")
+    classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltAndroidGradlePlugin}")
     classpath("com.google.gms:google-services:${Versions.playServices}")
     classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlytics}")
     classpath("com.google.firebase:firebase-appdistribution-gradle:${Versions.firebaseAppDistribution}")

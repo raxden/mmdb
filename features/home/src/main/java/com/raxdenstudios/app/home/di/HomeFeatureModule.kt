@@ -1,34 +1,23 @@
 package com.raxdenstudios.app.home.di
 
+import android.content.Context
+import com.raxdenstudios.app.home.data.local.HomeModuleDao
 import com.raxdenstudios.app.home.data.local.HomeModuleDatabase
-import com.raxdenstudios.app.home.data.local.datasource.HomeModuleLocalDataSource
-import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapper
-import com.raxdenstudios.app.home.data.repository.HomeModuleRepository
-import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
-import com.raxdenstudios.app.home.view.mapper.CarouselMediasModelMapper
-import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
-import com.raxdenstudios.app.home.view.mapper.HomeModelMapper
-import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
-val homeFeatureModule = module {
+@Module
+@InstallIn(SingletonComponent::class)
+object HomeFeatureModule {
 
-  single { HomeModuleDatabase.getInstance(get()) }
-  factory { get<HomeModuleDatabase>().dao() }
+  @Provides
+  fun provideHomeModuleDatabase(@ApplicationContext context: Context): HomeModuleDatabase =
+    HomeModuleDatabase.getInstance(context)
 
-  factory { HomeModuleLocalDataSource(get(), get()) }
-  factory { HomeModuleEntityToDomainMapper() }
-
-  factory { HomeModuleRepository(get()) }
-
-  factory { GetHomeModulesUseCase(get(), get(), get()) }
-
-  factory { HomeModelMapper(get()) }
-  factory { HomeModuleModelMapper(get()) }
-  factory { GetMediasUseCaseParamsMapper() }
-  factory { CarouselMediasModelMapper(get(), get()) }
-
-  viewModel { HomeMediaListViewModel(get(), get(), get(), get(), get(), get(), get()) }
+  @Provides
+  fun provideAccountDAO(homeModuleDatabase: HomeModuleDatabase): HomeModuleDao =
+    homeModuleDatabase.dao()
 }

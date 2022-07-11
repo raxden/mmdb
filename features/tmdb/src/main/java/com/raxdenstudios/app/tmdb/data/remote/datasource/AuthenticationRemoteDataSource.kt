@@ -4,8 +4,9 @@ import com.raxdenstudios.app.tmdb.data.remote.AuthenticationGateway
 import com.raxdenstudios.app.tmdb.domain.model.AccessToken
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.map
+import javax.inject.Inject
 
-internal class AuthenticationRemoteDataSource(
+internal class AuthenticationRemoteDataSource @Inject constructor(
   private val gateway: AuthenticationGateway
 ) {
 

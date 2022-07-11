@@ -30,7 +30,6 @@ include(":features:login")
 include(":features:home")
 include(":features:media")
 include(":features:list")
-include(":features:base")
 include(":features:error")
 include(":features:account")
 

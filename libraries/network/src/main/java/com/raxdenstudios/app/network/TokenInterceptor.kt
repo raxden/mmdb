@@ -3,8 +3,9 @@ package com.raxdenstudios.app.network
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import javax.inject.Inject
 
-internal class TokenInterceptor(
+class TokenInterceptor @Inject constructor(
   private val apiDataProvider: APIDataProvider
 ) : Interceptor {
 

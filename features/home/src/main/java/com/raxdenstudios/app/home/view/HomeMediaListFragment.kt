@@ -2,6 +2,7 @@ package com.raxdenstudios.app.home.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.raxdenstudios.app.base.BaseFragment
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.home.HomeNavigator
@@ -16,21 +17,24 @@ import com.raxdenstudios.commons.ext.observe
 import com.raxdenstudios.commons.ext.setPaddingTop
 import com.raxdenstudios.commons.ext.viewBinding
 import com.raxdenstudios.commons.util.SDK
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fragment) {
 
   companion object {
     fun newInstance() = HomeMediaListFragment()
   }
 
+  @Inject
+  lateinit var navigator: HomeNavigator
+
+  @Inject
+  lateinit var errorManager: ErrorManager
+
   private val binding: HomeMediaListFragmentBinding by viewBinding()
-  private val viewModel: HomeMediaListViewModel by viewModel()
-  private val navigator: HomeNavigator by lazy { requireActivity().get() }
-  private val errorManager: ErrorManager by inject { parametersOf(requireActivity()) }
+  private val viewModel: HomeMediaListViewModel by viewModels()
 
   private val adapter: HomeModuleListAdapter by lazy {
     HomeModuleListAdapter().apply {

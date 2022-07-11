@@ -2,6 +2,7 @@ package com.raxdenstudios.app.tmdb.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.base.BaseFragmentDialog
 import com.raxdenstudios.app.tmdb.R
@@ -12,7 +13,6 @@ import com.raxdenstudios.app.tmdb.view.viewmodel.TMDBViewModel
 import com.raxdenstudios.commons.ext.close
 import com.raxdenstudios.commons.ext.observe
 import com.raxdenstudios.commons.ext.viewBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fragment) {
 
@@ -21,7 +21,7 @@ internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fr
   }
 
   private val binding: TmdbConnectFragmentBinding by viewBinding()
-  private val viewModel: TMDBViewModel by viewModel()
+  private val viewModel: TMDBViewModel by viewModels()
 
   private lateinit var webViewWrapper: TMDBWebViewWrapper
 

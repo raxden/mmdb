@@ -4,8 +4,9 @@ import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.PageList
+import javax.inject.Inject
 
-internal class GetMediasUseCaseImpl(
+internal class GetMediasUseCaseImpl @Inject constructor(
   private val mediaRepository: MediaRepository
 ) : GetMediasUseCase {
 

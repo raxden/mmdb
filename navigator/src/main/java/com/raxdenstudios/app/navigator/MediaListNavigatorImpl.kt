@@ -6,8 +6,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.navigator.result.LoginActivityResultContract
+import javax.inject.Inject
 
-internal class MediaListNavigatorImpl(
+internal class MediaListNavigatorImpl @Inject constructor(
   activity: FragmentActivity
 ) : MediaListNavigator {
 
