@@ -2,8 +2,9 @@ package com.raxdenstudios.app.media.data.remote.mapper
 
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.util.DataMapper
+import javax.inject.Inject
 
-internal class MediaTypeToDtoMapper : DataMapper<MediaType, String>() {
+internal class MediaTypeToDtoMapper @Inject constructor() : DataMapper<MediaType, String>() {
 
   override fun transform(source: MediaType): String = when (source) {
     MediaType.MOVIE -> "movie"

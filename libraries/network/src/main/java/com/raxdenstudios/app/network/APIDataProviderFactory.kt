@@ -1,14 +1,13 @@
 package com.raxdenstudios.app.network
 
 import com.raxdenstudios.app.network.model.APIVersion
+import javax.inject.Inject
 
-internal class APIDataProviderFactory {
+class APIDataProviderFactory @Inject constructor() {
 
-  companion object {
-    fun create(version: APIVersion): APIDataProvider =
-      when (version) {
-        APIVersion.V3 -> APIDataV3Provider()
-        APIVersion.V4 -> APIDataV4Provider()
-      }
-  }
+  fun create(version: APIVersion): APIDataProvider =
+    when (version) {
+      APIVersion.V3 -> APIDataV3Provider()
+      APIVersion.V4 -> APIDataV4Provider()
+    }
 }

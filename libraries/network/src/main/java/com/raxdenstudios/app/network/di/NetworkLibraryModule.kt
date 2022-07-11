@@ -16,28 +16,71 @@ import com.raxdenstudios.commons.okhttp3.CacheLoggerInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheNetworkInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheOfflineInterceptor
 import com.raxdenstudios.commons.util.Network
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-val networkLibraryModule = module {
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkLibraryModule {
 
-  val cacheDirectory = "responses"
-  val cacheSize = 10 * 1024 * 1024  // 10 MiB;
-  val timeout = 35                  // 35 sec
-  val connectionTimeout = 15        // 15 sec
+  @Provides
+  fun cache(@ApplicationContext context: Context): Cache =
+    Cache(File(context.cacheDir, cacheDirectory), cacheSize.toLong())
 
-  @Suppress("LongParameterList")
-  fun provideHttpClientV3Builder(
+  @Provides
+  fun cacheLoggerInterceptor(): CacheLoggerInterceptor =
+    CacheLoggerInterceptor { message -> Timber.tag("OkHttp").d(message) }
+
+  @Provides
+  fun cacheNetworkInterceptor(): CacheNetworkInterceptor =
+    CacheNetworkInterceptor.default
+
+  @Provides
+  fun cacheOfflineInterceptor(@ApplicationContext context: Context): CacheOfflineInterceptor =
+    CacheOfflineInterceptor.default { Network.isNetworkConnected(context) }
+
+  @Provides
+  fun httpLoggingInterceptorLogger(): HttpLoggingInterceptor.Logger =
+    HttpLoggingInterceptor.Logger { message -> Timber.tag("OkHttp").d(message) }
+
+  @Provides
+  fun httpLoggingInterceptor(logger: HttpLoggingInterceptor.Logger): HttpLoggingInterceptor =
+    HttpLoggingInterceptor(logger)
+      .apply { level = HttpLoggingInterceptor.Level.BODY }
+
+  @Provides
+  @APIVersionV3
+  fun apiV3DataProvider(factory: APIDataProviderFactory): APIDataProvider =
+    factory.create(APIVersion.V3)
+
+  @Provides
+  @APIVersionV4
+  fun apiV4DataProvider(factory: APIDataProviderFactory): APIDataProvider =
+    factory.create(APIVersion.V4)
+
+  @Provides
+  fun tokenInterceptor(@APIVersionV3 apiDataProvider: APIDataProvider): TokenInterceptor =
+    TokenInterceptor(apiDataProvider)
+
+  @Provides
+  fun genderInterceptor(@ApplicationContext context: Context): GanderInterceptor =
+    GanderInterceptor(context)
+      .apply { showNotification(true) }
+
+  @Provides
+  @APIVersionV3
+  fun httpClientV3(
     cacheLoggerInterceptor: CacheLoggerInterceptor,
     cacheNetworkInterceptor: CacheNetworkInterceptor,
     cacheOfflineInterceptor: CacheOfflineInterceptor,
@@ -47,7 +90,7 @@ val networkLibraryModule = module {
     sessionInterceptor: SessionInterceptor,
 //    ganderInterceptor: GanderInterceptor,
     cache: Cache
-  ): OkHttpClient.Builder = OkHttpClient.Builder()
+  ): OkHttpClient = OkHttpClient.Builder()
     .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(tokenInterceptor)
@@ -61,8 +104,11 @@ val networkLibraryModule = module {
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
+    .build()
 
-  fun provideHttpClientV4Builder(
+  @Provides
+  @APIVersionV4
+  fun httpClientV4(
     cacheLoggerInterceptor: CacheLoggerInterceptor,
     cacheNetworkInterceptor: CacheNetworkInterceptor,
     cacheOfflineInterceptor: CacheOfflineInterceptor,
@@ -71,7 +117,7 @@ val networkLibraryModule = module {
     accessTokenInterceptor: AccessTokenInterceptor,
 //    ganderInterceptor: GanderInterceptor,
     cache: Cache
-  ): OkHttpClient.Builder = OkHttpClient.Builder()
+  ): OkHttpClient = OkHttpClient.Builder()
     .cache(cache)
     .addNetworkInterceptor(httpLoggingInterceptor)
     .addInterceptor(accessTokenInterceptor)
@@ -84,108 +130,40 @@ val networkLibraryModule = module {
     .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
     .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
+    .build()
 
-  fun provideRetrofit(
-    baseUrl: HttpUrl,
-    okHttpClient: OkHttpClient,
+  @Provides
+  fun gson(): Gson =
+    GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+
+  @Provides
+  @APIVersionV3
+  fun provideRetrofitV3(
+    @APIVersionV3 apiDataProvider: APIDataProvider,
+    @APIVersionV3 okHttpClient: OkHttpClient,
     gson: Gson
   ): Retrofit = Retrofit.Builder()
-    .baseUrl(baseUrl)
+    .baseUrl(apiDataProvider.getDomain())
     .client(okHttpClient)
     .addCallAdapterFactory(NetworkResponseAdapterFactory())
     .addConverterFactory(GsonConverterFactory.create(gson))
     .build()
 
-  // Cache =========================================================================================
+  @Provides
+  @APIVersionV4
+  fun provideRetrofitV4(
+    @APIVersionV4 apiDataProvider: APIDataProvider,
+    @APIVersionV4 okHttpClient: OkHttpClient,
+    gson: Gson
+  ): Retrofit = Retrofit.Builder()
+    .baseUrl(apiDataProvider.getDomain())
+    .client(okHttpClient)
+    .addCallAdapterFactory(NetworkResponseAdapterFactory())
+    .addConverterFactory(GsonConverterFactory.create(gson))
+    .build()
 
-  single { Cache(File(get<Context>().cacheDir, cacheDirectory), cacheSize.toLong()) }
-
-  // Interceptors ==================================================================================
-
-  single<HttpLoggingInterceptor.Logger> {
-    object : HttpLoggingInterceptor.Logger {
-      override fun log(message: String) {
-        Timber.tag("OkHttp").d(message)
-      }
-    }
-  }
-  single { HttpLoggingInterceptor(get()).apply { level = HttpLoggingInterceptor.Level.BODY } }
-  single { CacheLoggerInterceptor { message -> Timber.tag("OkHttp").d(message) } }
-  single { CacheNetworkInterceptor.default }
-  single { CacheOfflineInterceptor.default { Network.isNetworkConnected(get()) } }
-  single { TokenInterceptor(get(named(APIVersion.V3))) }
-  single { SessionInterceptor(get()) }
-  single { AccessTokenInterceptor(get()) }
-  single { LanguageInterceptor() }
-  single { GanderInterceptor(get()).apply { showNotification(true) } }
-
-  // OKHttpClient ==================================================================================
-
-  single(named(APIVersion.V3)) {
-    provideHttpClientV3Builder(
-      languageInterceptor = get(),
-      tokenInterceptor = get(),
-      sessionInterceptor = get(),
-      cacheOfflineInterceptor = get(),
-      cacheNetworkInterceptor = get(),
-      httpLoggingInterceptor = get(),
-      cacheLoggerInterceptor = get(),
-//      ganderInterceptor = get(),
-      cache = get(),
-    )
-  }
-
-  single(named(APIVersion.V4)) {
-    provideHttpClientV4Builder(
-      languageInterceptor = get(),
-      accessTokenInterceptor = get(),
-      cacheOfflineInterceptor = get(),
-      cacheNetworkInterceptor = get(),
-      httpLoggingInterceptor = get(),
-      cacheLoggerInterceptor = get(),
-//      ganderInterceptor = get(),
-      cache = get(),
-    )
-  }
-
-  single(named(APIVersion.V3)) { get<OkHttpClient.Builder>(named(APIVersion.V3)).build() }
-  single(named(APIVersion.V4)) { get<OkHttpClient.Builder>(named(APIVersion.V4)).build() }
-
-  // Gson ==========================================================================================
-
-  factory { GsonBuilder().excludeFieldsWithoutExposeAnnotation().create() }
-
-
-  // APIDataProvider ===============================================================================
-
-  single(named(APIVersion.V3)) { APIDataProviderFactory.create(APIVersion.V3) }
-  single(named(APIVersion.V4)) { APIDataProviderFactory.create(APIVersion.V4) }
-
-  // BaseUrl =======================================================================================
-
-  factory(named(APIVersion.V3)) {
-    get<APIDataProvider>(named(APIVersion.V3)).getDomain().toHttpUrl()
-  }
-
-  factory(named(APIVersion.V4)) {
-    get<APIDataProvider>(named(APIVersion.V4)).getDomain().toHttpUrl()
-  }
-
-  // Retrofit ======================================================================================
-
-  single(named(APIVersion.V3)) {
-    provideRetrofit(
-      baseUrl = get(named(APIVersion.V3)),
-      okHttpClient = get(named(APIVersion.V3)),
-      gson = get(),
-    )
-  }
-
-  single(named(APIVersion.V4)) {
-    provideRetrofit(
-      baseUrl = get(named(APIVersion.V4)),
-      okHttpClient = get(named(APIVersion.V4)),
-      gson = get(),
-    )
-  }
+  private const val cacheDirectory = "responses"
+  private const val cacheSize = 10 * 1024 * 1024  // 10 MiB;
+  private const val timeout = 35                  // 35 sec
+  private const val connectionTimeout = 15        // 15 sec
 }

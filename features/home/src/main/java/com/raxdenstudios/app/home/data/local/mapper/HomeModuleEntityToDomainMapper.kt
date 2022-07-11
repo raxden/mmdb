@@ -3,8 +3,10 @@ package com.raxdenstudios.app.home.data.local.mapper
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.commons.util.DataMapper
+import javax.inject.Inject
 
-internal class HomeModuleEntityToDomainMapper : DataMapper<HomeModuleEntity, HomeModule>() {
+internal class HomeModuleEntityToDomainMapper @Inject constructor() :
+  DataMapper<HomeModuleEntity, HomeModule>() {
 
   override fun transform(source: HomeModuleEntity): HomeModule = source.toDomain()
 

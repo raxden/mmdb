@@ -6,8 +6,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import javax.inject.Inject
 
-internal class AccessTokenInterceptor(
+class AccessTokenInterceptor @Inject constructor(
   private val getAccountUseCase: GetAccountUseCase
 ) : Interceptor {
 

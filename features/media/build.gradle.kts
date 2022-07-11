@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   kotlin("android")
   kotlin("kapt")
+  id("dagger.hilt.android.plugin")
   id("kotlin-parcelize")
   id("project-report")
 }
@@ -52,6 +53,11 @@ android {
     jvmTarget = Versions.jvmTarget
   }
 
+  // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
+  kapt {
+    correctErrorTypes = true
+  }
+
   packagingOptions {
     resources {
       excludes.add("META-INF/AL2.0")
@@ -67,14 +73,20 @@ dependencies {
   implementation(RaxdenLibraries.paginationCo)
 
   implementation(project(Modules.base))
-  implementation(project(Modules.featureBase))
   implementation(project(Modules.libraryNetwork))
+
+  implementation(RaxdenLibraries.android)
+  implementation(RaxdenLibraries.coroutines)
+  implementation(Libraries.timber)
 
   implementation(Libraries.roomRunTime)
   kapt(Libraries.roomCompiler)
   implementation(Libraries.roomKtx)
 
   implementation(Libraries.gson)
+
+  implementation(Libraries.hiltAndroid)
+  kapt(Libraries.hiltCompiler)
 
   testImplementation(project(Modules.baseTest))
 }

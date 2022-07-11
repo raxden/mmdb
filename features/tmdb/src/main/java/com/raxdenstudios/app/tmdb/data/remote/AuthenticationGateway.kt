@@ -9,8 +9,9 @@ import com.raxdenstudios.app.tmdb.data.remote.service.AuthenticationV3Service
 import com.raxdenstudios.app.tmdb.data.remote.service.AuthenticationV4Service
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.retrofit.toResultData
+import javax.inject.Inject
 
-internal class AuthenticationGateway(
+internal class AuthenticationGateway @Inject constructor(
   private val authenticationV4Service: AuthenticationV4Service,
   private val authenticationV3Service: AuthenticationV3Service,
 ) {

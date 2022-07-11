@@ -13,8 +13,9 @@ import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.runCatching
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class MediaLocalDataSource(
+internal class MediaLocalDataSource @Inject constructor(
   private val mediaDao: MediaDao,
   private val watchListDao: WatchListDao,
   private val mediaToEntityMapper: MediaToEntityMapper,

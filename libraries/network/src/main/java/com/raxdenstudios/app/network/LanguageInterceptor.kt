@@ -3,8 +3,9 @@ package com.raxdenstudios.app.network
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import javax.inject.Inject
 
-internal class LanguageInterceptor : Interceptor {
+class LanguageInterceptor @Inject constructor() : Interceptor {
 
   companion object {
     private const val LANGUAGE = "language"

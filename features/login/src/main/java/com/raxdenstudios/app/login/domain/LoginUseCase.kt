@@ -7,8 +7,9 @@ import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.DispatcherFacade
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class LoginUseCase(
+internal class LoginUseCase @Inject constructor(
   private val dispatcher: DispatcherFacade,
   private val accountRepository: AccountRepository,
   private val mediaRepository: MediaRepository,

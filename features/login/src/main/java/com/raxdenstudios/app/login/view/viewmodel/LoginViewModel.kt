@@ -7,13 +7,16 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.login.domain.LoginUseCase
 import com.raxdenstudios.commons.ext.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 sealed class LoginUIState {
   object Logged : LoginUIState()
   data class Error(val throwable: Throwable) : LoginUIState()
 }
 
-internal class LoginViewModel(
+@HiltViewModel
+internal class LoginViewModel @Inject constructor(
   private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {
 

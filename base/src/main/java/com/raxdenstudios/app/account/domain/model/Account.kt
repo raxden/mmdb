@@ -28,6 +28,7 @@ sealed class Account {
         id = 1L,
         credentials = credentials
       )
+
       val empty = Logged(
         id = 0L,
         credentials = Credentials.empty

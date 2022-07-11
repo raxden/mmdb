@@ -12,6 +12,7 @@ object Versions {
 
   const val androidPlugins = "0.46"
   const val androidGradlePlugin = "7.2.1"
+  const val hiltAndroidGradlePlugin = "2.42"
   const val jacocoPlugin = "0.16.0"
   const val nexusStagingPlugin = "0.30.0"
   const val testLoggerPlugin = "3.2.0"
@@ -43,6 +44,7 @@ object Versions {
   const val rxKotlin = "2.4.0"
 
   const val koin = "3.2.0"
+  const val hilt = hiltAndroidGradlePlugin
 
   const val room = "2.5.0-alpha02"
 

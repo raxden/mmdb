@@ -6,8 +6,9 @@ import com.raxdenstudios.app.media.domain.model.Picture
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.util.DataMapper
+import javax.inject.Inject
 
-class MediaListItemModelMapper : DataMapper<Media, MediaListItemModel>() {
+class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaListItemModel>() {
 
   override fun transform(source: Media): MediaListItemModel = source.toModel()
 

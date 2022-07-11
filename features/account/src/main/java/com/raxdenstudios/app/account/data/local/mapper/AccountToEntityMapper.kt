@@ -5,8 +5,10 @@ import com.raxdenstudios.app.account.data.local.model.TMDBCredentialsEntity
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.commons.util.DataMapper
+import javax.inject.Inject
 
-internal class AccountEntityToDomainMapper : DataMapper<AccountEntity, Account>() {
+internal class AccountEntityToDomainMapper @Inject constructor() :
+  DataMapper<AccountEntity, Account>() {
 
   override fun transform(source: AccountEntity): Account =
     if (source.tmdbCredentials != null) {
@@ -25,7 +27,7 @@ internal class AccountEntityToDomainMapper : DataMapper<AccountEntity, Account>(
     }
 }
 
-internal class AccountToEntityMapper : DataMapper<Account, AccountEntity>() {
+internal class AccountToEntityMapper @Inject constructor() : DataMapper<Account, AccountEntity>() {
 
   override fun transform(source: Account): AccountEntity = when (source) {
     is Account.Guest -> AccountEntity(

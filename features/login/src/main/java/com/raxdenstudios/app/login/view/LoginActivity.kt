@@ -2,6 +2,7 @@ package com.raxdenstudios.app.login.view
 
 import android.content.Context
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
@@ -9,21 +10,30 @@ import com.raxdenstudios.app.login.databinding.LoginActivityBinding
 import com.raxdenstudios.app.login.view.viewmodel.LoginUIState
 import com.raxdenstudios.app.login.view.viewmodel.LoginViewModel
 import com.raxdenstudios.app.tmdb.TMDBConnect
-import com.raxdenstudios.commons.ext.*
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
+import com.raxdenstudios.commons.ext.intentFor
+import com.raxdenstudios.commons.ext.observe
+import com.raxdenstudios.commons.ext.setResultOKAndFinish
+import com.raxdenstudios.commons.ext.setSafeOnClickListener
+import com.raxdenstudios.commons.ext.setVirtualNavigationBarSafeArea
+import com.raxdenstudios.commons.ext.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
   companion object {
     fun createIntent(context: Context) = context.intentFor<LoginActivity>()
   }
 
+  @Inject
+  lateinit var tmdbConnect: TMDBConnect
+
+  @Inject
+  lateinit var errorManager: ErrorManager
+
   private val binding: LoginActivityBinding by viewBinding()
-  private val viewModel: LoginViewModel by viewModel()
-  private val tmdbConnect: TMDBConnect by inject { parametersOf(this) }
-  private val errorManager: ErrorManager by inject { parametersOf(this) }
+  private val viewModel: LoginViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

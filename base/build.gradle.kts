@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   kotlin("android")
   kotlin("kapt")
+  id("dagger.hilt.android.plugin")
   id("kotlin-parcelize")
   id("project-report")
 }
@@ -29,8 +30,17 @@ android {
     }
   }
 
+  buildFeatures {
+    viewBinding = true
+  }
+
   kotlinOptions {
     jvmTarget = Versions.jvmTarget
+  }
+
+  // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
+  kapt {
+    correctErrorTypes = true
   }
 
   packagingOptions {
@@ -43,12 +53,14 @@ android {
 }
 
 dependencies {
-  api(RaxdenLibraries.android)
-  api(RaxdenLibraries.coroutines)
+  implementation(RaxdenLibraries.android)
+  implementation(RaxdenLibraries.coroutines)
+  implementation(RaxdenLibraries.paginationCo)
+  implementation(RaxdenLibraries.threeten)
+  implementation(RaxdenLibraries.glide)
 
-//  api(AndroidLibraries.material)
-//  api(AndroidLibraries.playCore)
-  api(Libraries.timber)
-  api(Libraries.koinAndroid)
-//  api(Libraries.koinAndroidExtensions)
+  implementation(Libraries.timber)
+
+  implementation(Libraries.hiltAndroid)
+  kapt(Libraries.hiltCompiler)
 }

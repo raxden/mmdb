@@ -20,8 +20,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-internal class MediaRepositoryImpl(
+internal class MediaRepositoryImpl @Inject constructor(
   private val mediaRemoteDataSource: MediaRemoteDataSource,
   private val mediaLocalDataSource: MediaLocalDataSource,
   private val accountLocalDataSource: AccountLocalDataSource,

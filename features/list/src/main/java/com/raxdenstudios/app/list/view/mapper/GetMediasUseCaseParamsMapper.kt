@@ -5,8 +5,9 @@ import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
+import javax.inject.Inject
 
-internal class GetMediasUseCaseParamsMapper {
+internal class GetMediasUseCaseParamsMapper @Inject constructor() {
 
   fun transform(source: MediaListParams, page: Page, pageSize: PageSize): GetMediasUseCase.Params {
     val mediaFilter = when (source) {

@@ -2,8 +2,9 @@ package com.raxdenstudios.app.media.domain
 
 import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.commons.ResultData
+import javax.inject.Inject
 
-internal class RemoveMediaFromWatchListUseCaseImpl(
+internal class RemoveMediaFromWatchListUseCaseImpl @Inject constructor(
   private val mediaRepository: MediaRepository
 ) : RemoveMediaFromWatchListUseCase {
 

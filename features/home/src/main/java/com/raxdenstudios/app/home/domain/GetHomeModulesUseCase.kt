@@ -14,8 +14,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class GetHomeModulesUseCase(
+internal class GetHomeModulesUseCase @Inject constructor(
   private val dispatcherFacade: DispatcherFacade,
   private val homeModuleRepository: HomeModuleRepository,
   private val mediasRepository: MediaRepository,

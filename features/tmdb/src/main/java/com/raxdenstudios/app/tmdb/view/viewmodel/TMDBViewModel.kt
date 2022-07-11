@@ -8,7 +8,9 @@ import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.tmdb.domain.ConnectUseCase
 import com.raxdenstudios.app.tmdb.domain.RequestTokenUseCase
 import com.raxdenstudios.commons.ResultData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed class TMDBConnectUIState {
   object Loading : TMDBConnectUIState()
@@ -17,7 +19,8 @@ sealed class TMDBConnectUIState {
   data class Error(val throwable: Throwable) : TMDBConnectUIState()
 }
 
-internal class TMDBViewModel(
+@HiltViewModel
+internal class TMDBViewModel @Inject constructor(
   private val requestTokenUseCase: RequestTokenUseCase,
   private val connectUseCase: ConnectUseCase,
 ) : BaseViewModel() {

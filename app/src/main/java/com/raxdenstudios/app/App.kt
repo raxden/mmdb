@@ -2,15 +2,14 @@ package com.raxdenstudios.app
 
 import com.raxdenstudios.app.base.BaseApplication
 import com.raxdenstudios.app.sdk.GanderSDK
-import com.raxdenstudios.app.sdk.KoinSDK
 import com.raxdenstudios.app.sdk.ThreeTenSDK
 import com.raxdenstudios.app.sdk.TimberSDK
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 internal class App : BaseApplication() {
 
   override fun onCreate() {
-    KoinSDK.init(this)
-
     super.onCreate()
 
     GanderSDK.init()

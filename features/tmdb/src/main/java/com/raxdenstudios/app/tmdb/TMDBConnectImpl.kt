@@ -4,8 +4,9 @@ import androidx.fragment.app.FragmentActivity
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.tmdb.view.TMDBConnectFragment
 import com.raxdenstudios.commons.ext.loadDialogFragment
+import javax.inject.Inject
 
-class TMDBConnectImpl(
+class TMDBConnectImpl @Inject constructor(
   private val activity: FragmentActivity
 ) : TMDBConnect {
 

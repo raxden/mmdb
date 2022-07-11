@@ -3,8 +3,9 @@ package com.raxdenstudios.app.media.data.remote.mapper
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
+import javax.inject.Inject
 
-internal class TVShowDtoToDomainMapper(
+internal class TVShowDtoToDomainMapper @Inject constructor(
   private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
   private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
   private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
