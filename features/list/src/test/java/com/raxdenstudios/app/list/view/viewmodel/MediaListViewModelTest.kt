@@ -73,7 +73,7 @@ internal class MediaListViewModelTest : BaseTest() {
   fun `when movie is added to watchlist, movie is replaced in model`() {
     val model = givenAMovieListModelWithResultsFromFirstPage()
     val itemToAddToWatchList = MediaListItemModel.empty.copy(id = MediaId(2L))
-    viewModel.state.observeForever(stateObserver)
+    viewModel.uiState.observeForever(stateObserver)
 
     viewModel.addMovieToWatchList(model, itemToAddToWatchList)
 
@@ -100,7 +100,7 @@ internal class MediaListViewModelTest : BaseTest() {
     val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(
       id = MediaId(2L), watchButtonModel = WatchButtonModel.Selected
     )
-    viewModel.state.observeForever(stateObserver)
+    viewModel.uiState.observeForever(stateObserver)
 
     viewModel.removeMovieFromWatchList(model, itemToRemoveFromWatchList)
 
@@ -124,7 +124,7 @@ internal class MediaListViewModelTest : BaseTest() {
   @Test
   fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
     val params = MediaListParams.popularMovies
-    viewModel.state.observeForever(stateObserver)
+    viewModel.uiState.observeForever(stateObserver)
 
     viewModel.refreshMovies(params)
 
@@ -146,7 +146,7 @@ internal class MediaListViewModelTest : BaseTest() {
   @Test
   fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
     val params = MediaListParams.popularMovies
-    viewModel.state.observeForever(stateObserver)
+    viewModel.uiState.observeForever(stateObserver)
 
     viewModel.loadMedias(params)
 
@@ -169,7 +169,7 @@ internal class MediaListViewModelTest : BaseTest() {
   fun `Given a pageIndex with value 20, When loadMoreMovies is called, Then second page with movies are returned`() {
     val params = MediaListParams.popularMovies
     val pageIndex = PageIndex(2)
-    viewModel.state.observeForever(stateObserver)
+    viewModel.uiState.observeForever(stateObserver)
 
     viewModel.loadMedias(params)
     viewModel.loadMoreMovies(pageIndex, params)

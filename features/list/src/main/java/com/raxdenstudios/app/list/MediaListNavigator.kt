@@ -1,8 +1,6 @@
 package com.raxdenstudios.app.list
 
-import androidx.lifecycle.DefaultLifecycleObserver
-
-interface MediaListNavigator : DefaultLifecycleObserver {
+interface MediaListNavigator {
 
   fun login(onSuccess: () -> Unit = {})
 }
