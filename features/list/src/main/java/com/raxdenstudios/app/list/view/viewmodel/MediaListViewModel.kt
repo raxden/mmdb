@@ -2,6 +2,7 @@ package com.raxdenstudios.app.list.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
@@ -15,6 +16,7 @@ import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.coMap
+import com.raxdenstudios.commons.ext.getOrThrow
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
@@ -31,6 +33,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MediaListViewModel @Inject constructor(
+  private val state: SavedStateHandle,
   private val paginationConfig: Pagination.Config,
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
@@ -46,9 +49,16 @@ internal class MediaListViewModel @Inject constructor(
       coroutineScope = viewModelScope
     )
   }
+  private val params: MediaListParams by lazy {
+    state.getOrThrow("params", "Invalid arguments")
+  }
 
-  private val mState = MutableLiveData<MediaListUIState>()
-  val state: LiveData<MediaListUIState> = mState
+  private val mUIState = MutableLiveData<MediaListUIState>()
+  val uiState: LiveData<MediaListUIState> = mUIState
+
+  init {
+    loadMedias(params)
+  }
 
   override fun onCleared() {
     pagination.clear()
@@ -60,8 +70,8 @@ internal class MediaListViewModel @Inject constructor(
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
       val params = AddMediaToWatchListUseCase.Params(item.id, item.mediaType)
       addMediaToWatchListUseCase.execute(params)
-        .onFailure { error -> mState.value = MediaListUIState.Error(error) }
-        .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
+        .onFailure { error -> mUIState.value = MediaListUIState.Error(error) }
+        .onSuccess { mUIState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) =
@@ -69,8 +79,8 @@ internal class MediaListViewModel @Inject constructor(
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       val params = RemoveMediaFromWatchListUseCase.Params(item.id, item.mediaType)
       removeMediaFromWatchListUseCase.execute(params)
-        .onFailure { error -> mState.value = MediaListUIState.Error(error) }
-        .onSuccess { mState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
+        .onFailure { error -> mUIState.value = MediaListUIState.Error(error) }
+        .onSuccess { mUIState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun refreshMovies(params: MediaListParams) {
@@ -78,13 +88,13 @@ internal class MediaListViewModel @Inject constructor(
     requestFirstPage(params)
   }
 
-  fun loadMedias(params: MediaListParams) {
+  private fun loadMedias(params: MediaListParams) {
     if (dataIsReadyOrLoading()) return
     requestFirstPage(params)
   }
 
   private fun dataIsReadyOrLoading() =
-    mState.value is MediaListUIState.Content || mState.value is MediaListUIState.Loading
+    mUIState.value is MediaListUIState.Content || mUIState.value is MediaListUIState.Loading
 
   private fun requestFirstPage(params: MediaListParams) {
     requestPage(PageIndex.first, params)
@@ -105,15 +115,15 @@ internal class MediaListViewModel @Inject constructor(
   private fun pageResponse(pageResult: PageResult<MediaListItemModel>) =
     when (pageResult) {
       is PageResult.Content -> handlePageResultContent(pageResult)
-      is PageResult.Error -> mState.value = MediaListUIState.Error(pageResult.throwable)
-      PageResult.Loading -> mState.value = MediaListUIState.Loading
+      is PageResult.Error -> mUIState.value = MediaListUIState.Error(pageResult.throwable)
+      PageResult.Loading -> mUIState.value = MediaListUIState.Loading
       PageResult.NoMoreResults -> Unit
-      PageResult.NoResults -> mState.value = MediaListUIState.EmptyContent
+      PageResult.NoResults -> mUIState.value = MediaListUIState.EmptyContent
     }
 
   private fun handlePageResultContent(pageResult: PageResult.Content<MediaListItemModel>) {
     viewModelScope.safeLaunch {
-      mState.value = MediaListUIState.Content(MediaListModel(media = pageResult.items))
+      mUIState.value = MediaListUIState.Content(MediaListModel(media = pageResult.items))
     }
   }
 
