@@ -81,7 +81,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(
                 id = MediaId(2L),
@@ -108,7 +108,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(
                 id = MediaId(2L),
@@ -133,7 +133,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
@@ -155,7 +155,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
@@ -179,7 +179,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(id = MediaId(2L)),
             )
@@ -190,7 +190,7 @@ internal class MediaListViewModelTest : BaseTest() {
       stateObserver.onChanged(
         MediaListUIState.Content(
           MediaListModel.empty.copy(
-            media = listOf(
+            items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
               MediaListItemModel.empty.copy(id = MediaId(2L)),
               MediaListItemModel.empty.copy(id = MediaId(3L)),
@@ -204,7 +204,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
   private fun givenAMovieListModelWithResultsFromFirstPage(): MediaListModel =
     MediaListModel.empty.copy(
-      media = aFirstPageMoviesModel
+      items = aFirstPageMoviesModel
     )
 }
 
