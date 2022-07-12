@@ -6,16 +6,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
+import com.raxdenstudios.app.list.view.mapper.MediaListModelMapper
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
-import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.commons.ext.coMap
 import com.raxdenstudios.commons.ext.getOrThrow
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.onFailure
@@ -39,10 +39,10 @@ internal class MediaListViewModel @Inject constructor(
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
   private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase,
   private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper,
-  private val mediaListItemModelMapper: MediaListItemModelMapper
+  private val mediaListModelMapper: MediaListModelMapper,
 ) : BaseViewModel() {
 
-  private val pagination: Pagination<MediaListItemModel> by lazy {
+  private val pagination: Pagination<Media> by lazy {
     Pagination(
       config = paginationConfig,
       logger = { message -> Timber.tag("Pagination").d(message) },
@@ -104,7 +104,7 @@ internal class MediaListViewModel @Inject constructor(
     pagination.requestPage(
       pageIndex = pageIndex,
       pageRequest = { page, pageSize -> pageRequest(params, page, pageSize) },
-      pageResponse = { pageResult -> pageResponse(pageResult) }
+      pageResponse = { pageResult -> pageResponse(params, pageResult) }
     )
   }
 
@@ -112,18 +112,22 @@ internal class MediaListViewModel @Inject constructor(
     requestPage(pageIndex, params)
   }
 
-  private fun pageResponse(pageResult: PageResult<MediaListItemModel>) =
+  private fun pageResponse(params: MediaListParams, pageResult: PageResult<Media>) =
     when (pageResult) {
-      is PageResult.Content -> handlePageResultContent(pageResult)
+      is PageResult.Content -> handlePageResultContent(params, pageResult)
       is PageResult.Error -> mUIState.value = MediaListUIState.Error(pageResult.throwable)
       PageResult.Loading -> mUIState.value = MediaListUIState.Loading
       PageResult.NoMoreResults -> Unit
       PageResult.NoResults -> mUIState.value = MediaListUIState.EmptyContent
     }
 
-  private fun handlePageResultContent(pageResult: PageResult.Content<MediaListItemModel>) {
+  private fun handlePageResultContent(
+    params: MediaListParams,
+    pageResult: PageResult.Content<Media>
+  ) {
     viewModelScope.safeLaunch {
-      mUIState.value = MediaListUIState.Content(MediaListModel(media = pageResult.items))
+      val model = mediaListModelMapper.transform(params, pageResult.items)
+      mUIState.value = MediaListUIState.Content(model)
     }
   }
 
@@ -131,10 +135,9 @@ internal class MediaListViewModel @Inject constructor(
     params: MediaListParams,
     page: Page,
     pageSize: PageSize
-  ): PageList<MediaListItemModel> {
+  ): PageList<Media> {
     val useCaseParams = getMediasUseCaseParamsMapper.transform(params, page, pageSize)
     return getMediasUseCase.execute(useCaseParams)
-      .coMap { pageList -> pageList.map { items -> mediaListItemModelMapper.transform(items) } }
       .getValueOrDefault(PageList(emptyList(), page))
   }
 }
