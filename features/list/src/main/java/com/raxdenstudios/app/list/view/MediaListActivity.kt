@@ -9,14 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.list.MediaListNavigator
-import com.raxdenstudios.app.list.R
 import com.raxdenstudios.app.list.databinding.MediaListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
-import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.addOnScrolledListener
 import com.raxdenstudios.commons.ext.argument
@@ -70,11 +68,12 @@ class MediaListActivity : BaseActivity() {
     swipeRefreshLayout.isRefreshing = false
 
     loadMoreMoviesWhenScrollDown()
+    titleValueView.text = state.model.title
     adapter.populateAdapter(state.model)
   }
 
   private fun MediaListAdapter.populateAdapter(model: MediaListModel) {
-    submitList(model.media)
+    submitList(model.items)
     onMovieClickListener = { TODO() }
     onAddMovieToWatchListClickListener = { item ->
       checkIfLoggedAndAddMovieToWatchList(model, item)
@@ -128,20 +127,6 @@ class MediaListActivity : BaseActivity() {
 
   private fun MediaListActivityBinding.setUp() {
     setupToolbar(toolbarView)
-    val titleResourceId = when (params) {
-      MediaListParams.NowPlaying -> R.string.home_carousel_now_playing_movies
-      is MediaListParams.Popular -> when (params.mediaType) {
-        MediaType.MOVIE -> R.string.list_popular_movies
-        MediaType.TV_SHOW -> R.string.list_popular_tv_shows
-      }
-      is MediaListParams.TopRated -> when (params.mediaType) {
-        MediaType.MOVIE -> R.string.list_top_rated_movies
-        MediaType.TV_SHOW -> R.string.list_top_rated_tv_shows
-      }
-      MediaListParams.Upcoming -> R.string.home_carousel_upcoming
-      is MediaListParams.WatchList -> R.string.home_carousel_watch_list
-    }
-    titleValueView.text = getString(titleResourceId)
     recyclerView.adapter = adapter
     swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies(params) }
   }
