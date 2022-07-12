@@ -36,8 +36,6 @@ class HomeActivity : BaseActivity() {
 
     homeNavigationDelegate.onCreate(savedInstanceState)
     binding.setUp()
-
-    lifecycle.addObserver(navigator)
   }
 
   private fun HomeActivityBinding.setUp() {

@@ -56,11 +56,7 @@ class MediaListActivity : BaseActivity() {
 
     binding.setUp()
 
-    viewModel.loadMedias(params)
-
-    observe(viewModel.state) { state -> binding.handleState(state) }
-
-    lifecycle.addObserver(navigator)
+    observe(viewModel.uiState) { state -> binding.handleState(state) }
   }
 
   private fun MediaListActivityBinding.handleState(state: MediaListUIState) = when (state) {
