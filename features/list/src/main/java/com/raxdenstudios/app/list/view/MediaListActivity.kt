@@ -13,7 +13,6 @@ import com.raxdenstudios.app.list.databinding.MediaListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.addOnScrolledListener
@@ -57,14 +56,15 @@ class MediaListActivity : BaseActivity() {
     observe(viewModel.uiState) { state -> binding.handleState(state) }
   }
 
-  private fun MediaListActivityBinding.handleState(state: MediaListUIState) = when (state) {
-    is MediaListUIState.Content -> handleContentState(state)
-    MediaListUIState.EmptyContent -> handleEmptyState()
-    is MediaListUIState.Error -> handleErrorState(state)
-    MediaListUIState.Loading -> handleLoadingState()
-  }
+  private fun MediaListActivityBinding.handleState(state: MediaListViewModel.UIState) =
+    when (state) {
+      is MediaListViewModel.UIState.Content -> handleContentState(state)
+      MediaListViewModel.UIState.EmptyContent -> handleEmptyState()
+      is MediaListViewModel.UIState.Error -> handleErrorState(state)
+      MediaListViewModel.UIState.Loading -> handleLoadingState()
+    }
 
-  private fun MediaListActivityBinding.handleContentState(state: MediaListUIState.Content) {
+  private fun MediaListActivityBinding.handleContentState(state: MediaListViewModel.UIState.Content) {
     swipeRefreshLayout.isRefreshing = false
 
     loadMoreMoviesWhenScrollDown()
@@ -116,7 +116,7 @@ class MediaListActivity : BaseActivity() {
     swipeRefreshLayout.isRefreshing = false
   }
 
-  private fun MediaListActivityBinding.handleErrorState(state: MediaListUIState.Error) {
+  private fun MediaListActivityBinding.handleErrorState(state: MediaListViewModel.UIState.Error) {
     swipeRefreshLayout.isRefreshing = false
     errorManager.handleError(state.throwable)
   }

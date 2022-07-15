@@ -58,7 +58,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
   private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
     coEvery { execute(any()) } returns ResultData.Success(true)
   }
-  private val stateObserver: Observer<HomeMediaListUIState> = mockk(relaxed = true)
+  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
   private val dispatcher: DispatcherFacade = object : DispatcherFacade {
     override fun io() = testDispatcher
     override fun default() = testDispatcher
@@ -88,7 +88,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
       verify {
         stateObserver.onChanged(
-          HomeMediaListUIState.Content(
+          UIState.Content(
             HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
@@ -122,7 +122,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
       coVerify {
         stateObserver.onChanged(
-          HomeMediaListUIState.Content(
+          UIState.Content(
             HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(

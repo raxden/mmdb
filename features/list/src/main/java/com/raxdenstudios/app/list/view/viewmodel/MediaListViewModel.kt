@@ -9,7 +9,6 @@ import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.list.view.mapper.MediaListModelMapper
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MediaListUIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
@@ -53,8 +52,8 @@ internal class MediaListViewModel @Inject constructor(
     state.getOrThrow("params", "Invalid arguments")
   }
 
-  private val mUIState = MutableLiveData<MediaListUIState>()
-  val uiState: LiveData<MediaListUIState> = mUIState
+  private val mUIState = MutableLiveData<UIState>()
+  val uiState: LiveData<UIState> = mUIState
 
   init {
     loadMedias(params)
@@ -69,18 +68,18 @@ internal class MediaListViewModel @Inject constructor(
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
       val params = AddMediaToWatchListUseCase.Params(item.id, item.mediaType)
-      addMediaToWatchListUseCase.execute(params)
-        .onFailure { error -> mUIState.value = MediaListUIState.Error(error) }
-        .onSuccess { mUIState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
+      addMediaToWatchListUseCase(params)
+        .onFailure { error -> mUIState.value = UIState.Error(error) }
+        .onSuccess { mUIState.value = UIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) =
     viewModelScope.safeLaunch {
       val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
       val params = RemoveMediaFromWatchListUseCase.Params(item.id, item.mediaType)
-      removeMediaFromWatchListUseCase.execute(params)
-        .onFailure { error -> mUIState.value = MediaListUIState.Error(error) }
-        .onSuccess { mUIState.value = MediaListUIState.Content(model.replaceMovie(itemToReplace)) }
+      removeMediaFromWatchListUseCase(params)
+        .onFailure { error -> mUIState.value = UIState.Error(error) }
+        .onSuccess { mUIState.value = UIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
   fun refreshMovies(params: MediaListParams) {
@@ -94,7 +93,7 @@ internal class MediaListViewModel @Inject constructor(
   }
 
   private fun dataIsReadyOrLoading() =
-    mUIState.value is MediaListUIState.Content || mUIState.value is MediaListUIState.Loading
+    mUIState.value is UIState.Content || mUIState.value is UIState.Loading
 
   private fun requestFirstPage(params: MediaListParams) {
     requestPage(PageIndex.first, params)
@@ -115,10 +114,10 @@ internal class MediaListViewModel @Inject constructor(
   private fun pageResponse(params: MediaListParams, pageResult: PageResult<Media>) =
     when (pageResult) {
       is PageResult.Content -> handlePageResultContent(params, pageResult)
-      is PageResult.Error -> mUIState.value = MediaListUIState.Error(pageResult.throwable)
-      PageResult.Loading -> mUIState.value = MediaListUIState.Loading
+      is PageResult.Error -> mUIState.value = UIState.Error(pageResult.throwable)
+      PageResult.Loading -> mUIState.value = UIState.Loading
       PageResult.NoMoreResults -> Unit
-      PageResult.NoResults -> mUIState.value = MediaListUIState.EmptyContent
+      PageResult.NoResults -> mUIState.value = UIState.EmptyContent
     }
 
   private fun handlePageResultContent(
@@ -127,7 +126,7 @@ internal class MediaListViewModel @Inject constructor(
   ) {
     viewModelScope.safeLaunch {
       val model = mediaListModelMapper.transform(params, pageResult.items)
-      mUIState.value = MediaListUIState.Content(model)
+      mUIState.value = UIState.Content(model)
     }
   }
 
@@ -137,7 +136,14 @@ internal class MediaListViewModel @Inject constructor(
     pageSize: PageSize
   ): PageList<Media> {
     val useCaseParams = getMediasUseCaseParamsMapper.transform(params, page, pageSize)
-    return getMediasUseCase.execute(useCaseParams)
+    return getMediasUseCase(useCaseParams)
       .getValueOrDefault(PageList(emptyList(), page))
+  }
+
+  internal sealed class UIState {
+    object Loading : UIState()
+    object EmptyContent : UIState()
+    data class Content(val model: MediaListModel) : UIState()
+    data class Error(val throwable: Throwable) : UIState()
   }
 }

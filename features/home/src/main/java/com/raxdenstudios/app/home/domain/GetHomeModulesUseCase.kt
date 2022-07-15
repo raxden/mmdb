@@ -27,7 +27,7 @@ internal class GetHomeModulesUseCase @Inject constructor(
     private val pageSize = PageSize(20)
   }
 
-  fun execute(): Flow<List<HomeModule>> =
+  operator fun invoke(): Flow<List<HomeModule>> =
     homeModuleRepository.observeModules()
       .map { modules ->
         withContext(dispatcherFacade.io()) {

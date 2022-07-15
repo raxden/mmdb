@@ -8,7 +8,6 @@ import com.raxdenstudios.app.base.BaseFragmentDialog
 import com.raxdenstudios.app.tmdb.R
 import com.raxdenstudios.app.tmdb.databinding.TmdbConnectFragmentBinding
 import com.raxdenstudios.app.tmdb.view.component.TMDBWebViewWrapper
-import com.raxdenstudios.app.tmdb.view.viewmodel.TMDBConnectUIState
 import com.raxdenstudios.app.tmdb.view.viewmodel.TMDBViewModel
 import com.raxdenstudios.commons.ext.close
 import com.raxdenstudios.commons.ext.observe
@@ -36,14 +35,14 @@ internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fr
     observe(viewModel.state) { state -> binding.handleState(state) }
   }
 
-  private fun TmdbConnectFragmentBinding.handleState(state: TMDBConnectUIState) = when (state) {
-    is TMDBConnectUIState.Connected -> handleAccessTokenLoadedState(state)
-    is TMDBConnectUIState.Error -> handleErrorState(state)
-    TMDBConnectUIState.Loading -> handleLoadingState()
-    is TMDBConnectUIState.TokenLoaded -> handleTokenLoadedState(state.token)
+  private fun TmdbConnectFragmentBinding.handleState(state: TMDBViewModel.UIState) = when (state) {
+    is TMDBViewModel.UIState.Connected -> handleAccessTokenLoadedState(state)
+    is TMDBViewModel.UIState.Error -> handleErrorState(state)
+    TMDBViewModel.UIState.Loading -> handleLoadingState()
+    is TMDBViewModel.UIState.TokenLoaded -> handleTokenLoadedState(state.token)
   }
 
-  private fun TmdbConnectFragmentBinding.handleErrorState(state: TMDBConnectUIState.Error) {
+  private fun TmdbConnectFragmentBinding.handleErrorState(state: TMDBViewModel.UIState.Error) {
     contentLoadingProgressBar.hide()
     onError(state.throwable)
     close()
@@ -53,7 +52,7 @@ internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fr
     contentLoadingProgressBar.show()
   }
 
-  private fun TmdbConnectFragmentBinding.handleAccessTokenLoadedState(state: TMDBConnectUIState.Connected) {
+  private fun TmdbConnectFragmentBinding.handleAccessTokenLoadedState(state: TMDBViewModel.UIState.Connected) {
     contentLoadingProgressBar.hide()
     onSuccess(state.credentials)
     close()

@@ -24,12 +24,6 @@ import com.raxdenstudios.commons.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-internal sealed class HomeMediaListUIState {
-  object Loading : HomeMediaListUIState()
-  data class Content(val model: HomeMediaListModel) : HomeMediaListUIState()
-  data class Error(val throwable: Throwable) : HomeMediaListUIState()
-}
-
 @HiltViewModel
 internal class HomeMediaListViewModel @Inject constructor(
   private val getHomeModulesUseCase: GetHomeModulesUseCase,
@@ -41,19 +35,19 @@ internal class HomeMediaListViewModel @Inject constructor(
   private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
 
-  private val mState = MutableLiveData<HomeMediaListUIState>()
-  val state: LiveData<HomeMediaListUIState>
+  private val mState = MutableLiveData<UIState>()
+  val state: LiveData<UIState>
     get() {
       if (mState.value == null) loadData()
       return mState
     }
 
   fun loadData() = viewModelScope.safeLaunch {
-    mState.value = HomeMediaListUIState.Loading
+    mState.value = UIState.Loading
 
-    getHomeModulesUseCase.execute().collect { modules ->
+    getHomeModulesUseCase().collect { modules ->
       val homeModel = homeModelMapper.transform(modules)
-      mState.value = HomeMediaListUIState.Content(homeModel)
+      mState.value = UIState.Content(homeModel)
     }
   }
 
@@ -71,7 +65,7 @@ internal class HomeMediaListViewModel @Inject constructor(
     mediaType: MediaType
   ) = viewModelScope.safeLaunch {
     val useCaseParams = getMediasUseCaseParamsMapper.transform(carouselMedias, mediaType)
-    val medias = getMediasUseCase.execute(useCaseParams)
+    val medias = getMediasUseCase(useCaseParams)
       .map { pageList -> pageList.items }
       .map { medias -> mediaListItemModelMapper.transform(medias) }
       .getValueOrDefault(emptyList())
@@ -79,7 +73,7 @@ internal class HomeMediaListViewModel @Inject constructor(
     val homeUpdated = model.copy(
       modules = model.modules.replaceItem(carouselMediasUpdated) { it == carouselMedias }
     )
-    mState.value = HomeMediaListUIState.Content(homeUpdated)
+    mState.value = UIState.Content(homeUpdated)
   }
 
   fun addMediaToWatchList(
@@ -88,7 +82,7 @@ internal class HomeMediaListViewModel @Inject constructor(
   ) = viewModelScope.safeLaunch {
     val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Selected)
     mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-    addMediaToWatchListUseCase.execute(
+    addMediaToWatchListUseCase(
       AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
   }
@@ -99,7 +93,7 @@ internal class HomeMediaListViewModel @Inject constructor(
   ) = viewModelScope.safeLaunch {
     val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Unselected)
     mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-    removeMediaFromWatchListUseCase.execute(
+    removeMediaFromWatchListUseCase(
       RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
     ).onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
   }
@@ -109,6 +103,12 @@ internal class HomeMediaListViewModel @Inject constructor(
     mediaListItem: MediaListItemModel,
   ) {
     val homeUpdated = home.updateMedia(mediaListItem)
-    mState.value = HomeMediaListUIState.Content(homeUpdated)
+    mState.value = UIState.Content(homeUpdated)
+  }
+
+  internal sealed class UIState {
+    object Loading : UIState()
+    data class Content(val model: HomeMediaListModel) : UIState()
+    data class Error(val throwable: Throwable) : UIState()
   }
 }
