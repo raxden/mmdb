@@ -8,7 +8,7 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
 interface GetMediasUseCase {
-  suspend fun execute(params: Params): ResultData<PageList<Media>>
+  suspend operator fun invoke(params: Params): ResultData<PageList<Media>>
 
   data class Params(
     val mediaFilter: MediaFilter,

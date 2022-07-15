@@ -9,6 +9,6 @@ internal class AddMediaToWatchListUseCaseImpl @Inject constructor(
   private val mediaRepository: MediaRepository
 ) : AddMediaToWatchListUseCase {
 
-  override suspend fun execute(params: AddMediaToWatchListUseCase.Params): ResultData<Media> =
+  override suspend fun invoke(params: AddMediaToWatchListUseCase.Params): ResultData<Media> =
     mediaRepository.addToWatchList(params.mediaId, params.mediaType)
 }

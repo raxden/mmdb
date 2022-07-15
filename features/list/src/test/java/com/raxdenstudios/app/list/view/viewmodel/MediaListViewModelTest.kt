@@ -6,7 +6,7 @@ import com.raxdenstudios.app.di.baseFeatureModule
 import com.raxdenstudios.app.list.di.listFeatureModule
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.MediaListUIState
+import com.raxdenstudios.app.list.view.model.UIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
@@ -47,7 +47,7 @@ internal class MediaListViewModelTest : BaseTest() {
       aSecondPageList
     )
   }
-  private val stateObserver: Observer<MediaListUIState> = mockk(relaxed = true)
+  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
   private val paginationConfig = Pagination.Config.default.copy(
     initialPage = aFirstPage,
     pageSize = aPageSize,
@@ -79,7 +79,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -106,7 +106,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -129,9 +129,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.refreshMovies(params)
 
     coVerifyOrder {
-      stateObserver.onChanged(MediaListUIState.Loading)
+      stateObserver.onChanged(UIState.Loading)
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -151,9 +151,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.loadMedias(params)
 
     coVerifyOrder {
-      stateObserver.onChanged(MediaListUIState.Loading)
+      stateObserver.onChanged(UIState.Loading)
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -175,9 +175,9 @@ internal class MediaListViewModelTest : BaseTest() {
     viewModel.loadMoreMovies(pageIndex, params)
 
     coVerifyOrder {
-      stateObserver.onChanged(MediaListUIState.Loading)
+      stateObserver.onChanged(UIState.Loading)
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -186,9 +186,9 @@ internal class MediaListViewModelTest : BaseTest() {
           )
         )
       )
-      stateObserver.onChanged(MediaListUIState.Loading)
+      stateObserver.onChanged(UIState.Loading)
       stateObserver.onChanged(
-        MediaListUIState.Content(
+        UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),

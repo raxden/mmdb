@@ -10,7 +10,6 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.HomeMediaListFragmentBinding
 import com.raxdenstudios.app.home.view.adapter.HomeModuleListAdapter
 import com.raxdenstudios.app.home.view.model.HomeMediaListModel
-import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListUIState
 import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListViewModel
 import com.raxdenstudios.commons.ext.addProgressViewEndTarget
 import com.raxdenstudios.commons.ext.observe
@@ -50,11 +49,12 @@ internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fra
     observe(viewModel.state) { state -> binding.handleState(state) }
   }
 
-  private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListUIState) = when (state) {
-    is HomeMediaListUIState.Content -> handleContentState(state.model)
-    is HomeMediaListUIState.Error -> handleErrorState(state.throwable)
-    HomeMediaListUIState.Loading -> handleLoadingState()
-  }
+  private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListViewModel.UIState) =
+    when (state) {
+      is HomeMediaListViewModel.UIState.Content -> handleContentState(state.model)
+      is HomeMediaListViewModel.UIState.Error -> handleErrorState(state.throwable)
+      HomeMediaListViewModel.UIState.Loading -> handleLoadingState()
+    }
 
   private fun HomeMediaListFragmentBinding.handleContentState(model: HomeMediaListModel) {
     swipeRefreshLayout.isRefreshing = false
