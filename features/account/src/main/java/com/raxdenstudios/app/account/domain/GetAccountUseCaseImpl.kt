@@ -8,6 +8,6 @@ internal class GetAccountUseCaseImpl @Inject constructor(
   private val accountRepository: AccountRepository,
 ) : GetAccountUseCase {
 
-  override suspend fun execute(): Account =
+  override suspend operator fun invoke(): Account =
     accountRepository.getAccount()
 }

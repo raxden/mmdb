@@ -10,6 +10,6 @@ internal class GetMediasUseCaseImpl @Inject constructor(
   private val mediaRepository: MediaRepository
 ) : GetMediasUseCase {
 
-  override suspend fun execute(params: GetMediasUseCase.Params): ResultData<PageList<Media>> =
+  override suspend operator fun invoke(params: GetMediasUseCase.Params): ResultData<PageList<Media>> =
     mediaRepository.medias(params.mediaFilter, params.page, params.pageSize)
 }

@@ -7,6 +7,6 @@ internal class IsAccountLoggedUseCaseImpl(
   private val accountRepository: AccountRepository
 ) : IsAccountLoggedUseCase {
 
-  override suspend fun execute(): Boolean =
+  override suspend operator fun invoke(): Boolean =
     accountRepository.getAccount() is Account.Logged
 }

@@ -12,21 +12,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class TMDBConnectUIState {
-  object Loading : TMDBConnectUIState()
-  data class TokenLoaded(val token: String) : TMDBConnectUIState()
-  data class Connected(val credentials: Credentials) : TMDBConnectUIState()
-  data class Error(val throwable: Throwable) : TMDBConnectUIState()
-}
-
 @HiltViewModel
 internal class TMDBViewModel @Inject constructor(
   private val requestTokenUseCase: RequestTokenUseCase,
   private val connectUseCase: ConnectUseCase,
 ) : BaseViewModel() {
 
-  private val mState = MutableLiveData<TMDBConnectUIState>()
-  val state: LiveData<TMDBConnectUIState> = mState
+  private val mState = MutableLiveData<UIState>()
+  val state: LiveData<UIState> = mState
 
   init {
     requestToken()
@@ -34,21 +27,28 @@ internal class TMDBViewModel @Inject constructor(
 
   private fun requestToken() {
     viewModelScope.launch {
-      mState.value = TMDBConnectUIState.Loading
+      mState.value = UIState.Loading
       when (val resultData = requestTokenUseCase.execute()) {
-        is ResultData.Error -> mState.value = TMDBConnectUIState.Error(resultData.throwable)
-        is ResultData.Success -> mState.value = TMDBConnectUIState.TokenLoaded(resultData.value)
+        is ResultData.Error -> mState.value = UIState.Error(resultData.throwable)
+        is ResultData.Success -> mState.value = UIState.TokenLoaded(resultData.value)
       }
     }
   }
 
   fun login(token: String) {
     viewModelScope.launch {
-      mState.value = TMDBConnectUIState.Loading
+      mState.value = UIState.Loading
       when (val resultData = connectUseCase.execute(token)) {
-        is ResultData.Error -> mState.value = TMDBConnectUIState.Error(resultData.throwable)
-        is ResultData.Success -> mState.value = TMDBConnectUIState.Connected(resultData.value)
+        is ResultData.Error -> mState.value = UIState.Error(resultData.throwable)
+        is ResultData.Success -> mState.value = UIState.Connected(resultData.value)
       }
     }
+  }
+
+  internal sealed class UIState {
+    object Loading : UIState()
+    data class TokenLoaded(val token: String) : UIState()
+    data class Connected(val credentials: Credentials) : UIState()
+    data class Error(val throwable: Throwable) : UIState()
   }
 }

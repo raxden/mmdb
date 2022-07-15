@@ -7,7 +7,6 @@ import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.base.BaseActivity
 import com.raxdenstudios.app.error.ErrorManager
 import com.raxdenstudios.app.login.databinding.LoginActivityBinding
-import com.raxdenstudios.app.login.view.viewmodel.LoginUIState
 import com.raxdenstudios.app.login.view.viewmodel.LoginViewModel
 import com.raxdenstudios.app.tmdb.TMDBConnect
 import com.raxdenstudios.commons.ext.intentFor
@@ -43,9 +42,9 @@ class LoginActivity : BaseActivity() {
     observe(viewModel.state) { state -> handleState(state) }
   }
 
-  private fun handleState(state: LoginUIState): Unit = when (state) {
-    is LoginUIState.Error -> errorManager.handleError(state.throwable)
-    LoginUIState.Logged -> setResultOKAndFinish()
+  private fun handleState(state: LoginViewModel.UIState): Unit = when (state) {
+    is LoginViewModel.UIState.Error -> errorManager.handleError(state.throwable)
+    LoginViewModel.UIState.Logged -> setResultOKAndFinish()
   }
 
   private fun LoginActivityBinding.setUp() {

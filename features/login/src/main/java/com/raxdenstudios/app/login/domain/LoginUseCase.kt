@@ -15,7 +15,7 @@ internal class LoginUseCase @Inject constructor(
   private val mediaRepository: MediaRepository,
 ) {
 
-  suspend fun execute(credentials: Credentials) {
+  suspend operator fun invoke(credentials: Credentials) {
     accountRepository.createAccountWithCredentials(credentials)
     loadWatchListFromRemoteAndPersistInLocal()
   }

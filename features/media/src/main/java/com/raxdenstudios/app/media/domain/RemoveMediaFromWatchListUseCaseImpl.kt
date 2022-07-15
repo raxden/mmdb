@@ -8,6 +8,6 @@ internal class RemoveMediaFromWatchListUseCaseImpl @Inject constructor(
   private val mediaRepository: MediaRepository
 ) : RemoveMediaFromWatchListUseCase {
 
-  override suspend fun execute(params: RemoveMediaFromWatchListUseCase.Params): ResultData<Boolean> =
+  override suspend operator fun invoke(params: RemoveMediaFromWatchListUseCase.Params): ResultData<Boolean> =
     mediaRepository.removeFromWatchList(params.mediaId, params.mediaType)
 }

@@ -25,8 +25,8 @@ internal class TMDBViewModelTest : BaseTest() {
   private val connectUseCase: ConnectUseCase = mockk {
     coEvery { execute(aToken) } returns ResultData.Success(aTMDBCredentials)
   }
-  private val stateObserver: Observer<TMDBConnectUIState> = mockk(relaxed = true)
-  private val slot = slot<TMDBConnectUIState.Error>()
+  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
+  private val slot = slot<UIState.Error>()
 
   override val modules: List<Module>
     get() = listOf(
@@ -44,7 +44,7 @@ internal class TMDBViewModelTest : BaseTest() {
     viewModel.state.observeForever(stateObserver)
 
     coVerify {
-      stateObserver.onChanged(TMDBConnectUIState.TokenLoaded(aToken))
+      stateObserver.onChanged(UIState.TokenLoaded(aToken))
       requestTokenUseCase.execute()
     }
   }
@@ -71,7 +71,7 @@ internal class TMDBViewModelTest : BaseTest() {
 
     coVerify {
       stateObserver.onChanged(
-        TMDBConnectUIState.Connected(
+        UIState.Connected(
           Credentials(
             accountId = "aAccountId",
             accessToken = "aAccessToken",
