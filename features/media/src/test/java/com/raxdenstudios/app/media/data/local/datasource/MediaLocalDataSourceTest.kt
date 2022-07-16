@@ -2,14 +2,21 @@ package com.raxdenstudios.app.media.data.local.datasource
 
 import com.raxdenstudios.app.media.data.local.MediaDao
 import com.raxdenstudios.app.media.data.local.WatchListDao
+import com.raxdenstudios.app.media.data.local.mapper.MediaEntityToDomainMapper
+import com.raxdenstudios.app.media.data.local.mapper.MediaToEntityMapper
+import com.raxdenstudios.app.media.data.local.mapper.MediaToWatchListEntityMapper
+import com.raxdenstudios.app.media.data.local.mapper.PictureEntityToDomainMapper
+import com.raxdenstudios.app.media.data.local.mapper.PictureToEntityMapper
+import com.raxdenstudios.app.media.data.local.mapper.SizeEntityToDomainMapper
+import com.raxdenstudios.app.media.data.local.mapper.SizeToEntityMapper
+import com.raxdenstudios.app.media.data.local.mapper.VoteEntityToDomainMapper
+import com.raxdenstudios.app.media.data.local.mapper.VoteToEntityMapper
 import com.raxdenstudios.app.media.data.local.model.MediaEntity
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
-import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
-import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import io.mockk.coEvery
@@ -22,36 +29,47 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class MediaLocalDataSourceTest : BaseTest() {
 
-  private val mediaDao: MediaDao = mockk() {
+  private val mediaDao: MediaDao = mockk {
     coEvery { watchList(any()) } returns flowOf(aMediaEntityList)
   }
-  private val watchListDao: WatchListDao = mockk() {
+  private val watchListDao: WatchListDao = mockk {
     coEvery { clear() } returns Unit
   }
   private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
-
-  override val modules: List<Module>
-    get() = listOf(
-      mediaDataModule,
-      module {
-        factory(override = true) { mediaDao }
-        factory(override = true) { watchListDao }
-        factory(
-          override = true,
-          qualifier = named(APIVersion.V3)
-        ) { apiDataProvider }
-      }
+  private val sizeToEntityMapper = SizeToEntityMapper()
+  private val pictureToEntityMapper = PictureToEntityMapper(
+    sizeToEntityMapper = sizeToEntityMapper,
+  )
+  private val voteToEntityMapper = VoteToEntityMapper()
+  private val mediaToEntityMapper = MediaToEntityMapper(
+    pictureToEntityMapper = pictureToEntityMapper,
+    voteToEntityMapper = voteToEntityMapper,
+  )
+  private val sizeEntityToDomainMapper = SizeEntityToDomainMapper(
+    apiDataProvider = apiDataProvider,
+  )
+  private val pictureEntityToDomainMapper = PictureEntityToDomainMapper(
+    sizeEntityToDomainMapper = sizeEntityToDomainMapper,
+  )
+  private val voteEntityToDomainMapper = VoteEntityToDomainMapper()
+  private val mediaEntityToDomainMapper = MediaEntityToDomainMapper(
+    pictureEntityToDomainMapper = pictureEntityToDomainMapper,
+    voteEntityToDomainMapper = voteEntityToDomainMapper,
+  )
+  private val mediaToWatchListEntityMapper = MediaToWatchListEntityMapper()
+  private val dataSource: MediaLocalDataSource by lazy {
+    MediaLocalDataSource(
+      mediaDao = mediaDao,
+      watchListDao = watchListDao,
+      mediaToEntityMapper = mediaToEntityMapper,
+      mediaEntityToDomainMapper = mediaEntityToDomainMapper,
+      mediaToWatchListEntityMapper = mediaToWatchListEntityMapper,
     )
-
-  private val dataSource: MediaLocalDataSource by inject()
+  }
 
   @Test
   fun `Given a mediaType, When watchList is called, return a ResultData_success with media data`() {

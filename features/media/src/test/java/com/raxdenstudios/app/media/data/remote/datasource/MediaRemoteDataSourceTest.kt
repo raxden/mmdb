@@ -4,14 +4,13 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.media.data.remote.MediaGateway
 import com.raxdenstudios.app.media.data.remote.exception.UserNotLoggedException
+import com.raxdenstudios.app.media.data.remote.mapper.MediaDtoToDomainMapper
+import com.raxdenstudios.app.media.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.media.data.remote.model.MediaDto
-import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.app.network.APIDataProvider
-import com.raxdenstudios.app.network.model.APIVersion
 import com.raxdenstudios.app.network.model.PageDto
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
@@ -23,15 +22,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
-import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class MediaRemoteDataSourceTest : BaseTest() {
 
-  private val mediaGateway: MediaGateway = mockk() {
+  private val mediaGateway: MediaGateway = mockk {
     coEvery { upcoming(any()) } returns ResultData.Success(aPageDto)
     coEvery { topRatedMovies(any()) } returns ResultData.Success(aPageDto)
     coEvery { popularMovies(any()) } returns ResultData.Success(aPageDto)
@@ -50,21 +45,15 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
       removeFromWatchList(aTMDBAccountId, "movie", aMediaId)
     } returns ResultData.Success(true)
   }
-  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
-
-  override val modules: List<Module>
-    get() = listOf(
-      mediaDataModule,
-      module {
-        factory(override = true) { mediaGateway }
-        factory(
-          override = true,
-          qualifier = named(APIVersion.V3)
-        ) { apiDataProvider }
-      }
+  private val mediaDtoToDomainMapper: MediaDtoToDomainMapper = mockk()
+  private val mediaTypeToDtoMapper: MediaTypeToDtoMapper = mockk()
+  private val dataSource: MediaRemoteDataSource by lazy {
+    MediaRemoteDataSource(
+      mediaGateway = mediaGateway,
+      mediaTypeToDtoMapper = mediaTypeToDtoMapper,
+      mediaDtoToDomainMapper = mediaDtoToDomainMapper,
     )
-
-  private val dataSource: MediaRemoteDataSource by inject()
+  }
 
   @Test
   fun `Given a mediaId and mediaType, When mediaById is called, Then returns a ResultData success with Media`() =

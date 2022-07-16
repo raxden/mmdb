@@ -4,7 +4,7 @@ import com.raxdenstudios.app.account.data.local.model.AccountEntity
 import com.raxdenstudios.app.account.data.local.model.TMDBCredentialsEntity
 import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
-import com.raxdenstudios.commons.util.DataMapper
+import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class AccountEntityToDomainMapper @Inject constructor() :

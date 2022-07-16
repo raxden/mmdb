@@ -31,7 +31,7 @@ class AccessTokenInterceptor @Inject constructor(
   }
 
   private suspend fun getAccessToken(): String? {
-    return when (val account = getAccountUseCase.execute()) {
+    return when (val account = getAccountUseCase()) {
       is Account.Logged -> account.credentials.accessToken
       is Account.Guest -> null
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/account"
+    app:startDestination="@+id/homeAccountFragment">
+
+    <fragment
+        android:id="@+id/homeAccountFragment"
+        android:name="com.raxdenstudios.app.home.view.HomeAccountFragment"
+        android:label="@string/home_navigation_account">
+
+    </fragment>
+
+</navigation>

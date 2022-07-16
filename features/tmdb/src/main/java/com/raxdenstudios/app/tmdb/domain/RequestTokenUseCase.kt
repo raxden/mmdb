@@ -8,6 +8,6 @@ internal class RequestTokenUseCase @Inject constructor(
   private val authenticationRepository: AuthenticationRepository
 ) {
 
-  suspend fun execute(): ResultData<String> =
+  suspend operator fun invoke(): ResultData<String> =
     authenticationRepository.requestToken()
 }

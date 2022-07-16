@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class HomeModuleLocalDataSource @Inject constructor(
-  private val dao: HomeModuleDao,
+  private val homeModuleDao: HomeModuleDao,
   private val homeModuleEntityToDomainMapper: HomeModuleEntityToDomainMapper,
 ) {
 
-  fun observe(): Flow<List<HomeModule>> = dao.observeAll()
+  fun observe(): Flow<List<HomeModule>> = homeModuleDao.observeAll()
     .map { entityList ->
       if (entityList.isEmpty()) initModules()
       homeModuleEntityToDomainMapper.transform(entityList)
@@ -27,6 +27,6 @@ internal class HomeModuleLocalDataSource @Inject constructor(
       HomeModuleEntity.upcoming,
       HomeModuleEntity.watchList,
     )
-    dao.insert(modules)
+    homeModuleDao.insert(modules)
   }
 }

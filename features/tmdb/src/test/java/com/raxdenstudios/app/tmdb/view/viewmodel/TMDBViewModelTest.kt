@@ -3,7 +3,6 @@ package com.raxdenstudios.app.tmdb.view.viewmodel
 import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.test.BaseTest
-import com.raxdenstudios.app.tmdb.di.tmdbFeatureModule
 import com.raxdenstudios.app.tmdb.domain.ConnectUseCase
 import com.raxdenstudios.app.tmdb.domain.RequestTokenUseCase
 import com.raxdenstudios.commons.ResultData
@@ -11,67 +10,56 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 internal class TMDBViewModelTest : BaseTest() {
 
-  private val requestTokenUseCase: RequestTokenUseCase = mockk {
-    coEvery { execute() } returns ResultData.Success(aToken)
-  }
+  private val requestTokenUseCase: RequestTokenUseCase = mockk()
   private val connectUseCase: ConnectUseCase = mockk {
-    coEvery { execute(aToken) } returns ResultData.Success(aTMDBCredentials)
+    coEvery { this@mockk(aToken) } returns ResultData.Success(aTMDBCredentials)
   }
-  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
-  private val slot = slot<UIState.Error>()
+  private val stateObserver: Observer<TMDBViewModel.UIState> = mockk(relaxed = true)
+  private val slot = slot<TMDBViewModel.UIState.Error>()
 
-  override val modules: List<Module>
-    get() = listOf(
-      tmdbFeatureModule,
-      module {
-        factory(override = true) { requestTokenUseCase }
-        factory(override = true) { connectUseCase }
-      }
+  private val viewModel: TMDBViewModel by lazy {
+    TMDBViewModel(
+      requestTokenUseCase = requestTokenUseCase,
+      connectUseCase = connectUseCase,
     )
-
-  private val viewModel: TMDBViewModel by inject()
-
-  @Test
-  fun `Given a viewModel, When viewModel is started, Then requestToken call is called and a valid token is returned`() {
-    viewModel.state.observeForever(stateObserver)
-
-    coVerify {
-      stateObserver.onChanged(UIState.TokenLoaded(aToken))
-      requestTokenUseCase.execute()
-    }
   }
 
   @Test
-  fun `Given a viewModel, When viewModel is started, Then requestToken call is called and a error is returned`() {
-    coEvery {
-      requestTokenUseCase.execute()
-    } returns ResultData.Error(IllegalStateException(""))
+  fun `Given a valid token, When viewModel is initialized, Then uiState is changed`() {
+    coEvery { requestTokenUseCase() } returns ResultData.Success(aToken)
+    viewModel.uiSTate.observeForever(stateObserver)
 
-    viewModel.state.observeForever(stateObserver)
+    coVerify { requestTokenUseCase() }
+    verify { stateObserver.onChanged(TMDBViewModel.UIState.TokenLoaded(aToken)) }
+  }
 
-    coVerify {
-      stateObserver.onChanged(capture(slot))
-      requestTokenUseCase.execute()
-    }
+  @Test
+  fun `Given an illegalStateException, When viewModel is initialized, Then uiState is changed`() {
+    coEvery { requestTokenUseCase() } returns ResultData.Error(IllegalStateException(""))
+    viewModel.uiSTate.observeForever(stateObserver)
+
+    coVerify { requestTokenUseCase() }
+    verify { stateObserver.onChanged(capture(slot)) }
     assertTrue(slot.captured.throwable is IllegalStateException)
   }
 
   @Test
-  fun `Given a valid token, When requestAccessToken is called, Then AccessTokenLoaded state with accesstoken is returned`() {
-    viewModel.state.observeForever(stateObserver)
+  fun `Given a valid token, When login is called, Then uiState is changed`() {
+    coEvery { requestTokenUseCase() } returns ResultData.Success(aToken)
+    viewModel.uiSTate.observeForever(stateObserver)
+
     viewModel.login(aToken)
 
+    coVerify { connectUseCase(aToken) }
     coVerify {
       stateObserver.onChanged(
-        UIState.Connected(
+        TMDBViewModel.UIState.Connected(
           Credentials(
             accountId = "aAccountId",
             accessToken = "aAccessToken",
@@ -79,7 +67,6 @@ internal class TMDBViewModelTest : BaseTest() {
           )
         )
       )
-      connectUseCase.execute(aToken)
     }
   }
 }

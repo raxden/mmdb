@@ -1,9 +1,9 @@
 package com.raxdenstudios.app.navigator.di
 
 
-import com.raxdenstudios.app.home.HomeNavigator
+import com.raxdenstudios.app.home.HomeMediaListNavigator
 import com.raxdenstudios.app.list.MediaListNavigator
-import com.raxdenstudios.app.navigator.HomeNavigatorImpl
+import com.raxdenstudios.app.navigator.HomeMediaListNavigatorImpl
 import com.raxdenstudios.app.navigator.MediaListNavigatorImpl
 import com.raxdenstudios.app.navigator.SplashNavigatorImpl
 import com.raxdenstudios.app.splash.SplashNavigator
@@ -23,5 +23,5 @@ abstract class NavigatorModule {
   internal abstract fun mediaListNavigator(navigator: MediaListNavigatorImpl): MediaListNavigator
 
   @Binds
-  internal abstract fun homeNavigator(navigator: HomeNavigatorImpl): HomeNavigator
+  internal abstract fun homeNavigator(navigator: HomeMediaListNavigatorImpl): HomeMediaListNavigator
 }

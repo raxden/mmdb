@@ -5,7 +5,7 @@ import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.media.domain.model.Picture
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.commons.util.DataMapper
+import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaListItemModel>() {
