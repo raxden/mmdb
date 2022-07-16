@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MediaListViewModel @Inject constructor(
-  private val state: SavedStateHandle,
+  private val savedStateHandle: SavedStateHandle,
   private val paginationConfig: Pagination.Config,
   private val getMediasUseCase: GetMediasUseCase,
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase,
@@ -49,7 +49,7 @@ internal class MediaListViewModel @Inject constructor(
     )
   }
   private val params: MediaListParams by lazy {
-    state.getOrThrow("params", "Invalid arguments")
+    savedStateHandle.getOrThrow("params", "Invalid arguments")
   }
 
   private val mUIState = MutableLiveData<UIState>()
@@ -82,7 +82,7 @@ internal class MediaListViewModel @Inject constructor(
         .onSuccess { mUIState.value = UIState.Content(model.replaceMovie(itemToReplace)) }
     }
 
-  fun refreshMovies(params: MediaListParams) {
+  fun refreshMovies() {
     pagination.clear()
     requestFirstPage(params)
   }
@@ -107,7 +107,7 @@ internal class MediaListViewModel @Inject constructor(
     )
   }
 
-  fun loadMoreMovies(pageIndex: PageIndex, params: MediaListParams) {
+  fun loadMoreMovies(pageIndex: PageIndex) {
     requestPage(pageIndex, params)
   }
 

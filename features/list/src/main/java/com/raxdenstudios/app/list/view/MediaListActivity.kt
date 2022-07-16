@@ -16,7 +16,6 @@ import com.raxdenstudios.app.list.view.model.MediaListParams
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.addOnScrolledListener
-import com.raxdenstudios.commons.ext.argument
 import com.raxdenstudios.commons.ext.observe
 import com.raxdenstudios.commons.ext.setResultOK
 import com.raxdenstudios.commons.ext.setupToolbar
@@ -43,7 +42,6 @@ class MediaListActivity : BaseActivity() {
 
   private val binding: MediaListActivityBinding by viewBinding()
   private val viewModel: MediaListViewModel by viewModels()
-  private val params: MediaListParams by argument()
 
   private var onScrolledListener: RecyclerView.OnScrollListener? = null
   private val adapter: MediaListAdapter by lazy { MediaListAdapter() }
@@ -108,7 +106,7 @@ class MediaListActivity : BaseActivity() {
     onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
     onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
       val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-      viewModel.loadMoreMovies(gridLayoutManager.toPageIndex(), params)
+      viewModel.loadMoreMovies(gridLayoutManager.toPageIndex())
     }
   }
 
@@ -128,6 +126,6 @@ class MediaListActivity : BaseActivity() {
   private fun MediaListActivityBinding.setUp() {
     setupToolbar(toolbarView)
     recyclerView.adapter = adapter
-    swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies(params) }
+    swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies() }
   }
 }

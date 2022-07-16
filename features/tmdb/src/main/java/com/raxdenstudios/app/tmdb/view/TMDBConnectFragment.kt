@@ -32,7 +32,7 @@ internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fr
 
     binding.setUp()
 
-    observe(viewModel.state) { state -> binding.handleState(state) }
+    observe(viewModel.uiSTate) { state -> binding.handleState(state) }
   }
 
   private fun TmdbConnectFragmentBinding.handleState(state: TMDBViewModel.UIState) = when (state) {

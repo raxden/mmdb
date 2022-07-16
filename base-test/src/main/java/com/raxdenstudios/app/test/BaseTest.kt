@@ -6,18 +6,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import net.lachlanmckee.timberjunit.TimberTestRule
 import org.junit.Rule
-import org.koin.core.module.Module
 import org.koin.test.KoinTest
-import org.koin.test.KoinTestRule
 
 abstract class BaseTest : KoinTest {
 
   // Used for liveData testing purposes.
   @get:Rule
   val instantExecutorRule = InstantTaskExecutorRule()
-
-  @get:Rule
-  val koinTestRule = KoinTestRule.create { modules(modules) }
 
   @ExperimentalCoroutinesApi
   val testDispatcher = TestCoroutineDispatcher()
@@ -31,6 +26,4 @@ abstract class BaseTest : KoinTest {
 
   @get:Rule
   val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()
-
-  protected abstract val modules: List<Module>
 }

@@ -1,35 +1,28 @@
 package com.raxdenstudios.app.home.view.mapper
 
-import com.raxdenstudios.app.di.baseFeatureModule
-import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.provider.StringProvider
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 internal class CarouselMediasModelMapperTest : BaseTest() {
 
   private val stringProvider: StringProvider = mockk(relaxed = true)
+  private val mediaListItemModelMapper = MediaListItemModelMapper()
 
-  override val modules: List<Module>
-    get() = listOf(
-      baseFeatureModule,
-      homeFeatureModule,
-      module {
-        factory(override = true) { stringProvider }
-      }
+  private val mapper: CarouselMediasModelMapper by lazy {
+    CarouselMediasModelMapper(
+      stringProvider = stringProvider,
+      mediaListItemModelMapper = mediaListItemModelMapper,
     )
-
-  private val mapper: CarouselMediasModelMapper by inject()
+  }
 
   @Test
   fun `Given a NowPlaying module and resultData with movies, When transform is called, Then return a NowPlaying carousel`() {

@@ -23,9 +23,8 @@ object AndroidLibraries {
   const val kotlinActivity = "androidx.activity:activity-ktx:${Versions.kotlinActivity}"
   const val kotlinFragment = "androidx.fragment:fragment-ktx:${Versions.kotlinFragment}"
   const val kotlinPreferences = "androidx.preference:preference-ktx:${Versions.kotlinPreferences}"
-  const val navigationFragment =
-    "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
-  const val navigationUI = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+  const val navFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
+  const val navUI = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
 
   // Lifecycle
   const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"

@@ -4,7 +4,7 @@ import com.raxdenstudios.app.media.domain.model.Picture
 import com.raxdenstudios.app.media.domain.model.Size
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.di.APIVersionV3
-import com.raxdenstudios.commons.util.DataMapper
+import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class PictureDtoToDomainMapper @Inject constructor(

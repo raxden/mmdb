@@ -11,29 +11,33 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class AccountLocalDataSourceImpl @Inject constructor(
-  private val dao: AccountDao,
+  private val accountDao: AccountDao,
   private val accountEntityToDomainMapper: AccountEntityToDomainMapper,
   private val accountToEntityMapper: AccountToEntityMapper,
 ) : AccountLocalDataSource {
 
-  override fun observe(): Flow<Account> = flow {
-    val accountEntity = dao.get()
+  override fun observeAccount(): Flow<Account> = flow {
+    val accountEntity = accountDao.get()
     if (accountEntity == null) createGuestAccount()
-    emitAll(observeAccount())
+    emitAll(
+      accountDao.observe().map { entity ->
+        accountEntityToDomainMapper.transform(entity)
+      }
+    )
   }
 
   override suspend fun getAccount(): Account {
-    val accountEntity = dao.get()
+    val accountEntity = accountDao.get()
     return if (accountEntity == null) createGuestAccount()
     else accountEntityToDomainMapper.transform(accountEntity)
   }
 
   override suspend fun createAccount(account: Account) {
-    dao.insert(accountToEntityMapper.transform(account))
+    accountDao.insert(accountToEntityMapper.transform(account))
   }
 
   suspend fun clearAccount() {
-    dao.clear()
+    accountDao.clear()
   }
 
   private suspend fun createGuestAccount(): Account {
@@ -41,9 +45,4 @@ internal class AccountLocalDataSourceImpl @Inject constructor(
     createAccount(account)
     return getAccount()
   }
-
-  private fun observeAccount(): Flow<Account> =
-    dao.observe().map { entity ->
-      accountEntityToDomainMapper.transform(entity)
-    }
 }

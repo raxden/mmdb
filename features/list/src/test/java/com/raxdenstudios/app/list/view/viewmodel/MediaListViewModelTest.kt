@@ -1,18 +1,18 @@
 package com.raxdenstudios.app.list.view.viewmodel
 
 import androidx.lifecycle.Observer
-import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
-import com.raxdenstudios.app.di.baseFeatureModule
-import com.raxdenstudios.app.list.di.listFeatureModule
+import androidx.lifecycle.SavedStateHandle
+import com.raxdenstudios.app.list.view.mapper.GetMediasUseCaseParamsMapper
+import com.raxdenstudios.app.list.view.mapper.MediaListModelMapper
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
-import com.raxdenstudios.app.list.view.model.UIState
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
 import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
@@ -22,52 +22,54 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageIndex
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
+import com.raxdenstudios.commons.provider.StringProvider
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 internal class MediaListViewModelTest : BaseTest() {
 
-  private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
-    coEvery { execute() } returns false
+  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
+    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
   }
-  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk() {
-    coEvery { execute(any()) } returns ResultData.Success(Media.Movie.empty)
+  private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
+    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
   }
-  private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk() {
-    coEvery { execute(any()) } returns ResultData.Success(true)
+  private val getMediasUseCase: GetMediasUseCase = mockk {
+    coEvery {
+      this@mockk.invoke(aGetMoviesUseCaseFirstPageParams)
+    } returns ResultData.Success(aFirstPageList)
+    coEvery {
+      this@mockk.invoke(aGetMoviesUseCaseSecondPageParams)
+    } returns ResultData.Success(aSecondPageList)
   }
-  private val getMediasUseCase: GetMediasUseCase = mockk() {
-    coEvery { execute(aGetMoviesUseCaseFirstPageParams) } returns ResultData.Success(aFirstPageList)
-    coEvery { execute(aGetMoviesUseCaseSecondPageParams) } returns ResultData.Success(
-      aSecondPageList
-    )
-  }
-  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
+  private val stateObserver: Observer<MediaListViewModel.UIState> = mockk(relaxed = true)
   private val paginationConfig = Pagination.Config.default.copy(
     initialPage = aFirstPage,
     pageSize = aPageSize,
     prefetchDistance = 0
   )
-
-  override val modules: List<Module>
-    get() = listOf(
-      baseFeatureModule,
-      listFeatureModule,
-      module {
-        factory(override = true) { isAccountLoggedUseCase }
-        factory(override = true) { getMediasUseCase }
-        factory(override = true) { addMediaToWatchListUseCase }
-        factory(override = true) { removeMediaFromWatchListUseCase }
-        factory(override = true) { paginationConfig }
-      }
+  private val getMediasUseCaseParamsMapper = GetMediasUseCaseParamsMapper()
+  private val stringProvider: StringProvider = mockk(relaxed = true)
+  private val mediaListItemModelMapper = MediaListItemModelMapper()
+  private val mediaListModelMapper = MediaListModelMapper(
+    stringProvider = stringProvider,
+    mediaListItemModelMapper = mediaListItemModelMapper,
+  )
+  private val savedStateHandle: SavedStateHandle = mockk(relaxed = true)
+  private val viewModel: MediaListViewModel by lazy {
+    MediaListViewModel(
+      savedStateHandle = savedStateHandle,
+      paginationConfig = paginationConfig,
+      getMediasUseCase = getMediasUseCase,
+      addMediaToWatchListUseCase = addMediaToWatchListUseCase,
+      removeMediaFromWatchListUseCase = removeMediaFromWatchListUseCase,
+      getMediasUseCaseParamsMapper = getMediasUseCaseParamsMapper,
+      mediaListModelMapper = mediaListModelMapper,
     )
-
-  private val viewModel: MediaListViewModel by inject()
+  }
 
   @Test
   fun `when movie is added to watchlist, movie is replaced in model`() {
@@ -79,7 +81,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -106,7 +108,7 @@ internal class MediaListViewModelTest : BaseTest() {
 
     coVerifyOrder {
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -123,15 +125,15 @@ internal class MediaListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
-    val params = MediaListParams.popularMovies
+    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
     viewModel.uiState.observeForever(stateObserver)
 
-    viewModel.refreshMovies(params)
+    viewModel.refreshMovies()
 
     coVerifyOrder {
-      stateObserver.onChanged(UIState.Loading)
+      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -145,15 +147,13 @@ internal class MediaListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
-    val params = MediaListParams.popularMovies
+    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
     viewModel.uiState.observeForever(stateObserver)
 
-    viewModel.loadMedias(params)
-
     coVerifyOrder {
-      stateObserver.onChanged(UIState.Loading)
+      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -167,17 +167,16 @@ internal class MediaListViewModelTest : BaseTest() {
 
   @Test
   fun `Given a pageIndex with value 20, When loadMoreMovies is called, Then second page with movies are returned`() {
-    val params = MediaListParams.popularMovies
+    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
     val pageIndex = PageIndex(2)
     viewModel.uiState.observeForever(stateObserver)
 
-    viewModel.loadMedias(params)
-    viewModel.loadMoreMovies(pageIndex, params)
+    viewModel.loadMoreMovies(pageIndex)
 
     coVerifyOrder {
-      stateObserver.onChanged(UIState.Loading)
+      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),
@@ -186,9 +185,9 @@ internal class MediaListViewModelTest : BaseTest() {
           )
         )
       )
-      stateObserver.onChanged(UIState.Loading)
+      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
       stateObserver.onChanged(
-        UIState.Content(
+        MediaListViewModel.UIState.Content(
           MediaListModel.empty.copy(
             items = listOf(
               MediaListItemModel.empty.copy(id = MediaId(1L)),

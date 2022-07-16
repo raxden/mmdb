@@ -30,7 +30,7 @@ class SessionInterceptor @Inject constructor(
   }
 
   private suspend fun getSessionId(): String {
-    return when (val account = getAccountUseCase.execute()) {
+    return when (val account = getAccountUseCase()) {
       is Account.Logged -> account.credentials.sessionId
       is Account.Guest -> ""
     }

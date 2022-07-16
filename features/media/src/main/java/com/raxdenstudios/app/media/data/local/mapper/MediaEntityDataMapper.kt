@@ -12,9 +12,9 @@ import com.raxdenstudios.app.media.domain.model.Size
 import com.raxdenstudios.app.media.domain.model.Vote
 import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.network.di.APIVersionV3
+import com.raxdenstudios.commons.DataMapper
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
-import com.raxdenstudios.commons.util.DataMapper
 import javax.inject.Inject
 
 internal class MediaToEntityMapper @Inject constructor(
