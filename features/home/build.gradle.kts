@@ -77,8 +77,8 @@ dependencies {
   implementation(RaxdenLibraries.android)
   implementation(RaxdenLibraries.coroutines)
   implementation(Libraries.timber)
-  implementation(AndroidLibraries.navigationUI)
-  implementation(AndroidLibraries.navigationFragment)
+  implementation(AndroidLibraries.navUI)
+  implementation(AndroidLibraries.navFragment)
 
   implementation(Libraries.roomRunTime)
   kapt(Libraries.roomCompiler)

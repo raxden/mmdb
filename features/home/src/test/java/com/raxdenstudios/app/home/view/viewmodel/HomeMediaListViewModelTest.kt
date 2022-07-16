@@ -1,11 +1,12 @@
 package com.raxdenstudios.app.home.view.viewmodel
 
 import androidx.lifecycle.Observer
-import com.raxdenstudios.app.account.domain.IsAccountLoggedUseCase
-import com.raxdenstudios.app.di.baseFeatureModule
-import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
+import com.raxdenstudios.app.home.view.mapper.CarouselMediasModelMapper
+import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
+import com.raxdenstudios.app.home.view.mapper.HomeModelMapper
+import com.raxdenstudios.app.home.view.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
@@ -14,10 +15,10 @@ import com.raxdenstudios.app.media.domain.RemoveMediaFromWatchListUseCase
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
+import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.app.test.BaseTest
-import com.raxdenstudios.commons.DispatcherFacade
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -31,55 +32,52 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class HomeMediaListViewModelTest : BaseTest() {
 
   private val stringProvider: StringProvider = mockk(relaxed = true)
   private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
-    every { execute() } returns flow { emit(aHomeModules) }
+    every { this@mockk.invoke() } returns flow { emit(aHomeModules) }
   }
   private val getMediasUseCase: GetMediasUseCase = mockk {
-    coEvery { execute(aGetUpcomingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
-    coEvery { execute(aGetTopRatedMoviesUseCaseParams) } returns aResultPageMovieListSuccess
-    coEvery { execute(aGetPopularMoviesUseCaseParams) } returns aResultPageMovieListSuccess
-    coEvery { execute(aGetNowPlayingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
-    coEvery { execute(aGetWatchListMoviesUseCaseParams) } returns aResultPageMovieListSuccess
-  }
-  private val isAccountLoggedUseCase: IsAccountLoggedUseCase = mockk {
-    coEvery { execute() } returns false
+    coEvery { this@mockk.invoke(aGetUpcomingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
+    coEvery { this@mockk.invoke(aGetTopRatedMoviesUseCaseParams) } returns aResultPageMovieListSuccess
+    coEvery { this@mockk.invoke(aGetPopularMoviesUseCaseParams) } returns aResultPageMovieListSuccess
+    coEvery { this@mockk.invoke(aGetNowPlayingMoviesUseCaseParams) } returns aResultPageMovieListSuccess
+    coEvery { this@mockk.invoke(aGetWatchListMoviesUseCaseParams) } returns aResultPageMovieListSuccess
   }
   private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
-    coEvery { execute(any()) } returns ResultData.Success(Media.Movie.empty)
+    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
   }
   private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
-    coEvery { execute(any()) } returns ResultData.Success(true)
+    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
   }
-  private val stateObserver: Observer<UIState> = mockk(relaxed = true)
-  private val dispatcher: DispatcherFacade = object : DispatcherFacade {
-    override fun io() = testDispatcher
-    override fun default() = testDispatcher
-  }
+  private val stateObserver: Observer<HomeMediaListViewModel.UIState> = mockk(relaxed = true)
+  private val getMediasUseCaseParamsMapper = GetMediasUseCaseParamsMapper()
+  private val mediaListItemModelMapper = MediaListItemModelMapper()
+  private val carouselMediasModelMapper = CarouselMediasModelMapper(
+    stringProvider = stringProvider,
+    mediaListItemModelMapper = mediaListItemModelMapper,
+  )
+  private val homeModuleModelMapper = HomeModuleModelMapper(
+    carouselMediasModelMapper = carouselMediasModelMapper
+  )
+  private val homeModelMapper = HomeModelMapper(
+    homeModuleModelMapper = homeModuleModelMapper,
+  )
 
-  override val modules: List<Module>
-    get() = listOf(
-      baseFeatureModule,
-      homeFeatureModule,
-      module {
-        factory(override = true) { getHomeModulesUseCase }
-        factory(override = true) { getMediasUseCase }
-        factory(override = true) { isAccountLoggedUseCase }
-        factory(override = true) { addMediaToWatchListUseCase }
-        factory(override = true) { removeMediaToWatchListUseCase }
-        factory(override = true) { stringProvider }
-        factory(override = true) { dispatcher }
-      }
+  private val viewModel: HomeMediaListViewModel by lazy {
+    HomeMediaListViewModel(
+      getHomeModulesUseCase = getHomeModulesUseCase,
+      getMediasUseCase = getMediasUseCase,
+      addMediaToWatchListUseCase = addMediaToWatchListUseCase,
+      removeMediaFromWatchListUseCase = removeMediaToWatchListUseCase,
+      getMediasUseCaseParamsMapper = getMediasUseCaseParamsMapper,
+      mediaListItemModelMapper = mediaListItemModelMapper,
+      homeModelMapper = homeModelMapper,
     )
-
-  private val viewModel: HomeMediaListViewModel by inject()
+  }
 
   @Test
   fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
@@ -88,7 +86,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
       verify {
         stateObserver.onChanged(
-          UIState.Content(
+          HomeMediaListViewModel.UIState.Content(
             HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(
@@ -122,7 +120,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
       coVerify {
         stateObserver.onChanged(
-          UIState.Content(
+          HomeMediaListViewModel.UIState.Content(
             HomeMediaListModel.empty.copy(
               modules = listOf(
                 HomeModuleModel.CarouselMedias.Popular.empty.copy(

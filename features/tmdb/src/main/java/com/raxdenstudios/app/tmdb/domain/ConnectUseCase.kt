@@ -11,7 +11,7 @@ internal class ConnectUseCase @Inject constructor(
   private val authenticationRepository: AuthenticationRepository
 ) {
 
-  suspend fun execute(token: String): ResultData<Credentials> =
+  suspend operator fun invoke(token: String): ResultData<Credentials> =
     when (val accessTokenResult = authenticationRepository.requestAccessToken(token)) {
       is ResultData.Error -> ResultData.Error(accessTokenResult.throwable)
       is ResultData.Success -> initCredentials(accessTokenResult.value)

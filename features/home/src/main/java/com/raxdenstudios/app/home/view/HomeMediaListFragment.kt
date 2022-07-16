@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.raxdenstudios.app.base.BaseFragment
 import com.raxdenstudios.app.error.ErrorManager
-import com.raxdenstudios.app.home.HomeNavigator
+import com.raxdenstudios.app.home.HomeMediaListNavigator
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.HomeMediaListFragmentBinding
 import com.raxdenstudios.app.home.view.adapter.HomeModuleListAdapter
@@ -27,7 +27,7 @@ internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fra
   }
 
   @Inject
-  lateinit var navigator: HomeNavigator
+  lateinit var navigator: HomeMediaListNavigator
 
   @Inject
   lateinit var errorManager: ErrorManager
@@ -39,6 +39,10 @@ internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fra
     HomeModuleListAdapter().apply {
       setHasStableIds(true)
     }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

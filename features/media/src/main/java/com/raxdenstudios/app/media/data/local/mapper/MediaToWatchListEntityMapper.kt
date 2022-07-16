@@ -2,7 +2,7 @@ package com.raxdenstudios.app.media.data.local.mapper
 
 import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 import com.raxdenstudios.app.media.domain.model.Media
-import com.raxdenstudios.commons.util.DataMapper
+import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class MediaToWatchListEntityMapper @Inject constructor() :

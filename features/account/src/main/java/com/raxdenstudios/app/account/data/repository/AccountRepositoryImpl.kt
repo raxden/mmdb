@@ -11,7 +11,7 @@ internal class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
   override fun observeAccount(): Flow<Account> =
-    accountLocalDataSource.observe()
+    accountLocalDataSource.observeAccount()
 
   override suspend fun getAccount(): Account =
     accountLocalDataSource.getAccount()

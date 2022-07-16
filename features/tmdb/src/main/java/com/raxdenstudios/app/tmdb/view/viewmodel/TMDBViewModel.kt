@@ -18,8 +18,8 @@ internal class TMDBViewModel @Inject constructor(
   private val connectUseCase: ConnectUseCase,
 ) : BaseViewModel() {
 
-  private val mState = MutableLiveData<UIState>()
-  val state: LiveData<UIState> = mState
+  private val mUIState = MutableLiveData<UIState>()
+  val uiSTate: LiveData<UIState> = mUIState
 
   init {
     requestToken()
@@ -27,20 +27,20 @@ internal class TMDBViewModel @Inject constructor(
 
   private fun requestToken() {
     viewModelScope.launch {
-      mState.value = UIState.Loading
-      when (val resultData = requestTokenUseCase.execute()) {
-        is ResultData.Error -> mState.value = UIState.Error(resultData.throwable)
-        is ResultData.Success -> mState.value = UIState.TokenLoaded(resultData.value)
+      mUIState.value = UIState.Loading
+      when (val resultData = requestTokenUseCase()) {
+        is ResultData.Error -> mUIState.value = UIState.Error(resultData.throwable)
+        is ResultData.Success -> mUIState.value = UIState.TokenLoaded(resultData.value)
       }
     }
   }
 
   fun login(token: String) {
     viewModelScope.launch {
-      mState.value = UIState.Loading
-      when (val resultData = connectUseCase.execute(token)) {
-        is ResultData.Error -> mState.value = UIState.Error(resultData.throwable)
-        is ResultData.Success -> mState.value = UIState.Connected(resultData.value)
+      mUIState.value = UIState.Loading
+      when (val resultData = connectUseCase(token)) {
+        is ResultData.Error -> mUIState.value = UIState.Error(resultData.throwable)
+        is ResultData.Success -> mUIState.value = UIState.Connected(resultData.value)
       }
     }
   }

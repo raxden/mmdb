@@ -1,45 +1,38 @@
 package com.raxdenstudios.app.home.data.local.datasource
 
 import com.raxdenstudios.app.home.data.local.HomeModuleDao
+import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapper
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
-import com.raxdenstudios.app.home.di.homeFeatureModule
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.test.BaseTest
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class HomeModuleLocalDataSourceTest : BaseTest() {
 
-  private val dao: HomeModuleDao = mockk {
+  private val homeModuleEntityToDomainMapper = HomeModuleEntityToDomainMapper()
+  private val homeModuleDao: HomeModuleDao = mockk {
     coEvery { insert(any()) } returns Unit
   }
-
-  override val modules: List<Module>
-    get() = listOf(
-      homeFeatureModule,
-      module {
-        factory(override = true) { dao }
-      }
+  private val dataSource: HomeModuleLocalDataSource by lazy {
+    HomeModuleLocalDataSource(
+      homeModuleDao = homeModuleDao,
+      homeModuleEntityToDomainMapper = homeModuleEntityToDomainMapper,
     )
-
-  private val dataSource: HomeModuleLocalDataSource by inject()
+  }
 
   @Test
   fun `Given an empty database, When modules is called, Then default modules are inserted in database`() {
     testDispatcher.runBlockingTest {
 
-      coEvery { dao.observeAll() } returns flow { emit(emptyList<HomeModuleEntity>()) }
+      coEvery { homeModuleDao.observeAll() } returns flow { emit(emptyList<HomeModuleEntity>()) }
 
       val flow = dataSource.observe()
 
@@ -48,7 +41,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
       }
 
       coVerify {
-        dao.insert(
+        homeModuleDao.insert(
           listOf(
             HomeModuleEntity.popular,
             HomeModuleEntity.nowPlaying,
@@ -65,7 +58,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
   fun `Given an fill database, When modules is called, Then modules are returned`() {
     testDispatcher.runBlockingTest {
 
-      coEvery { dao.observeAll() } returns flow { emit(aHomeModuleEntityList) }
+      coEvery { homeModuleDao.observeAll() } returns flow { emit(aHomeModuleEntityList) }
 
       val flow = dataSource.observe()
 
@@ -81,7 +74,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
       }
 
       coVerify(exactly = 0) {
-        dao.insert(any())
+        homeModuleDao.insert(any())
       }
     }
   }

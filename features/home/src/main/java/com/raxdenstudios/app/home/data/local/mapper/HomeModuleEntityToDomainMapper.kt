@@ -2,7 +2,7 @@ package com.raxdenstudios.app.home.data.local.mapper
 
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.commons.util.DataMapper
+import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class HomeModuleEntityToDomainMapper @Inject constructor() :

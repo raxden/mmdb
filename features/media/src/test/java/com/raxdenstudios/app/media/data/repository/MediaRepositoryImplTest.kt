@@ -5,12 +5,10 @@ import com.raxdenstudios.app.account.domain.model.Account
 import com.raxdenstudios.app.account.domain.model.Credentials
 import com.raxdenstudios.app.media.data.local.datasource.MediaLocalDataSource
 import com.raxdenstudios.app.media.data.remote.datasource.MediaRemoteDataSource
-import com.raxdenstudios.app.media.di.mediaDataModule
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.app.network.APIDataProvider
 import com.raxdenstudios.app.test.BaseTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -26,9 +24,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.koin.core.module.Module
-import org.koin.dsl.module
-import org.koin.test.inject
 
 @ExperimentalCoroutinesApi
 internal class MediaRepositoryImplTest : BaseTest() {
@@ -61,20 +56,13 @@ internal class MediaRepositoryImplTest : BaseTest() {
     coEvery { addToWatchList(any<List<Media>>()) } returns ResultData.Success(true)
     coEvery { removeFromWatchList(MediaId(any())) } returns Unit
   }
-  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
-
-  override val modules: List<Module>
-    get() = listOf(
-      mediaDataModule,
-      module {
-        factory(override = true) { accountLocalDataSource }
-        factory(override = true) { mediaRemoteDataSource }
-        factory(override = true) { mediaLocalDataSource }
-        factory(override = true) { apiDataProvider }
-      }
+  private val repository: MediaRepository by lazy {
+    MediaRepositoryImpl(
+      mediaRemoteDataSource = mediaRemoteDataSource,
+      mediaLocalDataSource = mediaLocalDataSource,
+      accountLocalDataSource = accountLocalDataSource,
     )
-
-  private val repository: MediaRepository by inject()
+  }
 
   @Test
   fun `Given a list of medias, When addToLocalWatchList is called, Then medias are persisted`() =

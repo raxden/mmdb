@@ -3,15 +3,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/home_navigation_home"
+            android:id="@+id/home"
             android:icon="@drawable/ic_baseline_home_24"
             android:title="@string/home_navigation_home" />
         <item
-            android:id="@+id/home_navigation_search"
+            android:id="@+id/search"
             android:icon="@drawable/ic_baseline_search_24"
             android:title="@string/home_navigation_search" />
         <item
-            android:id="@+id/home_navigation_account"
+            android:id="@+id/account"
             android:icon="@drawable/ic_baseline_account_box_24"
             android:title="@string/home_navigation_account" />
     </group>

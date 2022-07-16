@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search"
+    app:startDestination="@+id/homeSearchFragment">
+
+    <fragment
+        android:id="@+id/homeSearchFragment"
+        android:name="com.raxdenstudios.app.home.view.HomeSearchMediaListFragment"
+        android:label="@string/home_navigation_search">
+
+    </fragment>
+
+</navigation>
