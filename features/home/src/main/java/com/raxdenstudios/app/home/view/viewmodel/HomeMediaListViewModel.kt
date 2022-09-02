@@ -21,6 +21,7 @@ import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.replaceItem
 import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.ext.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -35,19 +36,19 @@ internal class HomeMediaListViewModel @Inject constructor(
   private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
 
-  private val mState = MutableLiveData<UIState>()
-  val state: LiveData<UIState>
-    get() {
-      if (mState.value == null) loadData()
-      return mState
-    }
+  private val _state = MutableLiveData<UIState>()
+  val state: LiveData<UIState> = _state
+
+  init {
+    loadData()
+  }
 
   fun loadData() = viewModelScope.safeLaunch {
-    mState.value = UIState.Loading
+    _state.value = UIState.loading()
 
     getHomeModulesUseCase().collect { modules ->
       val homeModel = homeModelMapper.transform(modules)
-      mState.value = UIState.Content(homeModel)
+      _state.update { value -> value.copy(loading = false, model = homeModel) }
     }
   }
 
@@ -73,7 +74,7 @@ internal class HomeMediaListViewModel @Inject constructor(
     val homeUpdated = model.copy(
       modules = model.modules.replaceItem(carouselMediasUpdated) { it == carouselMedias }
     )
-    mState.value = UIState.Content(homeUpdated)
+    _state.update { value -> value.copy(model = homeUpdated) }
   }
 
   fun addMediaToWatchList(
@@ -103,12 +104,22 @@ internal class HomeMediaListViewModel @Inject constructor(
     mediaListItem: MediaListItemModel,
   ) {
     val homeUpdated = home.updateMedia(mediaListItem)
-    mState.value = UIState.Content(homeUpdated)
+    _state.update { value -> value.copy(model = homeUpdated) }
   }
 
-  internal sealed class UIState {
-    object Loading : UIState()
-    data class Content(val model: HomeMediaListModel) : UIState()
-    data class Error(val throwable: Throwable) : UIState()
+  internal data class UIState(
+    val loading: Boolean,
+    val model: HomeMediaListModel,
+    val error: Throwable?,
+  ) {
+
+    companion object {
+
+      fun loading() = UIState(
+        loading = true,
+        model = HomeMediaListModel.empty,
+        error = null,
+      )
+    }
   }
 }
