@@ -9,7 +9,6 @@ import com.raxdenstudios.app.home.HomeMediaListNavigator
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.HomeMediaListFragmentBinding
 import com.raxdenstudios.app.home.view.adapter.HomeModuleListAdapter
-import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListViewModel
 import com.raxdenstudios.commons.ext.addProgressViewEndTarget
 import com.raxdenstudios.commons.ext.observe
@@ -41,10 +40,6 @@ internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fra
     }
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
@@ -53,40 +48,26 @@ internal class HomeMediaListFragment : BaseFragment(R.layout.home_media_list_fra
     observe(viewModel.state) { state -> binding.handleState(state) }
   }
 
-  private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListViewModel.UIState) =
-    when (state) {
-      is HomeMediaListViewModel.UIState.Content -> handleContentState(state.model)
-      is HomeMediaListViewModel.UIState.Error -> handleErrorState(state.throwable)
-      HomeMediaListViewModel.UIState.Loading -> handleLoadingState()
-    }
+  private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListViewModel.UIState) {
+    swipeRefreshLayout.isRefreshing = state.loading
+    state.error?.let { error -> errorManager.handleError(error) }
 
-  private fun HomeMediaListFragmentBinding.handleContentState(model: HomeMediaListModel) {
-    swipeRefreshLayout.isRefreshing = false
-    adapter.submitList(model.modules)
+    adapter.submitList(state.model.modules)
     adapter.onCarouselMediaClickListener = { carouselMedias, mediaListItemModel ->
-      viewModel.mediaSelected(model, carouselMedias, mediaListItemModel)
+      viewModel.mediaSelected(state.model, carouselMedias, mediaListItemModel)
     }
     adapter.onCarouselAddToWatchListClickListener = { _, mediaListItemModel ->
-      viewModel.addMediaToWatchList(model, mediaListItemModel)
+      viewModel.addMediaToWatchList(state.model, mediaListItemModel)
     }
     adapter.onCarouselRemoveFromWatchListClickListener = { _, mediaListItemModel ->
-      viewModel.removeMediaFromWatchList(model, mediaListItemModel)
+      viewModel.removeMediaFromWatchList(state.model, mediaListItemModel)
     }
     adapter.onCarouselSeeAllClickListener = { carouselMedias ->
       navigator.launchMediaList(carouselMedias) { viewModel.loadData() }
     }
     adapter.onCarouselFilterChanged = { carouselMedias, mediaType ->
-      viewModel.filterChanged(model, carouselMedias, mediaType)
+      viewModel.filterChanged(state.model, carouselMedias, mediaType)
     }
-  }
-
-  private fun HomeMediaListFragmentBinding.handleErrorState(throwable: Throwable) {
-    swipeRefreshLayout.isRefreshing = false
-    errorManager.handleError(throwable)
-  }
-
-  private fun HomeMediaListFragmentBinding.handleLoadingState() {
-    swipeRefreshLayout.isRefreshing = true
   }
 
   private fun HomeMediaListFragmentBinding.setUp() {
