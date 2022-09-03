@@ -9,14 +9,14 @@ import javax.inject.Inject
 
 internal class GetMediasUseCaseParamsMapper @Inject constructor() {
 
-  fun transform(source: MediaListParams, page: Page, pageSize: PageSize): GetMediasUseCase.Params {
-    val mediaFilter = when (source) {
-      is MediaListParams.NowPlaying -> MediaFilter.NowPlaying
-      is MediaListParams.Popular -> MediaFilter.Popular(source.mediaType)
-      is MediaListParams.TopRated -> MediaFilter.TopRated(source.mediaType)
-      is MediaListParams.Upcoming -> MediaFilter.Upcoming
-      is MediaListParams.WatchList -> MediaFilter.WatchList(source.mediaType)
+    fun transform(source: MediaListParams, page: Page, pageSize: PageSize): GetMediasUseCase.Params {
+        val mediaFilter = when (source) {
+            is MediaListParams.NowPlaying -> MediaFilter.NowPlaying
+            is MediaListParams.Popular -> MediaFilter.Popular(source.mediaType)
+            is MediaListParams.TopRated -> MediaFilter.TopRated(source.mediaType)
+            is MediaListParams.Upcoming -> MediaFilter.Upcoming
+            is MediaListParams.WatchList -> MediaFilter.WatchList(source.mediaType)
+        }
+        return GetMediasUseCase.Params(mediaFilter, page, pageSize)
     }
-    return GetMediasUseCase.Params(mediaFilter, page, pageSize)
-  }
 }

@@ -5,9 +5,9 @@ import com.raxdenstudios.app.account.domain.model.Account
 import javax.inject.Inject
 
 internal class GetAccountUseCaseImpl @Inject constructor(
-  private val accountRepository: AccountRepository,
+    private val accountRepository: AccountRepository,
 ) : GetAccountUseCase {
 
-  override suspend operator fun invoke(): Account =
-    accountRepository.getAccount()
+    override suspend operator fun invoke(): Account =
+        accountRepository.getAccount()
 }

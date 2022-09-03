@@ -11,6 +11,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class ErrorFeatureModule {
 
-  @Binds
-  internal abstract fun bindErrorManager(useCase: ErrorManagerImpl): ErrorManager
+    @Binds
+    internal abstract fun bindErrorManager(useCase: ErrorManagerImpl): ErrorManager
 }

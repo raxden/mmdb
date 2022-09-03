@@ -23,67 +23,67 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class GetHomeModulesUseCaseTest : BaseTest() {
 
-  private val dispatcherFacade: DispatcherFacade = object : DispatcherFacade {
-    override fun default() = testDispatcher
-    override fun io() = testDispatcher
-  }
-  private val homeModuleRepository: HomeModuleRepository = mockk {
-    coEvery { observeModules() } returns flowOf(aModules)
-  }
-  private val mediasRepository: MediaRepository = mockk {
-    coEvery { medias(any(), any(), any()) } returns ResultData.Success(aPageListOfMedias)
-  }
-
-  private val useCase: GetHomeModulesUseCase by lazy {
-    GetHomeModulesUseCase(
-      dispatcherFacade = dispatcherFacade,
-      homeModuleRepository = homeModuleRepository,
-      mediasRepository = mediasRepository,
-    )
-  }
-
-  @Test
-  fun `Should return a list of modules with movies`() = testDispatcher.runBlockingTest {
-    useCase().collect { result ->
-      assertEquals(
-        listOf(
-          HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-          HomeModule.NowPlaying(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-          HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-          HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-          HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-        ), result
-      )
+    private val dispatcherFacade: DispatcherFacade = object : DispatcherFacade {
+        override fun default() = testDispatcher
+        override fun io() = testDispatcher
     }
-  }
+    private val homeModuleRepository: HomeModuleRepository = mockk {
+        coEvery { observeModules() } returns flowOf(aModules)
+    }
+    private val mediasRepository: MediaRepository = mockk {
+        coEvery { medias(any(), any(), any()) } returns ResultData.Success(aPageListOfMedias)
+    }
 
-  @Test
-  fun `Given an error produced when retrieve medias from nowplaying, When execute is called, Then return a list of modules with movies except nowplaying`() =
-    testDispatcher.runBlockingTest {
-      coEvery {
-        mediasRepository.medias(MediaFilter.NowPlaying, any(), any())
-      } returns ResultData.Error(IllegalStateException(""))
-
-      useCase().collect { result ->
-        assertEquals(
-          listOf(
-            HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-            HomeModule.NowPlaying(emptyList()),
-            HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-            HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-            HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
-          ), result
+    private val useCase: GetHomeModulesUseCase by lazy {
+        GetHomeModulesUseCase(
+            dispatcherFacade = dispatcherFacade,
+            homeModuleRepository = homeModuleRepository,
+            mediasRepository = mediasRepository,
         )
-      }
     }
+
+    @Test
+    fun `Should return a list of modules with movies`() = testDispatcher.runBlockingTest {
+        useCase().collect { result ->
+            assertEquals(
+                listOf(
+                    HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                    HomeModule.NowPlaying(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                    HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                    HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                    HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                ), result
+            )
+        }
+    }
+
+    @Test
+    fun `Given an error produced when retrieve medias from nowplaying, When execute is called, Then return a list of modules with movies except nowplaying`() =
+        testDispatcher.runBlockingTest {
+            coEvery {
+                mediasRepository.medias(MediaFilter.NowPlaying, any(), any())
+            } returns ResultData.Error(IllegalStateException(""))
+
+            useCase().collect { result ->
+                assertEquals(
+                    listOf(
+                        HomeModule.Popular(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                        HomeModule.NowPlaying(emptyList()),
+                        HomeModule.TopRated(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                        HomeModule.Upcoming(listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                        HomeModule.WatchList(MediaType.MOVIE, listOf(Media.Movie.empty.copy(id = MediaId(1)))),
+                    ), result
+                )
+            }
+        }
 }
 
 private val aModules = listOf(
-  HomeModule.popularMovies,
-  HomeModule.nowPlayingMovies,
-  HomeModule.topRatedMovies,
-  HomeModule.upcomingMovies,
-  HomeModule.watchListMovies,
+    HomeModule.popularMovies,
+    HomeModule.nowPlayingMovies,
+    HomeModule.topRatedMovies,
+    HomeModule.upcomingMovies,
+    HomeModule.watchListMovies,
 )
 private val aPage = Page(1)
 private val aMedias = listOf(Media.Movie.empty.copy(id = MediaId(1)))

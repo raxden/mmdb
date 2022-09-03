@@ -13,30 +13,30 @@ import org.junit.Test
 
 class AccountLocalDataSourceImplTest : BaseTest() {
 
-  private val accountDao: AccountDao = mockk()
-  private val accountEntityToDomainMapper: AccountEntityToDomainMapper = mockk()
-  private val accountToEntityMapper: AccountToEntityMapper = mockk()
-  private val dataSource: AccountLocalDataSource by lazy {
-    AccountLocalDataSourceImpl(
-      accountDao = accountDao,
-      accountEntityToDomainMapper = accountEntityToDomainMapper,
-      accountToEntityMapper = accountToEntityMapper,
-    )
-  }
-
-  @Test
-  fun `Given an empty database, When observe is called, Then create guest account`() =
-    testDispatcher.runBlockingTest {
-      val flow = dataSource.observeAccount()
-
-      Assert.assertEquals(Account.Guest.default, flow.first())
+    private val accountDao: AccountDao = mockk()
+    private val accountEntityToDomainMapper: AccountEntityToDomainMapper = mockk()
+    private val accountToEntityMapper: AccountToEntityMapper = mockk()
+    private val dataSource: AccountLocalDataSource by lazy {
+        AccountLocalDataSourceImpl(
+            accountDao = accountDao,
+            accountEntityToDomainMapper = accountEntityToDomainMapper,
+            accountToEntityMapper = accountToEntityMapper,
+        )
     }
 
-  @Test
-  fun `Given an empty database, When getAccount is called, Then create guest account`() =
-    testDispatcher.runBlockingTest {
-      val account = dataSource.getAccount()
+    @Test
+    fun `Given an empty database, When observe is called, Then create guest account`() =
+        testDispatcher.runBlockingTest {
+            val flow = dataSource.observeAccount()
 
-      Assert.assertEquals(Account.Guest.default, account)
-    }
+            Assert.assertEquals(Account.Guest.default, flow.first())
+        }
+
+    @Test
+    fun `Given an empty database, When getAccount is called, Then create guest account`() =
+        testDispatcher.runBlockingTest {
+            val account = dataSource.getAccount()
+
+            Assert.assertEquals(Account.Guest.default, account)
+        }
 }

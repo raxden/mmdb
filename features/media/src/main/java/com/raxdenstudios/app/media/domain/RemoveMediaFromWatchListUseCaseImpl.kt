@@ -5,9 +5,9 @@ import com.raxdenstudios.commons.ResultData
 import javax.inject.Inject
 
 internal class RemoveMediaFromWatchListUseCaseImpl @Inject constructor(
-  private val mediaRepository: MediaRepository
+    private val mediaRepository: MediaRepository,
 ) : RemoveMediaFromWatchListUseCase {
 
-  override suspend operator fun invoke(params: RemoveMediaFromWatchListUseCase.Params): ResultData<Boolean> =
-    mediaRepository.removeFromWatchList(params.mediaId, params.mediaType)
+    override suspend operator fun invoke(params: RemoveMediaFromWatchListUseCase.Params): ResultData<Boolean> =
+        mediaRepository.removeFromWatchList(params.mediaId, params.mediaType)
 }

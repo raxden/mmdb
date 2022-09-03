@@ -5,33 +5,33 @@ import com.raxdenstudios.app.media.domain.model.MediaType
 import kotlinx.parcelize.Parcelize
 
 sealed class MediaListParams(
-  open val mediaType: MediaType
+    open val mediaType: MediaType,
 ) : Parcelable {
 
-  @Parcelize
-  data class Popular(
-    override val mediaType: MediaType
-  ) : MediaListParams(mediaType)
+    @Parcelize
+    data class Popular(
+        override val mediaType: MediaType,
+    ) : MediaListParams(mediaType)
 
-  @Parcelize
-  data class WatchList(
-    override val mediaType: MediaType
-  ) : MediaListParams(mediaType)
+    @Parcelize
+    data class WatchList(
+        override val mediaType: MediaType,
+    ) : MediaListParams(mediaType)
 
-  @Parcelize
-  data class TopRated(
-    override val mediaType: MediaType
-  ) : MediaListParams(mediaType)
+    @Parcelize
+    data class TopRated(
+        override val mediaType: MediaType,
+    ) : MediaListParams(mediaType)
 
-  @Parcelize
-  object NowPlaying : MediaListParams(MediaType.MOVIE)
+    @Parcelize
+    object NowPlaying : MediaListParams(MediaType.MOVIE)
 
-  @Parcelize
-  object Upcoming : MediaListParams(MediaType.MOVIE)
+    @Parcelize
+    object Upcoming : MediaListParams(MediaType.MOVIE)
 
-  companion object {
-    val popularMovies = Popular(
-      mediaType = MediaType.MOVIE
-    )
-  }
+    companion object {
+        val popularMovies = Popular(
+            mediaType = MediaType.MOVIE
+        )
+    }
 }

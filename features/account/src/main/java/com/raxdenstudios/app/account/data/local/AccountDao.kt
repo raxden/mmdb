@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AccountDao {
 
-  @Query("SELECT * FROM account WHERE id == 1")
-  fun observe(): Flow<AccountEntity>
+    @Query("SELECT * FROM account WHERE id == 1")
+    fun observe(): Flow<AccountEntity>
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(account: AccountEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(account: AccountEntity)
 
-  @Query("SELECT * FROM account WHERE id == 1")
-  suspend fun get(): AccountEntity?
+    @Query("SELECT * FROM account WHERE id == 1")
+    suspend fun get(): AccountEntity?
 
-  @Query("DELETE FROM account")
-  suspend fun clear()
+    @Query("DELETE FROM account")
+    suspend fun clear()
 }

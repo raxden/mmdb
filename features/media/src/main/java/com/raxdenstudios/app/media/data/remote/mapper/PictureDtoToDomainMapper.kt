@@ -8,14 +8,14 @@ import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class PictureDtoToDomainMapper @Inject constructor(
-  @APIVersionV3 private val apiDataProvider: APIDataProvider,
+    @APIVersionV3 private val apiDataProvider: APIDataProvider,
 ) : DataMapper<String?, Picture>() {
 
-  override fun transform(source: String?): Picture =
-    source?.takeIf { it.isNotEmpty() }?.let {
-      Picture.WithImage(
-        thumbnail = Size.Thumbnail(apiDataProvider.getImageDomain(), source),
-        original = Size.Original(apiDataProvider.getImageDomain(), source),
-      )
-    } ?: Picture.Empty
+    override fun transform(source: String?): Picture =
+        source?.takeIf { it.isNotEmpty() }?.let {
+            Picture.WithImage(
+                thumbnail = Size.Thumbnail(apiDataProvider.getImageDomain(), source),
+                original = Size.Original(apiDataProvider.getImageDomain(), source),
+            )
+        } ?: Picture.Empty
 }

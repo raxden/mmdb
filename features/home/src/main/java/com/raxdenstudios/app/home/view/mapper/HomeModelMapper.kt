@@ -5,14 +5,14 @@ import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 import javax.inject.Inject
 
 internal class HomeModelMapper @Inject constructor(
-  private val homeModuleModelMapper: HomeModuleModelMapper,
+    private val homeModuleModelMapper: HomeModuleModelMapper,
 ) {
 
-  fun transform(
-    homeModules: List<HomeModule>,
-  ): HomeMediaListModel = HomeMediaListModel(
-    modules = homeModules.map { homeModule ->
-      homeModuleModelMapper.transform(homeModule)
-    },
-  )
+    fun transform(
+        homeModules: List<HomeModule>,
+    ): HomeMediaListModel = HomeMediaListModel(
+        modules = homeModules.map { homeModule ->
+            homeModuleModelMapper.transform(homeModule)
+        },
+    )
 }

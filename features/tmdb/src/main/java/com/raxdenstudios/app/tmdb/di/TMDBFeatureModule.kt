@@ -25,39 +25,39 @@ import retrofit2.converter.gson.GsonConverterFactory
 @InstallIn(SingletonComponent::class)
 object TMDBFeatureModule {
 
-  @Provides
-  @Auth
-  fun provideAuthOkHttpClient(
-    authorizationBearerInterceptor: AuthorizationBearerInterceptor,
-    httpLoggingInterceptor: HttpLoggingInterceptor,
-  ): OkHttpClient = OkHttpClient.Builder()
-    .addNetworkInterceptor(httpLoggingInterceptor)
-    .addInterceptor(authorizationBearerInterceptor)
-    .retryOnConnectionFailure(true)
-    .build()
+    @Provides
+    @Auth
+    fun provideAuthOkHttpClient(
+        authorizationBearerInterceptor: AuthorizationBearerInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addNetworkInterceptor(httpLoggingInterceptor)
+        .addInterceptor(authorizationBearerInterceptor)
+        .retryOnConnectionFailure(true)
+        .build()
 
-  @Provides
-  @Auth
-  fun provideRetrofitAuth(
-    @APIVersionV4 apiDataProvider: APIDataProvider,
-    @Auth okHttpClient: OkHttpClient,
-    gson: Gson
-  ): Retrofit = Retrofit.Builder()
-    .baseUrl(apiDataProvider.getDomain())
-    .client(okHttpClient)
-    .addCallAdapterFactory(NetworkResponseAdapterFactory())
-    .addConverterFactory(GsonConverterFactory.create(gson))
-    .build()
+    @Provides
+    @Auth
+    fun provideRetrofitAuth(
+        @APIVersionV4 apiDataProvider: APIDataProvider,
+        @Auth okHttpClient: OkHttpClient,
+        gson: Gson,
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(apiDataProvider.getDomain())
+        .client(okHttpClient)
+        .addCallAdapterFactory(NetworkResponseAdapterFactory())
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build()
 
-  @Provides
-  fun provideAuthenticationServiceV3(
-    @APIVersionV3 retrofit: Retrofit
-  ): AuthenticationV3Service = retrofit.create(AuthenticationV3Service::class.java)
+    @Provides
+    fun provideAuthenticationServiceV3(
+        @APIVersionV3 retrofit: Retrofit,
+    ): AuthenticationV3Service = retrofit.create(AuthenticationV3Service::class.java)
 
-  @Provides
-  fun provideAuthenticationServiceV4(
-    @Auth retrofit: Retrofit
-  ): AuthenticationV4Service = retrofit.create(AuthenticationV4Service::class.java)
+    @Provides
+    fun provideAuthenticationServiceV4(
+        @Auth retrofit: Retrofit,
+    ): AuthenticationV4Service = retrofit.create(AuthenticationV4Service::class.java)
 }
 
 
@@ -65,6 +65,6 @@ object TMDBFeatureModule {
 @InstallIn(ActivityComponent::class)
 abstract class TMDBFeatureBindsModule {
 
-  @Binds
-  internal abstract fun bindTMDBConnect(useCase: TMDBConnectImpl): TMDBConnect
+    @Binds
+    internal abstract fun bindTMDBConnect(useCase: TMDBConnectImpl): TMDBConnect
 }

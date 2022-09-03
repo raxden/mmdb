@@ -16,42 +16,42 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class MediaLocalDataSource @Inject constructor(
-  private val mediaDao: MediaDao,
-  private val watchListDao: WatchListDao,
-  private val mediaToEntityMapper: MediaToEntityMapper,
-  private val mediaEntityToDomainMapper: MediaEntityToDomainMapper,
-  private val mediaToWatchListEntityMapper: MediaToWatchListEntityMapper,
+    private val mediaDao: MediaDao,
+    private val watchListDao: WatchListDao,
+    private val mediaToEntityMapper: MediaToEntityMapper,
+    private val mediaEntityToDomainMapper: MediaEntityToDomainMapper,
+    private val mediaToWatchListEntityMapper: MediaToWatchListEntityMapper,
 ) {
 
-  fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>> =
-    mediaDao.watchList(mediaType.ordinal)
-      .map { entityList -> mediaEntityToDomainMapper.transform(entityList) }
-      .map { medias -> medias.map { media -> media.copyWith(watchList = true) } }
-      .map { medias -> ResultData.Success(medias) }
+    fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>> =
+        mediaDao.watchList(mediaType.ordinal)
+            .map { entityList -> mediaEntityToDomainMapper.transform(entityList) }
+            .map { medias -> medias.map { media -> media.copyWith(watchList = true) } }
+            .map { medias -> ResultData.Success(medias) }
 
-  @Transaction
-  suspend fun addToWatchList(media: Media): ResultData<Boolean> = runCatching {
-    mediaDao.insert(mediaToEntityMapper.transform(media))
-    watchListDao.insert(mediaToWatchListEntityMapper.transform(media))
-    true
-  }
+    @Transaction
+    suspend fun addToWatchList(media: Media): ResultData<Boolean> = runCatching {
+        mediaDao.insert(mediaToEntityMapper.transform(media))
+        watchListDao.insert(mediaToWatchListEntityMapper.transform(media))
+        true
+    }
 
-  @Transaction
-  suspend fun addToWatchList(medias: List<Media>): ResultData<Boolean> = runCatching {
-    mediaDao.insert(mediaToEntityMapper.transform(medias))
-    watchListDao.insert(mediaToWatchListEntityMapper.transform(medias))
-    true
-  }
+    @Transaction
+    suspend fun addToWatchList(medias: List<Media>): ResultData<Boolean> = runCatching {
+        mediaDao.insert(mediaToEntityMapper.transform(medias))
+        watchListDao.insert(mediaToWatchListEntityMapper.transform(medias))
+        true
+    }
 
-  suspend fun clearWatchList(): ResultData<Boolean> = runCatching {
-    watchListDao.clear()
-    true
-  }
+    suspend fun clearWatchList(): ResultData<Boolean> = runCatching {
+        watchListDao.clear()
+        true
+    }
 
-  suspend fun removeFromWatchList(mediaId: MediaId) {
-    watchListDao.delete(mediaId.value)
-  }
+    suspend fun removeFromWatchList(mediaId: MediaId) {
+        watchListDao.delete(mediaId.value)
+    }
 
-  suspend fun containsInWatchList(mediaId: MediaId): Boolean =
-    watchListDao.find(mediaId.value) != null
+    suspend fun containsInWatchList(mediaId: MediaId): Boolean =
+        watchListDao.find(mediaId.value) != null
 }

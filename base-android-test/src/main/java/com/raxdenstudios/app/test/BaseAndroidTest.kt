@@ -11,14 +11,14 @@ import org.koin.test.KoinTestRule
 
 abstract class BaseAndroidTest : KoinTest {
 
-  @get:Rule
-  val koinTestRule = KoinTestRule.create {
-    modules(modules + module { factory { context } })
-  }
+    @get:Rule
+    val koinTestRule = KoinTestRule.create {
+        modules(modules + module { factory { context } })
+    }
 
-  @get:Rule
-  val timberTestRule: TimberTestRule = TimberTestRule.logAllAlways()
+    @get:Rule
+    val timberTestRule: TimberTestRule = TimberTestRule.logAllAlways()
 
-  protected val context: Context = InstrumentationRegistry.getInstrumentation().context
-  protected abstract val modules: List<Module>
+    protected val context: Context = InstrumentationRegistry.getInstrumentation().context
+    protected abstract val modules: List<Module>
 }

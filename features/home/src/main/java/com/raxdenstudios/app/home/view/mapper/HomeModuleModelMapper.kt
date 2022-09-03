@@ -5,12 +5,12 @@ import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import javax.inject.Inject
 
 internal class HomeModuleModelMapper @Inject constructor(
-  private val carouselMediasModelMapper: CarouselMediasModelMapper
+    private val carouselMediasModelMapper: CarouselMediasModelMapper,
 ) {
 
-  fun transform(
-    homeModule: HomeModule,
-  ): HomeModuleModel {
-    return carouselMediasModelMapper.transform(homeModule)
-  }
+    fun transform(
+        homeModule: HomeModule,
+    ): HomeModuleModel {
+        return carouselMediasModelMapper.transform(homeModule)
+    }
 }

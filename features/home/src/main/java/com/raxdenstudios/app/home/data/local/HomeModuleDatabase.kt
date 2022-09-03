@@ -8,37 +8,37 @@ import androidx.room.RoomDatabase
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 
 @Database(
-  entities = [HomeModuleEntity::class],
-  version = 2,
+    entities = [HomeModuleEntity::class],
+    version = 2,
 )
 abstract class HomeModuleDatabase : RoomDatabase() {
 
-  abstract fun dao(): HomeModuleDao
+    abstract fun dao(): HomeModuleDao
 
-  companion object {
+    companion object {
 
-    @Volatile
-    private var INSTANCE: HomeModuleDatabase? = null
+        @Volatile
+        private var INSTANCE: HomeModuleDatabase? = null
 
-    fun getInstance(context: Context): HomeModuleDatabase {
-      return INSTANCE ?: synchronized(this) {
-        INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
-      }
+        fun getInstance(context: Context): HomeModuleDatabase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+            }
+        }
+
+        @VisibleForTesting
+        fun switchToInMemory(context: Context): HomeModuleDatabase {
+            return Room.inMemoryDatabaseBuilder(context, HomeModuleDatabase::class.java)
+                // allowing main thread queries, just for testing
+                .allowMainThreadQueries()
+                .addMigrations(HomeModuleDatabaseMigrationV1toV2())
+                .build()
+        }
+
+        private fun buildDatabase(context: Context): HomeModuleDatabase {
+            return Room.databaseBuilder(context, HomeModuleDatabase::class.java, "home_module.db")
+                .addMigrations(HomeModuleDatabaseMigrationV1toV2())
+                .build()
+        }
     }
-
-    @VisibleForTesting
-    fun switchToInMemory(context: Context): HomeModuleDatabase {
-      return Room.inMemoryDatabaseBuilder(context, HomeModuleDatabase::class.java)
-        // allowing main thread queries, just for testing
-        .allowMainThreadQueries()
-        .addMigrations(HomeModuleDatabaseMigrationV1toV2())
-        .build()
-    }
-
-    private fun buildDatabase(context: Context): HomeModuleDatabase {
-      return Room.databaseBuilder(context, HomeModuleDatabase::class.java, "home_module.db")
-        .addMigrations(HomeModuleDatabaseMigrationV1toV2())
-        .build()
-    }
-  }
 }

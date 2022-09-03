@@ -12,46 +12,46 @@ import com.raxdenstudios.commons.ext.setTransparentBackground
 
 abstract class BaseFragmentDialog(@LayoutRes private val layoutId: Int) : DialogFragment() {
 
-  private var onDismissListener: MutableList<DialogInterface.OnDismissListener> = mutableListOf()
+    private var onDismissListener: MutableList<DialogInterface.OnDismissListener> = mutableListOf()
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View = inflater.inflate(layoutId, container)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View = inflater.inflate(layoutId, container)
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-    super.onCreateDialog(savedInstanceState).also { dialog -> dialog.setTransparentBackground() }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        super.onCreateDialog(savedInstanceState).also { dialog -> dialog.setTransparentBackground() }
 
-  override fun onStart() {
-    super.onStart()
+    override fun onStart() {
+        super.onStart()
 
-    dialog?.window?.setLayout(
-      ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.MATCH_PARENT
-    )
-  }
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
 
-  override fun onDestroy() {
-    onDismissListener.clear()
-    onDismissListener = mutableListOf()
-    super.onDestroy()
-  }
+    override fun onDestroy() {
+        onDismissListener.clear()
+        onDismissListener = mutableListOf()
+        super.onDestroy()
+    }
 
-  override fun onDismiss(dialog: DialogInterface) {
-    super.onDismiss(dialog)
-    onDismissListener.forEach { it.onDismiss(dialog) }
-  }
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener.forEach { it.onDismiss(dialog) }
+    }
 
-  fun addOnDismissListener(onDismissListener: () -> Unit = {}) {
-    addOnDismissListener(DialogInterface.OnDismissListener { onDismissListener() })
-  }
+    fun addOnDismissListener(onDismissListener: () -> Unit = {}) {
+        addOnDismissListener(DialogInterface.OnDismissListener { onDismissListener() })
+    }
 
-  fun addOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
-    this.onDismissListener.add(onDismissListener)
-  }
+    fun addOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
+        this.onDismissListener.add(onDismissListener)
+    }
 
-  fun removeOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
-    this.onDismissListener.remove(onDismissListener)
-  }
+    fun removeOnDismissListener(onDismissListener: DialogInterface.OnDismissListener) {
+        this.onDismissListener.remove(onDismissListener)
+    }
 }

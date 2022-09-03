@@ -12,23 +12,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
-  private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
 ) : BaseViewModel() {
 
-  private val mState = MutableLiveData<UIState>()
-  val state: LiveData<UIState> = mState
+    private val mState = MutableLiveData<UIState>()
+    val state: LiveData<UIState> = mState
 
-  fun sigIn(credentials: Credentials) {
-    viewModelScope.launch(
-      onError = { error -> mState.value = UIState.Error(error) }
-    ) {
-      loginUseCase(credentials)
-      mState.value = UIState.Logged
+    fun sigIn(credentials: Credentials) {
+        viewModelScope.launch(
+            onError = { error -> mState.value = UIState.Error(error) }
+        ) {
+            loginUseCase(credentials)
+            mState.value = UIState.Logged
+        }
     }
-  }
 
-  sealed class UIState {
-    object Logged : UIState()
-    data class Error(val throwable: Throwable) : UIState()
-  }
+    sealed class UIState {
+        object Logged : UIState()
+        data class Error(val throwable: Throwable) : UIState()
+    }
 }

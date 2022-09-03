@@ -9,12 +9,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 internal class SplashActivity : BaseActivity() {
 
-  @Inject
-  lateinit var navigator: SplashNavigator
+    @Inject
+    lateinit var navigator: SplashNavigator
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    navigator.launchHome()
-  }
+        navigator.launchHome()
+    }
 }

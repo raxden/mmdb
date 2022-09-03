@@ -16,12 +16,12 @@ import dagger.hilt.android.components.ActivityComponent
 @InstallIn(ActivityComponent::class)
 abstract class NavigatorModule {
 
-  @Binds
-  internal abstract fun splashNavigator(navigator: SplashNavigatorImpl): SplashNavigator
+    @Binds
+    internal abstract fun splashNavigator(navigator: SplashNavigatorImpl): SplashNavigator
 
-  @Binds
-  internal abstract fun mediaListNavigator(navigator: MediaListNavigatorImpl): MediaListNavigator
+    @Binds
+    internal abstract fun mediaListNavigator(navigator: MediaListNavigatorImpl): MediaListNavigator
 
-  @Binds
-  internal abstract fun homeNavigator(navigator: HomeMediaListNavigatorImpl): HomeMediaListNavigator
+    @Binds
+    internal abstract fun homeNavigator(navigator: HomeMediaListNavigatorImpl): HomeMediaListNavigator
 }

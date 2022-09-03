@@ -9,11 +9,11 @@ import javax.inject.Inject
 
 @ActivityScoped
 internal class SplashNavigatorImpl @Inject constructor(
-  private val activity: Activity
+    private val activity: Activity,
 ) : SplashNavigator {
 
-  override fun launchHome() {
-    HomeActivity.createIntent(activity)
-      .startActivityAndFinishCurrent(activity)
-  }
+    override fun launchHome() {
+        HomeActivity.createIntent(activity)
+            .startActivityAndFinishCurrent(activity)
+    }
 }

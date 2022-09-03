@@ -9,11 +9,11 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 internal class App : BaseApplication() {
 
-  override fun onCreate() {
-    super.onCreate()
+    override fun onCreate() {
+        super.onCreate()
 
-    GanderSDK.init()
-    TimberSDK.init()
-    ThreeTenSDK.init(this)
-  }
+        GanderSDK.init()
+        TimberSDK.init()
+        ThreeTenSDK.init(this)
+    }
 }

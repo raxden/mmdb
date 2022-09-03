@@ -11,19 +11,19 @@ import io.appflate.restmock.android.AndroidLogger
 
 internal class AppTestRunner : AndroidJUnitRunner() {
 
-  override fun newApplication(
-    cl: ClassLoader?,
-    className: String?,
-    context: Context?
-  ): Application = super.newApplication(cl, AppTestApplication::class.java.name, context)
+    override fun newApplication(
+        cl: ClassLoader?,
+        className: String?,
+        context: Context?,
+    ): Application = super.newApplication(cl, AppTestApplication::class.java.name, context)
 
-  override fun onCreate(arguments: Bundle) {
-    super.onCreate(arguments)
+    override fun onCreate(arguments: Bundle) {
+        super.onCreate(arguments)
 
-    RESTMockServerStarter.startSync(
-      AndroidAssetsFileParser(context),
-      AndroidLogger(),
-      RESTMockOptions.Builder().useHttps(true).build()
-    )
-  }
+        RESTMockServerStarter.startSync(
+            AndroidAssetsFileParser(context),
+            AndroidLogger(),
+            RESTMockOptions.Builder().useHttps(true).build()
+        )
+    }
 }

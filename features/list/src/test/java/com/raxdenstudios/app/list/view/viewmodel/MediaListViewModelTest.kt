@@ -31,206 +31,206 @@ import org.junit.Test
 
 internal class MediaListViewModelTest : BaseTest() {
 
-  private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
-    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
-  }
-  private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
-    coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
-  }
-  private val getMediasUseCase: GetMediasUseCase = mockk {
-    coEvery {
-      this@mockk.invoke(aGetMoviesUseCaseFirstPageParams)
-    } returns ResultData.Success(aFirstPageList)
-    coEvery {
-      this@mockk.invoke(aGetMoviesUseCaseSecondPageParams)
-    } returns ResultData.Success(aSecondPageList)
-  }
-  private val stateObserver: Observer<MediaListViewModel.UIState> = mockk(relaxed = true)
-  private val paginationConfig = Pagination.Config.default.copy(
-    initialPage = aFirstPage,
-    pageSize = aPageSize,
-    prefetchDistance = 0
-  )
-  private val getMediasUseCaseParamsMapper = GetMediasUseCaseParamsMapper()
-  private val stringProvider: StringProvider = mockk(relaxed = true)
-  private val mediaListItemModelMapper = MediaListItemModelMapper()
-  private val mediaListModelMapper = MediaListModelMapper(
-    stringProvider = stringProvider,
-    mediaListItemModelMapper = mediaListItemModelMapper,
-  )
-  private val savedStateHandle: SavedStateHandle = mockk(relaxed = true)
-  private val viewModel: MediaListViewModel by lazy {
-    MediaListViewModel(
-      savedStateHandle = savedStateHandle,
-      paginationConfig = paginationConfig,
-      getMediasUseCase = getMediasUseCase,
-      addMediaToWatchListUseCase = addMediaToWatchListUseCase,
-      removeMediaFromWatchListUseCase = removeMediaFromWatchListUseCase,
-      getMediasUseCaseParamsMapper = getMediasUseCaseParamsMapper,
-      mediaListModelMapper = mediaListModelMapper,
+    private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase = mockk {
+        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
+    }
+    private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
+        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
+    }
+    private val getMediasUseCase: GetMediasUseCase = mockk {
+        coEvery {
+            this@mockk.invoke(aGetMoviesUseCaseFirstPageParams)
+        } returns ResultData.Success(aFirstPageList)
+        coEvery {
+            this@mockk.invoke(aGetMoviesUseCaseSecondPageParams)
+        } returns ResultData.Success(aSecondPageList)
+    }
+    private val stateObserver: Observer<MediaListViewModel.UIState> = mockk(relaxed = true)
+    private val paginationConfig = Pagination.Config.default.copy(
+        initialPage = aFirstPage,
+        pageSize = aPageSize,
+        prefetchDistance = 0
     )
-  }
-
-  @Test
-  fun `when movie is added to watchlist, movie is replaced in model`() {
-    val model = givenAMovieListModelWithResultsFromFirstPage()
-    val itemToAddToWatchList = MediaListItemModel.empty.copy(id = MediaId(2L))
-    viewModel.uiState.observeForever(stateObserver)
-
-    viewModel.addMovieToWatchList(model, itemToAddToWatchList)
-
-    coVerifyOrder {
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(
-                id = MediaId(2L),
-                watchButtonModel = WatchButtonModel.Selected
-              ),
-            )
-          )
-        )
-      )
-    }
-  }
-
-  @Test
-  fun `when movie is removed from watchlist, movie is replaced in model`() {
-    val model = givenAMovieListModelWithResultsFromFirstPage()
-    val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(
-      id = MediaId(2L), watchButtonModel = WatchButtonModel.Selected
+    private val getMediasUseCaseParamsMapper = GetMediasUseCaseParamsMapper()
+    private val stringProvider: StringProvider = mockk(relaxed = true)
+    private val mediaListItemModelMapper = MediaListItemModelMapper()
+    private val mediaListModelMapper = MediaListModelMapper(
+        stringProvider = stringProvider,
+        mediaListItemModelMapper = mediaListItemModelMapper,
     )
-    viewModel.uiState.observeForever(stateObserver)
-
-    viewModel.removeMovieFromWatchList(model, itemToRemoveFromWatchList)
-
-    coVerifyOrder {
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(
-                id = MediaId(2L),
-                watchButtonModel = WatchButtonModel.Unselected
-              ),
-            )
-          )
+    private val savedStateHandle: SavedStateHandle = mockk(relaxed = true)
+    private val viewModel: MediaListViewModel by lazy {
+        MediaListViewModel(
+            savedStateHandle = savedStateHandle,
+            paginationConfig = paginationConfig,
+            getMediasUseCase = getMediasUseCase,
+            addMediaToWatchListUseCase = addMediaToWatchListUseCase,
+            removeMediaFromWatchListUseCase = removeMediaFromWatchListUseCase,
+            getMediasUseCaseParamsMapper = getMediasUseCaseParamsMapper,
+            mediaListModelMapper = mediaListModelMapper,
         )
-      )
     }
-  }
 
-  @Test
-  fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
-    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
-    viewModel.uiState.observeForever(stateObserver)
+    @Test
+    fun `when movie is added to watchlist, movie is replaced in model`() {
+        val model = givenAMovieListModelWithResultsFromFirstPage()
+        val itemToAddToWatchList = MediaListItemModel.empty.copy(id = MediaId(2L))
+        viewModel.uiState.observeForever(stateObserver)
 
-    viewModel.refreshMovies()
+        viewModel.addMovieToWatchList(model, itemToAddToWatchList)
 
-    coVerifyOrder {
-      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(id = MediaId(2L)),
+        coVerifyOrder {
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(
+                                id = MediaId(2L),
+                                watchButtonModel = WatchButtonModel.Selected
+                            ),
+                        )
+                    )
+                )
             )
-          )
-        )
-      )
+        }
     }
-  }
 
-  @Test
-  fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
-    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
-    viewModel.uiState.observeForever(stateObserver)
-
-    coVerifyOrder {
-      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(id = MediaId(2L)),
-            )
-          )
+    @Test
+    fun `when movie is removed from watchlist, movie is replaced in model`() {
+        val model = givenAMovieListModelWithResultsFromFirstPage()
+        val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(
+            id = MediaId(2L), watchButtonModel = WatchButtonModel.Selected
         )
-      )
+        viewModel.uiState.observeForever(stateObserver)
+
+        viewModel.removeMovieFromWatchList(model, itemToRemoveFromWatchList)
+
+        coVerifyOrder {
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(
+                                id = MediaId(2L),
+                                watchButtonModel = WatchButtonModel.Unselected
+                            ),
+                        )
+                    )
+                )
+            )
+        }
     }
-  }
 
-  @Test
-  fun `Given a pageIndex with value 20, When loadMoreMovies is called, Then second page with movies are returned`() {
-    every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
-    val pageIndex = PageIndex(2)
-    viewModel.uiState.observeForever(stateObserver)
+    @Test
+    fun `Given a params with searchType as popular, When refreshMovies method is called, Then first page with movies is returned`() {
+        every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
+        viewModel.uiState.observeForever(stateObserver)
 
-    viewModel.loadMoreMovies(pageIndex)
+        viewModel.refreshMovies()
 
-    coVerifyOrder {
-      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(id = MediaId(2L)),
+        coVerifyOrder {
+            stateObserver.onChanged(MediaListViewModel.UIState.Loading)
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(id = MediaId(2L)),
+                        )
+                    )
+                )
             )
-          )
-        )
-      )
-      stateObserver.onChanged(MediaListViewModel.UIState.Loading)
-      stateObserver.onChanged(
-        MediaListViewModel.UIState.Content(
-          MediaListModel.empty.copy(
-            items = listOf(
-              MediaListItemModel.empty.copy(id = MediaId(1L)),
-              MediaListItemModel.empty.copy(id = MediaId(2L)),
-              MediaListItemModel.empty.copy(id = MediaId(3L)),
-              MediaListItemModel.empty.copy(id = MediaId(4L)),
-            )
-          )
-        )
-      )
+        }
     }
-  }
 
-  private fun givenAMovieListModelWithResultsFromFirstPage(): MediaListModel =
-    MediaListModel.empty.copy(
-      items = aFirstPageMoviesModel
-    )
+    @Test
+    fun `Given a params with searchType as popular, When loadMovies method is called, Then first page with movies is returned`() {
+        every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
+        viewModel.uiState.observeForever(stateObserver)
+
+        coVerifyOrder {
+            stateObserver.onChanged(MediaListViewModel.UIState.Loading)
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(id = MediaId(2L)),
+                        )
+                    )
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `Given a pageIndex with value 20, When loadMoreMovies is called, Then second page with movies are returned`() {
+        every { savedStateHandle.get<MediaListParams>("params") } returns MediaListParams.popularMovies
+        val pageIndex = PageIndex(2)
+        viewModel.uiState.observeForever(stateObserver)
+
+        viewModel.loadMoreMovies(pageIndex)
+
+        coVerifyOrder {
+            stateObserver.onChanged(MediaListViewModel.UIState.Loading)
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(id = MediaId(2L)),
+                        )
+                    )
+                )
+            )
+            stateObserver.onChanged(MediaListViewModel.UIState.Loading)
+            stateObserver.onChanged(
+                MediaListViewModel.UIState.Content(
+                    MediaListModel.empty.copy(
+                        items = listOf(
+                            MediaListItemModel.empty.copy(id = MediaId(1L)),
+                            MediaListItemModel.empty.copy(id = MediaId(2L)),
+                            MediaListItemModel.empty.copy(id = MediaId(3L)),
+                            MediaListItemModel.empty.copy(id = MediaId(4L)),
+                        )
+                    )
+                )
+            )
+        }
+    }
+
+    private fun givenAMovieListModelWithResultsFromFirstPage(): MediaListModel =
+        MediaListModel.empty.copy(
+            items = aFirstPageMoviesModel
+        )
 }
 
 private val aFirstPage = Page(1)
 private val aSecondPage = Page(2)
 private val aPageSize = PageSize(2)
 private val aGetMoviesUseCaseFirstPageParams =
-  GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
+    GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
 private val aGetMoviesUseCaseSecondPageParams =
-  GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
+    GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
 private val aFirstPageMoviesModel = listOf(
-  MediaListItemModel.empty.copy(id = MediaId(1L)),
-  MediaListItemModel.empty.copy(id = MediaId(2L)),
+    MediaListItemModel.empty.copy(id = MediaId(1L)),
+    MediaListItemModel.empty.copy(id = MediaId(2L)),
 )
 private val aFirstPageMovies = listOf(
-  Media.Movie.empty.copy(id = MediaId(1)),
-  Media.Movie.empty.copy(id = MediaId(2)),
+    Media.Movie.empty.copy(id = MediaId(1)),
+    Media.Movie.empty.copy(id = MediaId(2)),
 )
 private val aSecondPageMovies = listOf(
-  Media.Movie.empty.copy(id = MediaId(3)),
-  Media.Movie.empty.copy(id = MediaId(4)),
+    Media.Movie.empty.copy(id = MediaId(3)),
+    Media.Movie.empty.copy(id = MediaId(4)),
 )
 private val aFirstPageList = PageList<Media>(
-  items = aFirstPageMovies,
-  aFirstPage,
+    items = aFirstPageMovies,
+    aFirstPage,
 )
 private val aSecondPageList = PageList<Media>(
-  items = aSecondPageMovies,
-  aSecondPage,
+    items = aSecondPageMovies,
+    aSecondPage,
 )
