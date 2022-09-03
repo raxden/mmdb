@@ -17,30 +17,30 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeBottomNavigationFragment : Fragment(R.layout.home_bottom_navigation_fragment) {
 
-  private val navController by lazy { requireActivity().findNavController(R.id.nav_host_container) }
-  private val binding: HomeBottomNavigationFragmentBinding by viewBinding()
-  private val viewModel: HomeBottomNavigationViewModel by viewModels()
+    private val navController by lazy { requireActivity().findNavController(R.id.nav_host_container) }
+    private val binding: HomeBottomNavigationFragmentBinding by viewBinding()
+    private val viewModel: HomeBottomNavigationViewModel by viewModels()
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    binding.setUp()
+        binding.setUp()
 
-    observe(viewModel.state) { state -> binding.handleState(state) }
-  }
-
-  private fun HomeBottomNavigationFragmentBinding.handleState(state: HomeBottomNavigationViewModel.UIState) {
-    navigationView.setOnItemSelectedListener { menuItem ->
-      state.bottomUIState.onItemSelected(menuItem.itemId)
-      NavigationUI.onNavDestinationSelected(menuItem, navController)
-      true
+        observe(viewModel.state) { state -> binding.handleState(state) }
     }
-    navigationView.setOnItemReselectedListener { menuItem ->
-      state.bottomUIState.onItemReselected(menuItem.itemId)
-    }
-  }
 
-  private fun HomeBottomNavigationFragmentBinding.setUp() {
-    navigationView.setupWithNavController(navController)
-  }
+    private fun HomeBottomNavigationFragmentBinding.handleState(state: HomeBottomNavigationViewModel.UIState) {
+        navigationView.setOnItemSelectedListener { menuItem ->
+            state.bottomUIState.onItemSelected(menuItem.itemId)
+            NavigationUI.onNavDestinationSelected(menuItem, navController)
+            true
+        }
+        navigationView.setOnItemReselectedListener { menuItem ->
+            state.bottomUIState.onItemReselected(menuItem.itemId)
+        }
+    }
+
+    private fun HomeBottomNavigationFragmentBinding.setUp() {
+        navigationView.setupWithNavController(navController)
+    }
 }

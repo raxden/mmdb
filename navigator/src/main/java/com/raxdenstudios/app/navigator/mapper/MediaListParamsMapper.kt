@@ -6,14 +6,14 @@ import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 internal class MediaListParamsMapper @Inject constructor() :
-  DataMapper<HomeModuleModel.CarouselMedias, MediaListParams>() {
+    DataMapper<HomeModuleModel.CarouselMedias, MediaListParams>() {
 
-  override fun transform(source: HomeModuleModel.CarouselMedias): MediaListParams =
-    when (source) {
-      is HomeModuleModel.CarouselMedias.NowPlaying -> MediaListParams.NowPlaying
-      is HomeModuleModel.CarouselMedias.Popular -> MediaListParams.Popular(source.mediaType)
-      is HomeModuleModel.CarouselMedias.TopRated -> MediaListParams.TopRated(source.mediaType)
-      is HomeModuleModel.CarouselMedias.Upcoming -> MediaListParams.Upcoming
-      is HomeModuleModel.CarouselMedias.WatchList -> MediaListParams.WatchList(source.mediaType)
-    }
+    override fun transform(source: HomeModuleModel.CarouselMedias): MediaListParams =
+        when (source) {
+            is HomeModuleModel.CarouselMedias.NowPlaying -> MediaListParams.NowPlaying
+            is HomeModuleModel.CarouselMedias.Popular -> MediaListParams.Popular(source.mediaType)
+            is HomeModuleModel.CarouselMedias.TopRated -> MediaListParams.TopRated(source.mediaType)
+            is HomeModuleModel.CarouselMedias.Upcoming -> MediaListParams.Upcoming
+            is HomeModuleModel.CarouselMedias.WatchList -> MediaListParams.WatchList(source.mediaType)
+        }
 }

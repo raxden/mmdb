@@ -7,24 +7,24 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-  tableName = "watch_list",
-  foreignKeys = [
-    ForeignKey(
-      entity = MediaEntity::class,
-      parentColumns = arrayOf("id"),
-      childColumns = arrayOf("media_id"),
-      onDelete = ForeignKey.CASCADE
-    )
-  ]
+    tableName = "watch_list",
+    foreignKeys = [
+        ForeignKey(
+            entity = MediaEntity::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("media_id"),
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
 )
 data class WatchListEntity(
-  @PrimaryKey @ColumnInfo(name = "media_id") val mediaId: Long,
+    @PrimaryKey @ColumnInfo(name = "media_id") val mediaId: Long,
 ) {
 
-  companion object {
-    @VisibleForTesting
-    val empty = WatchListEntity(
-      mediaId = 0L,
-    )
-  }
+    companion object {
+        @VisibleForTesting
+        val empty = WatchListEntity(
+            mediaId = 0L,
+        )
+    }
 }

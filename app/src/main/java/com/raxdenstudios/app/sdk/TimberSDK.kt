@@ -6,12 +6,12 @@ import timber.log.Timber
 
 object TimberSDK {
 
-  fun init() {
-    Timber.plant(
-      when (BuildConfig.DEBUG) {
-        true -> Timber.DebugTree()
-        else -> FirebaseCrashlyticsTree()
-      }
-    )
-  }
+    fun init() {
+        Timber.plant(
+            when (BuildConfig.DEBUG) {
+                true -> Timber.DebugTree()
+                else -> FirebaseCrashlyticsTree()
+            }
+        )
+    }
 }

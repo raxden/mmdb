@@ -1,5 +1,5 @@
 package com.raxdenstudios.app.error
 
 interface ErrorManager {
-  fun handleError(throwable: Throwable)
+    fun handleError(throwable: Throwable)
 }

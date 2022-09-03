@@ -8,42 +8,42 @@ import com.raxdenstudios.app.home.databinding.CarouselNowPlayingMediaListItemBin
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 
 internal class CarouselNowPlayingMediaListAdapter :
-  BaseListAdapter<MediaListItemModel, CarouselNowPlayingMediaListAdapter.CarouselNowPlayingMediaListAdapterHolder>(
-    areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
-  ) {
+    BaseListAdapter<MediaListItemModel, CarouselNowPlayingMediaListAdapter.CarouselNowPlayingMediaListAdapterHolder>(
+        areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
+    ) {
 
-  var onMediaClickListener: (MediaListItemModel) -> Unit = {}
-  var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
-  var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-  var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onMediaClickListener: (MediaListItemModel) -> Unit = {}
+    var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
+    var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
-  override fun onCreateViewHolder(
-    parent: ViewGroup,
-    viewType: Int
-  ): CarouselNowPlayingMediaListAdapterHolder {
-    val inflater = LayoutInflater.from(parent.context)
-    val binding = CarouselNowPlayingMediaListItemBinding.inflate(inflater, parent, false)
-    return CarouselNowPlayingMediaListAdapterHolder(binding)
-  }
-
-  override fun onBindViewHolder(holder: CarouselNowPlayingMediaListAdapterHolder, position: Int) {
-    holder.bind(getItem(position))
-  }
-
-  inner class CarouselNowPlayingMediaListAdapterHolder(
-    private val binding: CarouselNowPlayingMediaListItemBinding
-  ) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(item: MediaListItemModel) {
-      binding.populate(item)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): CarouselNowPlayingMediaListAdapterHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = CarouselNowPlayingMediaListItemBinding.inflate(inflater, parent, false)
+        return CarouselNowPlayingMediaListAdapterHolder(binding)
     }
 
-    private fun CarouselNowPlayingMediaListItemBinding.populate(item: MediaListItemModel) {
-      itemView.onMediaClickListener = onMediaClickListener
-      itemView.onMediaPlayClickListener = onMediaPlayClickListener
-      itemView.onAddToWatchListClickListener = { onAddToWatchListClickListener(item) }
-      itemView.onRemoveFromWatchListClickListener = { onRemoveFromWatchListClickListener(item) }
-      itemView.setModel(item)
+    override fun onBindViewHolder(holder: CarouselNowPlayingMediaListAdapterHolder, position: Int) {
+        holder.bind(getItem(position))
     }
-  }
+
+    inner class CarouselNowPlayingMediaListAdapterHolder(
+        private val binding: CarouselNowPlayingMediaListItemBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: MediaListItemModel) {
+            binding.populate(item)
+        }
+
+        private fun CarouselNowPlayingMediaListItemBinding.populate(item: MediaListItemModel) {
+            itemView.onMediaClickListener = onMediaClickListener
+            itemView.onMediaPlayClickListener = onMediaPlayClickListener
+            itemView.onAddToWatchListClickListener = { onAddToWatchListClickListener(item) }
+            itemView.onRemoveFromWatchListClickListener = { onRemoveFromWatchListClickListener(item) }
+            itemView.setModel(item)
+        }
+    }
 }

@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 internal class VoteDtoToDomainMapper @Inject constructor() : DataMapper<MediaDto, Vote>() {
 
-  override fun transform(source: MediaDto): Vote = Vote(
-    average = source.vote_average.toFloat(),
-    count = source.vote_count
-  )
+    override fun transform(source: MediaDto): Vote = Vote(
+        average = source.vote_average.toFloat(),
+        count = source.vote_count
+    )
 }

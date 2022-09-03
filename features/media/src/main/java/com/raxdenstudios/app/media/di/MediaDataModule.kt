@@ -28,44 +28,44 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object MediaDataModule {
 
-  @Provides
-  fun provideMediaDatabase(@ApplicationContext context: Context): MediaDatabase =
-    MediaDatabase.getInstance(context)
+    @Provides
+    fun provideMediaDatabase(@ApplicationContext context: Context): MediaDatabase =
+        MediaDatabase.getInstance(context)
 
-  @Provides
-  fun provideMediaDAO(mediaDatabase: MediaDatabase): MediaDao =
-    mediaDatabase.mediaDao()
+    @Provides
+    fun provideMediaDAO(mediaDatabase: MediaDatabase): MediaDao =
+        mediaDatabase.mediaDao()
 
-  @Provides
-  fun provideWatchListDAO(mediaDatabase: MediaDatabase): WatchListDao =
-    mediaDatabase.watchListDao()
+    @Provides
+    fun provideWatchListDAO(mediaDatabase: MediaDatabase): WatchListDao =
+        mediaDatabase.watchListDao()
 
-  @Provides
-  fun provideMediaV3Service(@APIVersionV3 retrofit: Retrofit): MediaV3Service =
-    retrofit.create(MediaV3Service::class.java)
+    @Provides
+    fun provideMediaV3Service(@APIVersionV3 retrofit: Retrofit): MediaV3Service =
+        retrofit.create(MediaV3Service::class.java)
 
-  @Provides
-  fun provideMediaV4Service(@APIVersionV4 retrofit: Retrofit): MediaV4Service =
-    retrofit.create(MediaV4Service::class.java)
+    @Provides
+    fun provideMediaV4Service(@APIVersionV4 retrofit: Retrofit): MediaV4Service =
+        retrofit.create(MediaV4Service::class.java)
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class MediaDataBindsModule {
 
-  @Binds
-  internal abstract fun bindMediaRepository(useCase: MediaRepositoryImpl): MediaRepository
+    @Binds
+    internal abstract fun bindMediaRepository(useCase: MediaRepositoryImpl): MediaRepository
 
-  @Binds
-  internal abstract fun bindAddMediaToWatchListUseCase(
-    useCase: AddMediaToWatchListUseCaseImpl
-  ): AddMediaToWatchListUseCase
+    @Binds
+    internal abstract fun bindAddMediaToWatchListUseCase(
+        useCase: AddMediaToWatchListUseCaseImpl,
+    ): AddMediaToWatchListUseCase
 
-  @Binds
-  internal abstract fun bindRemoveMediaFromWatchListUseCase(
-    useCase: RemoveMediaFromWatchListUseCaseImpl
-  ): RemoveMediaFromWatchListUseCase
+    @Binds
+    internal abstract fun bindRemoveMediaFromWatchListUseCase(
+        useCase: RemoveMediaFromWatchListUseCaseImpl,
+    ): RemoveMediaFromWatchListUseCase
 
-  @Binds
-  internal abstract fun bindGetMediasUseCase(useCase: GetMediasUseCaseImpl): GetMediasUseCase
+    @Binds
+    internal abstract fun bindGetMediasUseCase(useCase: GetMediasUseCaseImpl): GetMediasUseCase
 }

@@ -8,8 +8,8 @@ import retrofit2.http.POST
 
 interface AuthenticationV3Service {
 
-  @POST("authentication/session/convert/4")
-  suspend fun requestSessionId(
-    @Body dto: SessionRequestDto
-  ): NetworkResponse<SessionResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
+    @POST("authentication/session/convert/4")
+    suspend fun requestSessionId(
+        @Body dto: SessionRequestDto,
+    ): NetworkResponse<SessionResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
 }

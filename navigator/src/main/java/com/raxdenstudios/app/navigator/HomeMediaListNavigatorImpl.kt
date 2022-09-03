@@ -10,33 +10,33 @@ import javax.inject.Inject
 
 @ActivityScoped
 internal class HomeMediaListNavigatorImpl @Inject constructor(
-  activity: FragmentActivity,
-  loginActivityResultContract: LoginActivityResultContract,
-  mediaListActivityResultContract: MediaListActivityResultContract,
+    activity: FragmentActivity,
+    loginActivityResultContract: LoginActivityResultContract,
+    mediaListActivityResultContract: MediaListActivityResultContract,
 ) : HomeMediaListNavigator {
 
-  private val loginActivityResultLauncher =
-    activity.registerForActivityResult(loginActivityResultContract) { logged ->
-      if (logged) onLoginSuccess()
+    private val loginActivityResultLauncher =
+        activity.registerForActivityResult(loginActivityResultContract) { logged ->
+            if (logged) onLoginSuccess()
+        }
+    private val mediaListActivityResultLauncher =
+        activity.registerForActivityResult(mediaListActivityResultContract) { refresh ->
+            if (refresh) onMoviesRefresh()
+        }
+
+    private var onLoginSuccess: () -> Unit = {}
+    private var onMoviesRefresh: () -> Unit = {}
+
+    override fun launchLogin(onSuccess: () -> Unit) {
+        onLoginSuccess = onSuccess
+        loginActivityResultLauncher.launch(Unit)
     }
-  private val mediaListActivityResultLauncher =
-    activity.registerForActivityResult(mediaListActivityResultContract) { refresh ->
-      if (refresh) onMoviesRefresh()
+
+    override fun launchMediaList(
+        carouselMedias: HomeModuleModel.CarouselMedias,
+        onRefresh: () -> Unit,
+    ) {
+        onMoviesRefresh = onRefresh
+        mediaListActivityResultLauncher.launch(carouselMedias)
     }
-
-  private var onLoginSuccess: () -> Unit = {}
-  private var onMoviesRefresh: () -> Unit = {}
-
-  override fun launchLogin(onSuccess: () -> Unit) {
-    onLoginSuccess = onSuccess
-    loginActivityResultLauncher.launch(Unit)
-  }
-
-  override fun launchMediaList(
-    carouselMedias: HomeModuleModel.CarouselMedias,
-    onRefresh: () -> Unit
-  ) {
-    onMoviesRefresh = onRefresh
-    mediaListActivityResultLauncher.launch(carouselMedias)
-  }
 }

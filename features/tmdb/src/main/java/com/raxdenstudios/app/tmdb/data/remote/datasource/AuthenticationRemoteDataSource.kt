@@ -7,15 +7,15 @@ import com.raxdenstudios.commons.ext.map
 import javax.inject.Inject
 
 internal class AuthenticationRemoteDataSource @Inject constructor(
-  private val gateway: AuthenticationGateway
+    private val gateway: AuthenticationGateway,
 ) {
 
-  suspend fun requestToken(): ResultData<String> =
-    gateway.requestToken().map { dto -> dto.request_token }
+    suspend fun requestToken(): ResultData<String> =
+        gateway.requestToken().map { dto -> dto.request_token }
 
-  suspend fun requestAccessToken(token: String): ResultData<AccessToken> =
-    gateway.requestAccessToken(token).map { dto -> AccessToken(dto.access_token, dto.account_id) }
+    suspend fun requestAccessToken(token: String): ResultData<AccessToken> =
+        gateway.requestAccessToken(token).map { dto -> AccessToken(dto.access_token, dto.account_id) }
 
-  suspend fun requestSessionId(accessToken: String): ResultData<String> =
-    gateway.requestSessionId(accessToken).map { dto -> dto.session_id }
+    suspend fun requestSessionId(accessToken: String): ResultData<String> =
+        gateway.requestSessionId(accessToken).map { dto -> dto.session_id }
 }

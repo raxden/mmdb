@@ -9,11 +9,11 @@ import retrofit2.http.POST
 
 interface AuthenticationV4Service {
 
-  @POST("auth/request_token")
-  suspend fun requestToken(): NetworkResponse<RequestTokenResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
+    @POST("auth/request_token")
+    suspend fun requestToken(): NetworkResponse<RequestTokenResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
 
-  @POST("auth/access_token")
-  suspend fun requestAccessToken(
-    @Body token: AccessTokenRequestDto
-  ): NetworkResponse<AccessTokenResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
+    @POST("auth/access_token")
+    suspend fun requestAccessToken(
+        @Body token: AccessTokenRequestDto,
+    ): NetworkResponse<AccessTokenResponseDto, com.raxdenstudios.app.network.model.ErrorDto>
 }

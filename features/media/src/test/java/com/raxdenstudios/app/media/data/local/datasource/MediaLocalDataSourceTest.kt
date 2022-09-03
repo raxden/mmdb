@@ -33,132 +33,132 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class MediaLocalDataSourceTest : BaseTest() {
 
-  private val mediaDao: MediaDao = mockk {
-    coEvery { watchList(any()) } returns flowOf(aMediaEntityList)
-  }
-  private val watchListDao: WatchListDao = mockk {
-    coEvery { clear() } returns Unit
-  }
-  private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
-  private val sizeToEntityMapper = SizeToEntityMapper()
-  private val pictureToEntityMapper = PictureToEntityMapper(
-    sizeToEntityMapper = sizeToEntityMapper,
-  )
-  private val voteToEntityMapper = VoteToEntityMapper()
-  private val mediaToEntityMapper = MediaToEntityMapper(
-    pictureToEntityMapper = pictureToEntityMapper,
-    voteToEntityMapper = voteToEntityMapper,
-  )
-  private val sizeEntityToDomainMapper = SizeEntityToDomainMapper(
-    apiDataProvider = apiDataProvider,
-  )
-  private val pictureEntityToDomainMapper = PictureEntityToDomainMapper(
-    sizeEntityToDomainMapper = sizeEntityToDomainMapper,
-  )
-  private val voteEntityToDomainMapper = VoteEntityToDomainMapper()
-  private val mediaEntityToDomainMapper = MediaEntityToDomainMapper(
-    pictureEntityToDomainMapper = pictureEntityToDomainMapper,
-    voteEntityToDomainMapper = voteEntityToDomainMapper,
-  )
-  private val mediaToWatchListEntityMapper = MediaToWatchListEntityMapper()
-  private val dataSource: MediaLocalDataSource by lazy {
-    MediaLocalDataSource(
-      mediaDao = mediaDao,
-      watchListDao = watchListDao,
-      mediaToEntityMapper = mediaToEntityMapper,
-      mediaEntityToDomainMapper = mediaEntityToDomainMapper,
-      mediaToWatchListEntityMapper = mediaToWatchListEntityMapper,
+    private val mediaDao: MediaDao = mockk {
+        coEvery { watchList(any()) } returns flowOf(aMediaEntityList)
+    }
+    private val watchListDao: WatchListDao = mockk {
+        coEvery { clear() } returns Unit
+    }
+    private val apiDataProvider: APIDataProvider = mockk(relaxed = true)
+    private val sizeToEntityMapper = SizeToEntityMapper()
+    private val pictureToEntityMapper = PictureToEntityMapper(
+        sizeToEntityMapper = sizeToEntityMapper,
     )
-  }
-
-  @Test
-  fun `Given a mediaType, When watchList is called, return a ResultData_success with media data`() {
-    testDispatcher.runBlockingTest {
-
-      val flow = dataSource.watchList(MediaType.MOVIE)
-
-      assertEquals(
-        ResultData.Success(
-          listOf(
-            Media.Movie.empty.copy(id = MediaId(1), watchList = true)
-          )
-        ),
-        flow.first()
-      )
-    }
-  }
-
-  @Test
-  fun `When clearWatchList is called, Then clear watchlist database`() {
-    testDispatcher.runBlockingTest {
-
-      dataSource.clearWatchList()
-
-      coVerify { watchListDao.clear() }
-    }
-  }
-
-  @Test
-  fun `Given a media, When addToWatchList is called, Then media is added`() =
-    testDispatcher.runBlockingTest {
-      coEvery { mediaDao.insert(aMediaEntity) } returns Unit
-      coEvery { watchListDao.insert(aWatchListEntity) } returns Unit
-
-      val result = dataSource.addToWatchList(aMedia)
-
-      coVerifyOrder {
-        mediaDao.insert(MediaEntity.empty.copy(id = aMediaId.value))
-        watchListDao.insert(WatchListEntity(aMediaId.value))
-      }
-      assertEquals(ResultData.Success(true), result)
+    private val voteToEntityMapper = VoteToEntityMapper()
+    private val mediaToEntityMapper = MediaToEntityMapper(
+        pictureToEntityMapper = pictureToEntityMapper,
+        voteToEntityMapper = voteToEntityMapper,
+    )
+    private val sizeEntityToDomainMapper = SizeEntityToDomainMapper(
+        apiDataProvider = apiDataProvider,
+    )
+    private val pictureEntityToDomainMapper = PictureEntityToDomainMapper(
+        sizeEntityToDomainMapper = sizeEntityToDomainMapper,
+    )
+    private val voteEntityToDomainMapper = VoteEntityToDomainMapper()
+    private val mediaEntityToDomainMapper = MediaEntityToDomainMapper(
+        pictureEntityToDomainMapper = pictureEntityToDomainMapper,
+        voteEntityToDomainMapper = voteEntityToDomainMapper,
+    )
+    private val mediaToWatchListEntityMapper = MediaToWatchListEntityMapper()
+    private val dataSource: MediaLocalDataSource by lazy {
+        MediaLocalDataSource(
+            mediaDao = mediaDao,
+            watchListDao = watchListDao,
+            mediaToEntityMapper = mediaToEntityMapper,
+            mediaEntityToDomainMapper = mediaEntityToDomainMapper,
+            mediaToWatchListEntityMapper = mediaToWatchListEntityMapper,
+        )
     }
 
-  @Test
-  fun `Given a some of mediaId's, When addToWatchList is called, Then medias are added`() =
-    testDispatcher.runBlockingTest {
-      coEvery { mediaDao.insert(aMediaEntityList) } returns Unit
-      coEvery { watchListDao.insert(aWatchListEntityList) } returns Unit
+    @Test
+    fun `Given a mediaType, When watchList is called, return a ResultData_success with media data`() {
+        testDispatcher.runBlockingTest {
 
-      val result = dataSource.addToWatchList(aMediaList)
+            val flow = dataSource.watchList(MediaType.MOVIE)
 
-      coVerifyOrder {
-        mediaDao.insert(listOf(MediaEntity.empty.copy(id = aMediaId.value)))
-        watchListDao.insert(listOf(WatchListEntity.empty.copy(mediaId = aMediaId.value)))
-      }
-      assertEquals(ResultData.Success(true), result)
+            assertEquals(
+                ResultData.Success(
+                    listOf(
+                        Media.Movie.empty.copy(id = MediaId(1), watchList = true)
+                    )
+                ),
+                flow.first()
+            )
+        }
     }
 
-  @Test
-  fun `Given a mediaId, When removeFromWatchList is called, Then media is removed`() =
-    testDispatcher.runBlockingTest {
-      coEvery { watchListDao.delete(aMediaId.value) } returns Unit
+    @Test
+    fun `When clearWatchList is called, Then clear watchlist database`() {
+        testDispatcher.runBlockingTest {
 
-      dataSource.removeFromWatchList(aMediaId)
+            dataSource.clearWatchList()
 
-      coVerify { watchListDao.delete(aMediaId.value) }
+            coVerify { watchListDao.clear() }
+        }
     }
 
-  @Test
-  fun `Given a media stored in local, When containsInWatchList is called, Then return true`() =
-    testDispatcher.runBlockingTest {
-      coEvery { watchListDao.find(aMediaId.value) } returns WatchListEntity.empty
+    @Test
+    fun `Given a media, When addToWatchList is called, Then media is added`() =
+        testDispatcher.runBlockingTest {
+            coEvery { mediaDao.insert(aMediaEntity) } returns Unit
+            coEvery { watchListDao.insert(aWatchListEntity) } returns Unit
 
-      val result = dataSource.containsInWatchList(aMediaId)
+            val result = dataSource.addToWatchList(aMedia)
 
-      assertEquals(true, result)
-    }
+            coVerifyOrder {
+                mediaDao.insert(MediaEntity.empty.copy(id = aMediaId.value))
+                watchListDao.insert(WatchListEntity(aMediaId.value))
+            }
+            assertEquals(ResultData.Success(true), result)
+        }
+
+    @Test
+    fun `Given a some of mediaId's, When addToWatchList is called, Then medias are added`() =
+        testDispatcher.runBlockingTest {
+            coEvery { mediaDao.insert(aMediaEntityList) } returns Unit
+            coEvery { watchListDao.insert(aWatchListEntityList) } returns Unit
+
+            val result = dataSource.addToWatchList(aMediaList)
+
+            coVerifyOrder {
+                mediaDao.insert(listOf(MediaEntity.empty.copy(id = aMediaId.value)))
+                watchListDao.insert(listOf(WatchListEntity.empty.copy(mediaId = aMediaId.value)))
+            }
+            assertEquals(ResultData.Success(true), result)
+        }
+
+    @Test
+    fun `Given a mediaId, When removeFromWatchList is called, Then media is removed`() =
+        testDispatcher.runBlockingTest {
+            coEvery { watchListDao.delete(aMediaId.value) } returns Unit
+
+            dataSource.removeFromWatchList(aMediaId)
+
+            coVerify { watchListDao.delete(aMediaId.value) }
+        }
+
+    @Test
+    fun `Given a media stored in local, When containsInWatchList is called, Then return true`() =
+        testDispatcher.runBlockingTest {
+            coEvery { watchListDao.find(aMediaId.value) } returns WatchListEntity.empty
+
+            val result = dataSource.containsInWatchList(aMediaId)
+
+            assertEquals(true, result)
+        }
 }
 
 private val aMediaId = MediaId(1L)
 private val aMedia = Media.Movie.withId(aMediaId)
 private val aMediaList = listOf(
-  Media.Movie.withId(aMediaId),
+    Media.Movie.withId(aMediaId),
 )
 private val aMediaEntity = MediaEntity.empty.copy(id = aMediaId.value)
 private val aWatchListEntity = WatchListEntity.empty.copy(mediaId = aMediaId.value)
 private val aMediaEntityList = listOf(
-  MediaEntity.empty.copy(id = aMediaId.value),
+    MediaEntity.empty.copy(id = aMediaId.value),
 )
 private val aWatchListEntityList = listOf(
-  WatchListEntity.empty.copy(mediaId = aMediaId.value),
+    WatchListEntity.empty.copy(mediaId = aMediaId.value),
 )

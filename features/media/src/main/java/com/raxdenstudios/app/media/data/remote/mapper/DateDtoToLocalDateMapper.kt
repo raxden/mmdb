@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 internal class DateDtoToLocalDateMapper @Inject constructor() : DataMapper<String, LocalDate>() {
 
-  override fun transform(source: String): LocalDate =
-    LocalDate.parse(source, DateTimeFormatter.ISO_LOCAL_DATE)
+    override fun transform(source: String): LocalDate =
+        LocalDate.parse(source, DateTimeFormatter.ISO_LOCAL_DATE)
 }

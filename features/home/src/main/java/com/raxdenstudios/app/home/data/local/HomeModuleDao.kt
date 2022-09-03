@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HomeModuleDao {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(data: List<HomeModuleEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(data: List<HomeModuleEntity>)
 
-  @Query("SELECT * FROM home_module ORDER BY `order`")
-  suspend fun getAll(): List<HomeModuleEntity>
+    @Query("SELECT * FROM home_module ORDER BY `order`")
+    suspend fun getAll(): List<HomeModuleEntity>
 
-  @Query("SELECT * FROM home_module ORDER BY `order`")
-  fun observeAll(): Flow<List<HomeModuleEntity>>
+    @Query("SELECT * FROM home_module ORDER BY `order`")
+    fun observeAll(): Flow<List<HomeModuleEntity>>
 }
