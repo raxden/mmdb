@@ -139,10 +139,6 @@ internal class MediaListViewModel @Inject constructor(
             .getValueOrDefault(PageList(emptyList(), page))
     }
 
-    internal sealed class UserActions {
-
-    }
-
     internal data class UIState(
         val loading: Boolean,
         val model: MediaListModel,

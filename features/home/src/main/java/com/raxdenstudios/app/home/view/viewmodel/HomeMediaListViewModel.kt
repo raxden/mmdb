@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +39,6 @@ internal class HomeMediaListViewModel @Inject constructor(
     private val mediaListItemModelMapper: MediaListItemModelMapper,
     private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
-
     private val _state = MutableStateFlow(UIState.loading())
     val state: StateFlow<UIState> = _state.asStateFlow()
 
@@ -64,11 +64,11 @@ internal class HomeMediaListViewModel @Inject constructor(
     }
 
     fun viewAllButtonSelected(carouselMedias: HomeModuleModel.CarouselMedias) {
-        _state.update { value -> value.copy(event = UIEvent.NavigateToMediaList(carouselMedias)) }
+        _state.update { value -> value.copy(events = value.events.plus(UIEvent.NavigateToMediaList(carouselMedias))) }
     }
 
-    fun eventConsumed() {
-        _state.update { value -> value.copy(event = null) }
+    fun eventConsumed(event: UIEvent) {
+        _state.update { value -> value.copy(events = value.events.minus(event)) }
     }
 
     fun filterChanged(
@@ -121,7 +121,7 @@ internal class HomeMediaListViewModel @Inject constructor(
     internal data class UIState(
         val loading: Boolean,
         val model: HomeMediaListModel,
-        val event: UIEvent?,
+        val events: List<UIEvent>,
         val error: Throwable?,
     ) {
 
@@ -130,7 +130,7 @@ internal class HomeMediaListViewModel @Inject constructor(
             fun loading() = UIState(
                 loading = true,
                 model = HomeMediaListModel.empty,
-                event = null,
+                events = emptyList(),
                 error = null,
             )
         }
@@ -138,9 +138,14 @@ internal class HomeMediaListViewModel @Inject constructor(
 
     /**
      * https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates
+     *
      * https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95
      */
     internal sealed class UIEvent {
-        data class NavigateToMediaList(val carouselMedias: HomeModuleModel.CarouselMedias) : UIEvent()
+        val id: String = UUID.randomUUID().toString()
+
+        data class NavigateToMediaList(
+            val carouselMedias: HomeModuleModel.CarouselMedias,
+        ) : UIEvent()
     }
 }
