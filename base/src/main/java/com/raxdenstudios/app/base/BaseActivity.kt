@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
-  override fun onBackPressed() {
-    finishAfterTransition()
-  }
+    override fun onBackPressed() {
+        finishAfterTransition()
+    }
 }

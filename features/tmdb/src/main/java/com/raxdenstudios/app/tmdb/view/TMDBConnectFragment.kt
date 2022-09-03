@@ -15,55 +15,55 @@ import com.raxdenstudios.commons.ext.viewBinding
 
 internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fragment) {
 
-  companion object {
-    fun newInstance() = TMDBConnectFragment()
-  }
+    companion object {
+        fun newInstance() = TMDBConnectFragment()
+    }
 
-  private val binding: TmdbConnectFragmentBinding by viewBinding()
-  private val viewModel: TMDBViewModel by viewModels()
+    private val binding: TmdbConnectFragmentBinding by viewBinding()
+    private val viewModel: TMDBViewModel by viewModels()
 
-  private lateinit var webViewWrapper: TMDBWebViewWrapper
+    private lateinit var webViewWrapper: TMDBWebViewWrapper
 
-  var onSuccess: (credentials: Credentials) -> Unit = {}
-  var onError: (throwable: Throwable) -> Unit = {}
+    var onSuccess: (credentials: Credentials) -> Unit = {}
+    var onError: (throwable: Throwable) -> Unit = {}
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    binding.setUp()
+        binding.setUp()
 
-    observe(viewModel.uiSTate) { state -> binding.handleState(state) }
-  }
+        observe(viewModel.uiSTate) { state -> binding.handleState(state) }
+    }
 
-  private fun TmdbConnectFragmentBinding.handleState(state: TMDBViewModel.UIState) = when (state) {
-    is TMDBViewModel.UIState.Connected -> handleAccessTokenLoadedState(state)
-    is TMDBViewModel.UIState.Error -> handleErrorState(state)
-    TMDBViewModel.UIState.Loading -> handleLoadingState()
-    is TMDBViewModel.UIState.TokenLoaded -> handleTokenLoadedState(state.token)
-  }
+    private fun TmdbConnectFragmentBinding.handleState(state: TMDBViewModel.UIState) = when (state) {
+        is TMDBViewModel.UIState.Connected -> handleAccessTokenLoadedState(state)
+        is TMDBViewModel.UIState.Error -> handleErrorState(state)
+        TMDBViewModel.UIState.Loading -> handleLoadingState()
+        is TMDBViewModel.UIState.TokenLoaded -> handleTokenLoadedState(state.token)
+    }
 
-  private fun TmdbConnectFragmentBinding.handleErrorState(state: TMDBViewModel.UIState.Error) {
-    contentLoadingProgressBar.hide()
-    onError(state.throwable)
-    close()
-  }
+    private fun TmdbConnectFragmentBinding.handleErrorState(state: TMDBViewModel.UIState.Error) {
+        contentLoadingProgressBar.hide()
+        onError(state.throwable)
+        close()
+    }
 
-  private fun TmdbConnectFragmentBinding.handleLoadingState() {
-    contentLoadingProgressBar.show()
-  }
+    private fun TmdbConnectFragmentBinding.handleLoadingState() {
+        contentLoadingProgressBar.show()
+    }
 
-  private fun TmdbConnectFragmentBinding.handleAccessTokenLoadedState(state: TMDBViewModel.UIState.Connected) {
-    contentLoadingProgressBar.hide()
-    onSuccess(state.credentials)
-    close()
-  }
+    private fun TmdbConnectFragmentBinding.handleAccessTokenLoadedState(state: TMDBViewModel.UIState.Connected) {
+        contentLoadingProgressBar.hide()
+        onSuccess(state.credentials)
+        close()
+    }
 
-  private fun TmdbConnectFragmentBinding.handleTokenLoadedState(token: String) {
-    webViewWrapper.requestAccess(token) { viewModel.login(token) }
-    contentLoadingProgressBar.hide()
-  }
+    private fun TmdbConnectFragmentBinding.handleTokenLoadedState(token: String) {
+        webViewWrapper.requestAccess(token) { viewModel.login(token) }
+        contentLoadingProgressBar.hide()
+    }
 
-  private fun TmdbConnectFragmentBinding.setUp() {
-    webViewWrapper = TMDBWebViewWrapper(webView)
-  }
+    private fun TmdbConnectFragmentBinding.setUp() {
+        webViewWrapper = TMDBWebViewWrapper(webView)
+    }
 }

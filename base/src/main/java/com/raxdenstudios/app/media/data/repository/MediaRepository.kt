@@ -12,15 +12,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaRepository {
 
-  fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
-  fun observeWatchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
-  suspend fun addToWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Media>
-  suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean>
-  suspend fun removeFromWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Boolean>
+    fun watchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
+    fun observeWatchList(mediaType: MediaType): Flow<ResultData<List<Media>>>
+    suspend fun addToWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Media>
+    suspend fun addToLocalWatchList(medias: List<Media>): ResultData<Boolean>
+    suspend fun removeFromWatchList(mediaId: MediaId, mediaType: MediaType): ResultData<Boolean>
 
-  suspend fun medias(
-    mediaFilter: MediaFilter,
-    page: Page,
-    pageSize: PageSize
-  ): ResultData<PageList<Media>>
+    suspend fun medias(
+        mediaFilter: MediaFilter,
+        page: Page,
+        pageSize: PageSize,
+    ): ResultData<PageList<Media>>
 }

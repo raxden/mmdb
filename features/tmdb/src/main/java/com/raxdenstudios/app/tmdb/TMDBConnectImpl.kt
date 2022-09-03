@@ -7,22 +7,22 @@ import com.raxdenstudios.commons.ext.loadDialogFragment
 import javax.inject.Inject
 
 class TMDBConnectImpl @Inject constructor(
-  private val activity: FragmentActivity
+    private val activity: FragmentActivity,
 ) : TMDBConnect {
 
-  companion object {
-    private val TAG = TMDBConnectFragment::class.java.simpleName
-  }
-
-  override fun sigIn(
-    onSuccess: (credentials: Credentials) -> Unit,
-    onError: (throwable: Throwable) -> Unit
-  ) {
-    activity.loadDialogFragment(TAG, true) {
-      TMDBConnectFragment.newInstance()
-    }.also { fragment ->
-      fragment.onSuccess = onSuccess
-      fragment.onError = onError
+    companion object {
+        private val TAG = TMDBConnectFragment::class.java.simpleName
     }
-  }
+
+    override fun sigIn(
+        onSuccess: (credentials: Credentials) -> Unit,
+        onError: (throwable: Throwable) -> Unit,
+    ) {
+        activity.loadDialogFragment(TAG, true) {
+            TMDBConnectFragment.newInstance()
+        }.also { fragment ->
+            fragment.onSuccess = onSuccess
+            fragment.onError = onError
+        }
+    }
 }

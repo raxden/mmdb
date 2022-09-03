@@ -9,18 +9,18 @@ import com.raxdenstudios.app.media.data.local.model.WatchListEntity
 @Dao
 interface WatchListDao {
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(entities: List<WatchListEntity>)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entities: List<WatchListEntity>)
 
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(entity: WatchListEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entity: WatchListEntity)
 
-  @Query("DELETE FROM watch_list WHERE media_id == :mediaId")
-  suspend fun delete(mediaId: Long)
+    @Query("DELETE FROM watch_list WHERE media_id == :mediaId")
+    suspend fun delete(mediaId: Long)
 
-  @Query("SELECT * FROM watch_list WHERE media_id == :mediaId")
-  suspend fun find(mediaId: Long): WatchListEntity?
+    @Query("SELECT * FROM watch_list WHERE media_id == :mediaId")
+    suspend fun find(mediaId: Long): WatchListEntity?
 
-  @Query("DELETE FROM watch_list")
-  suspend fun clear()
+    @Query("DELETE FROM watch_list")
+    suspend fun clear()
 }

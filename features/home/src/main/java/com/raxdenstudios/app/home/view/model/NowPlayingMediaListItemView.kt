@@ -13,43 +13,43 @@ import com.raxdenstudios.commons.ext.setSafeOnClickListener
 import com.raxdenstudios.commons.ext.viewBinding
 
 internal class NowPlayingMediaListItemView @JvmOverloads constructor(
-  context: Context,
-  attrs: AttributeSet? = null,
-  defStyleAttr: Int = 0,
-  defStyleRes: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-  val binding: NowPlayingMediaListItemViewBinding by viewBinding()
+    val binding: NowPlayingMediaListItemViewBinding by viewBinding()
 
-  var onMediaClickListener: (MediaListItemModel) -> Unit = {}
-  var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
-  var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-  var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onMediaClickListener: (MediaListItemModel) -> Unit = {}
+    var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
+    var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
-  init {
-    if (isInEditMode) {
-      inflateView(R.layout.now_playing_media_list_item_view, true)
+    init {
+        if (isInEditMode) {
+            inflateView(R.layout.now_playing_media_list_item_view, true)
+        }
     }
-  }
 
-  fun setModel(model: MediaListItemModel) {
-    binding.populate(model)
-  }
-
-  private fun NowPlayingMediaListItemViewBinding.populate(model: MediaListItemModel) {
-    mediaBackdropImageView.loadImage(model.backdrop)
-    mediaBackdropImageView.setSafeOnClickListener { onMediaClickListener(model) }
-    mediaBackdropPlayImageView.setSafeOnClickListener { onMediaPlayClickListener(model) }
-    mediaImageCardView.setSafeOnClickListener { onMediaClickListener(model) }
-    mediaImageView.loadImage(model.image)
-    watchButtonView.setModel(model.watchButtonModel)
-    watchButtonView.setSafeOnClickListener {
-      when (model.watchButtonModel) {
-        WatchButtonModel.Selected -> onRemoveFromWatchListClickListener(model)
-        WatchButtonModel.Unselected -> onAddToWatchListClickListener(model)
-      }
+    fun setModel(model: MediaListItemModel) {
+        binding.populate(model)
     }
-    movieTitleView.text = model.title
-    movieDescriptionView.text = "The Rise of Sacha Baron Cohen"
-  }
+
+    private fun NowPlayingMediaListItemViewBinding.populate(model: MediaListItemModel) {
+        mediaBackdropImageView.loadImage(model.backdrop)
+        mediaBackdropImageView.setSafeOnClickListener { onMediaClickListener(model) }
+        mediaBackdropPlayImageView.setSafeOnClickListener { onMediaPlayClickListener(model) }
+        mediaImageCardView.setSafeOnClickListener { onMediaClickListener(model) }
+        mediaImageView.loadImage(model.image)
+        watchButtonView.setModel(model.watchButtonModel)
+        watchButtonView.setSafeOnClickListener {
+            when (model.watchButtonModel) {
+                WatchButtonModel.Selected -> onRemoveFromWatchListClickListener(model)
+                WatchButtonModel.Unselected -> onAddToWatchListClickListener(model)
+            }
+        }
+        movieTitleView.text = model.title
+        movieDescriptionView.text = "The Rise of Sacha Baron Cohen"
+    }
 }

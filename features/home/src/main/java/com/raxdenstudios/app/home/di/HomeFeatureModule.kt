@@ -13,11 +13,11 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object HomeFeatureModule {
 
-  @Provides
-  fun provideHomeModuleDatabase(@ApplicationContext context: Context): HomeModuleDatabase =
-    HomeModuleDatabase.getInstance(context)
+    @Provides
+    fun provideHomeModuleDatabase(@ApplicationContext context: Context): HomeModuleDatabase =
+        HomeModuleDatabase.getInstance(context)
 
-  @Provides
-  fun provideAccountDAO(homeModuleDatabase: HomeModuleDatabase): HomeModuleDao =
-    homeModuleDatabase.dao()
+    @Provides
+    fun provideAccountDAO(homeModuleDatabase: HomeModuleDatabase): HomeModuleDao =
+        homeModuleDatabase.dao()
 }

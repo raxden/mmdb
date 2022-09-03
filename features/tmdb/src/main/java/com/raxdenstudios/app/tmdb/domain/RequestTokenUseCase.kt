@@ -5,9 +5,9 @@ import com.raxdenstudios.commons.ResultData
 import javax.inject.Inject
 
 internal class RequestTokenUseCase @Inject constructor(
-  private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
 ) {
 
-  suspend operator fun invoke(): ResultData<String> =
-    authenticationRepository.requestToken()
+    suspend operator fun invoke(): ResultData<String> =
+        authenticationRepository.requestToken()
 }

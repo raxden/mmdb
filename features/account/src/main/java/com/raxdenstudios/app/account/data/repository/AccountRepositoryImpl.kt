@@ -7,18 +7,18 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class AccountRepositoryImpl @Inject constructor(
-  private val accountLocalDataSource: AccountLocalDataSource
+    private val accountLocalDataSource: AccountLocalDataSource,
 ) : AccountRepository {
 
-  override fun observeAccount(): Flow<Account> =
-    accountLocalDataSource.observeAccount()
+    override fun observeAccount(): Flow<Account> =
+        accountLocalDataSource.observeAccount()
 
-  override suspend fun getAccount(): Account =
-    accountLocalDataSource.getAccount()
+    override suspend fun getAccount(): Account =
+        accountLocalDataSource.getAccount()
 
-  override suspend fun createAccountWithCredentials(credentials: Credentials): Account {
-    val account = Account.Logged.withCredentials(credentials)
-    accountLocalDataSource.createAccount(account)
-    return account
-  }
+    override suspend fun createAccountWithCredentials(credentials: Credentials): Account {
+        val account = Account.Logged.withCredentials(credentials)
+        accountLocalDataSource.createAccount(account)
+        return account
+    }
 }

@@ -10,27 +10,27 @@ import com.raxdenstudios.commons.provider.StringProvider
 import javax.inject.Inject
 
 internal class MediaListModelMapper @Inject constructor(
-  private val stringProvider: StringProvider,
-  private val mediaListItemModelMapper: MediaListItemModelMapper,
+    private val stringProvider: StringProvider,
+    private val mediaListItemModelMapper: MediaListItemModelMapper,
 ) {
 
-  fun transform(
-    params: MediaListParams,
-    medias: List<Media>
-  ) = MediaListModel(
-    title = when (params) {
-      MediaListParams.NowPlaying -> stringProvider.getString(R.string.home_carousel_now_playing_movies)
-      is MediaListParams.Popular -> when (params.mediaType) {
-        MediaType.MOVIE -> stringProvider.getString(R.string.list_popular_movies)
-        MediaType.TV_SHOW -> stringProvider.getString(R.string.list_popular_tv_shows)
-      }
-      is MediaListParams.TopRated -> when (params.mediaType) {
-        MediaType.MOVIE -> stringProvider.getString(R.string.list_top_rated_movies)
-        MediaType.TV_SHOW -> stringProvider.getString(R.string.list_top_rated_tv_shows)
-      }
-      MediaListParams.Upcoming -> stringProvider.getString(R.string.home_carousel_upcoming)
-      is MediaListParams.WatchList -> stringProvider.getString(R.string.home_carousel_watch_list)
-    },
-    items = mediaListItemModelMapper.transform(medias),
-  )
+    fun transform(
+        params: MediaListParams,
+        medias: List<Media>,
+    ) = MediaListModel(
+        title = when (params) {
+            MediaListParams.NowPlaying -> stringProvider.getString(R.string.home_carousel_now_playing_movies)
+            is MediaListParams.Popular -> when (params.mediaType) {
+                MediaType.MOVIE -> stringProvider.getString(R.string.list_popular_movies)
+                MediaType.TV_SHOW -> stringProvider.getString(R.string.list_popular_tv_shows)
+            }
+            is MediaListParams.TopRated -> when (params.mediaType) {
+                MediaType.MOVIE -> stringProvider.getString(R.string.list_top_rated_movies)
+                MediaType.TV_SHOW -> stringProvider.getString(R.string.list_top_rated_tv_shows)
+            }
+            MediaListParams.Upcoming -> stringProvider.getString(R.string.home_carousel_upcoming)
+            is MediaListParams.WatchList -> stringProvider.getString(R.string.home_carousel_watch_list)
+        },
+        items = mediaListItemModelMapper.transform(medias),
+    )
 }

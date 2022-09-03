@@ -6,9 +6,9 @@ import javax.inject.Inject
 
 internal class MediaTypeToDtoMapper @Inject constructor() : DataMapper<MediaType, String>() {
 
-  override fun transform(source: MediaType): String = when (source) {
-    MediaType.MOVIE -> "movie"
-    MediaType.TV_SHOW -> "tv"
-    else -> throw IllegalStateException("MediaType doesn't allowed")
-  }
+    override fun transform(source: MediaType): String = when (source) {
+        MediaType.MOVIE -> "movie"
+        MediaType.TV_SHOW -> "tv"
+        else -> throw IllegalStateException("MediaType doesn't allowed")
+    }
 }

@@ -22,28 +22,28 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AccountDataModule {
 
-  @Provides
-  fun provideAccountDatabase(@ApplicationContext context: Context): AccountDatabase =
-    AccountDatabase.getInstance(context)
+    @Provides
+    fun provideAccountDatabase(@ApplicationContext context: Context): AccountDatabase =
+        AccountDatabase.getInstance(context)
 
-  @Provides
-  fun provideAccountDAO(accountDatabase: AccountDatabase): AccountDao =
-    accountDatabase.dao()
+    @Provides
+    fun provideAccountDAO(accountDatabase: AccountDatabase): AccountDao =
+        accountDatabase.dao()
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AccountDataBindsModule {
 
-  @Binds
-  internal abstract fun bindGetAccountUseCase(useCase: GetAccountUseCaseImpl): GetAccountUseCase
+    @Binds
+    internal abstract fun bindGetAccountUseCase(useCase: GetAccountUseCaseImpl): GetAccountUseCase
 
-  @Binds
-  internal abstract fun bindIsAccountLoggedUseCase(useCase: IsAccountLoggedUseCaseImpl): IsAccountLoggedUseCase
+    @Binds
+    internal abstract fun bindIsAccountLoggedUseCase(useCase: IsAccountLoggedUseCaseImpl): IsAccountLoggedUseCase
 
-  @Binds
-  internal abstract fun bindAccountRepository(useCase: AccountRepositoryImpl): AccountRepository
+    @Binds
+    internal abstract fun bindAccountRepository(useCase: AccountRepositoryImpl): AccountRepository
 
-  @Binds
-  internal abstract fun bindAccountLocalDataSource(useCase: AccountLocalDataSourceImpl): AccountLocalDataSource
+    @Binds
+    internal abstract fun bindAccountLocalDataSource(useCase: AccountLocalDataSourceImpl): AccountLocalDataSource
 }

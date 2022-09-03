@@ -5,9 +5,9 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 
 internal class AppTestApplication : Application() {
 
-  override fun onCreate() {
-    super.onCreate()
+    override fun onCreate() {
+        super.onCreate()
 
-    AndroidThreeTen.init(this)
-  }
+        AndroidThreeTen.init(this)
+    }
 }

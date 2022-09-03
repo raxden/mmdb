@@ -17,43 +17,43 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class GetHomeModulesUseCase @Inject constructor(
-  private val dispatcherFacade: DispatcherFacade,
-  private val homeModuleRepository: HomeModuleRepository,
-  private val mediasRepository: MediaRepository,
+    private val dispatcherFacade: DispatcherFacade,
+    private val homeModuleRepository: HomeModuleRepository,
+    private val mediasRepository: MediaRepository,
 ) {
 
-  companion object {
-    private val firstPage = Page(1)
-    private val pageSize = PageSize(20)
-  }
-
-  operator fun invoke(): Flow<List<HomeModule>> =
-    homeModuleRepository.observeModules()
-      .map { modules ->
-        withContext(dispatcherFacade.io()) {
-          modules.map { homeModule ->
-            val deferred = async { fetchMediasFromModule(homeModule) }
-            deferred.await()
-          }
-        }
-      }
-
-  private suspend fun fetchMediasFromModule(module: HomeModule): HomeModule =
-    when (module) {
-      is HomeModule.NowPlaying ->
-        module.copy(medias = fetchMedias(MediaFilter.NowPlaying) as List<Media.Movie>)
-      is HomeModule.Popular ->
-        module.copy(medias = fetchMedias(MediaFilter.Popular(module.mediaType)))
-      is HomeModule.TopRated ->
-        module.copy(medias = fetchMedias(MediaFilter.TopRated(module.mediaType)))
-      is HomeModule.Upcoming ->
-        module.copy(medias = fetchMedias(MediaFilter.Upcoming) as List<Media.Movie>)
-      is HomeModule.WatchList ->
-        module.copy(medias = fetchMedias(MediaFilter.WatchList(module.mediaType)))
+    companion object {
+        private val firstPage = Page(1)
+        private val pageSize = PageSize(20)
     }
 
-  private suspend fun fetchMedias(mediaFilter: MediaFilter) =
-    mediasRepository.medias(mediaFilter, firstPage, pageSize)
-      .map { pageList -> pageList.items }
-      .getValueOrDefault(emptyList())
+    operator fun invoke(): Flow<List<HomeModule>> =
+        homeModuleRepository.observeModules()
+            .map { modules ->
+                withContext(dispatcherFacade.io()) {
+                    modules.map { homeModule ->
+                        val deferred = async { fetchMediasFromModule(homeModule) }
+                        deferred.await()
+                    }
+                }
+            }
+
+    private suspend fun fetchMediasFromModule(module: HomeModule): HomeModule =
+        when (module) {
+            is HomeModule.NowPlaying ->
+                module.copy(medias = fetchMedias(MediaFilter.NowPlaying) as List<Media.Movie>)
+            is HomeModule.Popular ->
+                module.copy(medias = fetchMedias(MediaFilter.Popular(module.mediaType)))
+            is HomeModule.TopRated ->
+                module.copy(medias = fetchMedias(MediaFilter.TopRated(module.mediaType)))
+            is HomeModule.Upcoming ->
+                module.copy(medias = fetchMedias(MediaFilter.Upcoming) as List<Media.Movie>)
+            is HomeModule.WatchList ->
+                module.copy(medias = fetchMedias(MediaFilter.WatchList(module.mediaType)))
+        }
+
+    private suspend fun fetchMedias(mediaFilter: MediaFilter) =
+        mediasRepository.medias(mediaFilter, firstPage, pageSize)
+            .map { pageList -> pageList.items }
+            .getValueOrDefault(emptyList())
 }

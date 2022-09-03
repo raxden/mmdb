@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class HomeModuleRepository @Inject constructor(
-  private val homeModuleLocalDataSource: HomeModuleLocalDataSource,
+    private val homeModuleLocalDataSource: HomeModuleLocalDataSource,
 ) {
 
-  fun observeModules(): Flow<List<HomeModule>> =
-    homeModuleLocalDataSource.observe()
+    fun observeModules(): Flow<List<HomeModule>> =
+        homeModuleLocalDataSource.observe()
 }

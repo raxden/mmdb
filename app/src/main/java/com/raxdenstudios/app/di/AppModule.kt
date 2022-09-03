@@ -18,24 +18,24 @@ import kotlinx.coroutines.Dispatchers
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-  @Provides
-  fun stringProvider(@ApplicationContext context: Context): StringProvider =
-    StringProvider(context)
+    @Provides
+    fun stringProvider(@ApplicationContext context: Context): StringProvider =
+        StringProvider(context)
 
-  @Provides
-  fun dispatcherFacade(): DispatcherFacade = object : DispatcherFacade {
-    override fun io() = Dispatchers.IO
-    override fun default() = Dispatchers.Default
-  }
+    @Provides
+    fun dispatcherFacade(): DispatcherFacade = object : DispatcherFacade {
+        override fun io() = Dispatchers.IO
+        override fun default() = Dispatchers.Default
+    }
 
-  @Provides
-  fun activityHolder(): ActivityHolder = ActivityHolder()
+    @Provides
+    fun activityHolder(): ActivityHolder = ActivityHolder()
 
-  @Provides
-  fun providePaginationConfig(): Pagination.Config =
-    Pagination.Config.default.copy(
-      initialPage = Page(1),
-      pageSize = PageSize(20),
-      prefetchDistance = 4
-    )
+    @Provides
+    fun providePaginationConfig(): Pagination.Config =
+        Pagination.Config.default.copy(
+            initialPage = Page(1),
+            pageSize = PageSize(20),
+            prefetchDistance = 4
+        )
 }

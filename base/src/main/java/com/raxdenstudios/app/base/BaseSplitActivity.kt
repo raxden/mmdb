@@ -5,8 +5,8 @@ import com.google.android.play.core.splitcompat.SplitCompat
 
 abstract class BaseSplitActivity : BaseActivity() {
 
-  override fun attachBaseContext(newBase: Context) {
-    super.attachBaseContext(newBase)
-    SplitCompat.installActivity(this)
-  }
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(newBase)
+        SplitCompat.installActivity(this)
+    }
 }

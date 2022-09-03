@@ -6,20 +6,20 @@ import com.raxdenstudios.app.media.domain.model.MediaId
 import javax.inject.Inject
 
 internal class TVShowDtoToDomainMapper @Inject constructor(
-  private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
-  private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
-  private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
+    private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
+    private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
+    private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
 ) {
 
-  fun transform(source: MediaDto.TVShow): Media = source.toDomain()
+    fun transform(source: MediaDto.TVShow): Media = source.toDomain()
 
-  private fun MediaDto.TVShow.toDomain() = Media.TVShow(
-    id = MediaId(id.toLong()),
-    name = name,
-    backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
-    poster = pictureDtoToDomainMapper.transform(poster_path),
-    firstAirDate = dateDtoToLocalDateMapper.transform(first_air_date),
-    vote = voteDtoToDomainMapper.transform(this),
-    watchList = false,
-  )
+    private fun MediaDto.TVShow.toDomain() = Media.TVShow(
+        id = MediaId(id.toLong()),
+        name = name,
+        backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
+        poster = pictureDtoToDomainMapper.transform(poster_path),
+        firstAirDate = dateDtoToLocalDateMapper.transform(first_air_date),
+        vote = voteDtoToDomainMapper.transform(this),
+        watchList = false,
+    )
 }

@@ -6,21 +6,21 @@ import com.raxdenstudios.app.media.domain.model.MediaId
 import javax.inject.Inject
 
 internal class MovieDtoToDomainMapper @Inject constructor(
-  private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
-  private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
-  private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
+    private val voteDtoToDomainMapper: VoteDtoToDomainMapper,
+    private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
+    private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
 ) {
 
-  fun transform(source: MediaDto.Movie): Media = source.toDomain()
+    fun transform(source: MediaDto.Movie): Media = source.toDomain()
 
-  private fun MediaDto.Movie.toDomain() = Media.Movie(
-    id = MediaId(id.toLong()),
-    title = title,
-    backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
-    poster = pictureDtoToDomainMapper.transform(poster_path),
-    release = dateDtoToLocalDateMapper.transform(release_date),
-    vote = voteDtoToDomainMapper.transform(this),
-    watchList = false,
-  )
+    private fun MediaDto.Movie.toDomain() = Media.Movie(
+        id = MediaId(id.toLong()),
+        title = title,
+        backdrop = pictureDtoToDomainMapper.transform(backdrop_path),
+        poster = pictureDtoToDomainMapper.transform(poster_path),
+        release = dateDtoToLocalDateMapper.transform(release_date),
+        vote = voteDtoToDomainMapper.transform(this),
+        watchList = false,
+    )
 }
 

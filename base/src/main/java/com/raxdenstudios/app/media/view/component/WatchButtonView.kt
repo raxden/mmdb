@@ -10,28 +10,28 @@ import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.viewBinding
 
 class WatchButtonView @JvmOverloads constructor(
-  context: Context,
-  attrs: AttributeSet? = null,
-  defStyleAttr: Int = 0,
-  defStyleRes: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-  private val binding: WatchButtonViewBinding by viewBinding()
+    private val binding: WatchButtonViewBinding by viewBinding()
 
-  init {
-    if (isInEditMode) {
-      inflateView(R.layout.watch_button_view, true)
+    init {
+        if (isInEditMode) {
+            inflateView(R.layout.watch_button_view, true)
+        }
     }
-  }
 
-  fun setModel(model: WatchButtonModel) {
-    binding.populate(model)
-  }
-
-  private fun WatchButtonViewBinding.populate(model: WatchButtonModel) {
-    root.isSelected = when (model) {
-      WatchButtonModel.Selected -> true
-      WatchButtonModel.Unselected -> false
+    fun setModel(model: WatchButtonModel) {
+        binding.populate(model)
     }
-  }
+
+    private fun WatchButtonViewBinding.populate(model: WatchButtonModel) {
+        root.isSelected = when (model) {
+            WatchButtonModel.Selected -> true
+            WatchButtonModel.Unselected -> false
+        }
+    }
 }

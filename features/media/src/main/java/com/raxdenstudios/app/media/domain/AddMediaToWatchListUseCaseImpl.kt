@@ -6,9 +6,9 @@ import com.raxdenstudios.commons.ResultData
 import javax.inject.Inject
 
 internal class AddMediaToWatchListUseCaseImpl @Inject constructor(
-  private val mediaRepository: MediaRepository
+    private val mediaRepository: MediaRepository,
 ) : AddMediaToWatchListUseCase {
 
-  override suspend fun invoke(params: AddMediaToWatchListUseCase.Params): ResultData<Media> =
-    mediaRepository.addToWatchList(params.mediaId, params.mediaType)
+    override suspend fun invoke(params: AddMediaToWatchListUseCase.Params): ResultData<Media> =
+        mediaRepository.addToWatchList(params.mediaId, params.mediaType)
 }

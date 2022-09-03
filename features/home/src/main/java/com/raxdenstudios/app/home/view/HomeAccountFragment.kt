@@ -7,7 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 internal class HomeAccountFragment : BaseFragment(R.layout.home_account_fragment) {
 
-  companion object {
-    fun newInstance() = HomeAccountFragment()
-  }
+    companion object {
+        fun newInstance() = HomeAccountFragment()
+    }
 }

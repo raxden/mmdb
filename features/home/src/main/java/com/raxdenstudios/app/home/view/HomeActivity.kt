@@ -11,19 +11,19 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
-  companion object {
-    fun createIntent(context: Context) = Intent(context, HomeActivity::class.java)
-  }
+    companion object {
+        fun createIntent(context: Context) = Intent(context, HomeActivity::class.java)
+    }
 
-  private val binding: HomeActivityBinding by viewBinding()
+    private val binding: HomeActivityBinding by viewBinding()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    binding.setUp()
-  }
+        binding.setUp()
+    }
 
-  private fun HomeActivityBinding.setUp() {
+    private fun HomeActivityBinding.setUp() {
 
-  }
+    }
 }
