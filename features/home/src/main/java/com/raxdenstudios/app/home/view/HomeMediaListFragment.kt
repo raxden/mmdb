@@ -52,7 +52,7 @@ internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragmen
     private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListViewModel.UIState) {
         swipeRefreshLayout.isRefreshing = state.loading
         state.error?.let { error -> errorManager.handleError(error) }
-        state.event?.let { event -> handleEvent(event) }
+        state.events.firstOrNull()?.let { event -> handleEvent(event) }
         adapter.populate(state.model)
     }
 
@@ -60,7 +60,7 @@ internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragmen
         when (event) {
             is HomeMediaListViewModel.UIEvent.NavigateToMediaList -> {
                 navigator.launchMediaList(event.carouselMedias) { viewModel.loadData() }
-                viewModel.eventConsumed()
+                viewModel.eventConsumed(event)
             }
         }
     }
