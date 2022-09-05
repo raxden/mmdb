@@ -123,6 +123,9 @@ object TestLibraries {
 
     const val timberJunit = "net.lachlanmckee:timber-junit-rule:${Versions.timberJunit}"
 
+    const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
+    const val truth = "com.google.truth:truth:${Versions.truth}"
+
 }
 
 object TestAndroidLibraries {

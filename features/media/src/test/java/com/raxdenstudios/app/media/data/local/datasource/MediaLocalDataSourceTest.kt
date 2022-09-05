@@ -17,7 +17,7 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.APIDataProvider
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.ResultData
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,7 +31,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class MediaLocalDataSourceTest : BaseTest() {
+internal class MediaLocalDataSourceTest : BasePresentationTest() {
 
     private val mediaDao: MediaDao = mockk {
         coEvery { watchList(any()) } returns flowOf(aMediaEntityList)
@@ -73,7 +73,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaType, When watchList is called, return a ResultData_success with media data`() {
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val flow = dataSource.watchList(MediaType.MOVIE)
 
@@ -90,7 +90,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `When clearWatchList is called, Then clear watchlist database`() {
-        testDispatcher.runBlockingTest {
+        runTest {
 
             dataSource.clearWatchList()
 
@@ -100,7 +100,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a media, When addToWatchList is called, Then media is added`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery { mediaDao.insert(aMediaEntity) } returns Unit
             coEvery { watchListDao.insert(aWatchListEntity) } returns Unit
 
@@ -115,7 +115,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a some of mediaId's, When addToWatchList is called, Then medias are added`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery { mediaDao.insert(aMediaEntityList) } returns Unit
             coEvery { watchListDao.insert(aWatchListEntityList) } returns Unit
 
@@ -130,7 +130,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaId, When removeFromWatchList is called, Then media is removed`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery { watchListDao.delete(aMediaId.value) } returns Unit
 
             dataSource.removeFromWatchList(aMediaId)
@@ -140,7 +140,7 @@ internal class MediaLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a media stored in local, When containsInWatchList is called, Then return true`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery { watchListDao.find(aMediaId.value) } returns WatchListEntity.empty
 
             val result = dataSource.containsInWatchList(aMediaId)

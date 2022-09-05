@@ -13,8 +13,7 @@ internal class MediaListAdapter :
         areItemsTheSame = { oldItem, newItem -> oldItem.id == newItem.id }
     ) {
 
-    var onAddMovieToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-    var onRemoveMovieFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onWatchListClickListener: (MediaListItemModel) -> Unit = {}
     var onMovieClickListener: (MediaListItemModel) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaListAdapterHolder {
@@ -37,9 +36,7 @@ internal class MediaListAdapter :
 
         private fun MediaListItemBinding.populate(item: MediaListItemModel) {
             itemView.setSafeOnClickListener { onMovieClickListener(item) }
-            itemView.onAddToWatchListClickListener = { onAddMovieToWatchListClickListener(item) }
-            itemView.onRemoveFromWatchListClickListener =
-                { onRemoveMovieFromWatchListClickListener(item) }
+            itemView.onWatchListClickListener = { onWatchListClickListener(item) }
             itemView.setModel(item)
         }
     }

@@ -13,6 +13,7 @@ import com.raxdenstudios.app.list.databinding.MediaListActivityBinding
 import com.raxdenstudios.app.list.view.adapter.MediaListAdapter
 import com.raxdenstudios.app.list.view.model.MediaListModel
 import com.raxdenstudios.app.list.view.model.MediaListParams
+import com.raxdenstudios.app.list.view.viewmodel.MediaListContract
 import com.raxdenstudios.app.list.view.viewmodel.MediaListViewModel
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.commons.ext.addOnScrolledListener
@@ -51,11 +52,11 @@ class MediaListActivity : BaseActivity() {
 
         binding.setUp()
 
-        launchAndCollect(viewModel.state) { state -> binding.handleState(state) }
+        launchAndCollect(viewModel.uiState) { state -> binding.handleState(state) }
     }
 
-    private fun MediaListActivityBinding.handleState(state: MediaListViewModel.UIState) {
-        swipeRefreshLayout.isRefreshing = state.loading
+    private fun MediaListActivityBinding.handleState(state: MediaListContract.UIState) {
+        swipeRefreshLayout.isRefreshing = state.isLoading
         state.error?.let { error -> errorManager.handleError(error) }
 
         loadMoreMoviesWhenScrollDown()
@@ -66,42 +67,25 @@ class MediaListActivity : BaseActivity() {
     private fun MediaListAdapter.populate(model: MediaListModel) {
         submitList(model.items)
         onMovieClickListener = { TODO() }
-        onAddMovieToWatchListClickListener = { item -> checkIfLoggedAndAddMovieToWatchList(model, item) }
-        onRemoveMovieFromWatchListClickListener = { item -> checkIfLoggedAndRemoveMovieFromWatchList(model, item) }
+        onWatchListClickListener = { item -> onWatchButtonClicked(item) }
     }
 
-    private fun checkIfLoggedAndRemoveMovieFromWatchList(
-        model: MediaListModel,
-        item: MediaListItemModel,
-    ) {
-        removeMovieFromWatchList(model, item)
-    }
-
-    private fun removeMovieFromWatchList(model: MediaListModel, item: MediaListItemModel) {
+    private fun onWatchButtonClicked(item: MediaListItemModel) {
         this@MediaListActivity.setResultOK()
-        viewModel.removeMovieFromWatchList(model, item)
-    }
-
-    private fun checkIfLoggedAndAddMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
-        addMovieToWatchList(model, item)
-    }
-
-    private fun addMovieToWatchList(model: MediaListModel, item: MediaListItemModel) {
-        this@MediaListActivity.setResultOK()
-        viewModel.addMovieToWatchList(model, item)
+        viewModel.setUserEvent(MediaListContract.UserEvent.OnWatchButtonClicked(item))
     }
 
     private fun MediaListActivityBinding.loadMoreMoviesWhenScrollDown() {
         onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
         onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
             val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-            viewModel.loadMoreMovies(gridLayoutManager.toPageIndex())
+            viewModel.setUserEvent(MediaListContract.UserEvent.OnLoadMore(gridLayoutManager.toPageIndex()))
         }
     }
 
     private fun MediaListActivityBinding.setUp() {
         setupToolbar(toolbarView)
         recyclerView.adapter = adapter
-        swipeRefreshLayout.setOnRefreshListener { viewModel.refreshMovies() }
+        swipeRefreshLayout.setOnRefreshListener { viewModel.setUserEvent(MediaListContract.UserEvent.OnRefresh) }
     }
 }

@@ -39,6 +39,7 @@ internal class HomeMediaListViewModel @Inject constructor(
     private val mediaListItemModelMapper: MediaListItemModelMapper,
     private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
+
     private val _state = MutableStateFlow(UIState.loading())
     val state: StateFlow<UIState> = _state.asStateFlow()
 
