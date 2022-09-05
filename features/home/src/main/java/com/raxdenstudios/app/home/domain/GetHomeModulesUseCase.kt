@@ -5,7 +5,7 @@ import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.media.data.repository.MediaRepository
 import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
-import com.raxdenstudios.commons.DispatcherFacade
+import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class GetHomeModulesUseCase @Inject constructor(
-    private val dispatcherFacade: DispatcherFacade,
+    private val DispatcherProvider: DispatcherProvider,
     private val homeModuleRepository: HomeModuleRepository,
     private val mediasRepository: MediaRepository,
 ) {
@@ -30,7 +30,7 @@ internal class GetHomeModulesUseCase @Inject constructor(
     operator fun invoke(): Flow<List<HomeModule>> =
         homeModuleRepository.observeModules()
             .map { modules ->
-                withContext(dispatcherFacade.io()) {
+                withContext(DispatcherProvider.io()) {
                     modules.map { homeModule ->
                         val deferred = async { fetchMediasFromModule(homeModule) }
                         deferred.await()

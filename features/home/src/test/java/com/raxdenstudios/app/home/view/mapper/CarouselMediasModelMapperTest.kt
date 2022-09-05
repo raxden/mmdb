@@ -6,13 +6,13 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.provider.StringProvider
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-internal class CarouselMediasModelMapperTest : BaseTest() {
+internal class CarouselMediasModelMapperTest : BasePresentationTest() {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val mediaListItemModelMapper = MediaListItemModelMapper()

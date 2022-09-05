@@ -6,7 +6,7 @@ import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.network.model.PageDto
-import com.raxdenstudios.commons.DispatcherFacade
+import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.coMap
 import com.raxdenstudios.commons.ext.getValueOrNull
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MediaGateway @Inject constructor(
-    private val dispatcher: DispatcherFacade,
+    private val dispatcher: DispatcherProvider,
     private val mediaV3Service: MediaV3Service,
     private val mediaV4Service: MediaV4Service,
 ) {

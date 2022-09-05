@@ -4,14 +4,14 @@ import com.raxdenstudios.app.account.data.local.AccountDao
 import com.raxdenstudios.app.account.data.local.mapper.AccountEntityToDomainMapper
 import com.raxdenstudios.app.account.data.local.mapper.AccountToEntityMapper
 import com.raxdenstudios.app.account.domain.model.Account
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
 import org.junit.Test
 
-class AccountLocalDataSourceImplTest : BaseTest() {
+class AccountLocalDataSourceImplTest : BasePresentationTest() {
 
     private val accountDao: AccountDao = mockk()
     private val accountEntityToDomainMapper: AccountEntityToDomainMapper = mockk()
@@ -26,7 +26,7 @@ class AccountLocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun `Given an empty database, When observe is called, Then create guest account`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val flow = dataSource.observeAccount()
 
             Assert.assertEquals(Account.Guest.default, flow.first())
@@ -34,7 +34,7 @@ class AccountLocalDataSourceImplTest : BaseTest() {
 
     @Test
     fun `Given an empty database, When getAccount is called, Then create guest account`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val account = dataSource.getAccount()
 
             Assert.assertEquals(Account.Guest.default, account)

@@ -12,7 +12,7 @@ import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.app.network.model.PageDto
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -24,7 +24,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class MediaRemoteDataSourceTest : BaseTest() {
+internal class MediaRemoteDataSourceTest : BasePresentationTest() {
 
     private val mediaGateway: MediaGateway = mockk {
         coEvery { upcoming(any()) } returns ResultData.Success(aPageDto)
@@ -57,7 +57,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaId and mediaType, When mediaById is called, Then returns a ResultData success with Media`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = dataSource.findById(aMediaId, aMediaType)
 
             assertEquals(
@@ -68,7 +68,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a account logged, mediaId and mediaType, When addMediaToWatchList is called, Then returns a ResultData success with Media`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = dataSource.addToWatchList(aAccountLogged, aMediaType, aMediaId)
 
             assertEquals(
@@ -84,7 +84,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a account logged, mediaId and mediaType, When removeMediaFromWatchList is called, Then returns a ResultData success`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = dataSource.removeFromWatchList(aAccountLogged, aMediaType, aMediaId)
 
             assertEquals(
@@ -95,7 +95,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a account logged and mediaType, When watchList is called, Then returns a List of Media's`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = dataSource.watchList(aAccountLogged, aMediaType)
 
             assertEquals(
@@ -111,7 +111,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type upcoming, When movies is called, Then load movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.Upcoming, aAccountLogged, aFirstPage)
 
@@ -130,7 +130,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type popular, When movies is called, Then load movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.popularMovies, aAccountLogged, aFirstPage)
 
@@ -149,7 +149,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type topRated, When movies is called, Then load movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.topRatedMovies, aAccountLogged, aFirstPage)
 
@@ -168,7 +168,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type nowPlaying, When movies is called, Then load movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.NowPlaying, aAccountLogged, aFirstPage)
 
@@ -187,7 +187,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type watchlist and account logged, When movies is called, Then load movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.watchListMovies, aAccountLogged, aFirstPage)
 
@@ -206,7 +206,7 @@ internal class MediaRemoteDataSourceTest : BaseTest() {
 
     @Test
     fun `Given a mediaFilter of type watchlist and account not logged, When movies is called, Then UserNotLoggedException is returned`() =
-        testDispatcher.runBlockingTest {
+        runTest {
 
             val result = dataSource.medias(MediaFilter.watchListMovies, aAccountGuest, aFirstPage)
 
