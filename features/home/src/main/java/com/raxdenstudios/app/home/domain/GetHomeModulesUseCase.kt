@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class GetHomeModulesUseCase @Inject constructor(
-    private val DispatcherProvider: DispatcherProvider,
+    private val dispatcherProvider: DispatcherProvider,
     private val homeModuleRepository: HomeModuleRepository,
     private val mediasRepository: MediaRepository,
 ) {
@@ -30,7 +30,7 @@ internal class GetHomeModulesUseCase @Inject constructor(
     operator fun invoke(): Flow<List<HomeModule>> =
         homeModuleRepository.observeModules()
             .map { modules ->
-                withContext(DispatcherProvider.io()) {
+                withContext(dispatcherProvider.io) {
                     modules.map { homeModule ->
                         val deferred = async { fetchMediasFromModule(homeModule) }
                         deferred.await()

@@ -24,7 +24,7 @@ class AppModule {
         StringProvider(context)
 
     @Provides
-    fun DispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
+    fun dispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
         override val main: CoroutineDispatcher
             get() = Dispatchers.Main
         override val io: CoroutineDispatcher
