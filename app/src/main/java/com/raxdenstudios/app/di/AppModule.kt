@@ -2,7 +2,7 @@ package com.raxdenstudios.app.di
 
 import android.content.Context
 import com.raxdenstudios.commons.ActivityHolder
-import com.raxdenstudios.commons.DispatcherFacade
+import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -12,6 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 @Module
@@ -23,9 +24,13 @@ class AppModule {
         StringProvider(context)
 
     @Provides
-    fun dispatcherFacade(): DispatcherFacade = object : DispatcherFacade {
-        override fun io() = Dispatchers.IO
-        override fun default() = Dispatchers.Default
+    fun DispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
+        override val main: CoroutineDispatcher
+            get() = Dispatchers.Main
+        override val io: CoroutineDispatcher
+            get() = Dispatchers.IO
+        override val default: CoroutineDispatcher
+            get() = Dispatchers.Default
     }
 
     @Provides

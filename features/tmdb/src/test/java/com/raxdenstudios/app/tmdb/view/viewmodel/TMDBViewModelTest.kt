@@ -2,7 +2,7 @@ package com.raxdenstudios.app.tmdb.view.viewmodel
 
 import androidx.lifecycle.Observer
 import com.raxdenstudios.app.account.domain.model.Credentials
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.app.tmdb.domain.ConnectUseCase
 import com.raxdenstudios.app.tmdb.domain.RequestTokenUseCase
 import com.raxdenstudios.commons.ResultData
@@ -14,7 +14,7 @@ import io.mockk.verify
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-internal class TMDBViewModelTest : BaseTest() {
+internal class TMDBViewModelTest : BasePresentationTest() {
 
     private val requestTokenUseCase: RequestTokenUseCase = mockk()
     private val connectUseCase: ConnectUseCase = mockk {

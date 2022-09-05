@@ -55,4 +55,6 @@ dependencies {
   api(TestLibraries.koinTestJunit)
   api(TestLibraries.timberJunit)
   api(TestLibraries.threetenabp)
+  api(TestLibraries.turbine)
+  api(TestLibraries.truth)
 }

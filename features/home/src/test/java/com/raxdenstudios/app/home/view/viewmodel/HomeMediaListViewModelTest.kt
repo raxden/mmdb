@@ -18,7 +18,7 @@ import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
 import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -34,7 +34,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class HomeMediaListViewModelTest : BaseTest() {
+internal class HomeMediaListViewModelTest : BasePresentationTest() {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
@@ -81,7 +81,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
     @Test
     fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             viewModel.state.observeForever(stateObserver)
 
             verify {
@@ -110,7 +110,7 @@ internal class HomeMediaListViewModelTest : BaseTest() {
 
     @Test
     fun `Given a home model already populated and a media selected marked as watchlist, When addMovieToWatchList is called, Then movie is replaced in home model with watchButton as selected`() {
-        testDispatcher.runBlockingTest {
+        runTest {
             viewModel.state.observeForever(stateObserver)
 
             viewModel.addMediaToWatchList(

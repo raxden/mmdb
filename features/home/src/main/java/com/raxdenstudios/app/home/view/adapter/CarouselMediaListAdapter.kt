@@ -37,7 +37,7 @@ internal class CarouselMediaListAdapter :
 
         private fun CarouselMediaListItemBinding.populate(item: MediaListItemModel) {
             itemView.setSafeOnClickListener { onClickListener(item) }
-            itemView.onAddToWatchListClickListener = { onAddToWatchListClickListener(item) }
+            itemView.onWatchListClickListener = { onAddToWatchListClickListener(item) }
             itemView.onRemoveFromWatchListClickListener = { onRemoveFromWatchListClickListener(item) }
             itemView.setModel(item)
         }

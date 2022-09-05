@@ -6,8 +6,8 @@ import com.raxdenstudios.app.media.data.remote.service.MediaV3Service
 import com.raxdenstudios.app.media.data.remote.service.MediaV4Service
 import com.raxdenstudios.app.network.model.ErrorDto
 import com.raxdenstudios.app.network.model.PageDto
-import com.raxdenstudios.app.test.BaseTest
-import com.raxdenstudios.commons.DispatcherFacade
+import com.raxdenstudios.app.test.BasePresentationTest
+import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,7 +20,7 @@ import org.junit.Test
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-internal class MediaGatewayTest : BaseTest() {
+internal class MediaGatewayTest : BasePresentationTest() {
 
     private val mediaV3Service: MediaV3Service = mockk(relaxed = true)
     private val mediaV4Service: MediaV4Service = mockk(relaxed = true) {
@@ -28,7 +28,7 @@ internal class MediaGatewayTest : BaseTest() {
         coEvery { watchListMovies(aAccountId, 2) } returns aNetworkResponseSuccessSecondPage
         coEvery { watchListMovies(aAccountId, 3) } returns aNetworkResponseSuccessThirdPage
     }
-    private val dispatcher: DispatcherFacade = object : DispatcherFacade {
+    private val dispatcher: DispatcherProvider = object : DispatcherProvider {
         override fun io() = testDispatcher
         override fun default() = testDispatcher
     }
@@ -42,7 +42,7 @@ internal class MediaGatewayTest : BaseTest() {
 
     @Test
     fun `Given a movie results splitted in pages, When watchList is called with a valid accountId, Then return all movies`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val resultData = gateway.watchListMovies(aAccountId)
 
             coVerify {

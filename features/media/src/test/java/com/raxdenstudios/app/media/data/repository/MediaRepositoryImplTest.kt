@@ -9,7 +9,7 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -22,11 +22,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class MediaRepositoryImplTest : BaseTest() {
+internal class MediaRepositoryImplTest : BasePresentationTest() {
 
     private val accountLocalDataSource: AccountLocalDataSource = mockk {
         coEvery { getAccount() } returns aAccountLogged
@@ -66,7 +67,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
     @Test
     fun `Given a list of medias, When addToLocalWatchList is called, Then medias are persisted`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = repository.addToLocalWatchList(aMovies)
 
             coVerify { mediaLocalDataSource.addToWatchList(aMovies) }
@@ -75,7 +76,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
     @Test
     fun `Given a movie mediaType, When watchList is called, Then watchList is recovered from local, and updated from remote`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery {
                 mediaLocalDataSource.watchList(MediaType.MOVIE)
             } returns flowOf(ResultData.Success(listOf(Media.Movie.withId(MediaId(1L)))))
@@ -101,7 +102,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
     @Test
     fun `Given a movie, When addMovieToWatchList is called, Then movie is added to watchlist`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = repository.addToWatchList(aMediaId, aMediaType)
 
             coVerify { mediaLocalDataSource.addToWatchList(aMovie.copy(watchList = true)) }
@@ -110,7 +111,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
     @Test
     fun `Given a movie, When removeMovieFromWatchList is called, Then movie is removed`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             val result = repository.removeFromWatchList(aMediaId, aMediaType)
 
             coVerify { mediaLocalDataSource.removeFromWatchList(aMediaId) }
@@ -119,7 +120,7 @@ internal class MediaRepositoryImplTest : BaseTest() {
 
     @Test
     fun `Given a movies returned by the server, When movies are called, Then movies returned should be marked as watched if requires`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery { mediaLocalDataSource.containsInWatchList(MediaId(2L)) } returns true
 
             val result = repository.medias(MediaFilter.popularMovies, aPage, aPageSize)

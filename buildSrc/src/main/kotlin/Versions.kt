@@ -68,4 +68,6 @@ object Versions {
     const val glide = "4.13.2"
     const val timber = "4.7.1"
     const val timberJunit = "1.0.1"
+    const val turbine = "0.9.0"
+    const val truth = "1.1.3"
 }

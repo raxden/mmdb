@@ -7,8 +7,8 @@ import com.raxdenstudios.app.media.domain.model.Media
 import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.domain.model.MediaType
-import com.raxdenstudios.app.test.BaseTest
-import com.raxdenstudios.commons.DispatcherFacade
+import com.raxdenstudios.app.test.BasePresentationTest
+import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -21,9 +21,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class GetHomeModulesUseCaseTest : BaseTest() {
+internal class GetHomeModulesUseCaseTest : BasePresentationTest() {
 
-    private val dispatcherFacade: DispatcherFacade = object : DispatcherFacade {
+    private val DispatcherProvider: DispatcherProvider = object : DispatcherProvider {
         override fun default() = testDispatcher
         override fun io() = testDispatcher
     }
@@ -36,14 +36,14 @@ internal class GetHomeModulesUseCaseTest : BaseTest() {
 
     private val useCase: GetHomeModulesUseCase by lazy {
         GetHomeModulesUseCase(
-            dispatcherFacade = dispatcherFacade,
+            DispatcherProvider = DispatcherProvider,
             homeModuleRepository = homeModuleRepository,
             mediasRepository = mediasRepository,
         )
     }
 
     @Test
-    fun `Should return a list of modules with movies`() = testDispatcher.runBlockingTest {
+    fun `Should return a list of modules with movies`() = runTest {
         useCase().collect { result ->
             assertEquals(
                 listOf(
@@ -59,7 +59,7 @@ internal class GetHomeModulesUseCaseTest : BaseTest() {
 
     @Test
     fun `Given an error produced when retrieve medias from nowplaying, When execute is called, Then return a list of modules with movies except nowplaying`() =
-        testDispatcher.runBlockingTest {
+        runTest {
             coEvery {
                 mediasRepository.medias(MediaFilter.NowPlaying, any(), any())
             } returns ResultData.Error(IllegalStateException(""))

@@ -4,7 +4,7 @@ import com.raxdenstudios.app.home.data.local.HomeModuleDao
 import com.raxdenstudios.app.home.data.local.mapper.HomeModuleEntityToDomainMapper
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.home.domain.model.HomeModule
-import com.raxdenstudios.app.test.BaseTest
+import com.raxdenstudios.app.test.BasePresentationTest
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -15,7 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class HomeModuleLocalDataSourceTest : BaseTest() {
+internal class HomeModuleLocalDataSourceTest : BasePresentationTest() {
 
     private val homeModuleEntityToDomainMapper = HomeModuleEntityToDomainMapper()
     private val homeModuleDao: HomeModuleDao = mockk {
@@ -30,7 +30,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given an empty database, When modules is called, Then default modules are inserted in database`() {
-        testDispatcher.runBlockingTest {
+        runTest {
 
             coEvery { homeModuleDao.observeAll() } returns flow { emit(emptyList<HomeModuleEntity>()) }
 
@@ -56,7 +56,7 @@ internal class HomeModuleLocalDataSourceTest : BaseTest() {
 
     @Test
     fun `Given an fill database, When modules is called, Then modules are returned`() {
-        testDispatcher.runBlockingTest {
+        runTest {
 
             coEvery { homeModuleDao.observeAll() } returns flow { emit(aHomeModuleEntityList) }
 
