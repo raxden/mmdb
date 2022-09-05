@@ -14,11 +14,7 @@ sealed class HomeModuleListAdapterHolder(
     binding: ViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    var onCarouselAddToWatchListClickListener: (
-        HomeModuleModel.CarouselMedias,
-        MediaListItemModel,
-    ) -> Unit = { _, _ -> }
-    var onCarouselRemoveFromWatchListClickListener: (
+    var onCarouselWatchListClickListener: (
         HomeModuleModel.CarouselMedias,
         MediaListItemModel,
     ) -> Unit = { _, _ -> }
@@ -50,11 +46,8 @@ sealed class HomeModuleListAdapterHolder(
             onMediaClickListener = { carouselMedias, mediaItemModel ->
                 onCarouselMediaClickListener(carouselMedias, mediaItemModel)
             }
-            onAddToWatchListClickListener = { carouselMedias, mediaListItemModel ->
-                onCarouselAddToWatchListClickListener(carouselMedias, mediaListItemModel)
-            }
-            onRemoveFromWatchListClickListener = { carouselMedias, mediaListItemModel ->
-                onCarouselRemoveFromWatchListClickListener(carouselMedias, mediaListItemModel)
+            onWatchListClickListener = { carouselMedias, mediaListItemModel ->
+                onCarouselWatchListClickListener(carouselMedias, mediaListItemModel)
             }
             onMediaTypeFilterChanged = { carouselMedias, mediaFilterModel ->
                 onCarouselFilterChanged(carouselMedias, mediaFilterModel)
@@ -78,11 +71,8 @@ sealed class HomeModuleListAdapterHolder(
             onMediaClickListener = { carouselMedias, mediaItemModel ->
                 onCarouselMediaClickListener(carouselMedias, mediaItemModel)
             }
-            onAddToWatchListClickListener = { carouselMedias, mediaListItemModel ->
-                onCarouselAddToWatchListClickListener(carouselMedias, mediaListItemModel)
-            }
-            onRemoveFromWatchListClickListener = { carouselMedias, mediaListItemModel ->
-                onCarouselRemoveFromWatchListClickListener(carouselMedias, mediaListItemModel)
+            onWatchListClickListener = { carouselMedias, mediaListItemModel ->
+                onCarouselWatchListClickListener(carouselMedias, mediaListItemModel)
             }
             setModel(model)
         }

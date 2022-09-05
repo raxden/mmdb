@@ -21,7 +21,7 @@ internal class LoginUseCase @Inject constructor(
     }
 
     private suspend fun loadWatchListFromRemoteAndPersistInLocal() {
-        withContext(dispatcher.io()) {
+        withContext(dispatcher.io) {
             launch { mediaRepository.watchList(MediaType.MOVIE) }
             launch { mediaRepository.watchList(MediaType.TV_SHOW) }
         }

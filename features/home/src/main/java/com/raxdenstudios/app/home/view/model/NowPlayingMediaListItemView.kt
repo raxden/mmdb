@@ -23,8 +23,7 @@ internal class NowPlayingMediaListItemView @JvmOverloads constructor(
 
     var onMediaClickListener: (MediaListItemModel) -> Unit = {}
     var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
-    var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-    var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
     init {
         if (isInEditMode) {
@@ -43,12 +42,7 @@ internal class NowPlayingMediaListItemView @JvmOverloads constructor(
         mediaImageCardView.setSafeOnClickListener { onMediaClickListener(model) }
         mediaImageView.loadImage(model.image)
         watchButtonView.setModel(model.watchButtonModel)
-        watchButtonView.setSafeOnClickListener {
-            when (model.watchButtonModel) {
-                WatchButtonModel.Selected -> onRemoveFromWatchListClickListener(model)
-                WatchButtonModel.Unselected -> onAddToWatchListClickListener(model)
-            }
-        }
+        watchButtonView.setSafeOnClickListener { onWatchListClickListener(model) }
         movieTitleView.text = model.title
         movieDescriptionView.text = "The Rise of Sacha Baron Cohen"
     }

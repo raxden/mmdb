@@ -89,26 +89,30 @@ internal class HomeMediaListViewModel @Inject constructor(
         _state.update { value -> value.copy(model = homeUpdated) }
     }
 
-    fun addMediaToWatchList(
+    fun watchListPressed(
         home: HomeMediaListModel,
         mediaListItem: MediaListItemModel,
-    ) = viewModelScope.safeLaunch {
-        val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Selected)
-        mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-        val params = AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-        addMediaToWatchListUseCase(params)
-            .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
-    }
-
-    fun removeMediaFromWatchList(
-        home: HomeMediaListModel,
-        mediaListItem: MediaListItemModel,
-    ) = viewModelScope.safeLaunch {
-        val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Unselected)
-        mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-        val params = RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-        removeMediaFromWatchListUseCase(params)
-            .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
+    ) {
+        when (mediaListItem.watchButtonModel) {
+            is WatchButtonModel.Selected -> {
+                viewModelScope.safeLaunch {
+                    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Unselected)
+                    mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
+                    val params = RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+                    removeMediaFromWatchListUseCase(params)
+                        .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
+                }
+            }
+            is WatchButtonModel.Unselected -> {
+                viewModelScope.safeLaunch {
+                    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Selected)
+                    mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
+                    val params = AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+                    addMediaToWatchListUseCase(params)
+                        .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
+                }
+            }
+        }
     }
 
     private fun mediaListItemHasChangedThusUpdateHomeMediaListModel(
