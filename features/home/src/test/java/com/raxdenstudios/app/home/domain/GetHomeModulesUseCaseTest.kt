@@ -14,18 +14,20 @@ import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 internal class GetHomeModulesUseCaseTest : BasePresentationTest() {
 
-    private val DispatcherProvider: DispatcherProvider = object : DispatcherProvider {
-        override fun default() = testDispatcher
-        override fun io() = testDispatcher
+    private val dispatcherProvider: DispatcherProvider = object : DispatcherProvider {
+        override val main = testDispatcher
+        override val default = testDispatcher
+        override val io = testDispatcher
     }
     private val homeModuleRepository: HomeModuleRepository = mockk {
         coEvery { observeModules() } returns flowOf(aModules)
@@ -36,7 +38,7 @@ internal class GetHomeModulesUseCaseTest : BasePresentationTest() {
 
     private val useCase: GetHomeModulesUseCase by lazy {
         GetHomeModulesUseCase(
-            DispatcherProvider = DispatcherProvider,
+            dispatcherProvider = dispatcherProvider,
             homeModuleRepository = homeModuleRepository,
             mediasRepository = mediasRepository,
         )

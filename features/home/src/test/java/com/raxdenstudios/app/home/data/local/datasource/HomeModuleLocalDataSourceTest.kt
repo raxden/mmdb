@@ -31,8 +31,7 @@ internal class HomeModuleLocalDataSourceTest : BasePresentationTest() {
     @Test
     fun `Given an empty database, When modules is called, Then default modules are inserted in database`() {
         runTest {
-
-            coEvery { homeModuleDao.observeAll() } returns flow { emit(emptyList<HomeModuleEntity>()) }
+            coEvery { homeModuleDao.observeAll() } returns flow { emit(emptyList()) }
 
             val flow = dataSource.observe()
 
@@ -57,7 +56,6 @@ internal class HomeModuleLocalDataSourceTest : BasePresentationTest() {
     @Test
     fun `Given an fill database, When modules is called, Then modules are returned`() {
         runTest {
-
             coEvery { homeModuleDao.observeAll() } returns flow { emit(aHomeModuleEntityList) }
 
             val flow = dataSource.observe()

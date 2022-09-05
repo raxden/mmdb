@@ -18,11 +18,7 @@ internal class HomeModuleListAdapter :
         CAROUSEL_MEDIAS_LAYOUT, NOW_PLAYING_LAYOUT
     }
 
-    var onCarouselAddToWatchListClickListener: (
-        HomeModuleModel.CarouselMedias,
-        MediaListItemModel,
-    ) -> Unit = { _, _ -> }
-    var onCarouselRemoveFromWatchListClickListener: (
+    var onCarouselWatchListClickListener: (
         HomeModuleModel.CarouselMedias,
         MediaListItemModel,
     ) -> Unit = { _, _ -> }
@@ -63,18 +59,14 @@ internal class HomeModuleListAdapter :
     override fun onBindViewHolder(holder: HomeModuleListAdapterHolder, position: Int) =
         when (holder) {
             is HomeModuleListAdapterHolder.HomeCarouselMediasModuleListAdapterHolder -> {
-                holder.onCarouselAddToWatchListClickListener = onCarouselAddToWatchListClickListener
-                holder.onCarouselRemoveFromWatchListClickListener =
-                    onCarouselRemoveFromWatchListClickListener
+                holder.onCarouselWatchListClickListener = onCarouselWatchListClickListener
                 holder.onCarouselMediaClickListener = onCarouselMediaClickListener
                 holder.onCarouselSeeAllClickListener = onCarouselSeeAllClickListener
                 holder.onCarouselFilterChanged = onCarouselFilterChanged
                 holder.bind(getItem(position) as HomeModuleModel.CarouselMedias)
             }
             is HomeModuleListAdapterHolder.HomeCarouselNowPlayingModuleListAdapter -> {
-                holder.onCarouselAddToWatchListClickListener = onCarouselAddToWatchListClickListener
-                holder.onCarouselRemoveFromWatchListClickListener =
-                    onCarouselRemoveFromWatchListClickListener
+                holder.onCarouselWatchListClickListener = onCarouselWatchListClickListener
                 holder.onCarouselMediaClickListener = onCarouselMediaClickListener
                 holder.onCarouselSeeAllClickListener = onCarouselSeeAllClickListener
                 holder.bind(getItem(position) as HomeModuleModel.CarouselMedias.NowPlaying)

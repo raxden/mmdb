@@ -8,7 +8,7 @@ import com.raxdenstudios.app.test.BasePresentationTest
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class AccountLocalDataSourceImplTest : BasePresentationTest() {
@@ -29,7 +29,7 @@ class AccountLocalDataSourceImplTest : BasePresentationTest() {
         runTest {
             val flow = dataSource.observeAccount()
 
-            Assert.assertEquals(Account.Guest.default, flow.first())
+            assertEquals(Account.Guest.default, flow.first())
         }
 
     @Test
@@ -37,6 +37,6 @@ class AccountLocalDataSourceImplTest : BasePresentationTest() {
         runTest {
             val account = dataSource.getAccount()
 
-            Assert.assertEquals(Account.Guest.default, account)
+            assertEquals(Account.Guest.default, account)
         }
 }
