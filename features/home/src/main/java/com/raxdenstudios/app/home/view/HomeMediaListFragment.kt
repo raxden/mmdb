@@ -70,11 +70,8 @@ internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragmen
         onCarouselMediaClickListener = { carouselMedias, mediaListItemModel ->
             viewModel.mediaSelected(model, carouselMedias, mediaListItemModel)
         }
-        onCarouselAddToWatchListClickListener = { _, mediaListItemModel ->
-            viewModel.addMediaToWatchList(model, mediaListItemModel)
-        }
-        onCarouselRemoveFromWatchListClickListener = { _, mediaListItemModel ->
-            viewModel.removeMediaFromWatchList(model, mediaListItemModel)
+        onCarouselWatchListClickListener = { _, mediaListItemModel ->
+            viewModel.watchListPressed(model, mediaListItemModel)
         }
         onCarouselSeeAllClickListener = { carouselMedias ->
             viewModel.viewAllButtonSelected(carouselMedias)

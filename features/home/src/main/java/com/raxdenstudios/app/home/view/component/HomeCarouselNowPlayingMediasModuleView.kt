@@ -33,14 +33,9 @@ internal class HomeCarouselNowPlayingMediasModuleView @JvmOverloads constructor(
         CarouselNowPlayingMediaListAdapter()
     }
 
-    var onAddToWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
-    var onRemoveFromWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
-    var onMediaClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
-    var onMediaPlayClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
+    var onWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit = { _, _ -> }
+    var onMediaClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit = { _, _ -> }
+    var onMediaPlayClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit = { _, _ -> }
     var onSeeAllClickListener: (HomeModuleModel.CarouselMedias) -> Unit = {}
 
     init {
@@ -76,8 +71,7 @@ internal class HomeCarouselNowPlayingMediasModuleView @JvmOverloads constructor(
         submitList(model.medias)
         onMediaClickListener = { item -> onMediaClickListener(model, item) }
         onMediaPlayClickListener = { item -> onMediaPlayClickListener(model, item) }
-        onAddToWatchListClickListener = { item -> onAddToWatchListClickListener(model, item) }
-        onRemoveFromWatchListClickListener = { item -> onRemoveFromWatchListClickListener(model, item) }
+        onWatchListClickListener = { item -> onWatchListClickListener(model, item) }
     }
 
     private fun HomeCarouselNowPlayingMediasModuleViewBinding.seeAllButton(

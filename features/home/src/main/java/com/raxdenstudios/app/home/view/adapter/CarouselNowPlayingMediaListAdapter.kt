@@ -14,8 +14,7 @@ internal class CarouselNowPlayingMediaListAdapter :
 
     var onMediaClickListener: (MediaListItemModel) -> Unit = {}
     var onMediaPlayClickListener: (MediaListItemModel) -> Unit = {}
-    var onAddToWatchListClickListener: (MediaListItemModel) -> Unit = {}
-    var onRemoveFromWatchListClickListener: (MediaListItemModel) -> Unit = {}
+    var onWatchListClickListener: (MediaListItemModel) -> Unit = {}
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,8 +40,7 @@ internal class CarouselNowPlayingMediaListAdapter :
         private fun CarouselNowPlayingMediaListItemBinding.populate(item: MediaListItemModel) {
             itemView.onMediaClickListener = onMediaClickListener
             itemView.onMediaPlayClickListener = onMediaPlayClickListener
-            itemView.onAddToWatchListClickListener = { onAddToWatchListClickListener(item) }
-            itemView.onRemoveFromWatchListClickListener = { onRemoveFromWatchListClickListener(item) }
+            itemView.onWatchListClickListener = { onWatchListClickListener(item) }
             itemView.setModel(item)
         }
     }

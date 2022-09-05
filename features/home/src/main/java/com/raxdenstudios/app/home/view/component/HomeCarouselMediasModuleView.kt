@@ -27,12 +27,8 @@ internal class HomeCarouselMediasModuleView @JvmOverloads constructor(
 
     private val adapter: CarouselMediaListAdapter by lazy { CarouselMediaListAdapter() }
 
-    var onAddToWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
-    var onRemoveFromWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
-    var onMediaClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit =
-        { _, _ -> }
+    var onWatchListClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit = { _, _ -> }
+    var onMediaClickListener: (HomeModuleModel.CarouselMedias, MediaListItemModel) -> Unit = { _, _ -> }
     var onSeeAllClickListener: (HomeModuleModel.CarouselMedias) -> Unit = {}
     var onMediaTypeFilterChanged: (HomeModuleModel.CarouselMedias, MediaType) -> Unit = { _, _ -> }
 
@@ -75,8 +71,7 @@ internal class HomeCarouselMediasModuleView @JvmOverloads constructor(
     private fun CarouselMediaListAdapter.populate(model: HomeModuleModel.CarouselMedias) {
         submitList(model.medias)
         onClickListener = { item -> onMediaClickListener(model, item) }
-        onAddToWatchListClickListener = { item -> onAddToWatchListClickListener(model, item) }
-        onRemoveFromWatchListClickListener = { item -> onRemoveFromWatchListClickListener(model, item) }
+        onWatchListClickListener = { item -> onWatchListClickListener(model, item) }
     }
 
     private fun HomeCarouselMediasModuleViewBinding.seeAllButton(
