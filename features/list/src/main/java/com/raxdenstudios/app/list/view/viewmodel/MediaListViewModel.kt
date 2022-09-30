@@ -52,7 +52,7 @@ internal class MediaListViewModel @Inject constructor(
     val uiState: StateFlow<MediaListContract.UIState> = _uiState.asStateFlow()
 
     init {
-        pagination.requestFirstPage(params)
+        requestFirstPage(params)
     }
 
     override fun onCleared() {
@@ -62,10 +62,10 @@ internal class MediaListViewModel @Inject constructor(
 
     fun setUserEvent(event: MediaListContract.UserEvent) {
         when (event) {
-            is MediaListContract.UserEvent.OnLoadMore -> requestPage(event.pageIndex, params)
-            is MediaListContract.UserEvent.OnRefresh -> pagination.refresh(params)
-            is MediaListContract.UserEvent.OnWatchButtonClicked -> {
-                when (event.item.watchButtonModel) {
+            is MediaListContract.UserEvent.LoadMore -> requestPage(event.pageIndex, params)
+            is MediaListContract.UserEvent.Refresh -> refresh(params)
+            is MediaListContract.UserEvent.WatchButtonClicked -> {
+                when (event.item.watchButton) {
                     is WatchButtonModel.Selected -> removeMovieFromWatchList(event.item)
                     is WatchButtonModel.Unselected -> addMovieToWatchList(event.item)
                 }
@@ -75,7 +75,7 @@ internal class MediaListViewModel @Inject constructor(
 
     private fun addMovieToWatchList(item: MediaListItemModel) =
         viewModelScope.safeLaunch {
-            val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Selected)
+            val itemToReplace = item.copy(watchButton = WatchButtonModel.Selected)
             val params = AddMediaToWatchListUseCase.Params(item.id, item.mediaType)
             addMediaToWatchListUseCase(params)
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
@@ -84,20 +84,20 @@ internal class MediaListViewModel @Inject constructor(
 
     private fun removeMovieFromWatchList(item: MediaListItemModel) =
         viewModelScope.safeLaunch {
-            val itemToReplace = item.copy(watchButtonModel = WatchButtonModel.Unselected)
+            val itemToReplace = item.copy(watchButton = WatchButtonModel.Unselected)
             val params = RemoveMediaFromWatchListUseCase.Params(item.id, item.mediaType)
             removeMediaFromWatchListUseCase(params)
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
                 .onSuccess { _uiState.update { value -> value.copy(model = value.model.replaceMovie(itemToReplace)) } }
         }
 
-    private fun CoPagination<Media>.refresh(params: MediaListParams) {
+    private fun refresh(params: MediaListParams) {
         pagination.clear()
-        pagination.requestFirstPage(params)
+        requestFirstPage(params)
     }
 
-    private fun CoPagination<Media>.requestFirstPage(params: MediaListParams) {
-        requestFirstPage(
+    private fun requestFirstPage(params: MediaListParams) {
+        pagination.requestFirstPage(
             pageRequest = { page, pageSize -> pageRequest(params, page, pageSize) },
             pageResponse = { pageResult -> pageResponse(params, pageResult) }
         )

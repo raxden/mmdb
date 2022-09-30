@@ -93,10 +93,10 @@ internal class HomeMediaListViewModel @Inject constructor(
         home: HomeMediaListModel,
         mediaListItem: MediaListItemModel,
     ) {
-        when (mediaListItem.watchButtonModel) {
+        when (mediaListItem.watchButton) {
             is WatchButtonModel.Selected -> {
                 viewModelScope.safeLaunch {
-                    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Unselected)
+                    val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Unselected)
                     mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
                     val params = RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
                     removeMediaFromWatchListUseCase(params)
@@ -105,7 +105,7 @@ internal class HomeMediaListViewModel @Inject constructor(
             }
             is WatchButtonModel.Unselected -> {
                 viewModelScope.safeLaunch {
-                    val itemUpdated = mediaListItem.copy(watchButtonModel = WatchButtonModel.Selected)
+                    val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Selected)
                     mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
                     val params = AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
                     addMediaToWatchListUseCase(params)
