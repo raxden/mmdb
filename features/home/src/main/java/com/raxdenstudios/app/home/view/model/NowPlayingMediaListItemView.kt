@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.NowPlayingMediaListItemViewBinding
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.app.media.view.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.inflateView
 import com.raxdenstudios.commons.ext.loadImage
 import com.raxdenstudios.commons.ext.setSafeOnClickListener
@@ -41,7 +40,7 @@ internal class NowPlayingMediaListItemView @JvmOverloads constructor(
         mediaBackdropPlayImageView.setSafeOnClickListener { onMediaPlayClickListener(model) }
         mediaImageCardView.setSafeOnClickListener { onMediaClickListener(model) }
         mediaImageView.loadImage(model.image)
-        watchButtonView.setModel(model.watchButtonModel)
+        watchButtonView.setModel(model.watchButton)
         watchButtonView.setSafeOnClickListener { onWatchListClickListener(model) }
         movieTitleView.text = model.title
         movieDescriptionView.text = "The Rise of Sacha Baron Cohen"
