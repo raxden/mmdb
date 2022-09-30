@@ -7,9 +7,9 @@ import com.raxdenstudios.commons.pagination.model.PageIndex
 internal class MediaListContract {
 
     internal sealed class UserEvent {
-        object OnRefresh : UserEvent()
-        data class OnLoadMore(val pageIndex: PageIndex) : UserEvent()
-        data class OnWatchButtonClicked(val item: MediaListItemModel) : UserEvent()
+        object Refresh : UserEvent()
+        data class LoadMore(val pageIndex: PageIndex) : UserEvent()
+        data class WatchButtonClicked(val item: MediaListItemModel) : UserEvent()
     }
 
     internal data class UIState(

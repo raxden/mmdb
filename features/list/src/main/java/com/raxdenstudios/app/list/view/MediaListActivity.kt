@@ -72,20 +72,20 @@ class MediaListActivity : BaseActivity() {
 
     private fun onWatchButtonClicked(item: MediaListItemModel) {
         this@MediaListActivity.setResultOK()
-        viewModel.setUserEvent(MediaListContract.UserEvent.OnWatchButtonClicked(item))
+        viewModel.setUserEvent(MediaListContract.UserEvent.WatchButtonClicked(item))
     }
 
     private fun MediaListActivityBinding.loadMoreMoviesWhenScrollDown() {
         onScrolledListener?.run { recyclerView.removeOnScrollListener(this) }
         onScrolledListener = recyclerView.addOnScrolledListener { _, _, _ ->
             val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
-            viewModel.setUserEvent(MediaListContract.UserEvent.OnLoadMore(gridLayoutManager.toPageIndex()))
+            viewModel.setUserEvent(MediaListContract.UserEvent.LoadMore(gridLayoutManager.toPageIndex()))
         }
     }
 
     private fun MediaListActivityBinding.setUp() {
         setupToolbar(toolbarView)
         recyclerView.adapter = adapter
-        swipeRefreshLayout.setOnRefreshListener { viewModel.setUserEvent(MediaListContract.UserEvent.OnRefresh) }
+        swipeRefreshLayout.setOnRefreshListener { viewModel.setUserEvent(MediaListContract.UserEvent.Refresh) }
     }
 }

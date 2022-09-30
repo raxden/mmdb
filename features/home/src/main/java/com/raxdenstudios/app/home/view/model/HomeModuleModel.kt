@@ -67,7 +67,7 @@ sealed class HomeModuleModel {
             ): CarouselMedias = copy(mediaType = mediaType, medias = medias)
 
             override fun updateMedia(media: MediaListItemModel): WatchList =
-                when (media.watchButtonModel) {
+                when (media.watchButton) {
                     WatchButtonModel.Selected -> addMedia(media)
                     WatchButtonModel.Unselected -> removeMedia(media)
                 }

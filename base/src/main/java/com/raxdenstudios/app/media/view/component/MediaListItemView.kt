@@ -37,7 +37,7 @@ class MediaListItemView @JvmOverloads constructor(
         movieTitleView.text = model.title
         movieRateView.text = model.rating
         movieSubtitleView.text = model.releaseDate
-        watchButtonView.setModel(model.watchButtonModel)
+        watchButtonView.setModel(model.watchButton)
         watchButtonView.setSafeOnClickListener { onWatchListClickListener(model) }
     }
 }

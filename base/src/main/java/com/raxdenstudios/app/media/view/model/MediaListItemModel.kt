@@ -12,7 +12,7 @@ data class MediaListItemModel(
     val image: String,
     val rating: String,
     val releaseDate: String,
-    val watchButtonModel: WatchButtonModel,
+    val watchButton: WatchButtonModel,
 ) {
 
     companion object {
@@ -25,7 +25,7 @@ data class MediaListItemModel(
             image = "",
             rating = "0.0",
             releaseDate = "1970",
-            watchButtonModel = WatchButtonModel.Unselected
+            watchButton = WatchButtonModel.Unselected
         )
     }
 }

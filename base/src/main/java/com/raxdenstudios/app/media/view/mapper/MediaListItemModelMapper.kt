@@ -27,7 +27,7 @@ class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaLi
             },
             rating = vote.average.toString(),
             releaseDate = release.year.toString(),
-            watchButtonModel = when {
+            watchButton = when {
                 watchList -> WatchButtonModel.Selected
                 else -> WatchButtonModel.Unselected
             }
@@ -46,7 +46,7 @@ class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaLi
             },
             rating = vote.average.toString(),
             releaseDate = firstAirDate.year.toString(),
-            watchButtonModel = when {
+            watchButton = when {
                 watchList -> WatchButtonModel.Selected
                 else -> WatchButtonModel.Unselected
             }

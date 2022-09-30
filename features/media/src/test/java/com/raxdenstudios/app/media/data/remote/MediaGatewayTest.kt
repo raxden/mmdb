@@ -13,8 +13,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import retrofit2.Response
@@ -29,8 +31,9 @@ internal class MediaGatewayTest : BasePresentationTest() {
         coEvery { watchListMovies(aAccountId, 3) } returns aNetworkResponseSuccessThirdPage
     }
     private val dispatcher: DispatcherProvider = object : DispatcherProvider {
-        override fun io() = testDispatcher
-        override fun default() = testDispatcher
+        override val main = testDispatcher
+        override val io = testDispatcher
+        override val default = testDispatcher
     }
     private val gateway: MediaGateway by lazy {
         MediaGateway(

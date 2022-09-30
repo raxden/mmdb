@@ -98,11 +98,14 @@ internal class MediaListViewModelTest {
 
     @Test
     fun `Given a movie, When addMovieToWatchList is called, Then movie is replaced in model`() = runTest {
-        val itemToAddToWatchList = MediaListItemModel.empty.copy(id = MediaId(2L))
+        val mediaListItemModel = MediaListItemModel.empty.copy(
+            id = MediaId(2L),
+            watchButton = WatchButtonModel.Unselected,
+        )
 
         viewModel.uiState.test {
             skipItems(2)
-            viewModel.addMovieToWatchList(itemToAddToWatchList)
+            viewModel.setUserEvent(MediaListContract.UserEvent.WatchButtonClicked(mediaListItemModel))
             assertThat(awaitItem()).isEqualTo(
                 MediaListContract.UIState(
                     model = MediaListModel.empty.copy(
@@ -110,7 +113,7 @@ internal class MediaListViewModelTest {
                             MediaListItemModel.empty.copy(id = MediaId(1L)),
                             MediaListItemModel.empty.copy(
                                 id = MediaId(2L),
-                                watchButtonModel = WatchButtonModel.Selected
+                                watchButton = WatchButtonModel.Selected
                             ),
                         )
                     )
@@ -123,19 +126,25 @@ internal class MediaListViewModelTest {
     @Test
     fun `when movie is removed from watchlist, movie is replaced in model`() = runTest {
         coEvery { getMediasUseCase.invoke(any()) } returns ResultData.Success(
-            PageList(items = listOf(Media.Movie.empty.copy(id = MediaId(1), watchList = true)), page = Page(1))
+            PageList(
+                items = listOf(Media.Movie.empty.copy(id = MediaId(1), watchList = true)),
+                page = Page(1)
+            )
         )
-        val itemToRemoveFromWatchList = MediaListItemModel.empty.copy(id = MediaId(1L))
+        val mediaListItemModel = MediaListItemModel.empty.copy(
+            id = MediaId(1L),
+            watchButton = WatchButtonModel.Selected,
+        )
 
         viewModel.uiState.test {
             skipItems(2)
-            viewModel.removeMovieFromWatchList(itemToRemoveFromWatchList)
+            viewModel.setUserEvent(MediaListContract.UserEvent.WatchButtonClicked(mediaListItemModel))
             assertThat(awaitItem()).isEqualTo(
                 MediaListContract.UIState(
                     model = MediaListModel.empty.copy(
                         items = listOf(
                             MediaListItemModel.empty.copy(id = MediaId(1L),
-                                watchButtonModel = WatchButtonModel.Unselected
+                                watchButton = WatchButtonModel.Unselected
                             ),
                         )
                     )
@@ -150,7 +159,7 @@ internal class MediaListViewModelTest {
         runTest {
             viewModel.uiState.test {
                 skipItems(2)
-                viewModel.refreshMovies()
+                viewModel.setUserEvent(MediaListContract.UserEvent.Refresh)
                 assertThat(awaitItem()).isEqualTo(
                     MediaListContract.UIState(
                         isLoading = true,
@@ -193,7 +202,7 @@ internal class MediaListViewModelTest {
                         )
                     )
                 )
-                viewModel.loadMoreMovies(pageIndex)
+                viewModel.setUserEvent(MediaListContract.UserEvent.LoadMore(pageIndex))
                 assertThat(awaitItem()).isEqualTo(
                     MediaListContract.UIState(
                         isLoading = true,
