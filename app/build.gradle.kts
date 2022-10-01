@@ -1,15 +1,14 @@
 plugins {
-    id("com.raxdenstudios.android-versioning")
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.appdistribution")
-    id("com.github.triplet.play")
-    kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-parcelize")
-    id("project-report")
+    alias(libs.plugins.android.versioning)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.play.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.appdistribution)
+    alias(libs.plugins.gradle.play.publisher)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 versioning {
@@ -59,6 +58,7 @@ android {
     buildTypes {
         getByName("debug") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
+            applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isTestCoverageEnabled = true
             signingConfig = signingConfigs.getByName("debug")
@@ -81,7 +81,11 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
 
     kotlinOptions {
@@ -97,37 +101,55 @@ android {
         resources {
             excludes.add("META-INF/AL2.0")
             excludes.add("META-INF/LGPL2.1")
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
             excludes.add("META-INF/*.kotlin_module")
         }
     }
 }
 
 dependencies {
-    implementation(project(Modules.base))
-    implementation(project(Modules.featureSplash))
-    implementation(project(Modules.featureMedia))
+    implementation(project(Modules.coreCommon))
+    implementation(project(Modules.coreUI))
+    implementation(project(Modules.coreNetwork))
+    implementation(project(Modules.coreDatabase))
+    implementation(project(Modules.coreDomain))
+    implementation(project(Modules.coreModel))
+    implementation(project(Modules.coreData))
+    implementation(project(Modules.coreNavigation))
     implementation(project(Modules.featureAccount))
+    implementation(project(Modules.featureSearch))
     implementation(project(Modules.featureMediaList))
     implementation(project(Modules.featureHome))
     implementation(project(Modules.featureError))
     implementation(project(Modules.featureLogin))
     implementation(project(Modules.featureTMDBConnect))
-    implementation(project(Modules.libraryNetwork))
-    implementation(project(Modules.navigator))
+    implementation(libs.commons.paginationCo)
+    implementation(libs.bundles.android)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.bundles.coil)
+    implementation(libs.bundles.threetenabp)
+    implementation(libs.timber)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose.material)
+    implementation(libs.bundles.accompanist)
+    implementation(libs.bundles.landscapists)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    implementation(RaxdenLibraries.android)
-    implementation(RaxdenLibraries.coroutines)
-    implementation(Libraries.timber)
-    implementation(RaxdenLibraries.threeten)
-    implementation(RaxdenLibraries.paginationCo)
+    // debug libraries
+    debugImplementation(libs.leakcanary)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(platform(FirebaseLibraries.firebaseBoom))
-    implementation(FirebaseLibraries.firebaseCrashlytics)
+    // test libraries
+    testImplementation(project(Modules.coreTest))
+    testImplementation(libs.bundles.testing)
 
-    implementation(Libraries.hiltAndroid)
-    kapt(Libraries.hiltCompiler)
-
-    debugImplementation(DebugLibraries.leakcanary)
-//  debugImplementation(DebugLibraries.ganderDebug)
-//  releaseImplementation(DebugLibraries.ganderRelease)
+    // instrumental test libraries
+    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(libs.bundles.compose.test)
+    androidTestImplementation(libs.bundles.testingUI)
+    kaptAndroidTest(libs.hilt.compiler)
 }

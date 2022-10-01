@@ -20,8 +20,9 @@ import kotlinx.coroutines.Dispatchers
 class AppModule {
 
     @Provides
-    fun stringProvider(@ApplicationContext context: Context): StringProvider =
-        StringProvider(context)
+    fun stringProvider(
+        @ApplicationContext context: Context
+    ): StringProvider = StringProvider(context)
 
     @Provides
     fun dispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
@@ -37,10 +38,15 @@ class AppModule {
     fun activityHolder(): ActivityHolder = ActivityHolder()
 
     @Provides
-    fun providePaginationConfig(): Pagination.Config =
-        Pagination.Config.default.copy(
+    fun providePaginationConfig(): Pagination.Config = paginationConfig
+
+    companion object {
+
+        private val paginationConfig = Pagination.Config.default.copy(
             initialPage = Page(1),
             pageSize = PageSize(20),
             prefetchDistance = 4
         )
+    }
 }
+

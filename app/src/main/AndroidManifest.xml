@@ -19,6 +19,18 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${crashlyticsCollectionEnabled}" />
 
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

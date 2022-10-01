@@ -124,12 +124,12 @@ complexity:
     threshold: 600
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 80
   LongParameterList:
     active: true
-    functionThreshold: 6
-    constructorThreshold: 7
-    ignoreDefaultParameters: false
+    functionThreshold: 8
+    constructorThreshold: 10
+    ignoreDefaultParameters: true
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
   MethodOverloading:
@@ -163,11 +163,11 @@ complexity:
   TooManyFunctions:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    thresholdInFiles: 11
-    thresholdInClasses: 11
-    thresholdInInterfaces: 11
-    thresholdInObjects: 11
-    thresholdInEnums: 11
+    thresholdInFiles: 18
+    thresholdInClasses: 18
+    thresholdInInterfaces: 18
+    thresholdInObjects: 18
+    thresholdInEnums: 18
     ignoreDeprecated: false
     ignorePrivate: false
     ignoreOverridden: false
@@ -327,7 +327,7 @@ naming:
   FunctionNaming:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    functionPattern: '[a-z][a-zA-Z0-9]*'
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
     ignoreOverridden: true
   FunctionParameterNaming:
@@ -591,6 +591,7 @@ style:
     excludeImportStatements: true
     excludeCommentStatements: false
     excludeRawStrings: true
+    excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
   MayBeConst:
     active: true
   ModifierOrder:

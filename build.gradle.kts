@@ -1,43 +1,31 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
-buildscript {
-    repositories {
-        google()
-        maven("https://plugins.gradle.org/m2/")
-    }
-    dependencies {
-        classpath("com.raxdenstudios:android-plugins:${Versions.androidPlugins}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltAndroidGradlePlugin}")
-        classpath("com.google.gms:google-services:${Versions.playServices}")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebaseCrashlytics}")
-        classpath("com.google.firebase:firebase-appdistribution-gradle:${Versions.firebaseAppDistribution}")
-    }
-}
 
 plugins {
     /**
+     * ====== Plugins DSL ======
      * You should use `apply false` in the top-level build.gradle file
      * to add a Gradle plugin as a build dependency, but not apply it to the
      * current (root) project. You should not use `apply false` in sub-projects.
      * For more information, see
      * Applying external plugins with same version to subprojects.
+     * More info -> https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block
      */
-    id("com.android.application") version Versions.androidGradlePlugin apply false
-    id("com.android.library") version Versions.androidGradlePlugin apply false
-    id("org.jetbrains.kotlin.android") version Versions.kotlin apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.play.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.firebase.appdistribution) apply false
 
-    id("com.vanniktech.android.junit.jacoco") version Versions.jacocoPlugin
-    id("com.raxdenstudios.android-releasing") version Versions.androidPlugins
-    id("com.raxdenstudios.android-versioning") version Versions.androidPlugins apply false
-    id("com.adarshr.test-logger") version Versions.testLoggerPlugin
-    id("io.gitlab.arturbosch.detekt") version Versions.detektPlugin
-    id("com.github.ben-manes.versions") version Versions.benNamesPlugin
-    id("com.github.triplet.play") version Versions.tripletPlugin apply false
-}
-
-tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-    outputFormatter = "html"
+    alias(libs.plugins.junit.jacoco)
+    alias(libs.plugins.android.releasing)
+    alias(libs.plugins.android.versioning) apply false
+    alias(libs.plugins.test.logger)
+    alias(libs.plugins.detekt.plugin)
+    alias(libs.plugins.gradle.play.publisher) apply false
 }
 
 junitJacoco {
@@ -50,10 +38,14 @@ junitJacoco {
     )
 }
 
-// Detekt info -> https://detekt.dev/docs/gettingstarted/gradle/
+// Detekt info ->
+// detekt               - Runs a detekt analysis and complexity report on your source files
+// detektGenerateConfig - Generates a default detekt configuration file into your project directory.
+// detektBaseline       - Similar to detekt, but creates a code smell baseline. Further detekt runs will only feature
+//                          new smells not in this list.
+// More info -> https://detekt.dev/docs/gettingstarted/gradle/
 detekt {
     // version found will be used. Override to stay on the same version.
-    toolVersion = Versions.detektPlugin
     config = files("/config/detekt/detekt.yml")
     // Builds the AST in parallel. Rules are always executed in parallel. Can lead to speedups in larger projects.
     parallel = true
@@ -64,15 +56,25 @@ detekt {
 }
 
 subprojects {
-    apply(plugin = "com.adarshr.test-logger")
-    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.detekt.plugin.get().pluginId)
+    // https://docs.gradle.org/current/userguide/project_report_plugin.html#sec:project_reports_tasks
+    apply(plugin = "project-report")
 
     testlogger {
         theme = ThemeType.MOCHA
         slowThreshold = 3000
     }
+
+    dependencies {
+        // This rule set provides wrappers for rules implemented by ktlint - https://ktlint.github.io/.
+        // https://detekt.dev/docs/rules/formatting/dawd
+        val detektFormatting = rootProject.libs.plugins.detekt.formatting.get().toString()
+        detektPlugins(detektFormatting)
+    }
 }
 
+// https://stackoverflow.com/questions/50508926/why-delete-rootproject-builddir-task-in-gradle-removed-the-build-directory-in-th
 tasks {
     val clean by registering(Delete::class) {
         delete(buildDir)
