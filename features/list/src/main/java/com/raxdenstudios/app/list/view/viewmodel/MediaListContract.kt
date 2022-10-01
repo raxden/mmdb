@@ -6,12 +6,6 @@ import com.raxdenstudios.commons.pagination.model.PageIndex
 
 internal class MediaListContract {
 
-    internal sealed class UserEvent {
-        object Refresh : UserEvent()
-        data class LoadMore(val pageIndex: PageIndex) : UserEvent()
-        data class WatchButtonClicked(val item: MediaListItemModel) : UserEvent()
-    }
-
     internal data class UIState(
         val isLoading: Boolean = false,
         val model: MediaListModel,
@@ -26,5 +20,11 @@ internal class MediaListContract {
                 error = null,
             )
         }
+    }
+
+    internal sealed class UserEvent {
+        object Refresh : UserEvent()
+        data class LoadMore(val pageIndex: PageIndex) : UserEvent()
+        data class WatchButtonClicked(val item: MediaListItemModel) : UserEvent()
     }
 }

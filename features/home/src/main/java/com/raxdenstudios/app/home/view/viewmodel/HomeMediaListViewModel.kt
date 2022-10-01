@@ -5,7 +5,6 @@ import com.raxdenstudios.app.base.BaseViewModel
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.view.mapper.GetMediasUseCaseParamsMapper
 import com.raxdenstudios.app.home.view.mapper.HomeModelMapper
-import com.raxdenstudios.app.home.view.model.HomeMediaListModel
 import com.raxdenstudios.app.home.view.model.HomeModuleModel
 import com.raxdenstudios.app.media.domain.AddMediaToWatchListUseCase
 import com.raxdenstudios.app.media.domain.GetMediasUseCase
@@ -26,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,117 +38,88 @@ internal class HomeMediaListViewModel @Inject constructor(
     private val homeModelMapper: HomeModelMapper,
 ) : BaseViewModel() {
 
-    private val _state = MutableStateFlow(UIState.loading())
-    val state: StateFlow<UIState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(HomeMediaListContract.UIState.loading())
+    val uiState: StateFlow<HomeMediaListContract.UIState> = _uiState.asStateFlow()
 
     init {
         loadData()
     }
 
     fun loadData() = viewModelScope.safeLaunch {
-        _state.value = UIState.loading()
-
         getHomeModulesUseCase()
-            .catch { error -> _state.update { value -> value.copy(error = error) } }
+            .catch { error -> _uiState.update { value -> value.copy(error = error) } }
             .map { modules -> homeModelMapper.transform(modules) }
-            .collect { model -> _state.update { value -> value.copy(loading = false, model = model) } }
+            .collect { model -> _uiState.update { value -> value.copy(isLoading = false, model = model) } }
     }
 
-    fun mediaSelected(
-        model: HomeMediaListModel,
-        carouselMedias: HomeModuleModel.CarouselMedias,
-        mediaItemModel: MediaListItemModel,
-    ) {
-        Unit
+    fun setUserEvent(event: HomeMediaListContract.UserEvent): Unit = when (event) {
+        is HomeMediaListContract.UserEvent.MediaSelected -> Unit
+        is HomeMediaListContract.UserEvent.WatchButtonClicked -> when (event.item.watchButton) {
+            is WatchButtonModel.Selected -> removeMovieFromWatchList(event.item)
+            is WatchButtonModel.Unselected -> addMovieToWatchList(event.item)
+        }
+        is HomeMediaListContract.UserEvent.ViewAllButtonClicked -> viewAllButtonSelected(event.module)
+        is HomeMediaListContract.UserEvent.FilterChanged -> filterChanged(event.module, event.mediaType)
     }
 
-    fun viewAllButtonSelected(carouselMedias: HomeModuleModel.CarouselMedias) {
-        _state.update { value -> value.copy(events = value.events.plus(UIEvent.NavigateToMediaList(carouselMedias))) }
+    private fun viewAllButtonSelected(module: HomeModuleModel.CarouselMedias) {
+        _uiState.update { value ->
+            value.copy(events = value.events.plus(HomeMediaListContract.UIEvent.NavigateToMediaList(module)))
+        }
     }
 
-    fun eventConsumed(event: UIEvent) {
-        _state.update { value -> value.copy(events = value.events.minus(event)) }
+    fun eventConsumed(event: HomeMediaListContract.UIEvent) {
+        _uiState.update { value -> value.copy(events = value.events.minus(event)) }
     }
 
-    fun filterChanged(
-        model: HomeMediaListModel,
+    private fun filterChanged(
         carouselMedias: HomeModuleModel.CarouselMedias,
         mediaType: MediaType,
-    ) = viewModelScope.safeLaunch {
-        val useCaseParams = getMediasUseCaseParamsMapper.transform(carouselMedias, mediaType)
-        val medias = getMediasUseCase(useCaseParams)
-            .map { pageList -> pageList.items }
-            .map { medias -> mediaListItemModelMapper.transform(medias) }
-            .getValueOrDefault(emptyList())
-        val carouselMediasUpdated = carouselMedias.copyWith(mediaType, medias)
-        val homeUpdated = model.copy(
-            modules = model.modules.replaceItem(carouselMediasUpdated) { it == carouselMedias }
-        )
-        _state.update { value -> value.copy(model = homeUpdated) }
+    ) {
+        viewModelScope.safeLaunch {
+            val useCaseParams = getMediasUseCaseParamsMapper.transform(carouselMedias, mediaType)
+            val medias = getMediasUseCase(useCaseParams)
+                .map { pageList -> pageList.items }
+                .map { medias -> mediaListItemModelMapper.transform(medias) }
+                .getValueOrDefault(emptyList())
+            val carouselMediasUpdated = carouselMedias.copyWith(mediaType, medias)
+            _uiState.update { value ->
+                value.copy(
+                    model = value.model.copy(
+                        modules = value.model.modules.replaceItem(carouselMediasUpdated) { it == carouselMedias }
+                    )
+                )
+            }
+        }
     }
 
-    fun watchListPressed(
-        home: HomeMediaListModel,
+    private fun addMovieToWatchList(
         mediaListItem: MediaListItemModel,
     ) {
-        when (mediaListItem.watchButton) {
-            is WatchButtonModel.Selected -> {
-                viewModelScope.safeLaunch {
-                    val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Unselected)
-                    mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-                    val params = RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-                    removeMediaFromWatchListUseCase(params)
-                        .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
-                }
-            }
-            is WatchButtonModel.Unselected -> {
-                viewModelScope.safeLaunch {
-                    val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Selected)
-                    mediaListItemHasChangedThusUpdateHomeMediaListModel(home, itemUpdated)
-                    val params = AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
-                    addMediaToWatchListUseCase(params)
-                        .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(home, mediaListItem) }
-                }
-            }
+        viewModelScope.safeLaunch {
+            val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Selected)
+            mediaListItemHasChangedThusUpdateHomeMediaListModel(itemUpdated)
+            val params = AddMediaToWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+            addMediaToWatchListUseCase(params)
+                .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(mediaListItem) }
+        }
+    }
+
+    private fun removeMovieFromWatchList(
+        mediaListItem: MediaListItemModel,
+    ) {
+        viewModelScope.safeLaunch {
+            val itemUpdated = mediaListItem.copy(watchButton = WatchButtonModel.Unselected)
+            mediaListItemHasChangedThusUpdateHomeMediaListModel(itemUpdated)
+            val params = RemoveMediaFromWatchListUseCase.Params(mediaListItem.id, mediaListItem.mediaType)
+            removeMediaFromWatchListUseCase(params)
+                .onFailure { mediaListItemHasChangedThusUpdateHomeMediaListModel(mediaListItem) }
         }
     }
 
     private fun mediaListItemHasChangedThusUpdateHomeMediaListModel(
-        home: HomeMediaListModel,
         mediaListItem: MediaListItemModel,
     ) {
-        val homeUpdated = home.updateMedia(mediaListItem)
-        _state.update { value -> value.copy(model = homeUpdated) }
-    }
-
-    internal data class UIState(
-        val loading: Boolean,
-        val model: HomeMediaListModel,
-        val events: List<UIEvent>,
-        val error: Throwable?,
-    ) {
-
-        companion object {
-
-            fun loading() = UIState(
-                loading = true,
-                model = HomeMediaListModel.empty,
-                events = emptyList(),
-                error = null,
-            )
-        }
-    }
-
-    /**
-     * https://developer.android.com/topic/architecture/ui-layer/events#consuming-trigger-updates
-     *
-     * https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95
-     */
-    internal sealed class UIEvent {
-        val id: String = UUID.randomUUID().toString()
-
-        data class NavigateToMediaList(
-            val carouselMedias: HomeModuleModel.CarouselMedias,
-        ) : UIEvent()
+        _uiState.update { value -> value.copy(model = value.model.updateMedia(mediaListItem)) }
     }
 }

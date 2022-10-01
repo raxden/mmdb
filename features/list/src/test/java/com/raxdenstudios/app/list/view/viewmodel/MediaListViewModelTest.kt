@@ -229,28 +229,31 @@ internal class MediaListViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
-}
 
-private val aFirstPage = Page(1)
-private val aSecondPage = Page(2)
-private val aPageSize = PageSize(2)
-private val aGetMoviesUseCaseFirstPageParams =
-    GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
-private val aGetMoviesUseCaseSecondPageParams =
-    GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
-private val aFirstPageMovies = listOf(
-    Media.Movie.empty.copy(id = MediaId(1)),
-    Media.Movie.empty.copy(id = MediaId(2)),
-)
-private val aSecondPageMovies = listOf(
-    Media.Movie.empty.copy(id = MediaId(3)),
-    Media.Movie.empty.copy(id = MediaId(4)),
-)
-private val aFirstPageList = PageList<Media>(
-    items = aFirstPageMovies,
-    aFirstPage,
-)
-private val aSecondPageList = PageList<Media>(
-    items = aSecondPageMovies,
-    aSecondPage,
-)
+    companion object {
+
+        private val aFirstPage = Page(1)
+        private val aSecondPage = Page(2)
+        private val aPageSize = PageSize(2)
+        private val aGetMoviesUseCaseFirstPageParams =
+            GetMediasUseCase.Params(MediaFilter.popularMovies, aFirstPage, aPageSize)
+        private val aGetMoviesUseCaseSecondPageParams =
+            GetMediasUseCase.Params(MediaFilter.popularMovies, aSecondPage, aPageSize)
+        private val aFirstPageMovies = listOf(
+            Media.Movie.empty.copy(id = MediaId(1)),
+            Media.Movie.empty.copy(id = MediaId(2)),
+        )
+        private val aSecondPageMovies = listOf(
+            Media.Movie.empty.copy(id = MediaId(3)),
+            Media.Movie.empty.copy(id = MediaId(4)),
+        )
+        private val aFirstPageList = PageList<Media>(
+            items = aFirstPageMovies,
+            aFirstPage,
+        )
+        private val aSecondPageList = PageList<Media>(
+            items = aSecondPageMovies,
+            aSecondPage,
+        )
+    }
+}
