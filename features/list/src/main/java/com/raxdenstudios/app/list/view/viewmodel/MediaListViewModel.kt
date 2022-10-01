@@ -60,20 +60,16 @@ internal class MediaListViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun setUserEvent(event: MediaListContract.UserEvent) {
-        when (event) {
-            is MediaListContract.UserEvent.LoadMore -> requestPage(event.pageIndex, params)
-            is MediaListContract.UserEvent.Refresh -> refresh(params)
-            is MediaListContract.UserEvent.WatchButtonClicked -> {
-                when (event.item.watchButton) {
-                    is WatchButtonModel.Selected -> removeMovieFromWatchList(event.item)
-                    is WatchButtonModel.Unselected -> addMovieToWatchList(event.item)
-                }
-            }
+    fun setUserEvent(event: MediaListContract.UserEvent): Unit = when (event) {
+        is MediaListContract.UserEvent.LoadMore -> requestPage(event.pageIndex, params)
+        is MediaListContract.UserEvent.Refresh -> refresh(params)
+        is MediaListContract.UserEvent.WatchButtonClicked -> when (event.item.watchButton) {
+            is WatchButtonModel.Selected -> removeMovieFromWatchList(event.item)
+            is WatchButtonModel.Unselected -> addMovieToWatchList(event.item)
         }
     }
 
-    private fun addMovieToWatchList(item: MediaListItemModel) =
+    private fun addMovieToWatchList(item: MediaListItemModel) {
         viewModelScope.safeLaunch {
             val itemToReplace = item.copy(watchButton = WatchButtonModel.Selected)
             val params = AddMediaToWatchListUseCase.Params(item.id, item.mediaType)
@@ -81,8 +77,9 @@ internal class MediaListViewModel @Inject constructor(
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
                 .onSuccess { _uiState.update { value -> value.copy(model = value.model.replaceMovie(itemToReplace)) } }
         }
+    }
 
-    private fun removeMovieFromWatchList(item: MediaListItemModel) =
+    private fun removeMovieFromWatchList(item: MediaListItemModel) {
         viewModelScope.safeLaunch {
             val itemToReplace = item.copy(watchButton = WatchButtonModel.Unselected)
             val params = RemoveMediaFromWatchListUseCase.Params(item.id, item.mediaType)
@@ -90,6 +87,7 @@ internal class MediaListViewModel @Inject constructor(
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
                 .onSuccess { _uiState.update { value -> value.copy(model = value.model.replaceMovie(itemToReplace)) } }
         }
+    }
 
     private fun refresh(params: MediaListParams) {
         pagination.clear()
