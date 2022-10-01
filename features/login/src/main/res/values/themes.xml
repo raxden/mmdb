@@ -1,7 +1,0 @@
-<resources>
-
-    <style name="Theme.App.Login">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-</resources>

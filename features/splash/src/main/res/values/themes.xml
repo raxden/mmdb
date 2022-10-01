@@ -1,6 +1,0 @@
-<resources>
-
-    <style name="Theme.App.Splash">
-        <item name="android:windowBackground">@drawable/window_background</item>
-    </style>
-</resources>

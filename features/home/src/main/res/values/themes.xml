@@ -1,7 +1,0 @@
-<resources>
-
-    <style name="Theme.App.Home">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-    </style>
-</resources>
