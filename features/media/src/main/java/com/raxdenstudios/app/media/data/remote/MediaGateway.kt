@@ -30,7 +30,7 @@ internal class MediaGateway @Inject constructor(
     ): ResultData<List<MediaDto.Movie>> =
         watchListMovies(accountId, FIRST_PAGE)
             .coMap { pageDto ->
-                withContext(dispatcher.io()) {
+                withContext(dispatcher.io) {
                     val allMedias = pageDto.results.toMutableList()
                     val totalPages = pageDto.total_pages
                     val movies = (FIRST_PAGE + 1..totalPages)
@@ -48,7 +48,7 @@ internal class MediaGateway @Inject constructor(
     ): ResultData<List<MediaDto.TVShow>> =
         watchListTVShows(accountId, FIRST_PAGE)
             .coMap { pageDto ->
-                withContext(dispatcher.io()) {
+                withContext(dispatcher.io) {
                     val allMedias = pageDto.results.toMutableList()
                     val totalPages = pageDto.total_pages
                     val movies = (FIRST_PAGE + 1..totalPages)

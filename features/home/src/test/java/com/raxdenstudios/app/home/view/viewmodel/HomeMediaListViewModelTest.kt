@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.home.view.viewmodel
 
-import androidx.lifecycle.Observer
+import app.cash.turbine.test
+import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.home.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.home.domain.model.HomeModule
 import com.raxdenstudios.app.home.view.mapper.CarouselMediasModelMapper
@@ -17,24 +18,29 @@ import com.raxdenstudios.app.media.domain.model.MediaFilter
 import com.raxdenstudios.app.media.domain.model.MediaId
 import com.raxdenstudios.app.media.view.mapper.MediaListItemModelMapper
 import com.raxdenstudios.app.media.view.model.MediaListItemModel
-import com.raxdenstudios.app.media.view.model.WatchButtonModel
-import com.raxdenstudios.app.test.BasePresentationTest
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.test.rules.MainDispatcherRule
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
+import net.lachlanmckee.timberjunit.TimberTestRule
+import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-internal class HomeMediaListViewModelTest : BasePresentationTest() {
+internal class HomeMediaListViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    @get:Rule
+    val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
@@ -53,7 +59,6 @@ internal class HomeMediaListViewModelTest : BasePresentationTest() {
     private val removeMediaToWatchListUseCase: RemoveMediaFromWatchListUseCase = mockk {
         coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
     }
-    private val stateObserver: Observer<HomeMediaListViewModel.UIState> = mockk(relaxed = true)
     private val getMediasUseCaseParamsMapper = GetMediasUseCaseParamsMapper()
     private val mediaListItemModelMapper = MediaListItemModelMapper()
     private val carouselMediasModelMapper = CarouselMediasModelMapper(
@@ -82,30 +87,29 @@ internal class HomeMediaListViewModelTest : BasePresentationTest() {
     @Test
     fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
         runTest {
-//            viewModel.state.observeForever(stateObserver)
-//
-//            verify {
-//                stateObserver.onChanged(
-//                    HomeMediaListViewModel.UIState.Content(
-//                        HomeMediaListModel.empty.copy(
-//                            modules = listOf(
-//                                HomeModuleModel.CarouselMedias.Popular.empty.copy(
-//                                    medias = listOf(
-//                                        MediaListItemModel.empty.copy(id = MediaId(1L)),
-//                                        MediaListItemModel.empty.copy(id = MediaId(2L)),
-//                                    )
-//                                ),
-//                                HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
-//                                    medias = listOf(
-//                                        MediaListItemModel.empty.copy(id = MediaId(1L)),
-//                                        MediaListItemModel.empty.copy(id = MediaId(2L)),
-//                                    )
-//                                )
-//                            )
-//                        )
-//                    )
-//                )
-//            }
+            viewModel.uiState.test {
+                assertThat(awaitItem()).isEqualTo(HomeMediaListContract.UIState.loading())
+                assertThat(awaitItem()).isEqualTo(
+                    HomeMediaListContract.UIState(
+                        model = HomeMediaListModel.empty.copy(
+                            modules = listOf(
+                                HomeModuleModel.CarouselMedias.Popular.empty.copy(
+                                    medias = listOf(
+                                        MediaListItemModel.empty.copy(id = MediaId(1L)),
+                                        MediaListItemModel.empty.copy(id = MediaId(2L)),
+                                    )
+                                ),
+                                HomeModuleModel.CarouselMedias.NowPlaying.empty.copy(
+                                    medias = listOf(
+                                        MediaListItemModel.empty.copy(id = MediaId(1L)),
+                                        MediaListItemModel.empty.copy(id = MediaId(2L)),
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            }
         }
 
     @Test

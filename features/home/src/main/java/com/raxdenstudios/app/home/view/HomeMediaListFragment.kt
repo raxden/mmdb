@@ -10,6 +10,7 @@ import com.raxdenstudios.app.home.R
 import com.raxdenstudios.app.home.databinding.HomeMediaListFragmentBinding
 import com.raxdenstudios.app.home.view.adapter.HomeModuleListAdapter
 import com.raxdenstudios.app.home.view.model.HomeMediaListModel
+import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListContract
 import com.raxdenstudios.app.home.view.viewmodel.HomeMediaListViewModel
 import com.raxdenstudios.commons.ext.addProgressViewEndTarget
 import com.raxdenstudios.commons.ext.launchAndCollect
@@ -46,19 +47,19 @@ internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragmen
 
         binding.setUp()
 
-        launchAndCollect(viewModel.state) { state -> binding.handleState(state) }
+        launchAndCollect(viewModel.uiState) { state -> binding.handleState(state) }
     }
 
-    private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListViewModel.UIState) {
-        swipeRefreshLayout.isRefreshing = state.loading
+    private fun HomeMediaListFragmentBinding.handleState(state: HomeMediaListContract.UIState) {
+        swipeRefreshLayout.isRefreshing = state.isLoading
         state.error?.let { error -> errorManager.handleError(error) }
         state.events.firstOrNull()?.let { event -> handleEvent(event) }
         adapter.populate(state.model)
     }
 
-    private fun handleEvent(event: HomeMediaListViewModel.UIEvent) {
+    private fun handleEvent(event: HomeMediaListContract.UIEvent) {
         when (event) {
-            is HomeMediaListViewModel.UIEvent.NavigateToMediaList -> {
+            is HomeMediaListContract.UIEvent.NavigateToMediaList -> {
                 navigator.launchMediaList(event.carouselMedias) { viewModel.loadData() }
                 viewModel.eventConsumed(event)
             }
@@ -68,16 +69,16 @@ internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragmen
     private fun HomeModuleListAdapter.populate(model: HomeMediaListModel) {
         submitList(model.modules)
         onCarouselMediaClickListener = { carouselMedias, mediaListItemModel ->
-            viewModel.mediaSelected(model, carouselMedias, mediaListItemModel)
+            viewModel.setUserEvent(HomeMediaListContract.UserEvent.MediaSelected(carouselMedias, mediaListItemModel))
         }
         onCarouselWatchListClickListener = { _, mediaListItemModel ->
-            viewModel.watchListPressed(model, mediaListItemModel)
+            viewModel.setUserEvent(HomeMediaListContract.UserEvent.WatchButtonClicked(mediaListItemModel))
         }
         onCarouselSeeAllClickListener = { carouselMedias ->
-            viewModel.viewAllButtonSelected(carouselMedias)
+            viewModel.setUserEvent(HomeMediaListContract.UserEvent.ViewAllButtonClicked(carouselMedias))
         }
         onCarouselFilterChanged = { carouselMedias, mediaType ->
-            viewModel.filterChanged(model, carouselMedias, mediaType)
+            viewModel.setUserEvent(HomeMediaListContract.UserEvent.FilterChanged(carouselMedias, mediaType))
         }
     }
 
