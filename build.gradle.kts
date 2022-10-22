@@ -7,7 +7,6 @@ buildscript {
     maven("https://plugins.gradle.org/m2/")
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
     classpath("com.raxdenstudios:android-plugins:${Versions.androidPlugins}")
     classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltAndroidGradlePlugin}")
     classpath("com.google.gms:google-services:${Versions.playServices}")
@@ -17,6 +16,15 @@ buildscript {
 }
 
 plugins {
+  /**
+   * You should use `apply false` in the top-level build.gradle file
+   * to add a Gradle plugin as a build dependency, but not apply it to the
+   * current (root) project. You should not use `apply false` in sub-projects.
+   * For more information, see
+   * Applying external plugins with same version to subprojects.
+   */
+  id("com.android.application") version Versions.androidGradlePlugin apply false
+  id("com.android.library") version Versions.androidGradlePlugin apply false
   id("org.jetbrains.kotlin.android") version Versions.kotlin apply false
 
   id("com.vanniktech.android.junit.jacoco") version Versions.jacocoPlugin

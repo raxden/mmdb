@@ -1,0 +1,11 @@
+name: 'Recover assembled builds'
+description: "Recover assembled builds from previous job"
+outputs: {}
+runs:
+    using: "composite"
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: assembled-builds
+          path: |
+            app/build/outputs/apk/
