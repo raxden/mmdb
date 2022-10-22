@@ -11,7 +11,7 @@ object Versions {
     const val jvmTarget = "1.8"
 
     const val androidPlugins = "0.46"
-    const val androidGradlePlugin = "7.2.2"
+    const val androidGradlePlugin = "7.3.0"
     const val hiltAndroidGradlePlugin = "2.42"
     const val jacocoPlugin = "0.16.0"
     const val nexusStagingPlugin = "0.30.0"
@@ -19,9 +19,10 @@ object Versions {
     const val detektPlugin = "1.22.0-RC2"
     const val benNamesPlugin = "0.42.0"
     const val tripletPlugin = "3.7.0"
-    const val playServices = "4.3.12"
+    const val playServices = "4.3.14"
     const val firebaseCrashlytics = "2.9.1"
     const val firebaseAppDistribution = "3.0.2"
+    const val gradleEnterprise = "3.11.2"
 
     const val commonsVersion = "4.18.0"
 

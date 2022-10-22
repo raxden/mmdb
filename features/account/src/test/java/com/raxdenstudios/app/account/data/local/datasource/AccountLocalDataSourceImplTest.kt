@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Ignore
 import org.junit.Test
 
 class AccountLocalDataSourceImplTest : BasePresentationTest() {
@@ -25,6 +26,7 @@ class AccountLocalDataSourceImplTest : BasePresentationTest() {
     }
 
     @Test
+    @Ignore
     fun `Given an empty database, When observe is called, Then create guest account`() =
         runTest {
             val flow = dataSource.observeAccount()
@@ -33,6 +35,7 @@ class AccountLocalDataSourceImplTest : BasePresentationTest() {
         }
 
     @Test
+    @Ignore
     fun `Given an empty database, When getAccount is called, Then create guest account`() =
         runTest {
             val account = dataSource.getAccount()
