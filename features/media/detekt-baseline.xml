@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.Movie$@Expose val original_title: String</ID>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.Movie$@Expose val release_date: String</ID>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val first_air_date: String</ID>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val origin_country: List&lt;String></ID>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val original_name: String</ID>
+    <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Request$@Expose val media_id: Long</ID>
+    <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Request$@Expose val media_type: String</ID>
+    <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Response$@Expose val status_code: Int</ID>
+    <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Response$@Expose val status_message: String</ID>
+    <ID>MaxLineLength:MediaGatewayTest.kt$MediaGatewayTest$fun</ID>
+    <ID>MaxLineLength:MediaRemoteDataSourceTest.kt$MediaRemoteDataSourceTest$fun</ID>
+    <ID>MaxLineLength:MediaRepositoryImplTest.kt$MediaRepositoryImplTest$fun</ID>
+    <ID>TooManyFunctions:MediaGateway.kt$MediaGateway</ID>
+    <ID>TooManyFunctions:MediaRemoteDataSource.kt$MediaRemoteDataSource</ID>
+    <ID>TopLevelPropertyNaming:MediaGatewayTest.kt$private const val aAccountId = "aAccountId"</ID>
+    <ID>TopLevelPropertyNaming:MediaRemoteDataSourceTest.kt$private const val aTMDBAccountId = "aTMDBAccountId"</ID>
+    <ID>TopLevelPropertyNaming:MediaRepositoryImplTest.kt$private const val aCredentialsAccountId = "aCredentialsAccountId"</ID>
+    <ID>UnusedPrivateMember:MediaRepositoryImplTest.kt$private val aAccountGuest = Account.Guest.empty</ID>
+    <ID>UseCheckOrError:MediaEntityDataMapper.kt$MediaEntityToDomainMapper$throw IllegalStateException("Invalid type stored in database, ${source.type}")</ID>
+    <ID>UseCheckOrError:MediaEntityDataMapper.kt$SizeEntityToDomainMapper$throw IllegalStateException("Invalid field value to represent Picture.Size")</ID>
+    <ID>UseCheckOrError:MediaTypeToDtoMapper.kt$MediaTypeToDtoMapper$throw IllegalStateException("MediaType doesn't allowed")</ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val backdrop_path: String?</ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val genre_ids: List&lt;Int></ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val original_language: String</ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val poster_path: String</ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val vote_average: Double</ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val vote_count: Int</ID>
+  </CurrentIssues>
+</SmellBaseline>

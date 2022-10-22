@@ -1,6 +1,5 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 
 buildscript {
   repositories {
@@ -43,6 +42,19 @@ junitJacoco {
   )
 }
 
+// Detekt info -> https://detekt.dev/docs/gettingstarted/gradle/
+detekt {
+  // version found will be used. Override to stay on the same version.
+  toolVersion = Versions.detektPlugin
+  config = files("/config/detekt/detekt.yml")
+  // Builds the AST in parallel. Rules are always executed in parallel. Can lead to speedups in larger projects.
+  parallel = true
+  // Android: Don't create tasks for the specified build types (e.g. "release")
+  ignoredBuildTypes = listOf("release")
+  // Specify the base path for file paths in the formatted reports.
+  basePath = "${rootProject.projectDir}"
+}
+
 subprojects {
   apply(plugin = "com.adarshr.test-logger")
   apply(plugin = "io.gitlab.arturbosch.detekt")
@@ -50,14 +62,6 @@ subprojects {
   testlogger {
     theme = ThemeType.MOCHA
     slowThreshold = 3000
-  }
-
-  configure<DetektExtension> {
-    // To create detekt.yml -> gradle detektGenerateConfig
-    toolVersion = Versions.detektPlugin
-    config = files("${project.rootDir}/config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
-    reports.html.enabled = true
   }
 }
 
