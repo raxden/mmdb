@@ -21,17 +21,25 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Enable debug for the `gradle-build-action` cache operations
+  GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
   info:
-    name: Preliminary Information
+    name: Workflow Information
     runs-on: ubuntu-latest
 
     steps:
-      - name: Information
+      - name: Basic Information
         run: |
-          echo "The job was automatically triggered by a ${{ github.event_name }} event."
+          echo "The job was automatically triggered by a ${{ github.event_name }} event with ${{ github.event.action }} action."
           echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
           echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
           echo "  "
@@ -39,127 +47,168 @@ jobs:
           echo "github.sha = ${{ github.sha }}"
           echo "  "
 
+  checkstyle:
+    name: Check code (detekt)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: Check code via Detekt
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt --stacktrace --scan
+
+  assemble:
+    needs: [ checkstyle ]
+    if: success()
+    name: Assemble apk
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        assemble: [ "assembleDebug", "assembleRelease" ]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: Assemble apk
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ${{ matrix.assemble }} --stacktrace --scan
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: assembled-builds
+          path: |
+            app/build/outputs/apk/
+
   test:
+    needs: [ checkstyle ]
+    if: success()
     name: Run Unit Tests
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-          cache: 'gradle'
-
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v5.2
-
-      - name: Preparing variables
-        env:
-          IS_MASTER_BRANCH: ${{ steps.branch-name.outputs.current_branch == 'master' }}
-          IS_RELEASE: ${{ startsWith(steps.branch-name.outputs.current_branch, 'releases/') }}
-        run: |
-          echo "isMasterBranch=${IS_MASTER_BRANCH}" >> $GITHUB_ENV
-          echo "isRelease=${IS_RELEASE}" >> $GITHUB_ENV
-          echo "hasFilesChanged=${HAS_FILES_CHANGED}" >> $GITHUB_ENV
-
-      - name: Detekt
-        if: env.hasFilesChanged == 'true'
-        run: ./gradlew detekt
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
 
       - name: Unit tests
-        if: env.hasFilesChanged == 'true'
-        run: ./gradlew testDebugUnitTest --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: testDebugUnitTest --stacktrace --scan
 
       - name: Jacoco Reports :${{ matrix.module }}
-        if: env.isMasterBranch == 'true' || env.isRelease == 'true'
-        run: ./gradlew jacocoTestReportDebug
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jacocoTestReportDebug --stacktrace --scan
 
       - name: Uploading reports to Codecov
-        if: env.isMasterBranch == 'true' || env.isRelease == 'true'
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         uses: codecov/codecov-action@v1
 
-#  instrumental:
-#    name: Run Android Instrumental Tests
-#    runs-on: macOS-latest # enables hardware acceleration in the virtual machine
-#    timeout-minutes: 30
-#    strategy:
-#      matrix:
-#        api-level: [29]
+  instrumental-test:
+    needs: [ checkstyle ]
+    if: success()
+    name: Run Android Instrumental Tests
+    runs-on: macOS-latest # enables hardware acceleration in the virtual machine
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        api-level: [ 29 ]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true' && steps.changed-files-specific_library_module.outputs.any_changed == 'true'
+        uses: reactivecircus/android-emulator-runner@v2  # https://github.com/ReactiveCircus/android-emulator-runner
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Run instrumental tests
+        if: steps.changed-files-specific_library_module.outputs.any_changed == 'true'
+        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            ./gradlew connectedAndroidTest --stacktrace --scan
+
+#  deploy-firebase:
+#    name: Build & Upload to Firebase App Distribution
+#    if: github.event.pull_request.base.ref == 'master' || startsWith(github.ref, 'refs/heads/release/')
+#    runs-on: ubuntu-latest
+#
+#    needs: test
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#          submodules: 'true'
+#          token: ${{ secrets.RELEASE_HUB_SECRET }}
+#
+#      - name: Setup machine
+#        uses: ./.github/actions/common_setup
+#
+#      - name: Recover build files
+#        uses: ./.github/actions/recover_builds
+#
+#      - name: Deploy in Firebase App Distribution
+#        env:
+#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+#        run: bash ./gradlew appDistributionUploadRelease --stacktrace
+
+#  deploy-playstore:
+#    name: Build & Upload to Playstore
+#    if: startsWith(github.ref, 'refs/tags/')
+#    runs-on: ubuntu-latest
+#
+#    needs: test
 #
 #    steps:
 #      - name: Check out code
 #        uses: actions/checkout@v2
 #
-#      - name: set up JDK 1.8
-#        uses: actions/setup-java@v1
+#      - uses: actions/setup-java@v3
 #        with:
-#          java-version: 1.8
+#          distribution: 'temurin'
+#          java-version: '11'
+#          cache: 'gradle'
 #
-#      - uses: actions/cache@v2 # https://github.com/actions/cache/blob/main/examples.md#java---gradle
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-  #          restore-keys: |
-  #            ${{ runner.os }}-gradle-
-  #
-  #      - name: Instrumental tests
-  #        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
-  #        with:
-  #          api-level: ${{ matrix.api-level }}
-  #          disable-animations: true
-  #          script: ./gradlew connectedAndroidTest --stacktrace
-
-  deploy-firebase:
-    name: Build & Upload to Firebase App Distribution
-    if: github.event.pull_request.base.ref == 'master' || startsWith(github.ref, 'refs/heads/release/')
-    runs-on: ubuntu-latest
-
-    needs: test
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-          cache: 'gradle'
-
-      - name: Build
-        run: bash ./gradlew assembleRelease
-
-      - name: Deploy in Firebase App Distribution
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: bash ./gradlew appDistributionUploadRelease --stacktrace
-
-  deploy-playstore:
-    name: Build & Upload to Playstore
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-
-    needs: test
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-          cache: 'gradle'
-
-      - name: Publish
-        env:
-          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
-        run: bash ./gradlew publishBundle --stacktrace
+#      - name: Publish
+#        env:
+#          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
+#        run: bash ./gradlew publishBundle --stacktrace

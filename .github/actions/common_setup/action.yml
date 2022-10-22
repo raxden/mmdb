@@ -1,0 +1,11 @@
+name: 'Common machine setup'
+description: "Prepares the machine"
+outputs: {}
+runs:
+    using: "composite"
+    steps:
+      - name: Set up JDK 11 and Gradle cache
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
