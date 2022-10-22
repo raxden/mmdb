@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongParameterList:MediaListViewModel.kt$MediaListViewModel$( private val mediaListParamsFactory: MediaListParamsFactory, private val paginationConfig: Pagination.Config, private val getMediasUseCase: GetMediasUseCase, private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase, private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase, private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper, private val mediaListModelMapper: MediaListModelMapper, )</ID>
+    <ID>MaxLineLength:MediaListViewModelTest.kt$MediaListViewModelTest$fun</ID>
+  </CurrentIssues>
+</SmellBaseline>

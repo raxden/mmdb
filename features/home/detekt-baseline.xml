@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:HomeActivity.kt$HomeActivity${ }</ID>
+    <ID>LongParameterList:HomeMediaListViewModel.kt$HomeMediaListViewModel$( private val getHomeModulesUseCase: GetHomeModulesUseCase, private val getMediasUseCase: GetMediasUseCase, private val addMediaToWatchListUseCase: AddMediaToWatchListUseCase, private val removeMediaFromWatchListUseCase: RemoveMediaFromWatchListUseCase, private val getMediasUseCaseParamsMapper: GetMediasUseCaseParamsMapper, private val mediaListItemModelMapper: MediaListItemModelMapper, private val homeModelMapper: HomeModelMapper, )</ID>
+    <ID>MagicNumber:HomeModuleEntityToDomainMapper.kt$HomeModuleEntityToDomainMapper$3</ID>
+    <ID>MagicNumber:HomeModuleEntityToDomainMapper.kt$HomeModuleEntityToDomainMapper$4</ID>
+    <ID>MagicNumber:HomeModuleEntityToDomainMapper.kt$HomeModuleEntityToDomainMapper$5</ID>
+    <ID>MagicNumber:HomeModuleModel.kt$HomeModuleModel$3</ID>
+    <ID>MagicNumber:HomeModuleModel.kt$HomeModuleModel$4</ID>
+    <ID>MagicNumber:HomeModuleModel.kt$HomeModuleModel$5</ID>
+    <ID>MaxLineLength:CarouselMediasModelMapperTest.kt$CarouselMediasModelMapperTest$fun</ID>
+    <ID>MaxLineLength:GetHomeModulesUseCaseTest.kt$GetHomeModulesUseCaseTest$fun</ID>
+    <ID>MaxLineLength:HomeMediaListViewModelTest.kt$HomeMediaListViewModelTest$fun</ID>
+    <ID>UnusedPrivateMember:HomeMediaListViewModelTest.kt$private val aHomeModel = HomeMediaListModel.empty.copy( modules = listOf( aCarouselMediasPopular, aCarouselMediasTopRated ) )</ID>
+    <ID>UseCheckOrError:HomeCarouselMediasModuleView.kt$HomeCarouselMediasModuleView$throw IllegalStateException("Invalid mediaType option selected")</ID>
+    <ID>UseCheckOrError:HomeModuleEntityToDomainMapper.kt$HomeModuleEntityToDomainMapper$throw IllegalStateException("module subtype with value $subtype doesn't exists")</ID>
+    <ID>UseCheckOrError:HomeModuleEntityToDomainMapper.kt$HomeModuleEntityToDomainMapper$throw IllegalStateException("module type with value $type doesn't exists")</ID>
+  </CurrentIssues>
+</SmellBaseline>

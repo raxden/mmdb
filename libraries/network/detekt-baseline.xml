@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ConstructorParameterNaming:ErrorDto.kt$ErrorDto$@Expose val status_code: Int</ID>
+    <ID>ConstructorParameterNaming:ErrorDto.kt$ErrorDto$@Expose val status_message: String</ID>
+    <ID>ConstructorParameterNaming:PageDto.kt$PageDto$@Expose val total_pages: Int</ID>
+    <ID>ConstructorParameterNaming:PageDto.kt$PageDto$@Expose val total_results: Int</ID>
+    <ID>LongParameterList:NetworkLibraryModule.kt$NetworkLibraryModule$( cacheLoggerInterceptor: CacheLoggerInterceptor, cacheNetworkInterceptor: CacheNetworkInterceptor, cacheOfflineInterceptor: CacheOfflineInterceptor, httpLoggingInterceptor: HttpLoggingInterceptor, languageInterceptor: LanguageInterceptor, accessTokenInterceptor: AccessTokenInterceptor, // ganderInterceptor: GanderInterceptor, cache: Cache, )</ID>
+    <ID>LongParameterList:NetworkLibraryModule.kt$NetworkLibraryModule$( cacheLoggerInterceptor: CacheLoggerInterceptor, cacheNetworkInterceptor: CacheNetworkInterceptor, cacheOfflineInterceptor: CacheOfflineInterceptor, httpLoggingInterceptor: HttpLoggingInterceptor, languageInterceptor: LanguageInterceptor, tokenInterceptor: TokenInterceptor, sessionInterceptor: SessionInterceptor, // ganderInterceptor: GanderInterceptor, cache: Cache, )</ID>
+    <ID>MaxLineLength:APIDataV4Provider.kt$APIDataV4Provider$"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZTkyYzk2Y2JkYmMxMWIzZjUyYzZmZWZlNDk1MGI5NiIsInN1YiI6IjYwNGY3N2Q0MTdiNWVmMDA2YmViNTAyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.K6xG2lv4Wmi-fLR3aUS4YR7nAWUxX7tm__2wsOCyz38"</ID>
+    <ID>TooManyFunctions:NetworkLibraryModule.kt$NetworkLibraryModule$NetworkLibraryModule</ID>
+  </CurrentIssues>
+</SmellBaseline>
