@@ -14,6 +14,7 @@ data class HomeModuleEntity(
 ) {
 
     companion object {
+
         val popular = HomeModuleEntity(type = 1, subtype = 1, order = 2)
         val nowPlaying = HomeModuleEntity(type = 1, subtype = 2, order = 1)
         val topRated = HomeModuleEntity(type = 1, subtype = 3, order = 4)

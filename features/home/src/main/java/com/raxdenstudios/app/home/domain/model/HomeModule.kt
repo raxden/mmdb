@@ -10,6 +10,7 @@ sealed class HomeModule(
     abstract val medias: List<Media>
 
     companion object {
+
         val popularMovies = Popular(
             mediaType = MediaType.MOVIE,
             medias = emptyList(),

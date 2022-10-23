@@ -33,6 +33,7 @@ sealed class MediaDto {
     ) : MediaDto() {
 
         companion object {
+
             @VisibleForTesting
             val empty = Movie(
                 adult = false,

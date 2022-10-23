@@ -24,6 +24,7 @@ import javax.inject.Inject
 internal class HomeMediaListFragment : Fragment(R.layout.home_media_list_fragment) {
 
     companion object {
+
         fun newInstance() = HomeMediaListFragment()
     }
 

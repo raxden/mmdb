@@ -23,6 +23,7 @@ internal class GetHomeModulesUseCase @Inject constructor(
 ) {
 
     companion object {
+
         private val firstPage = Page(1)
         private val pageSize = PageSize(20)
     }

@@ -16,6 +16,7 @@ data class HomeMediaListModel(
     )
 
     companion object {
+
         @VisibleForTesting
         val empty = HomeMediaListModel(
             modules = emptyList()

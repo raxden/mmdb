@@ -29,6 +29,7 @@ sealed class HomeModuleModel {
         ) : CarouselMedias(mediaType, true) {
 
             companion object {
+
                 @VisibleForTesting
                 val empty = Popular(
                     label = "",
@@ -53,6 +54,7 @@ sealed class HomeModuleModel {
         ) : CarouselMedias(mediaType, true) {
 
             companion object {
+
                 @VisibleForTesting
                 val empty = WatchList(
                     label = "",
@@ -88,6 +90,7 @@ sealed class HomeModuleModel {
         ) : CarouselMedias(MediaType.MOVIE, false) {
 
             companion object {
+
                 @VisibleForTesting
                 val empty = NowPlaying(
                     label = "",
@@ -111,6 +114,7 @@ sealed class HomeModuleModel {
         ) : CarouselMedias(mediaType, true) {
 
             companion object {
+
                 @VisibleForTesting
                 val empty = TopRated(
                     label = "",
@@ -134,6 +138,7 @@ sealed class HomeModuleModel {
         ) : CarouselMedias(MediaType.MOVIE, false) {
 
             companion object {
+
                 @VisibleForTesting
                 val empty = Upcoming(
                     label = "",

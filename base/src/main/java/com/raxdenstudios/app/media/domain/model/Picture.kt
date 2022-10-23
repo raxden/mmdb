@@ -12,6 +12,7 @@ sealed class Picture {
     ) : Picture() {
 
         companion object {
+
             @VisibleForTesting
             val empty = WithImage(
                 thumbnail = Size.Thumbnail("", ""),

@@ -13,6 +13,7 @@ data class MediaListModel(
     )
 
     companion object {
+
         val empty = MediaListModel(
             title = "",
             items = emptyList()

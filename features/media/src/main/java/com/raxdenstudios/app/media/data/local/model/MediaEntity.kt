@@ -19,6 +19,7 @@ data class MediaEntity(
 ) {
 
     companion object {
+
         val empty = MediaEntity(
             id = 0L,
             title = "",
@@ -35,7 +36,9 @@ data class VoteEntity(
     @ColumnInfo(name = "average") val average: Float,
     @ColumnInfo(name = "count") val count: Int,
 ) {
+
     companion object {
+
         val empty = VoteEntity(
             average = 0.0f,
             count = 0,
@@ -47,7 +50,9 @@ data class PictureEntity(
     @Embedded(prefix = "thumbnail_") val thumbnail: SizeEntity,
     @Embedded(prefix = "original_") val original: SizeEntity,
 ) {
+
     companion object {
+
         val empty = PictureEntity(
             thumbnail = SizeEntity.empty.copy(type = "thumbnail"),
             original = SizeEntity.empty.copy(type = "original"),
@@ -59,7 +64,9 @@ data class SizeEntity(
     @ColumnInfo(name = "url") val url: String,
     @ColumnInfo(name = "type") val type: String,
 ) {
+
     companion object {
+
         val empty = SizeEntity(
             url = "",
             type = "",

@@ -33,13 +33,13 @@
         <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogTitleTextStyle</item>
     </style>
 
-    <style name="MaterialAlertDialogTitleTextStyle" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text"/>
+    <style name="MaterialAlertDialogTitleTextStyle" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text" />
 
     <!-- https://material.io/develop/android/components/material-button/ -->
     <style name="Button.App" parent="Widget.MaterialComponents.Button" />
 
     <!-- https://material.io/develop/android/components/text-input-layout/ -->
-    <style name="AppTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" >
+    <style name="AppTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
         <item name="materialThemeOverlay">@style/TextInputEditText</item>
         <!--        <item name="boxBackgroundColor">@color/edit_text_background_color</item>-->
     </style>

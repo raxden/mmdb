@@ -13,6 +13,7 @@ class SessionInterceptor @Inject constructor(
 ) : Interceptor {
 
     companion object {
+
         private const val SESSION_ID = "session_id"
     }
 

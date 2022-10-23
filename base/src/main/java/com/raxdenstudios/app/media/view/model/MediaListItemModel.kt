@@ -16,6 +16,7 @@ data class MediaListItemModel(
 ) {
 
     companion object {
+
         @VisibleForTesting
         val empty = MediaListItemModel(
             id = MediaId(0L),

@@ -29,6 +29,7 @@ import javax.inject.Inject
 class MediaListActivity : BaseActivity() {
 
     companion object {
+
         fun createIntent(context: Context, params: MediaListParams) =
             Intent(context, MediaListActivity::class.java).apply {
                 putExtra("params", params)

@@ -1,6 +1,7 @@
 import org.gradle.api.JavaVersion
 
 object Versions {
+
     const val minSdk = 21
     const val compileSdk = 32
     const val targetSdk = 32

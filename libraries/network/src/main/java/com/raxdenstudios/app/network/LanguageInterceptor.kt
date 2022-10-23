@@ -8,6 +8,7 @@ import javax.inject.Inject
 class LanguageInterceptor @Inject constructor() : Interceptor {
 
     companion object {
+
         private const val LANGUAGE = "language"
         private const val REGION = "region"
     }

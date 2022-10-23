@@ -7,5 +7,6 @@ import javax.inject.Inject
 
 internal class MediaToWatchListEntityMapper @Inject constructor() :
     DataMapper<Media, WatchListEntity>() {
+
     override fun transform(source: Media): WatchListEntity = WatchListEntity(source.id.value)
 }

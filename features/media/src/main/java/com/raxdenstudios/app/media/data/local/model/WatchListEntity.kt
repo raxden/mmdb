@@ -22,6 +22,7 @@ data class WatchListEntity(
 ) {
 
     companion object {
+
         @VisibleForTesting
         val empty = WatchListEntity(
             mediaId = 0L,

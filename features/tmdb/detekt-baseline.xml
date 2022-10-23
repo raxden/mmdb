@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>ConstructorParameterNaming:AccessTokenRequestDto.kt$AccessTokenRequestDto$@Expose val request_token: String</ID>
-    <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val access_token: String</ID>
-    <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val account_id: String</ID>
-    <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val status_code: Int</ID>
-    <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val status_message: String</ID>
-    <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val request_token: String</ID>
-    <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val status_code: Int</ID>
-    <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val status_message: String</ID>
-    <ID>ConstructorParameterNaming:SessionRequestDto.kt$SessionRequestDto$@Expose val access_token: String</ID>
-    <ID>ConstructorParameterNaming:SessionResponseDto.kt$SessionResponseDto$@Expose val session_id: String</ID>
-    <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aAccessToken = "aAccessToken"</ID>
-    <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aAccountId = "aAccountId"</ID>
-    <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aToken = "aToken"</ID>
-  </CurrentIssues>
+    <ManuallySuppressedIssues />
+    <CurrentIssues>
+        <ID>ConstructorParameterNaming:AccessTokenRequestDto.kt$AccessTokenRequestDto$@Expose val request_token: String</ID>
+        <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val access_token: String</ID>
+        <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val account_id: String</ID>
+        <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val status_code: Int</ID>
+        <ID>ConstructorParameterNaming:AccessTokenResponseDto.kt$AccessTokenResponseDto$@Expose val status_message: String</ID>
+        <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val request_token: String</ID>
+        <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val status_code: Int</ID>
+        <ID>ConstructorParameterNaming:RequestTokenResponseDto.kt$RequestTokenResponseDto$@Expose val status_message: String</ID>
+        <ID>ConstructorParameterNaming:SessionRequestDto.kt$SessionRequestDto$@Expose val access_token: String</ID>
+        <ID>ConstructorParameterNaming:SessionResponseDto.kt$SessionResponseDto$@Expose val session_id: String</ID>
+        <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aAccessToken = "aAccessToken"</ID>
+        <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aAccountId = "aAccountId"</ID>
+        <ID>TopLevelPropertyNaming:TMDBViewModelTest.kt$private const val aToken = "aToken"</ID>
+    </CurrentIssues>
 </SmellBaseline>

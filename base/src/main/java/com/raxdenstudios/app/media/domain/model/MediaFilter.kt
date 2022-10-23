@@ -5,6 +5,7 @@ sealed class MediaFilter(
 ) {
 
     companion object {
+
         val popularMovies = Popular(
             mediaType = MediaType.MOVIE
         )

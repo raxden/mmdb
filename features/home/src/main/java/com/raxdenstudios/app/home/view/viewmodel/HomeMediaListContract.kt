@@ -45,6 +45,7 @@ internal class HomeMediaListContract {
      * https://medium.com/androiddevelopers/viewmodel-one-off-event-antipatterns-16a1da869b95
      */
     internal sealed class UIEvent {
+
         val id: String = UUID.randomUUID().toString()
 
         data class NavigateToMediaList(
