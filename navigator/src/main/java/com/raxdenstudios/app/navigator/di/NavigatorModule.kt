@@ -1,6 +1,5 @@
 package com.raxdenstudios.app.navigator.di
 
-
 import com.raxdenstudios.app.home.HomeMediaListNavigator
 import com.raxdenstudios.app.list.MediaListNavigator
 import com.raxdenstudios.app.navigator.HomeMediaListNavigatorImpl

@@ -27,6 +27,7 @@ sealed class Media {
     ) : Media() {
 
         companion object {
+
             fun withId(id: MediaId) = Movie(
                 id = id,
                 title = "",

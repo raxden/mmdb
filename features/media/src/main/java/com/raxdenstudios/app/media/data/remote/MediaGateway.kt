@@ -22,6 +22,7 @@ internal class MediaGateway @Inject constructor(
 ) {
 
     companion object {
+
         private const val FIRST_PAGE = 1
     }
 

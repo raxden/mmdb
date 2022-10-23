@@ -9,6 +9,7 @@ sealed class Account {
     ) : Account() {
 
         companion object {
+
             val default = Guest(
                 id = 1L
             )
@@ -24,6 +25,7 @@ sealed class Account {
     ) : Account() {
 
         companion object {
+
             fun withCredentials(credentials: Credentials) = Logged(
                 id = 1L,
                 credentials = credentials

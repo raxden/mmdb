@@ -30,6 +30,7 @@ sealed class MediaListParams(
     object Upcoming : MediaListParams(MediaType.MOVIE)
 
     companion object {
+
         val popularMovies = Popular(
             mediaType = MediaType.MOVIE
         )

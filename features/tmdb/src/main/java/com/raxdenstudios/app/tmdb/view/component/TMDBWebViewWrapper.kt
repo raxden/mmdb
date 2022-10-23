@@ -10,6 +10,7 @@ internal class TMDBWebViewWrapper(
 ) {
 
     companion object {
+
         private const val REQUEST_TOKEN_URL = "https://www.themoviedb.org/auth/access?request_token="
         private const val APPROVE_URL = "https://www.themoviedb.org/auth/access/approve"
     }

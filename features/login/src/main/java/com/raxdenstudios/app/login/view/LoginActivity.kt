@@ -22,6 +22,7 @@ import javax.inject.Inject
 class LoginActivity : BaseActivity() {
 
     companion object {
+
         fun createIntent(context: Context) = context.intentFor<LoginActivity>()
     }
 

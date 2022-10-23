@@ -1,4 +1,5 @@
 object RaxdenLibraries {
+
     const val android = "com.raxdenstudios:commons-android:${Versions.commonsVersion}"
     const val androidTest = "com.raxdenstudios:commons-android-test:${Versions.commonsVersion}"
     const val coroutines = "com.raxdenstudios:commons-coroutines:${Versions.commonsVersion}"
@@ -12,12 +13,11 @@ object RaxdenLibraries {
 }
 
 object AndroidLibraries {
+
     const val material = "com.google.android.material:material:${Versions.material}"
     const val playCore = "com.google.android.play:core:${Versions.playCore}"
-    const val constraintLayout =
-        "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
-    const val swipeRefreshLayout =
-        "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swipeRefreshLayout}"
     const val browser = "androidx.browser:browser:${Versions.browser}"
     const val kotlinCore = "androidx.core:core-ktx:${Versions.kotlinCore}"
     const val kotlinActivity = "androidx.activity:activity-ktx:${Versions.kotlinActivity}"
@@ -34,6 +34,7 @@ object AndroidLibraries {
 }
 
 object KotlinLibraries {
+
     // https://medium.com/@mbonnin/the-different-kotlin-stdlibs-explained-83d7c6bf293
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
@@ -43,6 +44,7 @@ object KotlinLibraries {
 }
 
 object FirebaseLibraries {
+
     const val firebaseBoom = "com.google.firebase:firebase-bom:${Versions.firebase}"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx"
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics-ktx"
@@ -50,6 +52,7 @@ object FirebaseLibraries {
 }
 
 object Libraries {
+
     // Koin
     const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
 
@@ -88,6 +91,7 @@ object Libraries {
 }
 
 object DebugLibraries {
+
     const val leakcanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
     // gander
@@ -96,6 +100,7 @@ object DebugLibraries {
 }
 
 object TestLibraries {
+
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
 
     // ANDROID TEST
@@ -129,6 +134,7 @@ object TestLibraries {
 }
 
 object TestAndroidLibraries {
+
     const val fragmentTest = "androidx.fragment:fragment-testing:${Versions.fragmentTest}"
 
     const val room = "androidx.room:room-testing:${Versions.room}"
