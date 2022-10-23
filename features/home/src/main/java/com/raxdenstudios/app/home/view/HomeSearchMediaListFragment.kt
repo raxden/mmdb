@@ -9,6 +9,7 @@ internal class HomeSearchMediaListFragment :
     BaseFragment(R.layout.home_search_media_list_fragment) {
 
     companion object {
+
         fun newInstance() = HomeSearchMediaListFragment()
     }
 }

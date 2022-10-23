@@ -12,6 +12,7 @@ class AuthorizationBearerInterceptor @Inject constructor(
 ) : Interceptor {
 
     companion object {
+
         private const val AUTHORIZATION = "Authorization"
     }
 

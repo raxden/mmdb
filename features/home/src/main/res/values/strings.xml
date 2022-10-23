@@ -1,0 +1,15 @@
+<resources>
+    <string name="home_carousel_see_all">See all</string>
+    <string name="home_carousel_popular">Popular</string>
+    <string name="home_carousel_now_playing_movies">Now playing in Theaters</string>
+    <string name="home_carousel_top_rated">Top rated</string>
+    <string name="home_carousel_upcoming">Upcoming in Theaters</string>
+    <string name="home_carousel_from_your_watchlist">From your Watchlist</string>
+    <string name="home_carousel_no_available_releases">No available releases</string>
+    <string name="add_more_shows_and_movies">Add more shows and movies to keep track of what you want to watch</string>
+    <string name="media_list_item_chip_movies">Movies</string>
+    <string name="media_list_item_chip_tv_series">TV Series</string>
+    <string name="home_navigation_home">Home</string>
+    <string name="home_navigation_search">Search</string>
+    <string name="home_navigation_account">Account</string>
+</resources>

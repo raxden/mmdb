@@ -7,6 +7,7 @@ data class TMDBCredentialsEntity(
 ) {
 
     companion object {
+
         val default = TMDBCredentialsEntity(
             accountId = "",
             accessToken = "",

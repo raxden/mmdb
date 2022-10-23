@@ -7,6 +7,7 @@ data class Credentials(
 ) {
 
     companion object {
+
         val empty = Credentials(
             accountId = "",
             accessToken = "",

@@ -12,6 +12,7 @@ data class AccountEntity(
 ) {
 
     companion object {
+
         val guestAccount = AccountEntity(
             id = 1,
             tmdbCredentials = TMDBCredentialsEntity.default

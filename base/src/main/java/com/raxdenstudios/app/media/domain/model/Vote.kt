@@ -8,6 +8,7 @@ data class Vote(
 ) {
 
     companion object {
+
         @VisibleForTesting
         val empty = Vote(
             average = 0.0f,

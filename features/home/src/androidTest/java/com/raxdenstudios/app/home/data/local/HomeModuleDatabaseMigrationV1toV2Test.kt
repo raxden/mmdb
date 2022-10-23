@@ -22,6 +22,7 @@ import org.koin.core.module.Module
 internal class HomeModuleDatabaseMigrationV1toV2Test : BaseAndroidTest() {
 
     companion object {
+
         private const val TEST_DB_NAME = "home_module.db"
         private const val TEST_TABLE_NAME = "home_module"
     }

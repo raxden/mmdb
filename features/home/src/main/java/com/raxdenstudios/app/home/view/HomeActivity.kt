@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     companion object {
+
         fun createIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
 

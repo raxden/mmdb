@@ -1,28 +1,3 @@
 <resources>
     <string name="app_name">Mobile movie database</string>
-    <string name="home_carousel_popular">Popular</string>
-    <string name="home_carousel_now_playing_movies">Now playing in Theaters</string>
-    <string name="home_carousel_top_rated">Top rated</string>
-    <string name="home_carousel_upcoming">Upcoming in Theaters</string>
-    <string name="home_carousel_watch_list">From your Watchlist</string>
-    <string name="home_carousel_see_all">See all</string>
-    <string name="home_carousel_from_your_watchlist">From your Watchlist</string>
-    <string name="home_carousel_no_available_releases">No available releases</string>
-    <string name="add_more_shows_and_movies">Add more shows and movies to keep track of what you want to watch</string>
-    <string name="home_carousel_watch_list_sig_in">Sign in to access your Watchlist</string>
-    <string name="home_carousel_watch_list_sig_in_button">Sign in</string>
-    <string name="home_navigation_home">Home</string>
-    <string name="home_navigation_search">Search</string>
-    <string name="home_navigation_account">Account</string>
-
-    <string name="list_popular_movies">Popular Movies</string>
-    <string name="list_popular_tv_shows">Popular TV Shows</string>
-    <string name="list_now_playing_in_theaters">Now playing in Theaters</string>
-    <string name="list_top_rated_movies">Top rated Movies</string>
-    <string name="list_top_rated_tv_shows">Top rated TV Shows</string>
-    <string name="list_upcoming_in_theaters">Upcoming in Theaters</string>
-    <string name="list_from_your_watchlist">From your Watchlist</string>
-
-    <string name="media_list_item_chip_movies">Movies</string>
-    <string name="media_list_item_chip_tv_series">TV Series</string>
 </resources>

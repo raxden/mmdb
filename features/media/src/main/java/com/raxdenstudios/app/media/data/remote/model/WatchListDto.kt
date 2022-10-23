@@ -30,6 +30,7 @@ sealed class WatchListDto {
     ) : WatchListDto() {
 
         companion object {
+
             val empty = Response(
                 success = true,
                 status_code = 200,

@@ -6,6 +6,7 @@ import com.raxdenstudios.app.media.domain.model.MediaType
 import com.raxdenstudios.commons.ResultData
 
 interface AddMediaToWatchListUseCase {
+
     suspend operator fun invoke(params: Params): ResultData<Media>
 
     data class Params(

@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues/>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ConstructorParameterNaming:ErrorDto.kt$ErrorDto$@Expose val status_code: Int</ID>
     <ID>ConstructorParameterNaming:ErrorDto.kt$ErrorDto$@Expose val status_message: String</ID>
