@@ -60,7 +60,6 @@ object TMDBFeatureModule {
     ): AuthenticationV4Service = retrofit.create(AuthenticationV4Service::class.java)
 }
 
-
 @Module
 @InstallIn(ActivityComponent::class)
 abstract class TMDBFeatureBindsModule {

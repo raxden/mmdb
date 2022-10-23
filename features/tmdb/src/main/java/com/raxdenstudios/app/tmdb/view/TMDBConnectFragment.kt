@@ -16,6 +16,7 @@ import com.raxdenstudios.commons.ext.viewBinding
 internal class TMDBConnectFragment : BaseFragmentDialog(R.layout.tmdb_connect_fragment) {
 
     companion object {
+
         fun newInstance() = TMDBConnectFragment()
     }
 

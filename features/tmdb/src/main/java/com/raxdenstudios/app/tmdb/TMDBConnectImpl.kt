@@ -11,6 +11,7 @@ class TMDBConnectImpl @Inject constructor(
 ) : TMDBConnect {
 
     companion object {
+
         private val TAG = TMDBConnectFragment::class.java.simpleName
     }
 

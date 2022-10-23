@@ -1,11 +1,11 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues/>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.Movie$@Expose val original_title: String</ID>
     <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.Movie$@Expose val release_date: String</ID>
     <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val first_air_date: String</ID>
-    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val origin_country: List&lt;String></ID>
+    <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val origin_country: List&lt;String&gt;</ID>
     <ID>ConstructorParameterNaming:MediaDto.kt$MediaDto.TVShow$@Expose val original_name: String</ID>
     <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Request$@Expose val media_id: Long</ID>
     <ID>ConstructorParameterNaming:WatchListDto.kt$WatchListDto.Request$@Expose val media_type: String</ID>
@@ -24,7 +24,7 @@
     <ID>UseCheckOrError:MediaEntityDataMapper.kt$SizeEntityToDomainMapper$throw IllegalStateException("Invalid field value to represent Picture.Size")</ID>
     <ID>UseCheckOrError:MediaTypeToDtoMapper.kt$MediaTypeToDtoMapper$throw IllegalStateException("MediaType doesn't allowed")</ID>
     <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val backdrop_path: String?</ID>
-    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val genre_ids: List&lt;Int></ID>
+    <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val genre_ids: List&lt;Int&gt;</ID>
     <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val original_language: String</ID>
     <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val poster_path: String</ID>
     <ID>VariableNaming:MediaDto.kt$MediaDto$abstract val vote_average: Double</ID>

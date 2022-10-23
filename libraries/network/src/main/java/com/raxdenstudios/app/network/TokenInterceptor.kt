@@ -10,6 +10,7 @@ class TokenInterceptor @Inject constructor(
 ) : Interceptor {
 
     companion object {
+
         private const val API_KEY = "api_key"
     }
 

@@ -1,0 +1,9 @@
+<resources>
+    <string name="list_now_playing_movies">Now playing in Theaters</string>
+    <string name="list_popular_movies">Popular Movies</string>
+    <string name="list_popular_tv_shows">Popular TV Shows</string>
+    <string name="list_top_rated_movies">Top rated Movies</string>
+    <string name="list_top_rated_tv_shows">Top rated TV Shows</string>
+    <string name="list_upcoming_movies">Upcoming in Theaters</string>
+    <string name="list_watch_list">From your Watchlist</string>
+</resources>

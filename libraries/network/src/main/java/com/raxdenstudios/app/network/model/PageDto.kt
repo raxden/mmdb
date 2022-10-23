@@ -18,6 +18,7 @@ data class PageDto<T : Any>(
         )
 
     companion object {
+
         val empty = PageDto(
             page = 0,
             total_pages = 0,

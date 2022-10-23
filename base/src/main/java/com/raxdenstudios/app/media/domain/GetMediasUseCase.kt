@@ -8,6 +8,7 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 
 interface GetMediasUseCase {
+
     suspend operator fun invoke(params: Params): ResultData<PageList<Media>>
 
     data class Params(

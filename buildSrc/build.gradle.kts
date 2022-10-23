@@ -1,13 +1,13 @@
 plugins {
-  `kotlin-dsl`
+    `kotlin-dsl`
 }
 // Required since Gradle 4.10+.
 repositories {
-  mavenCentral()
-  google()
+    mavenCentral()
+    google()
 }
 
 dependencies {
-  implementation(gradleApi())
-  implementation(localGroovy())
+    implementation(gradleApi())
+    implementation(localGroovy())
 }
