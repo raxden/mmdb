@@ -145,7 +145,7 @@ jobs:
           key: avd-${{ matrix.api-level }}
 
       - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true' && steps.changed-files-specific_library_module.outputs.any_changed == 'true'
+        if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2  # https://github.com/ReactiveCircus/android-emulator-runner
         with:
           api-level: ${{ matrix.api-level }}
@@ -155,7 +155,6 @@ jobs:
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run instrumental tests
-        if: steps.changed-files-specific_library_module.outputs.any_changed == 'true'
         uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
         with:
           api-level: ${{ matrix.api-level }}
@@ -165,31 +164,27 @@ jobs:
           script: |
             ./gradlew connectedAndroidTest --stacktrace --scan
 
-#  deploy-firebase:
-#    name: Build & Upload to Firebase App Distribution
-#    if: github.event.pull_request.base.ref == 'master' || startsWith(github.ref, 'refs/heads/release/')
-#    runs-on: ubuntu-latest
-#
-#    needs: test
-#
-#    steps:
-#      - name: Check out code
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#          submodules: 'true'
-#          token: ${{ secrets.RELEASE_HUB_SECRET }}
-#
-#      - name: Setup machine
-#        uses: ./.github/actions/common_setup
-#
-#      - name: Recover build files
-#        uses: ./.github/actions/recover_builds
-#
-#      - name: Deploy in Firebase App Distribution
-#        env:
-#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-#        run: bash ./gradlew appDistributionUploadRelease --stacktrace
+  deploy-firebase:
+    needs: [ assemble, test, instrumental-test ]
+    name: Build & Upload to Firebase App Distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: Recover build files
+        uses: ./.github/actions/recover_builds
+
+      - name: Deploy in Firebase App Distribution
+        uses: gradle/gradle-build-action@v2
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        with:
+          arguments: appDistributionUploadDebug --releaseNotes="${{ github.event.pull_request.title }}" --stacktrace --scan
 
 #  deploy-playstore:
 #    name: Build & Upload to Playstore

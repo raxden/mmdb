@@ -20,7 +20,7 @@ android {
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
 
-        testInstrumentationRunner = Versions.testInstrumentationRunner
+        testInstrumentationRunner = Config.testInstrumentationRunner
         consumerProguardFile("consumer-rules.pro")
 
         javaCompileOptions {
@@ -41,7 +41,7 @@ android {
 
     buildTypes {
         getByName("debug") {
-            isMinifyEnabled = false
+            isMinifyEnabled = Config.isDebugMinifyEnabled
         }
     }
 
@@ -60,9 +60,7 @@ android {
 
     packagingOptions {
         resources {
-            excludes.add("META-INF/AL2.0")
-            excludes.add("META-INF/LGPL2.1")
-            excludes.add("META-INF/*.kotlin_module")
+            excludes.addAll(Config.excludeResources)
         }
     }
 }

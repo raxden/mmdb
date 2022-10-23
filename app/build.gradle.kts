@@ -35,7 +35,7 @@ android {
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
 
-        testInstrumentationRunner = Versions.testInstrumentationRunner
+        testInstrumentationRunner = Config.testInstrumentationRunner
 
         // apk name, is posible to add variables as version, date...
         setProperty("archivesBaseName", "mmdb")
@@ -59,9 +59,15 @@ android {
     buildTypes {
         getByName("debug") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
-            isMinifyEnabled = false
-            isTestCoverageEnabled = true
+            isMinifyEnabled = Config.isDebugMinifyEnabled
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
             signingConfig = signingConfigs.getByName("debug")
+
+            firebaseAppDistribution {
+                appId = "1:657739180104:android:3cdc3635d3de8978ea507d"
+                groups = "mmdb-team"
+            }
         }
         getByName("release") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
@@ -74,7 +80,7 @@ android {
             )
 
             firebaseAppDistribution {
-                releaseNotesFile = "$rootDir/release_notes.txt"
+                appId = "1:657739180104:android:3cdc3635d3de8978ea507d"
                 groups = "mmdb-team"
             }
         }
@@ -88,16 +94,14 @@ android {
         jvmTarget = Versions.jvmTarget
     }
 
-    // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
     kapt {
+        // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
         correctErrorTypes = true
     }
 
     packagingOptions {
         resources {
-            excludes.add("META-INF/AL2.0")
-            excludes.add("META-INF/LGPL2.1")
-            excludes.add("META-INF/*.kotlin_module")
+            excludes.addAll(Config.excludeResources)
         }
     }
 }

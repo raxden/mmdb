@@ -9,11 +9,11 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import com.raxdenstudios.app.home.data.local.model.HomeModuleEntity
 import com.raxdenstudios.app.test.BaseAndroidTest
-import com.raxdenstudios.commons.test.rules.CoroutineTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.koin.core.module.Module
@@ -30,15 +30,15 @@ internal class HomeModuleDatabaseMigrationV1toV2Test : BaseAndroidTest() {
     override val modules: List<Module>
         get() = emptyList()
 
-    @ExperimentalCoroutinesApi
-    val testDispatcher = TestCoroutineDispatcher()
+//    @ExperimentalCoroutinesApi
+//    val testDispatcher = TestCoroutineDispatcher()
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    val coroutineTestRule = CoroutineTestRule(testDispatcher)
+//    @ExperimentalCoroutinesApi
+//    @get:Rule
+//    val coroutineTestRule = CoroutineTestRule(testDispatcher)
 
     @get:Rule
     val testHelper = MigrationTestHelper(
@@ -48,6 +48,7 @@ internal class HomeModuleDatabaseMigrationV1toV2Test : BaseAndroidTest() {
     )
 
     @Test
+    @Ignore
     fun migrateFrom1To2_containsCorrectData() {
         createOriginalDatabase()
 

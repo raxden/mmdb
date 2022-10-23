@@ -6,13 +6,12 @@ object Versions {
     const val compileSdk = 32
     const val targetSdk = 32
 
-    const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     val sourceCompatibility = JavaVersion.VERSION_1_8
     val targetCompatibility = JavaVersion.VERSION_1_8
     const val jvmTarget = "1.8"
 
     const val androidPlugins = "0.46"
-    const val androidGradlePlugin = "7.3.0"
+    const val androidGradlePlugin = "7.3.1"
     const val hiltAndroidGradlePlugin = "2.42"
     const val jacocoPlugin = "0.16.0"
     const val nexusStagingPlugin = "0.30.0"
@@ -61,7 +60,7 @@ object Versions {
 
     const val fragmentTest = "1.1.0"
     const val espresso = "3.4.0"
-    const val mockk = "1.12.4"
+    const val mockk = "1.13.2"
     const val atsl = "1.4.0"
     const val atslJunit = "1.1.3"
     const val archCoreTest = "2.1.0"
