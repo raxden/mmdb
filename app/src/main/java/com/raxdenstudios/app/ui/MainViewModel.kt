@@ -1,6 +1,8 @@
 package com.raxdenstudios.app.ui
 
 import androidx.lifecycle.ViewModel
+import com.raxdenstudios.app.core.navigation.HomeRoutes
+import com.raxdenstudios.app.core.navigation.MainRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,9 +18,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     fun setCurrentRoute(route: String) {
         val shouldShowBottomBar = when (route) {
-            "home" -> true
-            "mainSearch" -> true
-            "mainAccount" -> true
+            HomeRoutes.home.value -> true
+            MainRoutes.search.value -> true
+            MainRoutes.account.value -> true
             else -> false
         }
         _uiState.update { value -> value.copy(shouldShowBottomBar = shouldShowBottomBar) }

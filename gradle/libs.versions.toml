@@ -239,7 +239,8 @@ android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-releasing = { id = "com.raxdenstudios.android-releasing", version.ref = "android-releasing" }
 android-versioning = { id = "com.raxdenstudios.android-versioning", version.ref = "android-versioning" }
 benManes = { id = "com.github.ben-manes.versions", version.ref = "benManes" }
-detekt-plugin = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detektformatting = { id = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-appdistribution" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 gradle-play-publisher = { id = "com.github.triplet.play", version.ref = "gradle-play-publisher" }

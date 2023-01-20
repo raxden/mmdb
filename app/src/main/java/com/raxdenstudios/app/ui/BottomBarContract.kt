@@ -1,6 +1,5 @@
 package com.raxdenstudios.app.ui
 
-import com.raxdenstudios.app.core.navigation.NavigationCommand
 import com.raxdenstudios.app.ui.model.BottomBarItemModel
 import java.util.UUID
 
@@ -20,6 +19,8 @@ object BottomBarContract {
 
         val id: String = UUID.randomUUID().toString()
 
-        data class NavigateTo(val command: NavigationCommand) : UIEvent()
+        object NavigateToAccount : UIEvent()
+        object NavigateToSearch : UIEvent()
+        object NavigateToHome : UIEvent()
     }
 }

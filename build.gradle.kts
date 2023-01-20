@@ -24,7 +24,7 @@ plugins {
     alias(libs.plugins.android.releasing)
     alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.test.logger)
-    alias(libs.plugins.detekt.plugin)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.gradle.play.publisher) apply false
     alias(libs.plugins.benManes)
     alias(libs.plugins.versionCatalogUpdate)
@@ -84,7 +84,7 @@ detekt {
 
 subprojects {
     apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.detekt.plugin.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
     // https://docs.gradle.org/current/userguide/project_report_plugin.html#sec:project_reports_tasks
     apply(plugin = "project-report")
 
@@ -96,7 +96,8 @@ subprojects {
     dependencies {
         // This rule set provides wrappers for rules implemented by ktlint - https://ktlint.github.io/.
         // https://detekt.dev/docs/rules/formatting/dawd
-        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting")
+        val detektFormatting = rootProject.libs.plugins.detektformatting.get().toString()
+        detektPlugins(detektFormatting)
     }
 }
 
