@@ -4,14 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.feature.home.R
-import com.raxdenstudios.app.core.navigation.MainDirections
-import com.raxdenstudios.app.core.navigation.NavigationCommand
 
 sealed class BottomBarItemModel(
     val id: Long,
     @StringRes val label: Int,
     @DrawableRes val icon: Int,
-    val command: NavigationCommand,
 ) {
 
     abstract val isSelected: Boolean
@@ -30,7 +27,6 @@ sealed class BottomBarItemModel(
         id = 1L,
         label = R.string.home_navigation_home,
         icon = AppIcons.Home,
-        command = MainDirections.home,
     )
 
     data class Search(
@@ -39,7 +35,6 @@ sealed class BottomBarItemModel(
         id = 2L,
         label = R.string.home_navigation_search,
         icon = AppIcons.Search,
-        command = MainDirections.search,
     )
 
     data class Account(
@@ -48,7 +43,6 @@ sealed class BottomBarItemModel(
         id = 3L,
         label = R.string.home_navigation_account,
         icon = AppIcons.Account,
-        command = MainDirections.account,
     )
 
     companion object {

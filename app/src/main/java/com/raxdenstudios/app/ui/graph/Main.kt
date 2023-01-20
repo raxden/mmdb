@@ -7,6 +7,6 @@ fun NavGraphBuilder.mainGraph(
     navController: NavHostController
 ) {
     homeGraph(navController)
-    searchGraph(navController)
-    accountGraph(navController)
+    searchGraph()
+    accountGraph()
 }
