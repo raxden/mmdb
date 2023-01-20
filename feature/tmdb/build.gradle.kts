@@ -8,18 +8,18 @@ plugins {
 
 android {
 
-    compileSdk = Versions.compileSdk
+    compileSdk = Application.compileSdk
 
     compileOptions {
-        sourceCompatibility = Versions.sourceCompatibility
-        targetCompatibility = Versions.targetCompatibility
+        sourceCompatibility = Application.sourceCompatibility
+        targetCompatibility = Application.targetCompatibility
     }
 
     defaultConfig {
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
+        minSdk = Application.minSdk
+        targetSdk = Application.targetSdk
 
-        testInstrumentationRunner = Versions.testInstrumentationRunner
+        testInstrumentationRunner = Application.testInstrumentationRunner
         consumerProguardFile("consumer-rules.pro")
     }
 
@@ -34,7 +34,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = Versions.jvmTarget
+        jvmTarget = libs.versions.kotlin.jvm.get()
     }
 
     // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
