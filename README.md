@@ -47,7 +47,3 @@ The goal of this project is to do practice on the new technologies, patterns and
 - [ ] Create catalog app module
 - [x] Version catalog for dependencies
 - [ ] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project
-
-## Glossary
-
-Test sizes annotations: https://testing.googleblog.com/2010/12/test-sizes.html

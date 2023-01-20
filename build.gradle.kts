@@ -1,4 +1,5 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     /**
@@ -19,13 +20,14 @@ plugins {
     alias(libs.plugins.play.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.appdistribution) apply false
-
     alias(libs.plugins.junit.jacoco)
     alias(libs.plugins.android.releasing)
     alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.test.logger)
     alias(libs.plugins.detekt.plugin)
     alias(libs.plugins.gradle.play.publisher) apply false
+    alias(libs.plugins.benManes)
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 junitJacoco {
@@ -38,11 +40,36 @@ junitJacoco {
     )
 }
 
+// Dependencies
+// ./gradlew versionCatalogUpdate
+// ./gradlew versionCatalogUpdate --interactive
+// ./gradlew versionCatalogApplyUpdates
+// More info -> https://github.com/littlerobots/version-catalog-update-plugin
+versionCatalogUpdate {
+    // sort the catalog by key (default is true
+    sortByKey.set(true)
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+// Task to discard the version of the dependencies that are not stable, used by versionCatalogUpdate plugin
+// https://github.com/ben-manes/gradle-versions-plugin
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
+}
+
 // Detekt info ->
-// detekt               - Runs a detekt analysis and complexity report on your source files
-// detektGenerateConfig - Generates a default detekt configuration file into your project directory.
-// detektBaseline       - Similar to detekt, but creates a code smell baseline. Further detekt runs will only feature
-//                          new smells not in this list.
+// ./gradlew detekt               - Runs a detekt analysis and complexity report on your source files
+// ./gradlew detektGenerateConfig - Generates a default detekt configuration file into your project directory.
+// ./gradlew detektBaseline       - Similar to detekt, but creates a code smell baseline. Further detekt runs will
+//                                      only feature new smells not in this list.
 // More info -> https://detekt.dev/docs/gettingstarted/gradle/
 detekt {
     // version found will be used. Override to stay on the same version.
@@ -69,8 +96,7 @@ subprojects {
     dependencies {
         // This rule set provides wrappers for rules implemented by ktlint - https://ktlint.github.io/.
         // https://detekt.dev/docs/rules/formatting/dawd
-        val detektFormatting = rootProject.libs.plugins.detekt.formatting.get().toString()
-        detektPlugins(detektFormatting)
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting")
     }
 }
 
