@@ -27,12 +27,11 @@ class BottomBarViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun itemSelected(itemSelected: BottomBarItemModel) {
-        val directions = when (itemSelected) {
-            is BottomBarItemModel.Account -> MainDirections.account
-            is BottomBarItemModel.Home -> MainDirections.home
-            is BottomBarItemModel.Search -> MainDirections.search
+        val event = when (itemSelected) {
+            is BottomBarItemModel.Account -> BottomBarContract.UIEvent.NavigateToAccount
+            is BottomBarItemModel.Home -> BottomBarContract.UIEvent.NavigateToHome
+            is BottomBarItemModel.Search -> BottomBarContract.UIEvent.NavigateToSearch
         }
-        val event = BottomBarContract.UIEvent.NavigateTo(directions)
         _uiState.update { value ->
             value.copy(
                 items = value.items.map { item ->

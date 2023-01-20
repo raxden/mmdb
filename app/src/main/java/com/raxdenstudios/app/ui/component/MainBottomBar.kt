@@ -13,7 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.raxdenstudios.app.core.navigation.NavigationCommand
+import com.raxdenstudios.app.core.navigation.MainRoutes
+import com.raxdenstudios.app.core.navigation.NavigationRoute
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Typography
 import com.raxdenstudios.app.ui.BottomBarContract
@@ -24,12 +25,14 @@ import com.raxdenstudios.app.ui.model.BottomBarItemModel
 fun MainBottomBar(
     modifier: Modifier = Modifier,
     viewModel: BottomBarViewModel = hiltViewModel(),
-    onNavigateTo: (NavigationCommand) -> Unit = {},
+    onNavigateTo: (NavigationRoute) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
-            is BottomBarContract.UIEvent.NavigateTo -> onNavigateTo(event.command)
+            BottomBarContract.UIEvent.NavigateToAccount -> onNavigateTo(MainRoutes.account)
+            BottomBarContract.UIEvent.NavigateToHome -> onNavigateTo(MainRoutes.home)
+            BottomBarContract.UIEvent.NavigateToSearch -> onNavigateTo(MainRoutes.search)
         }
         viewModel.eventConsumed(event)
     }

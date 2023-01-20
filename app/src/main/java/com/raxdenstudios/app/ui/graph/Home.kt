@@ -32,7 +32,8 @@ fun NavGraphBuilder.homeGraph(
             MediaListScreen(
                 onNavigateToBack = { navController.navigateUp() },
                 onNavigateToMedia = { mediaId ->
-
+                    val route = HomeDirections.media.createRoute(listOf(mediaId.value.toString()))
+                    navController.navigate(route.value)
                 }
             )
         }
