@@ -6,25 +6,56 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.raxdenstudios.app.ui.model.BottomBarItemModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.raxdenstudios.app.core.navigation.NavigationCommand
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Typography
+import com.raxdenstudios.app.ui.BottomBarContract
+import com.raxdenstudios.app.ui.BottomBarViewModel
+import com.raxdenstudios.app.ui.model.BottomBarItemModel
 
 @Composable
 fun MainBottomBar(
     modifier: Modifier = Modifier,
-    items: List<BottomBarItemModel>,
+    viewModel: BottomBarViewModel = hiltViewModel(),
+    onNavigateTo: (NavigationCommand) -> Unit = {},
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    uiState.events.firstOrNull()?.let { event ->
+        when (event) {
+            is BottomBarContract.UIEvent.NavigateTo -> onNavigateTo(event.command)
+        }
+        viewModel.eventConsumed(event)
+    }
+
+    MainBottomBar(
+        modifier = modifier,
+        uiState = uiState,
+        onItemClick = { item ->
+            val userEvent = BottomBarContract.UserEvent.ItemSelected(item)
+            viewModel.setUserEvent(userEvent)
+        },
+    )
+}
+
+
+@Composable
+fun MainBottomBar(
+    modifier: Modifier = Modifier,
+    uiState: BottomBarContract.UIState,
     onItemClick: (BottomBarItemModel) -> Unit = {},
 ) {
     BottomNavigation(
         modifier = modifier
             .fillMaxWidth(),
     ) {
-        items.forEach { item ->
+        uiState.items.forEach { item ->
             BottomNavigationItem(
                 modifier = modifier,
                 icon = {
@@ -51,7 +82,7 @@ fun MainBottomBar(
 fun MainBottomBarPreview() {
     AppComposeTheme {
         MainBottomBar(
-            items = BottomBarItemModel.default,
+            uiState = BottomBarContract.UIState(),
         )
     }
 }

@@ -7,10 +7,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.raxdenstudios.app.core.navigation.MainDirections
+import com.raxdenstudios.app.core.navigation.MainRoutes
+import com.raxdenstudios.app.core.navigation.NavigationCommand
 import com.raxdenstudios.app.ui.component.MainBottomBar
 import com.raxdenstudios.app.ui.graph.mainGraph
 
@@ -22,23 +25,16 @@ fun MainScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            is MainContract.UIEvent.NavigateTo ->
-                navController.navigate(event.command.route)
-        }
-        viewModel.eventConsumed(event)
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    navBackStackEntry?.destination?.route?.let { route ->
+        viewModel.setCurrentRoute(route)
     }
 
     MainScreen(
         modifier = modifier,
         navController = navController,
         uiState = uiState,
-        onEvent = { event ->
-            when (event) {
-                is MainContract.UserEvent.BottomBarItemSelected -> viewModel.setUserEvent(event)
-            }
-        },
     )
 }
 
@@ -47,26 +43,37 @@ private fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     uiState: MainContract.UIState,
-    onEvent: (event: MainContract.UserEvent) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            MainBottomBar(
-                items = uiState.items,
-                onItemClick = { item ->
-                    onEvent(MainContract.UserEvent.BottomBarItemSelected(item))
-                },
-            )
+            if (uiState.shouldShowBottomBar)
+                MainBottomBar(
+                    onNavigateTo = { command -> navController.navigateTo(command) },
+                )
         },
     ) { paddingValues ->
         NavHost(
             modifier = Modifier
                 .padding(paddingValues),
             navController = navController,
-            startDestination = MainDirections.home.route,
+            startDestination = MainRoutes.home.value,
         ) {
             mainGraph(navController)
         }
+    }
+}
+
+private fun NavHostController.navigateTo(command: NavigationCommand) {
+    navigate(command.route.value) {
+        // Pop up to the start destination of the graph to avoid building up a large stack of destinations
+        // on the back stack as users select items
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+        // Avoid multiple copies of the same destination when reselecting the same item
+        launchSingleTop = command.launchSingleTop
+        // Restore state when reselecting a previously selected item
+        restoreState = command.restoreState
     }
 }

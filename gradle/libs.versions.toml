@@ -160,7 +160,7 @@ compose-material = [
     "compose-activity",
     "compose-material",
     "compose-material-icons-extended",
-    "compose-navigation",
+#    "compose-navigation",
     "compose-navigation-hilt",
     "compose-ui-constraintlayout",
     "compose-ui-tooling-preview",
