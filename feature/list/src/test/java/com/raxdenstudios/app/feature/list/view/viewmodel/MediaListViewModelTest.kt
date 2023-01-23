@@ -2,12 +2,6 @@ package com.raxdenstudios.app.feature.list.view.viewmodel
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.raxdenstudios.app.core.ui.mapper.MediaListItemModelMapper
-import com.raxdenstudios.app.feature.MediaListContract
-import com.raxdenstudios.app.feature.MediaListParamsFactory
-import com.raxdenstudios.app.feature.MediaListViewModel
-import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
-import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
@@ -15,8 +9,15 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.model.WatchButtonModel
+import com.raxdenstudios.app.feature.MediaListContract
+import com.raxdenstudios.app.feature.MediaListParamsFactory
+import com.raxdenstudios.app.feature.MediaListViewModel
+import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
+import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
@@ -59,8 +60,12 @@ class MediaListViewModelTest {
         prefetchDistance = 0
     )
     private val stringProvider: StringProvider = mockk(relaxed = true)
-    private val mediaListItemModelMapper =
-        MediaListItemModelMapper()
+    private val durationModelMapper = DurationModelMapper(
+        stringProvider = stringProvider
+    )
+    private val mediaModelMapper = MediaModelMapper(
+        durationModelMapper = durationModelMapper
+    )
     private val mediaListTitleModelMapper = MediaListTitleModelMapper(
         stringProvider = stringProvider,
     )
@@ -75,7 +80,7 @@ class MediaListViewModelTest {
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             mediaListTitleModelMapper = mediaListTitleModelMapper,
-            mediaListItemModelMapper = mediaListItemModelMapper,
+            mediaModelMapper = mediaModelMapper,
         )
     }
 

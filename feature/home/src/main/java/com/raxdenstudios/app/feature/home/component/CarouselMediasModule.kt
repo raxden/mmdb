@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.popularModule
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
@@ -29,7 +29,7 @@ fun CarouselMediasModule(
             .padding(bottom = 6.dp)
             .fillMaxWidth(),
         shape = Shapes.large,
-        elevation = 6.dp,
+        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier
@@ -57,7 +57,7 @@ fun CarouselMediasModule(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun CarouselMediasModulePreview() {
     AppComposeTheme {

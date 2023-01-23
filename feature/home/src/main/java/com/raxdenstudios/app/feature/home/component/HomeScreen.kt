@@ -4,25 +4,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.raxdenstudios.app.core.model.MediaCategory
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.HomeContract
 import com.raxdenstudios.app.feature.home.HomeViewModel
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.modules
-import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToMediaList: (mediaType: String, mediaCategory: String) -> Unit = { _, _ -> },
+    onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
+    onNavigateToMedias: (mediaType: MediaType, mediaCategory: MediaCategory) -> Unit = { _, _ -> },
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
-            is HomeContract.UIEvent.NavigateToMediaList ->
-                onNavigateToMediaList(event.mediaType.toString(), event.mediaCategory.toString())
+            is HomeContract.UIEvent.NavigateToMedias ->
+                onNavigateToMedias(event.mediaType, event.mediaCategory)
+            is HomeContract.UIEvent.NavigateToMedia ->
+                onNavigateToMedia(event.mediaId, event.mediaType)
         }
         viewModel.eventConsumed(event)
     }
@@ -58,7 +64,7 @@ private fun HomeScreen(
     )
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun HomeScreenPreview() {
     AppComposeTheme {

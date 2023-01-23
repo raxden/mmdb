@@ -8,5 +8,6 @@ import javax.inject.Inject
 class DateDtoToLocalDateMapper @Inject constructor() : DataMapper<String, LocalDate>() {
 
     override fun transform(source: String): LocalDate =
-        LocalDate.parse(source, DateTimeFormatter.ISO_LOCAL_DATE)
+        kotlin.runCatching { LocalDate.parse(source, DateTimeFormatter.ISO_DATE) }
+            .getOrDefault(LocalDate.now())
 }

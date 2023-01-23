@@ -82,8 +82,8 @@ class MediaGatewayTest {
                     total_pages = 3,
                     total_results = 6,
                     results = listOf(
-                        MediaDto.Movie.empty.copy(id = 1),
-                        MediaDto.Movie.empty.copy(id = 2),
+                        MediaDto.Movie().copy(id = 1),
+                        MediaDto.Movie().copy(id = 2),
                     )
                 ),
                 response = response,

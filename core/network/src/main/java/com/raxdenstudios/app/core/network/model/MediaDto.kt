@@ -33,26 +33,23 @@ sealed class MediaDto {
         @Expose val release_date: String,
     ) : MediaDto() {
 
-        companion object {
-
-            @VisibleForTesting
-            val empty = Movie(
-                adult = false,
-                backdrop_path = "",
-                genre_ids = emptyList(),
-                id = 0,
-                original_language = "",
-                original_title = "",
-                overview = "",
-                popularity = 0.0,
-                poster_path = "",
-                release_date = "1970-01-01",
-                title = "",
-                video = false,
-                vote_average = 0.0,
-                vote_count = 0,
-            )
-        }
+        @VisibleForTesting
+        constructor() : this(
+            adult = false,
+            backdrop_path = "",
+            genre_ids = emptyList(),
+            id = 0,
+            original_language = "",
+            original_title = "",
+            overview = "",
+            popularity = 0.0,
+            poster_path = "",
+            release_date = "1970-01-01",
+            title = "",
+            video = false,
+            vote_average = 0.0,
+            vote_count = 0,
+        )
     }
 
     data class TVShow(

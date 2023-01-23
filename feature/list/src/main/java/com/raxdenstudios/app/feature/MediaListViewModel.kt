@@ -8,7 +8,7 @@ import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
-import com.raxdenstudios.app.core.ui.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.getValueOrDefault
@@ -40,7 +40,7 @@ class MediaListViewModel @Inject constructor(
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase,
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase,
     private val mediaListTitleModelMapper: MediaListTitleModelMapper,
-    private val mediaListItemModelMapper: MediaListItemModelMapper,
+    private val mediaModelMapper: MediaModelMapper,
 ) : ViewModel() {
 
     private val pagination: CoPagination<Media> = CoPagination(
@@ -73,7 +73,7 @@ class MediaListViewModel @Inject constructor(
         MediaListContract.UserEvent.BackClicked ->
             updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToBack)
         is MediaListContract.UserEvent.MediaClicked ->
-            updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToMedia(event.item.id))
+            updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToMedia(event.item.id, event.item.mediaType))
     }
 
     private fun updateUIStateWithEvent(event: MediaListContract.UIEvent) {
@@ -158,7 +158,7 @@ class MediaListViewModel @Inject constructor(
             _uiState.update { value ->
                 value.copy(
                     isLoading = false,
-                    items = mediaListItemModelMapper.transform(pageResult.items)
+                    items = mediaModelMapper.transform(pageResult.items)
                 )
             }
         }

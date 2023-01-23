@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.feature
 
 import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.commons.pagination.model.PageIndex
 import java.util.UUID
@@ -33,12 +34,12 @@ object MediaListContract {
         }
     }
 
-    sealed class UserEvent {
-        object Refresh : UserEvent()
-        data class LoadMore(val pageIndex: PageIndex) : UserEvent()
-        data class WatchButtonClicked(val item: MediaModel) : UserEvent()
-        data class MediaClicked(val item: MediaModel) : UserEvent()
-        object BackClicked : UserEvent()
+    sealed interface UserEvent {
+        object Refresh : UserEvent
+        data class LoadMore(val pageIndex: PageIndex) : UserEvent
+        data class WatchButtonClicked(val item: MediaModel) : UserEvent
+        data class MediaClicked(val item: MediaModel) : UserEvent
+        object BackClicked : UserEvent
     }
 
     /**
@@ -49,6 +50,6 @@ object MediaListContract {
         val id: String = UUID.randomUUID().toString()
 
         object NavigateToBack : UIEvent()
-        data class NavigateToMedia(val mediaId: MediaId) : UIEvent()
+        data class NavigateToMedia(val mediaId: MediaId, val mediaType: MediaType) : UIEvent()
     }
 }

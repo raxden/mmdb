@@ -8,7 +8,9 @@ import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
-class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaModel>() {
+class MediaModelMapper @Inject constructor(
+    private val durationModelMapper: DurationModelMapper,
+) : DataMapper<Media, MediaModel>() {
 
     override fun transform(source: Media): MediaModel = source.toModel()
 
@@ -17,15 +19,18 @@ class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaMo
             id = id,
             mediaType = MediaType.Movie,
             title = title,
-            description = overview,
+            overview = overview,
             backdrop = when (val backdrop = backdrop) {
                 Picture.Empty -> ""
                 is Picture.WithImage -> backdrop.thumbnail.url
             },
-            image = when (val poster = poster) {
+            poster = when (val poster = poster) {
                 Picture.Empty -> ""
                 is Picture.WithImage -> poster.thumbnail.url
             },
+            contentRating = "",
+            genres = genres.joinToString { it.name },
+            duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
             releaseDate = release.year.toString(),
             watchButton = when {
@@ -37,15 +42,18 @@ class MediaListItemModelMapper @Inject constructor() : DataMapper<Media, MediaMo
             id = id,
             mediaType = MediaType.TvShow,
             title = name,
-            description = overview,
+            overview = overview,
             backdrop = when (val backdrop = backdrop) {
                 Picture.Empty -> ""
                 is Picture.WithImage -> backdrop.thumbnail.url
             },
-            image = when (val poster = poster) {
+            poster = when (val poster = poster) {
                 Picture.Empty -> ""
                 is Picture.WithImage -> poster.thumbnail.url
             },
+            contentRating = "",
+            genres = genres.joinToString { it.name },
+            duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
             releaseDate = firstAirDate.year.toString(),
             watchButton = when {

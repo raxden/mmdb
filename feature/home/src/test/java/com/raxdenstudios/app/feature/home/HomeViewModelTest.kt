@@ -10,10 +10,11 @@ import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelMapper
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.core.ui.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -50,10 +51,15 @@ class HomeViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
     }
     private val carouselModelToMediaFilterMapper = CarouselModelToMediaFilterMapper()
-    private val mediaListItemModelMapper = MediaListItemModelMapper()
+    private val durationModelMapper = DurationModelMapper(
+        stringProvider = stringProvider
+    )
+    private val mediaModelMapper = MediaModelMapper(
+        durationModelMapper = durationModelMapper,
+    )
     private val carouselModelMapper = CarouselModelMapper(
         stringProvider = stringProvider,
-        mediaListItemModelMapper = mediaListItemModelMapper,
+        mediaModelMapper = mediaModelMapper,
     )
     private val homeModuleModelMapper = HomeModuleModelMapper(
         carouselModelMapper = carouselModelMapper

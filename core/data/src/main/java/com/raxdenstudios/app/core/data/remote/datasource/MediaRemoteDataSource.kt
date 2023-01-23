@@ -1,28 +1,30 @@
 package com.raxdenstudios.app.core.data.remote.datasource
 
-import com.raxdenstudios.core.model.Account
-import com.raxdenstudios.app.core.network.gateway.MediaGateway
-import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
+import com.raxdenstudios.app.core.data.remote.mapper.MediaDetailDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaTypeToDtoMapper
 import com.raxdenstudios.app.core.data.remote.mapper.PageDtoToPageListMapper
-import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.network.gateway.MediaGateway
+import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
+import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
+import com.raxdenstudios.core.model.Account
 import javax.inject.Inject
 
 class MediaRemoteDataSource @Inject constructor(
     private val mediaGateway: MediaGateway,
     private val watchlistGateway: WatchlistGateway,
     private val mediaDtoToDomainMapper: MediaDtoToDomainMapper,
+    private val mediaDetailDtoToDomainMapper: MediaDetailDtoToDomainMapper,
     private val pageDtoToPageListMapper: PageDtoToPageListMapper,
     private val mediaTypeToDtoMapper: MediaTypeToDtoMapper,
 ) {
@@ -32,7 +34,7 @@ class MediaRemoteDataSource @Inject constructor(
         mediaType: MediaType,
     ): ResultData<Media> =
         mediaGateway.fetchById(mediaId, mediaType)
-            .map { dto -> mediaDtoToDomainMapper.transform(dto) }
+            .map { dto -> mediaDetailDtoToDomainMapper.transform(dto) }
 
     suspend fun fetch(
         mediaFilter: MediaFilter,

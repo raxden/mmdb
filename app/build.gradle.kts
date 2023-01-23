@@ -120,6 +120,7 @@ dependencies {
     implementation(project(Modules.featureAccount))
     implementation(project(Modules.featureSearch))
     implementation(project(Modules.featureMediaList))
+    implementation(project(Modules.featureMedia))
     implementation(project(Modules.featureHome))
     implementation(project(Modules.featureError))
     implementation(project(Modules.featureLogin))

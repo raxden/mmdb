@@ -7,29 +7,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
-import com.raxdenstudios.app.core.ui.component.PosterImage
-import com.raxdenstudios.app.core.ui.component.PosterVideo
+import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.AppVideoImage
+import com.raxdenstudios.app.core.ui.component.Poster
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
+import com.raxdenstudios.app.core.ui.theme.Shapes
 import com.raxdenstudios.app.core.ui.theme.Typography
 
-private const val VIDEO_ASPECT_RATIO = 16f / 9f
-private const val POSTER_ASPECT_RATIO = 9f / 14f
+private const val ASPECT_RATIO_16_9 = 16f / 9f
+private const val ASPECT_RATIO_2_3 = 2f / 3f
 
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun FeaturedMediaListItem(
     modifier: Modifier = Modifier,
@@ -74,12 +74,12 @@ fun FeaturedMediaListItem(
                 .fillMaxWidth(),
             constraintSet = constraintSet
         ) {
-            PosterVideo(
+            AppVideoImage(
                 modifier = Modifier
                     .clickable(onClick = onClick)
                     .layoutId("posterVideo")
                     .fillMaxWidth()
-                    .aspectRatio(VIDEO_ASPECT_RATIO),
+                    .aspectRatio(ASPECT_RATIO_16_9),
                 image = model.backdrop,
                 onPlayClick = onPlayClick,
             )
@@ -99,19 +99,19 @@ fun FeaturedMediaListItem(
                     .offset(childOffset),
                 maxLines = 2,
                 style = Typography.caption.copy(color = Color.Gray),
-                text = model.description,
+                text = model.overview,
             )
-            PosterImage(
+            Poster(
                 modifier = Modifier
                     .layoutId("poster")
                     .clickable { onClick() }
                     .padding(start = 20.dp, top = 8.dp, bottom = 16.dp, end = 8.dp)
                     .offset(childOffset)
                     .width(100.dp)
-                    .aspectRatio(POSTER_ASPECT_RATIO),
+                    .aspectRatio(ASPECT_RATIO_2_3),
                 elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp),
-                image = model.image,
+                shape = Shapes.small,
+                image = model.poster,
                 watchButton = model.watchButton,
                 onWatchButtonClick = onWatchButtonClick
             )
@@ -119,17 +119,17 @@ fun FeaturedMediaListItem(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun FeaturedMediaListItemPreview() {
     AppComposeTheme {
         FeaturedMediaListItem(
             model = MediaModel.empty.copy(
                 title = "The Batman",
-                description = "The rise of Sacha Baron Cohen",
+                overview = "The rise of Sacha Baron Cohen",
                 releaseDate = "2011",
                 rating = "7.8",
-                image = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
+                poster = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
             )
         )
     }

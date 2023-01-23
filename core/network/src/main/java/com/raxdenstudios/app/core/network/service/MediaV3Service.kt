@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.WatchlistDto
 import com.raxdenstudios.app.core.network.model.ErrorDto
+import com.raxdenstudios.app.core.network.model.MediaDetailDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -49,13 +50,13 @@ interface MediaV3Service {
         @Body request: WatchlistDto.Request,
     ): NetworkResponse<WatchlistDto.Response, ErrorDto>
 
-    @GET("movie/{movie_id}")
+    @GET("movie/{media_id}")
     suspend fun movie(
-        @Path("movie_id") movieId: String,
-    ): NetworkResponse<MediaDto.Movie, ErrorDto>
+        @Path("media_id") mediaId: String,
+    ): NetworkResponse<MediaDetailDto.Movie, ErrorDto>
 
-    @GET("tv/{movie_id}")
+    @GET("tv/{media_id}")
     suspend fun tvShow(
-        @Path("movie_id") movieId: String,
-    ): NetworkResponse<MediaDto.TVShow, ErrorDto>
+        @Path("media_id") mediaId: String,
+    ): NetworkResponse<MediaDetailDto.TVShow, ErrorDto>
 }

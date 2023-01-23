@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.feature.search.SearchContract
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.search.SearchViewModel
@@ -57,7 +58,7 @@ private fun SearchScreen(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun SearchScreenPreview() {
     AppComposeTheme {

@@ -1,38 +1,40 @@
 package com.raxdenstudios.app.feature.component
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.feature.MediaListContract
 import com.raxdenstudios.app.feature.MediaListViewModel
 import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
-fun MediaListScreen(
+fun MediasScreen(
     modifier: Modifier = Modifier,
     viewModel: MediaListViewModel = hiltViewModel(),
     onNavigateToBack: () -> Unit,
-    onNavigateToMedia: (id: MediaId) -> Unit,
+    onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
-            is MediaListContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId)
+            is MediaListContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
             is MediaListContract.UIEvent.NavigateToBack -> onNavigateToBack()
         }
         viewModel.eventConsumed(event)
     }
 
-    MediaListScreen(
+    MediasScreen(
         modifier = modifier,
         uiState = uiState,
         onEvent = { event -> viewModel.setUserEvent(event) },
@@ -40,7 +42,7 @@ fun MediaListScreen(
 }
 
 @Composable
-private fun MediaListScreen(
+private fun MediasScreen(
     modifier: Modifier = Modifier,
     uiState: MediaListContract.UIState,
     onEvent: (MediaListContract.UserEvent) -> Unit = {},
@@ -48,6 +50,7 @@ private fun MediaListScreen(
     Scaffold(
         topBar = {
             TopAppBarBack(
+                modifier = Modifier.statusBarsPadding(),
                 title = uiState.title,
                 onNavigationIconClick = { onEvent(MediaListContract.UserEvent.BackClicked) },
             )
@@ -68,11 +71,11 @@ private fun MediaListScreen(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
-fun MediaListScreenPreview() {
+fun MediasScreenPreview() {
     AppComposeTheme {
-        MediaListScreen(
+        MediasScreen(
             uiState = MediaListContract.UIState(
                 isLoading = false,
                 title = "Media List",

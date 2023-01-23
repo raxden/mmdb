@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.core.model
 
+import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 
 sealed class Media {
@@ -10,6 +11,8 @@ sealed class Media {
     abstract val poster: Picture
     abstract val vote: Vote
     abstract val watchList: Boolean
+    abstract val genres: List<Genre>
+    abstract val duration: Duration
 
     fun copyWith(watchList: Boolean): Media = when (this) {
         is Movie -> copy(watchList = watchList)
@@ -23,6 +26,8 @@ sealed class Media {
         override val poster: Picture,
         override val vote: Vote,
         override val watchList: Boolean,
+        override val genres: List<Genre>,
+        override val duration: Duration,
         val title: String,
         val release: LocalDate,
     ) : Media() {
@@ -36,6 +41,8 @@ sealed class Media {
                 overview = "",
                 backdrop = Picture.Empty,
                 poster = Picture.Empty,
+                genres = emptyList(),
+                duration = Duration.ofMinutes(0),
                 release = LocalDate.of(1970, 1, 1),
                 vote = Vote.empty,
                 watchList = false,
@@ -48,6 +55,8 @@ sealed class Media {
                 overview = "",
                 backdrop = Picture.Empty,
                 poster = Picture.Empty,
+                genres = emptyList(),
+                duration = Duration.ofMinutes(0),
                 release = LocalDate.of(1970, 1, 1),
                 vote = Vote.empty,
                 watchList = false,
@@ -62,6 +71,8 @@ sealed class Media {
         override val poster: Picture,
         override val vote: Vote,
         override val watchList: Boolean,
+        override val genres: List<Genre>,
+        override val duration: Duration,
         val name: String,
         val firstAirDate: LocalDate,
     ) : Media()

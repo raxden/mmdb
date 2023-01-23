@@ -2,22 +2,23 @@ package com.raxdenstudios.app.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.ChangeHomeModuleFilterUseCase
 import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
-import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
-import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.model.WatchButtonModel
+import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
+import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.commons.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -53,7 +54,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setUserEvent(event: HomeContract.UserEvent): Unit = when (event) {
-        is HomeContract.UserEvent.MediaSelected -> Unit
+        is HomeContract.UserEvent.MediaSelected -> mediaSelected(
+            event.mediaItemModel.id,
+            event.mediaItemModel.mediaType
+        )
         is HomeContract.UserEvent.WatchButtonClicked -> when (event.item.watchButton) {
             is WatchButtonModel.Selected -> removeFromWatchlist(event.item)
             is WatchButtonModel.Unselected -> addToWatchlist(event.item)
@@ -65,9 +69,9 @@ class HomeViewModel @Inject constructor(
     private fun viewAllButtonSelected(module: HomeModuleModel.Carousel) {
         _uiState.update { value ->
             val mediaFilter = carouselModelToMediaFilterMapper.transform(module)
-            val event = HomeContract.UIEvent.NavigateToMediaList(
-                mediaFilter.mediaType.value,
-                mediaFilter.mediaCategory.value
+            val event = HomeContract.UIEvent.NavigateToMedias(
+                mediaFilter.mediaType,
+                mediaFilter.mediaCategory
             )
             value.copy(events = value.events.plus(event))
         }
@@ -84,6 +88,16 @@ class HomeViewModel @Inject constructor(
         viewModelScope.safeLaunch {
             val params = ChangeHomeModuleFilterUseCase.Params(module.id, filter.id)
             changeHomeModuleFilterUseCase(params)
+        }
+    }
+
+    private fun mediaSelected(
+        id: MediaId,
+        mediaType: MediaType
+    ) {
+        _uiState.update { value ->
+            val event = HomeContract.UIEvent.NavigateToMedia(id, mediaType)
+            value.copy(events = value.events.plus(event))
         }
     }
 

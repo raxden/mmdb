@@ -11,9 +11,18 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-//    primary = Purple200,
-//    primaryVariant = Purple700,
-//    secondary = Teal200
+    primary = Grey50,
+    primaryVariant = Grey50,
+    secondary = DeepOrange500,
+    secondaryVariant = BlazeOrangeDark,
+    background = Color.Black,
+    surface = Color.Black,
+    error = BlazeOrangeDark,
+    onPrimary = DeepOrange500,
+    onSecondary = Grey50,
+    onBackground = Grey50,
+    onSurface = Grey50,
+    onError= Grey50,
 )
 
 private val LightColorPalette = lightColors(
@@ -25,10 +34,10 @@ private val LightColorPalette = lightColors(
     surface = Color.White,
     error = BlazeOrangeDark,
     onPrimary = DeepOrange500,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    onError= Color.Black,
+    onSecondary = Grey900,
+    onBackground = Grey900,
+    onSurface = Grey900,
+    onError= Grey900,
 )
 
 @Composable
@@ -69,6 +78,7 @@ fun SystemUiController(
             darkIcons = useDarkIcons
         )
 
+        systemUiController.setStatusBarColor(BlackTranslucent)
         // setStatusBarColor() and setNavigationBarColor() also exist
         onDispose {}
     }

@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,7 +52,7 @@ fun CarouselFeaturedMedias(
     )
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun CarouselFeaturedMediasPreview() {
     AppComposeTheme {
@@ -67,9 +67,9 @@ private val items = List(10) {
     MediaModel.empty.copy(
         id = MediaId(it.toLong()),
         title = "The Batman",
-        description = "The rise of Sacha Baron Cohen",
+        overview = "The rise of Sacha Baron Cohen",
         releaseDate = "2011",
         rating = "7.8",
-        image = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
+        poster = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
     )
 }

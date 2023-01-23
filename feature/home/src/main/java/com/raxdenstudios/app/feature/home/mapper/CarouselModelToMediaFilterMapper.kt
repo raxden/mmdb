@@ -14,10 +14,10 @@ class CarouselModelToMediaFilterMapper @Inject constructor() :
         val mediaType = source.filters.find { it.isSelected }?.id ?: MediaType.Movie
         val mediaCategory = when (source) {
             is HomeModuleModel.Carousel.NowPlaying -> MediaCategory.NowPlaying
-            is HomeModuleModel.Carousel.Popular -> MediaCategory.NowPlaying
-            is HomeModuleModel.Carousel.TopRated -> MediaCategory.NowPlaying
-            is HomeModuleModel.Carousel.Upcoming -> MediaCategory.NowPlaying
-            is HomeModuleModel.Carousel.Watchlist -> MediaCategory.NowPlaying
+            is HomeModuleModel.Carousel.Popular -> MediaCategory.Popular
+            is HomeModuleModel.Carousel.TopRated -> MediaCategory.TopRated
+            is HomeModuleModel.Carousel.Upcoming -> MediaCategory.Upcoming
+            is HomeModuleModel.Carousel.Watchlist -> MediaCategory.Watchlist
         }
         return MediaFilter(
             mediaType = mediaType,

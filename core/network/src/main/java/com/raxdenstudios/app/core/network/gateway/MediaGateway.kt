@@ -2,8 +2,9 @@ package com.raxdenstudios.app.core.network.gateway
 
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.core.network.model.PageDto
+import com.raxdenstudios.app.core.network.model.MediaDetailDto
 import com.raxdenstudios.app.core.network.model.MediaDto
+import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -17,7 +18,7 @@ class MediaGateway @Inject constructor(
     suspend fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType
-    ): ResultData<MediaDto> = when (mediaType) {
+    ): ResultData<MediaDetailDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.movie(mediaId.value.toString())
         MediaType.TvShow -> mediaV3Service.tvShow(mediaId.value.toString())
     }.toResultData("Error occurred during fetching detail with id: $mediaId")

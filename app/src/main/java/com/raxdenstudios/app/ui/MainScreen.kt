@@ -1,6 +1,14 @@
 package com.raxdenstudios.app.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -47,10 +55,19 @@ private fun MainScreen(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            if (uiState.shouldShowBottomBar)
-                MainBottomBar(
-                    onNavigateTo = { route -> navController.navigateTo(route) },
-                )
+            if (uiState.shouldShowBottomBar) {
+                Column {
+                    MainBottomBar(
+                        onNavigateTo = { route -> navController.navigateTo(route) },
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .windowInsetsBottomHeight(WindowInsets.navigationBars)
+                            .background(color = MaterialTheme.colors.background)
+                    )
+                }
+            }
         },
     ) { paddingValues ->
         NavHost(
