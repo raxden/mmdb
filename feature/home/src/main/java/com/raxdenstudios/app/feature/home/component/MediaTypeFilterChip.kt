@@ -5,14 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FilterChip
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.raxdenstudios.app.core.ui.theme.DeepOrange500
-import com.raxdenstudios.app.core.ui.theme.BlazeOrangeTranslucent
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
+import com.raxdenstudios.app.core.ui.theme.BlazeOrangeTranslucent
 import com.raxdenstudios.app.core.ui.theme.Typography
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -26,10 +26,9 @@ fun MediaTypeFilterChip(
     FilterChip(
         modifier = modifier,
         selected = isSelected,
-        border = BorderStroke(1.dp, DeepOrange500).takeIf { isSelected },
+        border = BorderStroke(1.dp, MaterialTheme.colors.secondary).takeIf { isSelected },
         colors = ChipDefaults.filterChipColors(
             selectedBackgroundColor = BlazeOrangeTranslucent,
-            selectedContentColor = BlazeOrangeTranslucent,
         ),
         onClick = onclick,
     ) {

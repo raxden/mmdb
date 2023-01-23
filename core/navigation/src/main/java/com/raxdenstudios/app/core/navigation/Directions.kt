@@ -38,7 +38,8 @@ object HomeDirections {
     val media = object : NavigationCommand {
         override val route = HomeRoutes.media
         override val arguments = listOf(
-            navArgument("mediaId") { type = NavType.IntType }
+            navArgument("mediaId") { type = NavType.IntType },
+            navArgument("mediaType") { type = NavType.IntType }
         )
     }
 }

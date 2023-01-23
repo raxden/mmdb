@@ -36,6 +36,11 @@ class MediaRepository @Inject constructor(
         medias.map { pageList -> pageList.markMediasAsWatched(watchlist) }
     }
 
+    suspend fun fetchById(
+        mediaId: MediaId,
+        mediaType: MediaType,
+    ): ResultData<Media> = mediaDataSource.fetchById(mediaId, mediaType)
+
     private fun PageList<Media>.markMediasAsWatched(watchlist: List<Media>): PageList<Media> =
         map { medias ->
             medias.map { media ->

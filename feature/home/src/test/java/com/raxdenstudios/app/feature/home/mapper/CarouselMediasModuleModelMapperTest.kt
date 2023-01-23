@@ -1,11 +1,12 @@
 package com.raxdenstudios.app.feature.home.mapper
 
 import com.google.common.truth.Truth.assertThat
-import com.raxdenstudios.app.core.ui.mapper.MediaListItemModelMapper
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.feature.home.R
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
@@ -17,12 +18,17 @@ import org.junit.Test
 class CarouselMediasModuleModelMapperTest {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
-    private val mediaListItemModelMapper = MediaListItemModelMapper()
+    private val durationModelMapper = DurationModelMapper(
+        stringProvider = stringProvider
+    )
+    private val mediaModelMapper = MediaModelMapper(
+        durationModelMapper = durationModelMapper,
+    )
 
     private val mapper: CarouselModelMapper by lazy {
         CarouselModelMapper(
             stringProvider = stringProvider,
-            mediaListItemModelMapper = mediaListItemModelMapper,
+            mediaModelMapper = mediaModelMapper,
         )
     }
 

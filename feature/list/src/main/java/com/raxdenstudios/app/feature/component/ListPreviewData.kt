@@ -12,7 +12,7 @@ object ListPreviewData {
             title = "The Batman",
             releaseDate = "2011",
             rating = "7.8",
-            image = "https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg"
+            poster = "https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg"
         )
     }
 }

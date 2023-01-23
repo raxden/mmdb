@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hours_minutes">%1$s hours %2$s minutes</string>
+    <string name="hours">%1$s hours</string>
+    <string name="hour_minutes">%1$s hour %2$s minutes</string>
+    <string name="hour">%1$s hour</string>
+    <string name="minutes">%1$s minutes</string>
+</resources>

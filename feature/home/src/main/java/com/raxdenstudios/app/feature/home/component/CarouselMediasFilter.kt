@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
@@ -30,7 +31,7 @@ fun CarouselMediasFilter(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun CarouselMediasFilterPreview() {
     AppComposeTheme {

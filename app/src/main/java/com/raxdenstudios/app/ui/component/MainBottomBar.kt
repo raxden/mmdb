@@ -11,10 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.navigation.MainRoutes
 import com.raxdenstudios.app.core.navigation.NavigationRoute
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Typography
 import com.raxdenstudios.app.ui.BottomBarContract
@@ -80,7 +80,7 @@ fun MainBottomBar(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun MainBottomBarPreview() {
     AppComposeTheme {

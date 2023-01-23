@@ -1,5 +1,8 @@
 package com.raxdenstudios.app.feature.home
 
+import com.raxdenstudios.app.core.model.MediaCategory
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -51,9 +54,14 @@ object HomeContract {
 
         val id: String = UUID.randomUUID().toString()
 
-        data class NavigateToMediaList(
-            val mediaType: Int,
-            val mediaCategory: Int,
+        data class NavigateToMedias(
+            val mediaType: MediaType,
+            val mediaCategory: MediaCategory,
+        ) : UIEvent()
+
+        data class NavigateToMedia(
+            val mediaId: MediaId,
+            val mediaType: MediaType,
         ) : UIEvent()
     }
 }

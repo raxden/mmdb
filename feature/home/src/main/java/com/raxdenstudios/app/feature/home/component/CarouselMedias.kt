@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.component.MediaListItem
 import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
@@ -44,7 +44,7 @@ fun CarouselMedias(
     )
 }
 
-@Preview(showBackground = true)
+@DevicePreviews
 @Composable
 fun CarouselMediasPreview() {
     AppComposeTheme {
@@ -61,6 +61,6 @@ private val items = List(10) {
         title = "The Batman",
         releaseDate = "2011",
         rating = "7.8",
-        image = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
+        poster = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
     )
 }

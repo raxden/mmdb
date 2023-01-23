@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.ExperimentalMaterialApi
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.MediaListItem
 import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -34,6 +36,7 @@ fun MediaGrid(
     modifier: Modifier = Modifier,
     isRefreshing: Boolean,
     items: List<MediaModel>,
+    scrollState: LazyGridState = rememberLazyGridState(),
     onRefresh: () -> Unit = {},
     onPageIndexListener: (PageIndex) -> Unit = {},
     onItemClick: (MediaModel) -> Unit = {},
@@ -47,19 +50,18 @@ fun MediaGrid(
         modifier = modifier
             .pullRefresh(pullRefreshState)
     ) {
-        val gridState = rememberLazyGridState()
         // We use a remembered derived state to minimize unnecessary compositions,
         // due to call layoutInfo implies a recomposition
         val index by remember {
             derivedStateOf {
-                gridState.toPageIndex()
+                scrollState.toPageIndex()
             }
         }
         onPageIndexListener(index)
 
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
-            state = gridState,
+            state = scrollState,
             columns = GridCells.Adaptive(150.dp),
             contentPadding = PaddingValues(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -86,11 +88,7 @@ fun MediaGrid(
     }
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Preview(
-    showBackground = true,
-    device = "spec:width=411dp,height=891dp,dpi=640,orientation=landscape"
-)
+@DevicePreviews
 @Composable
 fun MediaGridPreview() {
     AppComposeTheme {

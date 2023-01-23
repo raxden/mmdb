@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.core.data.remote.mapper
 
-import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.model.Media
+import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
