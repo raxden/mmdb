@@ -4,7 +4,7 @@ import androidx.room.migration.Migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.test.platform.app.InstrumentationRegistry
-import com.raxdenstudios.app.core.database.migration.HomeModuleDatabaseMigrationV1toV2
+import com.raxdenstudios.app.core.database.migration.MediaDatabaseMigrationV1toV2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +38,7 @@ class MediaDatabaseMigrationV1toV2Test {
     private fun MigrationTestHelper.runMigrationAndValidate(
         name: String = MediaDatabase.NAME,
         version: Int = TO_VERSION,
-        migration: Migration = HomeModuleDatabaseMigrationV1toV2()
+        migration: Migration = MediaDatabaseMigrationV1toV2()
     ) {
         runMigrationsAndValidate(
             name,
