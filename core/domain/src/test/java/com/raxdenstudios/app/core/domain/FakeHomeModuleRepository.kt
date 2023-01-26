@@ -18,7 +18,7 @@ class FakeHomeModuleRepository : HomeModuleRepository {
 
     override fun observe(): Flow<List<HomeModule>> = modules
 
-    override suspend fun get(moduleId: Long): ResultData<HomeModule> =
+    override suspend fun fetch(moduleId: Long): ResultData<HomeModule> =
         ResultData.Success(HomeModule.Watchlist.empty)
 
     override suspend fun save(module: HomeModule): ResultData<Boolean> {

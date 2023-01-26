@@ -6,8 +6,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.raxdenstudios.app.core.database.dao.HomeModuleDao
-import com.raxdenstudios.app.core.database.migration.HomeModuleDatabaseMigrationV1toV2
-import com.raxdenstudios.app.core.database.migration.HomeModuleDatabaseMigrationV2toV3
 import com.raxdenstudios.app.core.database.model.HomeModuleEntity
 
 @Database(

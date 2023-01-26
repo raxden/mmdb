@@ -12,7 +12,7 @@ class ChangeHomeModuleFilterUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(params: Params): ResultData<Boolean> =
-        homeModuleRepository.get(params.moduleId)
+        homeModuleRepository.fetch(params.moduleId)
             .map { module -> module.copyValue(mediaType = params.mediaType) }
             .coFlatMap { module -> homeModuleRepository.save(module) }
 

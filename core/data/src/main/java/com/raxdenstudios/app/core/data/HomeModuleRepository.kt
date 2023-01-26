@@ -9,7 +9,7 @@ import javax.inject.Inject
 interface HomeModuleRepository {
 
     fun observe(): Flow<List<HomeModule>>
-    suspend fun get(moduleId: Long): ResultData<HomeModule>
+    suspend fun fetch(moduleId: Long): ResultData<HomeModule>
     suspend fun save(module: HomeModule): ResultData<Boolean>
 }
 
@@ -20,7 +20,7 @@ class HomeModuleRepositoryImpl @Inject constructor(
     override fun observe(): Flow<List<HomeModule>> =
         homeModuleLocalDataSource.observe()
 
-    override suspend fun get(moduleId: Long): ResultData<HomeModule> =
+    override suspend fun fetch(moduleId: Long): ResultData<HomeModule> =
         homeModuleLocalDataSource.get(moduleId)
 
     override suspend fun save(module: HomeModule): ResultData<Boolean> =
