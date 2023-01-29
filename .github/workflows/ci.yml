@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        assemble: [ "assembleDebug", "assembleRelease" ]
+        buildType: [ "Debug", "Release" ]
 
     steps:
       - name: Check out code
@@ -79,10 +79,24 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
+      - name: Decode secret files
+        id: decode_secret_files
+        if: ${{ matrix.buildType=='Release' }}
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'signing.tar.gz'
+          fileDir: './config/'
+          encodedString: ${{ secrets.RELEASE_FILES }}
+
+      - name: Extract secret files
+        if: ${{ matrix.buildType=='Release' }}
+        run:  |
+          tar xf ${{ steps.decode_secret_files.outputs.filePath }} --directory ./config
+
       - name: Assemble apk
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ${{ matrix.assemble }} --stacktrace --scan
+          arguments: assemble${{ matrix.buildType }} --stacktrace --scan
 
       - uses: actions/upload-artifact@v3
         with:
