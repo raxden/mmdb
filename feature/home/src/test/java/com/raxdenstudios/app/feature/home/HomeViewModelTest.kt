@@ -8,26 +8,30 @@ import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
+import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.model.MediaFilterModel
+import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelMapper
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
-import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.app.core.ui.model.MediaFilterModel
-import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.provider.StringProvider
 import com.raxdenstudios.commons.test.rules.MainDispatcherRule
 import io.mockk.coEvery
-import io.mockk.every
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.lachlanmckee.timberjunit.TimberTestRule
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,14 +46,10 @@ class HomeViewModelTest {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
-        every { this@mockk.invoke() } returns flow { emit(modulesWithMedias) }
+        coEvery { this@mockk.invoke() } returns flow { emit(modulesWithMedias) }
     }
-    private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk {
-        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
-    }
-    private val removeMediaToWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk {
-        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
-    }
+    private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
+    private val removeMediaToWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
     private val carouselModelToMediaFilterMapper = CarouselModelToMediaFilterMapper()
     private val durationModelMapper = DurationModelMapper(
         stringProvider = stringProvider
@@ -64,12 +64,12 @@ class HomeViewModelTest {
     private val homeModuleModelMapper = HomeModuleModelMapper(
         carouselModelMapper = carouselModelMapper
     )
-    private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase = mockk {
-        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
-    }
+    private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase = mockk()
+    private lateinit var viewModel: HomeViewModel
 
-    private val viewModel: HomeViewModel by lazy {
-        HomeViewModel(
+    @Before
+    fun setUp() {
+        viewModel = HomeViewModel(
             getHomeModulesUseCase = getHomeModulesUseCase,
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaToWatchlistUseCase,
@@ -80,11 +80,11 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `Given a viewModel, When viewModel is started, Then modules with movies are loaded`() =
+    fun `When viewModel is started, Then modules with movies are loaded`() {
         runTest {
             viewModel.uiState.test {
                 val uiState = awaitItem()
-                assertThat(uiState).isEqualTo(HomeContract.UIState.loading())
+                assertThat(uiState).isEqualTo(HomeContract.UIState.loading)
 
                 val uiState2 = awaitItem()
                 assertThat(uiState2).isEqualTo(
@@ -113,6 +113,91 @@ class HomeViewModelTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun `When media is selected, Then uiState is updated`() {
+        runTest {
+            viewModel.uiState.test {
+                skipItems(2)
+                viewModel.setUserEvent(HomeContract.UserEvent.MediaSelected(MediaModel.mock))
+
+                val uiState = awaitItem()
+                assertThat(uiState.events).isEqualTo(
+                    setOf(
+                        HomeContract.UIEvent.NavigateToMedia(
+                            mediaId = MediaId(1L),
+                            mediaType = MediaType.Movie,
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `When watchButton is selected, Then add to watchlist`() {
+        runTest {
+            coEvery { addMediaToWatchlistUseCase.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
+
+            viewModel.setUserEvent(HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock))
+
+            advanceUntilIdle()
+            coVerify { addMediaToWatchlistUseCase.invoke(any()) }
+        }
+    }
+
+    @Test
+    fun `When watchButton is unselected, Then remote from watchlist`() {
+        runTest {
+            coEvery { removeMediaToWatchlistUseCase(any()) } returns ResultData.Success(true)
+
+            viewModel.setUserEvent(
+                HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock.copy(watchButton = WatchButtonModel.Selected))
+            )
+
+            advanceUntilIdle()
+            coVerify { removeMediaToWatchlistUseCase(any()) }
+        }
+    }
+
+    @Test
+    fun `When seeAll is selected, Then uiState is updated`() {
+        runTest {
+            viewModel.uiState.test {
+                skipItems(2)
+                viewModel.setUserEvent(
+                    HomeContract.UserEvent.SeeAllButtonClicked(HomeModuleModel.Carousel.Popular.empty)
+                )
+
+                val uiState = awaitItem()
+                assertThat(uiState.events).isEqualTo(
+                    setOf(
+                        HomeContract.UIEvent.NavigateToMedias(
+                            mediaType = MediaType.Movie,
+                            mediaCategory = MediaCategory.Popular,
+                        )
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `When filter is selected, Then uiState is updated`() {
+        runTest {
+            coEvery { changeHomeModuleFilterUseCase.invoke(any()) } returns ResultData.Success(true)
+            viewModel.setUserEvent(
+                HomeContract.UserEvent.MediaFilterClicked(
+                    module = HomeModuleModel.Carousel.Popular.empty,
+                    filter = MediaFilterModel.mockk
+                )
+            )
+
+            advanceUntilIdle()
+            coVerify { changeHomeModuleFilterUseCase.invoke(any()) }
+        }
+    }
 
     companion object {
 

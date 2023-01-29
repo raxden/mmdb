@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private val carouselModelToMediaFilterMapper: CarouselModelToMediaFilterMapper,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeContract.UIState.loading())
+    private val _uiState = MutableStateFlow(HomeContract.UIState.loading)
     val uiState: StateFlow<HomeContract.UIState> = _uiState.asStateFlow()
 
     init {

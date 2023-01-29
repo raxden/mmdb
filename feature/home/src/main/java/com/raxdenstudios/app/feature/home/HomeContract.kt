@@ -24,7 +24,7 @@ object HomeContract {
 
         companion object {
 
-            fun loading() = UIState(
+            val loading = UIState(
                 isLoading = true,
                 modules = emptyList(),
                 events = emptySet(),
