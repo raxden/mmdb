@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.versioning)
     alias(libs.plugins.android.application)
@@ -42,16 +44,20 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-            storeFile = file("$rootDir/config/debug.keystore")
-            storePassword = "android"
+            getSigningConfigProperties("debug").run {
+                storeFile = file("$rootDir${getProperty("storeFile")}")
+                storePassword = getProperty("storePassword")
+                keyAlias = getProperty("keyAlias")
+                keyPassword = getProperty("keyPassword")
+            }
         }
         create("release") {
-            keyAlias = "mmdb"
-            keyPassword = "bob1YTMqc5acHN9spcYI"
-            storeFile = file("$rootDir/config/release.jks")
-            storePassword = "bob1YTMqc5acHN9spcYI"
+            getSigningConfigProperties("release").run {
+                storeFile = file("$rootDir${getProperty("storeFile")}")
+                storePassword = getProperty("storePassword")
+                keyAlias = getProperty("keyAlias")
+                keyPassword = getProperty("keyPassword")
+            }
         }
     }
 
@@ -106,6 +112,15 @@ android {
             excludes.add("META-INF/*.kotlin_module")
         }
     }
+}
+
+fun getSigningConfigProperties(buildType: String): Properties {
+    val properties = Properties()
+    val propertiesFile = file("$rootDir/config/signing_$buildType.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { properties.load(it) }
+    }
+    return properties
 }
 
 dependencies {

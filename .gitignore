@@ -45,3 +45,5 @@ reports
 #*.jks
 
 *.DS_Store
+
+config/signing_release.properties
