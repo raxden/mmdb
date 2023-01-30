@@ -14,11 +14,13 @@ import com.raxdenstudios.app.core.ui.icon.PreviewPlaceHolders
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
-fun Poster(
+fun PosterWithWatchButton(
     modifier: Modifier = Modifier,
     elevation: Dp = 0.dp,
     shape: Shape = RoundedCornerShape(0.dp),
     image: String,
+    watchlist: Boolean = false,
+    onWatchButtonClick: () -> Unit = {},
     previewPlaceholder: Int = PreviewPlaceHolders.Poster
 ) {
     Surface(
@@ -35,16 +37,20 @@ fun Poster(
                 image = image,
                 previewPlaceholder = previewPlaceholder,
             )
+            WatchButton(
+                isSelected = watchlist,
+                onClick = { onWatchButtonClick() })
         }
     }
 }
 
 @DevicePreviews
 @Composable
-fun PosterPreview() {
+fun PosterWithWatchButtonPreview() {
     AppComposeTheme {
-        Poster(
+        PosterWithWatchButton(
             image = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png",
+            watchlist = false,
         )
     }
 }

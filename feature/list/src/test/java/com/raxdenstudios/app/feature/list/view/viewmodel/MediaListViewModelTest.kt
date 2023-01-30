@@ -12,7 +12,6 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.app.feature.MediaListContract
 import com.raxdenstudios.app.feature.MediaListParamsFactory
 import com.raxdenstudios.app.feature.MediaListViewModel
@@ -104,7 +103,7 @@ class MediaListViewModelTest {
     fun `Given a movie, When addMovieToWatchlist is called, Then movie is replaced in model`() = runTest {
         val mediaModel = MediaModel.empty.copy(
             id = MediaId(2L),
-            watchButton = WatchButtonModel.Unselected,
+            watchlist = false,
         )
 
         viewModel.uiState.test {
@@ -116,7 +115,7 @@ class MediaListViewModelTest {
                         MediaModel.empty.copy(id = MediaId(1L)),
                         MediaModel.empty.copy(
                             id = MediaId(2L),
-                            watchButton = WatchButtonModel.Selected
+                            watchlist = true,
                         ),
                     )
                 )
@@ -135,7 +134,7 @@ class MediaListViewModelTest {
         )
         val mediaModel = MediaModel.empty.copy(
             id = MediaId(1L),
-            watchButton = WatchButtonModel.Selected,
+            watchlist = true,
         )
 
         viewModel.uiState.test {
@@ -146,7 +145,7 @@ class MediaListViewModelTest {
                     items = listOf(
                         MediaModel.empty.copy(
                             id = MediaId(1L),
-                            watchButton = WatchButtonModel.Unselected
+                            watchlist = false,
                         ),
                     )
                 )

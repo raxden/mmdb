@@ -10,7 +10,6 @@ import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
@@ -66,9 +65,9 @@ class MediaListViewModel @Inject constructor(
     fun setUserEvent(event: MediaListContract.UserEvent): Unit = when (event) {
         is MediaListContract.UserEvent.LoadMore -> requestPage(event.pageIndex, params)
         is MediaListContract.UserEvent.Refresh -> refresh(params)
-        is MediaListContract.UserEvent.WatchButtonClicked -> when (event.item.watchButton) {
-            is WatchButtonModel.Selected -> removeMovieFromWatchlist(event.item)
-            is WatchButtonModel.Unselected -> addMovieToWatchlist(event.item)
+        is MediaListContract.UserEvent.WatchButtonClicked -> when (event.item.watchlist) {
+            true -> removeMovieFromWatchlist(event.item)
+            false -> addMovieToWatchlist(event.item)
         }
         MediaListContract.UserEvent.BackClicked ->
             updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToBack)
@@ -82,7 +81,7 @@ class MediaListViewModel @Inject constructor(
 
     private fun addMovieToWatchlist(item: MediaModel) {
         viewModelScope.safeLaunch {
-            val itemToReplace = item.copy(watchButton = WatchButtonModel.Selected)
+            val itemToReplace = item.copy(watchlist = true)
             val params = AddMediaToWatchlistUseCase.Params(item.id, item.mediaType)
             addMediaToWatchlistUseCase(params)
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
@@ -96,7 +95,7 @@ class MediaListViewModel @Inject constructor(
 
     private fun removeMovieFromWatchlist(item: MediaModel) {
         viewModelScope.safeLaunch {
-            val itemToReplace = item.copy(watchButton = WatchButtonModel.Unselected)
+            val itemToReplace = item.copy(watchlist = false)
             val params = RemoveMediaFromWatchlistUseCase.Params(item.id, item.mediaType)
             removeMediaFromWatchlistUseCase(params)
                 .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
