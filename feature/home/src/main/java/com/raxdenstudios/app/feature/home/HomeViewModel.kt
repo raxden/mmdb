@@ -10,7 +10,6 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
@@ -58,9 +57,9 @@ class HomeViewModel @Inject constructor(
             event.mediaItemModel.id,
             event.mediaItemModel.mediaType
         )
-        is HomeContract.UserEvent.WatchButtonClicked -> when (event.item.watchButton) {
-            is WatchButtonModel.Selected -> removeFromWatchlist(event.item)
-            is WatchButtonModel.Unselected -> addToWatchlist(event.item)
+        is HomeContract.UserEvent.WatchButtonClicked -> when (event.item.watchlist) {
+            true -> removeFromWatchlist(event.item)
+            false -> addToWatchlist(event.item)
         }
         is HomeContract.UserEvent.SeeAllButtonClicked -> viewAllButtonSelected(event.module)
         is HomeContract.UserEvent.MediaFilterClicked -> filterChanged(event.module, event.filter)

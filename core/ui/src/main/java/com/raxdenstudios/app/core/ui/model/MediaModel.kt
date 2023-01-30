@@ -16,7 +16,7 @@ data class MediaModel(
     val duration: String,
     val contentRating: String,
     val genres: String,
-    val watchButton: WatchButtonModel,
+    val watchlist: Boolean,
 ) {
 
     companion object {
@@ -33,7 +33,7 @@ data class MediaModel(
             duration = "",
             contentRating = "",
             genres = "",
-            watchButton = WatchButtonModel.Unselected
+            watchlist = false,
         )
 
         @VisibleForTesting
@@ -52,7 +52,7 @@ data class MediaModel(
             duration = "1 hour",
             contentRating = "TV-MA",
             genres = "Drama, Sci-Fi & Fantasy, Action & Adventure",
-            watchButton = WatchButtonModel.Unselected
+            watchlist = false,
         )
     }
 }
