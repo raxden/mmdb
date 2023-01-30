@@ -49,10 +49,10 @@ android {
             storePassword = "android"
         }
         create("release") {
-            keyAlias = "mmdb"
-            keyPassword = "bob1YTMqc5acHN9spcYI"
+            keyAlias = ""
+            keyPassword = ""
             storeFile = file("$rootDir/config/release.jks")
-            storePassword = "bob1YTMqc5acHN9spcYI"
+            storePassword = ""
         }
     }
 
