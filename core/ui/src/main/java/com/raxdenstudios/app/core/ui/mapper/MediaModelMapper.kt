@@ -4,7 +4,6 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Picture
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
@@ -33,10 +32,7 @@ class MediaModelMapper @Inject constructor(
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
             releaseDate = release.year.toString(),
-            watchButton = when {
-                watchList -> WatchButtonModel.Selected
-                else -> WatchButtonModel.Unselected
-            }
+            watchlist = watchList,
         )
         is Media.TVShow -> MediaModel(
             id = id,
@@ -56,10 +52,7 @@ class MediaModelMapper @Inject constructor(
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
             releaseDate = firstAirDate.year.toString(),
-            watchButton = when {
-                watchList -> WatchButtonModel.Selected
-                else -> WatchButtonModel.Unselected
-            }
+            watchlist = watchList,
         )
     }
 }

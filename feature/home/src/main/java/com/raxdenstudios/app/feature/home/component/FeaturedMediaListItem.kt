@@ -20,7 +20,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.AppVideoImage
-import com.raxdenstudios.app.core.ui.component.Poster
+import com.raxdenstudios.app.core.ui.component.PosterWithWatchButton
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
@@ -101,7 +101,7 @@ fun FeaturedMediaListItem(
                 style = Typography.caption.copy(color = Color.Gray),
                 text = model.overview,
             )
-            Poster(
+            PosterWithWatchButton(
                 modifier = Modifier
                     .layoutId("poster")
                     .clickable { onClick() }
@@ -112,7 +112,7 @@ fun FeaturedMediaListItem(
                 elevation = 4.dp,
                 shape = Shapes.small,
                 image = model.poster,
-                watchButton = model.watchButton,
+                watchlist = model.watchlist,
                 onWatchButtonClick = onWatchButtonClick
             )
         }

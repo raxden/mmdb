@@ -16,7 +16,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -44,11 +43,11 @@ fun MediaListItem(
             modifier = Modifier
                 .clickable { onClick() },
         ) {
-            Poster(
+            PosterWithWatchButton(
                 modifier = Modifier
                     .weight(1f),
                 image = model.poster,
-                watchButton = model.watchButton,
+                watchlist = model.watchlist,
                 onWatchButtonClick = onWatchButtonClick
             )
             Text(

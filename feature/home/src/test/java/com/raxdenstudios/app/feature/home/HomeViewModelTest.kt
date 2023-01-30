@@ -15,7 +15,6 @@ import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.app.core.ui.model.WatchButtonModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelMapper
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
@@ -153,7 +152,7 @@ class HomeViewModelTest {
             coEvery { removeMediaToWatchlistUseCase(any()) } returns ResultData.Success(true)
 
             viewModel.setUserEvent(
-                HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock.copy(watchButton = WatchButtonModel.Selected))
+                HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock.copy(watchlist = true))
             )
 
             advanceUntilIdle()

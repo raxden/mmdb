@@ -122,15 +122,15 @@ jobs:
         with:
           arguments: testDebugUnitTest --stacktrace --scan
 
-      - name: Jacoco Reports :${{ matrix.module }}
+      - name: Jacoco Reports
         uses: gradle/gradle-build-action@v2
         with:
           arguments: jacocoTestReportDebug --stacktrace --scan
 
       - name: Uploading reports to Codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   instrumental-test:
     needs: [ checkstyle ]
