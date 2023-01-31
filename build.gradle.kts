@@ -20,7 +20,7 @@ plugins {
     alias(libs.plugins.play.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.appdistribution) apply false
-    alias(libs.plugins.junit.jacoco)
+    alias(libs.plugins.rootcoverage)
     alias(libs.plugins.android.releasing)
     alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.test.logger)
@@ -30,7 +30,11 @@ plugins {
     alias(libs.plugins.versionCatalogUpdate)
 }
 
-junitJacoco {
+rootCoverage {
+    // The default build variant for every module
+    buildVariant = "debug"
+
+    // Class & package exclude patterns
     excludes = listOf(
         "**/di/*",
         "**/BuildConfig*",
@@ -38,6 +42,27 @@ junitJacoco {
         "**/*_*.class",
         "**/*_Impl*.class"
     )
+
+    // Since 1.1 generateHtml is by default true
+    generateCsv = false
+    generateHtml = true
+    generateXml = true
+
+    // Since 1.2: Same as executeTests except that this only affects the instrumented Android tests
+    executeAndroidTests = false
+
+    // Since 1.2: Same as executeTests except that this only affects the unit tests
+    executeUnitTests = false
+
+    // Since 1.2: When true include results from instrumented Android tests into the coverage report
+    includeAndroidTestResults = true
+
+    // Since 1.2: When true include results from unit tests into the coverage report
+    includeUnitTestResults = true
+
+    // Since 1.4: Sets jacoco.includeNoLocationClasses, so you don't have to. Helpful when using Robolectric
+    // which usually requires this attribute to be true
+    includeNoLocationClasses = false
 }
 
 // Dependencies

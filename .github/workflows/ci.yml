@@ -125,7 +125,7 @@ jobs:
       - name: Jacoco Reports
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: jacocoTestReportDebug --stacktrace --scan
+          arguments: coverageReport --no-configuration-cache --stacktrace --scan
 
       - name: Uploading reports to Codecov
         uses: codecov/codecov-action@v3
