@@ -21,6 +21,7 @@ data class MediaModel(
 
     companion object {
 
+
         val empty = MediaModel(
             id = MediaId(0L),
             mediaType = MediaType.Movie,
