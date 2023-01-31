@@ -37,7 +37,7 @@ gradle-play-publisher = "3.7.0"
 gradle-plugin = "7.4.0"
 gson = "2.9.0"
 hilt-android = "2.44.2"
-junit-jacoco = "0.16.0"
+rootcoverage = "1.6.0"
 # @pin Pinning the version will keep every library using this version. Depends on compose-compiler
 kotlin = "1.8.0"
 # @keep this version, because it is not used in a dependency declaration
@@ -245,7 +245,7 @@ firebase-appdistribution = { id = "com.google.firebase.appdistribution", version
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 gradle-play-publisher = { id = "com.github.triplet.play", version.ref = "gradle-play-publisher" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
-junit-jacoco = { id = "com.vanniktech.android.junit.jacoco", version.ref = "junit-jacoco" }
+rootcoverage = { id = "nl.neotech.plugin.rootcoverage", version.ref = "rootcoverage" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
