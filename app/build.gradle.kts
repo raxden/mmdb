@@ -65,8 +65,9 @@ android {
         getByName("debug") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
             applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
             isMinifyEnabled = false
-            isTestCoverageEnabled = true
             signingConfig = signingConfigs.getByName("debug")
         }
         getByName("release") {
