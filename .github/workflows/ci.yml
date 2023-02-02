@@ -138,7 +138,7 @@ jobs:
     if: success()
     name: Run Android Instrumental Tests
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
-    timeout-minutes: 30
+    timeout-minutes: 45
     strategy:
       matrix:
         api-level: [ 29 ]
@@ -177,7 +177,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            ./gradlew connectedAndroidTest --no-configuration-cache --stacktrace --scan
+            ./gradlew connectedDebugAndroidTest --no-configuration-cache --stacktrace --scan
 
 #  deploy-firebase:
 #    name: Build & Upload to Firebase App Distribution

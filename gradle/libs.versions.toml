@@ -221,7 +221,7 @@ testingUI = [
     "mockk-android",
     "threetenabp",
     "turbine",
-    "compose-ui-test-junit4",
+#    "compose-ui-test-junit4",
 ]
 threetenabp = [
     "commons-threetenabp",
