@@ -128,7 +128,6 @@ jobs:
           arguments: coverageReport --no-configuration-cache --stacktrace --scan
 
       - name: Uploading reports to Codecov
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

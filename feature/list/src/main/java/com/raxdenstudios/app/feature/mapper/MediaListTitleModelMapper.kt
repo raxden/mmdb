@@ -1,9 +1,9 @@
 package com.raxdenstudios.app.feature.mapper
 
-import com.raxdenstudios.app.feature.list.R
-import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.R
+import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.commons.provider.StringProvider
 import javax.inject.Inject
 

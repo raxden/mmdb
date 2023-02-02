@@ -22,6 +22,9 @@ interface MediaDao {
     @Query("SELECT * FROM media WHERE id == :mediaId")
     suspend fun find(mediaId: Long): MediaEntity?
 
+    @Query("SELECT * FROM media WHERE id == :mediaId")
+    fun observe(mediaId: Long): Flow<MediaEntity?>
+
     @Query("SELECT * FROM media INNER JOIN watch_list ON media.id == watch_list.media_id WHERE type == :mediaType")
     fun observe(mediaType: Int): Flow<List<MediaEntity>>
 

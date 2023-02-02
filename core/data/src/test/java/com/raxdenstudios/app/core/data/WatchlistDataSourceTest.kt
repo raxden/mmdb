@@ -27,11 +27,11 @@ class WatchlistDataSourceTest {
         coEvery { fetchWatchlist(any(), any()) } returns ResultData.Success(aMovies)
     }
     private val watchListLocalDataSource: WatchlistLocalDataSource = mockk {
-        coEvery { observe(any()) } returns flowOf(ResultData.Success(aMovies))
+        coEvery { observe(any<MediaType>()) } returns flowOf(ResultData.Success(aMovies))
         coEvery { list(any()) } returns ResultData.Success(aMovies)
         coEvery { init(any()) } returns ResultData.Success(true)
     }
-    private val dataSource: WatchlistDataSource = WatchlistDataSource(
+    private val dataSource: WatchlistDataSource = WatchlistDataSourceImpl(
         watchListLocalDataSource = watchListLocalDataSource,
         mediaRemoteDataSource = mediaRemoteDataSource,
         accountLocalDataSource = accountLocalDataSource,

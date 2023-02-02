@@ -65,6 +65,7 @@ dependencies {
     implementation(project(Modules.coreDomain))
     implementation(project(Modules.coreModel))
     implementation(project(Modules.coreNavigation))
+    implementation(libs.bundles.retrofit)
     implementation(libs.bundles.threetenabp)
     implementation(libs.commons.paginationCo)
     implementation(libs.commons.android)

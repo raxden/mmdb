@@ -2,6 +2,7 @@ package com.raxdenstudios.app.feature
 
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.commons.pagination.model.PageIndex
 import java.util.UUID
@@ -14,7 +15,7 @@ object MediaListContract {
         val title: String,
         val items: List<MediaModel>,
         val events: Set<UIEvent> = emptySet(),
-        val error: Throwable? = null,
+        val error: ErrorModel? = null,
     ) {
 
         companion object {
@@ -35,6 +36,7 @@ object MediaListContract {
     }
 
     sealed interface UserEvent {
+        object ErrorDismissed : UserEvent
         object Refresh : UserEvent
         data class LoadMore(val pageIndex: PageIndex) : UserEvent
         data class WatchButtonClicked(val item: MediaModel) : UserEvent

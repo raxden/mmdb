@@ -2,14 +2,15 @@ package com.raxdenstudios.app.feature
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
-import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
+import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
+import com.raxdenstudios.app.feature.model.MediaListParams
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
@@ -40,6 +41,7 @@ class MediaListViewModel @Inject constructor(
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase,
     private val mediaListTitleModelMapper: MediaListTitleModelMapper,
     private val mediaModelMapper: MediaModelMapper,
+    private val errorModelMapper: ErrorModelMapper,
 ) : ViewModel() {
 
     private val pagination: CoPagination<Media> = CoPagination(
@@ -73,6 +75,7 @@ class MediaListViewModel @Inject constructor(
             updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToBack)
         is MediaListContract.UserEvent.MediaClicked ->
             updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToMedia(event.item.id, event.item.mediaType))
+        MediaListContract.UserEvent.ErrorDismissed -> errorDismissed()
     }
 
     private fun updateUIStateWithEvent(event: MediaListContract.UIEvent) {
@@ -84,7 +87,7 @@ class MediaListViewModel @Inject constructor(
             val itemToReplace = item.copy(watchlist = true)
             val params = AddMediaToWatchlistUseCase.Params(item.id, item.mediaType)
             addMediaToWatchlistUseCase(params)
-                .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
+                .onFailure { error -> handleError(error) }
                 .onSuccess { _uiState.update { value -> value.replaceItem(itemToReplace) } }
         }
     }
@@ -98,7 +101,7 @@ class MediaListViewModel @Inject constructor(
             val itemToReplace = item.copy(watchlist = false)
             val params = RemoveMediaFromWatchlistUseCase.Params(item.id, item.mediaType)
             removeMediaFromWatchlistUseCase(params)
-                .onFailure { error -> _uiState.update { value -> value.copy(error = error) } }
+                .onFailure { error -> handleError(error) }
                 .onSuccess { _uiState.update { value -> value.replaceItem(itemToReplace) } }
         }
     }
@@ -127,14 +130,14 @@ class MediaListViewModel @Inject constructor(
     private fun pageResponse(pageResult: PageResult<Media>) =
         when (pageResult) {
             is PageResult.Content -> handlePageResultContent(pageResult)
-            is PageResult.Error -> handlePageResultError(pageResult)
+            is PageResult.Error -> handleError(pageResult.throwable)
             PageResult.Loading -> Unit
             PageResult.NoMoreResults -> handlePageNoMoreResults()
             PageResult.NoResults -> handlePageResultNoResults()
         }
 
-    private fun handlePageResultError(pageResult: PageResult.Error) {
-        _uiState.update { value -> value.copy(error = pageResult.throwable) }
+    private fun handleError(error: Throwable) {
+        _uiState.update { value -> value.copy(error = errorModelMapper.transform(error)) }
     }
 
     private fun handlePageNoMoreResults() {
@@ -175,5 +178,9 @@ class MediaListViewModel @Inject constructor(
 
     fun eventConsumed(event: MediaListContract.UIEvent) {
         _uiState.update { value -> value.copy(events = value.events.minus(event)) }
+    }
+
+    private fun errorDismissed() {
+        _uiState.update { value -> value.copy(error = null) }
     }
 }

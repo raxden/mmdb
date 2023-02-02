@@ -12,6 +12,7 @@ import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
+import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -63,6 +64,7 @@ class HomeViewModelTest {
     private val homeModuleModelMapper = HomeModuleModelMapper(
         carouselModelMapper = carouselModelMapper
     )
+    private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true)
     private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase = mockk()
     private lateinit var viewModel: HomeViewModel
 
@@ -75,6 +77,7 @@ class HomeViewModelTest {
             homeModuleModelMapper = homeModuleModelMapper,
             changeHomeModuleFilterUseCase = changeHomeModuleFilterUseCase,
             carouselModelToMediaFilterMapper = carouselModelToMediaFilterMapper,
+            errorModelMapper = errorModelMapper,
         )
     }
 
@@ -97,12 +100,12 @@ class HomeViewModelTest {
                                 filters = listOf(
                                     MediaFilterModel(
                                         id = MediaType.Movie,
-                                        label = stringProvider.getString(R.string.media_list_item_chip_movies),
+                                        label = "",
                                         isSelected = true,
                                     ),
                                     MediaFilterModel(
                                         id = MediaType.TvShow,
-                                        label = stringProvider.getString(R.string.media_list_item_chip_tv_series),
+                                        label = "",
                                         isSelected = false,
                                     ),
                                 )

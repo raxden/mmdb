@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.detail
 
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import java.util.UUID
 
@@ -9,7 +10,7 @@ object MediaContract {
         val isLoading: Boolean = false,
         val media: MediaModel = MediaModel.empty,
         val events: Set<UIEvent> = emptySet(),
-        val error: Throwable? = null,
+        val error: ErrorModel? = null,
     ) {
 
         companion object {
@@ -21,6 +22,9 @@ object MediaContract {
 
     sealed interface UserEvent {
         object BackClicked : UserEvent
+        object ErrorDismissed : UserEvent
+        data class AddToWatchlist(val media: MediaModel) : UserEvent
+        data class RemoveFromWatchlist(val media: MediaModel) : UserEvent
     }
 
     /**

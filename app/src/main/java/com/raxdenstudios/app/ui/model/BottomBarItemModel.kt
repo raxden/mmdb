@@ -2,8 +2,8 @@ package com.raxdenstudios.app.ui.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.icon.AppIcons
-import com.raxdenstudios.app.feature.home.R
 
 sealed class BottomBarItemModel(
     val id: Long,

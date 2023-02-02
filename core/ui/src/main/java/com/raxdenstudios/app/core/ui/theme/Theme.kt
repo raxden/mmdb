@@ -13,31 +13,31 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 private val DarkColorPalette = darkColors(
     primary = Grey50,
     primaryVariant = Grey50,
-    secondary = DeepOrange500,
-    secondaryVariant = BlazeOrangeDark,
+    secondary = Grey50,
+    secondaryVariant = Grey50,
     background = Color.Black,
     surface = Color.Black,
     error = BlazeOrangeDark,
     onPrimary = DeepOrange500,
-    onSecondary = Grey50,
+    onSecondary = DeepOrange500,
     onBackground = Grey50,
     onSurface = Grey50,
     onError= Grey50,
 )
 
 private val LightColorPalette = lightColors(
-    primary = Grey50,
-    primaryVariant = Grey400,
+    primary = BlazeOrangeDark,
+    primaryVariant = BlazeOrangeDark,
     secondary = DeepOrange500,
     secondaryVariant = BlazeOrangeDark,
     background = Color.White,
     surface = Color.White,
     error = BlazeOrangeDark,
-    onPrimary = DeepOrange500,
-    onSecondary = Grey900,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
     onBackground = Grey900,
     onSurface = Grey900,
-    onError= Grey900,
+    onError= Color.White,
 )
 
 @Composable
