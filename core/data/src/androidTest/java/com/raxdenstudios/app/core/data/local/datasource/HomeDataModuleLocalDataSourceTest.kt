@@ -42,8 +42,10 @@ class HomeDataModuleLocalDataSourceTest {
     fun given_an_empty_database_When_modules_is_called_Then_default_modules_are_inserted_in_database() {
         runTest {
             dataSource.observe().test {
-                val modules = awaitItem()
+                val emptyModules = awaitItem()
+                assertEquals(emptyModules.size, 0)
 
+                val modules = awaitItem()
                 assertEquals(
                     listOf(
                         HomeModule.NowPlaying.empty.copy(id = 2, order = 1),
