@@ -4,9 +4,19 @@ Mobile movie database
 <a href='https://github.com/raxden/mmdb/actions/workflows/ci.yml'><img src='https://github.com/raxden/mmdb/workflows/Continuous%20Integration/badge.svg'></a>
 [![codecov](https://codecov.io/gh/raxden/mmdb/branch/master/graph/badge.svg?token=UQoTMhwKPO)](https://codecov.io/gh/raxden/mmdb)
 
+Mobile movie database is a simple app to search movies and tv shows. It uses [The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction) to get the data.
+
 ## What is it?
 
-## How to use it?
+The purpose of this app is to learn new technologies and improve my skills with android.
+
+## Requirements
+
+- [x] Show medias by modules
+- [x] Show medias by category
+- [ ] Search medias by query (WIP)
+- [ ] Show media detail (WIP)
+- [ ] Show media trailer (WIP)
 
 ## Guidelines
 

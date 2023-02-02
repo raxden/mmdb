@@ -1,5 +1,0 @@
-<resources>
-    <string name="login_welcome">Welcome</string>
-    <string name="login_welcome_description">To use every feature of this app you need an account of The Movie Database (TMDB)</string>
-    <string name="login_sigin_with_tmdb">Sigin with TMDB</string>
-</resources>

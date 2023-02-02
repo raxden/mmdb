@@ -54,11 +54,8 @@ gradleEnterprise {
 
 include(":app")
 
-include(":feature:tmdb")
-include(":feature:login")
 include(":feature:home")
 include(":feature:list")
-include(":feature:error")
 include(":feature:account")
 include(":feature:search")
 
