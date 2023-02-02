@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.core.domain
 
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.model.Media
@@ -10,6 +11,7 @@ import com.raxdenstudios.commons.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -27,7 +29,7 @@ internal class GetMediaUseCaseTest {
     )
 
     private val mediaRepository: MediaRepository = mockk {
-        coEvery { fetchById(any(), any()) } returns ResultData.Success(media)
+        coEvery { fetchById(any(), any()) } returns flowOf(ResultData.Success(media))
     }
     private val useCase: GetMediaUseCase by lazy {
         GetMediaUseCase(
@@ -42,9 +44,11 @@ internal class GetMediaUseCaseTest {
             mediaType = mediaType,
         )
 
-        val result = useCase(params)
-
-        assertThat(result).isEqualTo(ResultData.Success(media))
+        useCase(params).test {
+            val mediaResult = awaitItem()
+            assertThat(mediaResult).isEqualTo(ResultData.Success(media))
+            awaitComplete()
+        }
     }
 
     companion object {

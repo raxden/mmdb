@@ -1,12 +1,12 @@
 package com.raxdenstudios.app.feature.home.mapper
 
-import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
-import com.raxdenstudios.app.feature.home.R
 import com.raxdenstudios.app.core.model.HomeModule
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.R
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.commons.provider.StringProvider
 import javax.inject.Inject
 

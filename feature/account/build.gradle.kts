@@ -23,8 +23,6 @@ android {
         consumerProguardFile("consumer-rules.pro")
     }
 
-    namespace = "com.raxdenstudios.app.feature.account"
-
     buildTypes {
         getByName("debug") {
             enableUnitTestCoverage = true
@@ -33,16 +31,18 @@ android {
         }
     }
 
+    namespace = "com.raxdenstudios.app.feature.account"
+
     buildFeatures {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     kotlinOptions {
         jvmTarget = libs.versions.kotlin.jvm.get()
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
@@ -67,6 +67,7 @@ dependencies {
     implementation(project(Modules.coreModel))
     implementation(project(Modules.coreDomain))
     implementation(libs.commons.android)
+    implementation(libs.commons.paginationCo)
     implementation(libs.bundles.coroutines)
     implementation(libs.timber)
     implementation(platform(libs.compose.bom))

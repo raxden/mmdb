@@ -11,7 +11,8 @@ class HomeModuleModelMapper @Inject constructor(
 
     fun transform(
         modules: Map<HomeModule, List<Media>>,
-    ): List<HomeModuleModel> = modules.map { (module, medias) ->
-        carouselModelMapper.transform(module, medias)
+    ): List<HomeModuleModel> = modules
+        .filter { module -> module.value.isNotEmpty() }
+        .map { (module, medias) -> carouselModelMapper.transform(module, medias)
     }
 }

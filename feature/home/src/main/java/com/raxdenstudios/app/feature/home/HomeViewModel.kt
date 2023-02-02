@@ -8,6 +8,7 @@ import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
@@ -18,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -30,6 +32,7 @@ class HomeViewModel @Inject constructor(
     private val homeModuleModelMapper: HomeModuleModelMapper,
     private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase,
     private val carouselModelToMediaFilterMapper: CarouselModelToMediaFilterMapper,
+    private val errorModelMapper: ErrorModelMapper,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeContract.UIState.loading)
@@ -42,6 +45,14 @@ class HomeViewModel @Inject constructor(
     private fun loadData() = viewModelScope.safeLaunch {
         getHomeModulesUseCase()
             .map { modules -> homeModuleModelMapper.transform(modules) }
+            .catch { error ->
+                _uiState.update { value ->
+                    value.copy(
+                        isLoading = false,
+                        error = errorModelMapper.transform(error)
+                    )
+                }
+            }
             .collect { modules ->
                 _uiState.update { value ->
                     value.copy(
@@ -63,6 +74,7 @@ class HomeViewModel @Inject constructor(
         }
         is HomeContract.UserEvent.SeeAllButtonClicked -> viewAllButtonSelected(event.module)
         is HomeContract.UserEvent.MediaFilterClicked -> filterChanged(event.module, event.filter)
+        HomeContract.UserEvent.ErrorDismissed -> errorDismissed()
     }
 
     private fun viewAllButtonSelected(module: HomeModuleModel.Carousel) {
@@ -124,5 +136,9 @@ class HomeViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun errorDismissed() {
+        _uiState.update { value -> value.copy(error = null) }
     }
 }

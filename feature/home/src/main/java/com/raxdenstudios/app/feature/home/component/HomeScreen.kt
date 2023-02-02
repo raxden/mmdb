@@ -9,6 +9,7 @@ import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.HomeContract
 import com.raxdenstudios.app.feature.home.HomeViewModel
@@ -46,6 +47,12 @@ private fun HomeScreen(
     uiState: HomeContract.UIState,
     onEvent: (HomeContract.UserEvent) -> Unit = {},
 ) {
+    if (uiState.error != null) {
+        ErrorDialog(
+            model = uiState.error,
+            onDismiss = { onEvent(HomeContract.UserEvent.ErrorDismissed) }
+        )
+    }
     HomeModules(
         modifier = modifier,
         modules = uiState.modules,
@@ -70,7 +77,7 @@ fun HomeScreenPreview() {
     AppComposeTheme {
         HomeScreen(
             uiState = HomeContract.UIState(
-                modules = modules
+                modules = modules,
             )
         )
     }

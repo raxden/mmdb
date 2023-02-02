@@ -10,6 +10,7 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
+import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.MediaListContract
@@ -68,6 +69,7 @@ class MediaListViewModelTest {
     private val mediaListTitleModelMapper = MediaListTitleModelMapper(
         stringProvider = stringProvider,
     )
+    private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true)
     private val mediaListParamsFactory: MediaListParamsFactory = mockk(relaxed = true) {
         every { create() } returns MediaListParams(MediaFilter.popular(MediaType.Movie))
     }
@@ -80,6 +82,7 @@ class MediaListViewModelTest {
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             mediaListTitleModelMapper = mediaListTitleModelMapper,
             mediaModelMapper = mediaModelMapper,
+            errorModelMapper = errorModelMapper,
         )
     }
 

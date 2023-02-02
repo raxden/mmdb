@@ -3,9 +3,10 @@ package com.raxdenstudios.app.feature.home
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import java.util.UUID
 
 /**
@@ -19,7 +20,7 @@ object HomeContract {
         val isLoading: Boolean = false,
         val modules: List<HomeModuleModel>,
         val events: Set<UIEvent> = emptySet(),
-        val error: Throwable? = null,
+        val error: ErrorModel? = null,
     ) {
 
         companion object {
@@ -35,6 +36,7 @@ object HomeContract {
 
     sealed interface UserEvent {
 
+        object ErrorDismissed : UserEvent
         data class MediaSelected(
             val mediaItemModel: MediaModel,
         ) : UserEvent

@@ -13,8 +13,11 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.runCatching
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class WatchlistLocalDataSource @Inject constructor(
@@ -41,6 +44,18 @@ class WatchlistLocalDataSource @Inject constructor(
             .map { entityList -> mediaEntityToDomainMapper.transform(entityList) }
             .map { medias -> medias.map { media -> media.copyWith(watchList = true) } }
             .map { medias -> ResultData.Success(medias) }
+
+    fun observe(id: MediaId): Flow<ResultData<Media>> =
+        mediaDao.observe(id.value)
+            .map { entity ->
+                if (entity != null) {
+                    val media = mediaEntityToDomainMapper.transform(entity)
+                    media.copyWith(watchList = true)
+                    ResultData.Success(media)
+                } else {
+                    ResultData.Error(IllegalStateException("Media not found"))
+                }
+            }
 
     suspend fun list(mediaType: MediaType): ResultData<List<Media>> =
         observe(mediaType).first()
@@ -75,8 +90,10 @@ class WatchlistLocalDataSource @Inject constructor(
         true
     }
 
+    @Transaction
     suspend fun remove(mediaId: MediaId): ResultData<Boolean> = runCatching {
         watchListDao.delete(mediaId.value)
+        mediaDao.delete(mediaId.value)
         true
     }
 

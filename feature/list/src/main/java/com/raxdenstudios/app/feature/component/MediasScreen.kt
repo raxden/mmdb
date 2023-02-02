@@ -8,14 +8,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.raxdenstudios.app.core.ui.component.TopAppBarBack
-import com.raxdenstudios.app.feature.MediaListContract
-import com.raxdenstudios.app.feature.MediaListViewModel
-import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.ErrorDialog
+import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
+import com.raxdenstudios.app.feature.MediaListContract
+import com.raxdenstudios.app.feature.MediaListViewModel
+import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 
 @Composable
 fun MediasScreen(
@@ -47,6 +48,12 @@ private fun MediasScreen(
     uiState: MediaListContract.UIState,
     onEvent: (MediaListContract.UserEvent) -> Unit = {},
 ) {
+    if (uiState.error != null) {
+        ErrorDialog(
+            model = uiState.error,
+            onDismiss = { onEvent(MediaListContract.UserEvent.ErrorDismissed) }
+        )
+    }
     Scaffold(
         topBar = {
             TopAppBarBack(

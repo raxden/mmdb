@@ -1,16 +1,15 @@
 package com.raxdenstudios.app.feature.home.mapper
 
 import com.google.common.truth.Truth.assertThat
-import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
-import com.raxdenstudios.app.feature.home.R
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
+import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.commons.provider.StringProvider
 import io.mockk.mockk
 import org.junit.Test
@@ -57,12 +56,12 @@ class CarouselMediasModuleModelMapperTest {
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
-                        label = stringProvider.getString(R.string.media_list_item_chip_movies),
+                        label = "",
                         isSelected = module.mediaType == MediaType.Movie,
                     ),
                     MediaFilterModel(
                         id = MediaType.TvShow,
-                        label = stringProvider.getString(R.string.media_list_item_chip_tv_series),
+                        label = "",
                         isSelected = module.mediaType == MediaType.TvShow,
                     ),
                 )
@@ -82,12 +81,12 @@ class CarouselMediasModuleModelMapperTest {
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
-                        label = stringProvider.getString(R.string.media_list_item_chip_movies),
+                        label = "",
                         isSelected = module.mediaType == MediaType.Movie,
                     ),
                     MediaFilterModel(
                         id = MediaType.TvShow,
-                        label = stringProvider.getString(R.string.media_list_item_chip_tv_series),
+                        label = "",
                         isSelected = module.mediaType == MediaType.TvShow,
                     ),
                 )
@@ -120,12 +119,12 @@ class CarouselMediasModuleModelMapperTest {
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
-                        label = stringProvider.getString(R.string.media_list_item_chip_movies),
+                        label = "",
                         isSelected = module.mediaType == MediaType.Movie,
                     ),
                     MediaFilterModel(
                         id = MediaType.TvShow,
-                        label = stringProvider.getString(R.string.media_list_item_chip_tv_series),
+                        label = "",
                         isSelected = module.mediaType == MediaType.TvShow,
                     ),
                 )
