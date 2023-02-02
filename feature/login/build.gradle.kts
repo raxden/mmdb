@@ -81,7 +81,7 @@ dependencies {
 
     // instrumental test libraries
     androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.compose.test)
+    androidTestImplementation(libs.compose.bom)
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)
 }

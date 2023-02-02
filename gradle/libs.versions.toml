@@ -166,10 +166,6 @@ compose-material = [
     "compose-ui-tooling-preview",
     "compose-viewmodel",
 ]
-compose-test = [
-    "compose-bom",
-    "compose-ui-test",
-]
 coroutines = [
     "commons-coroutines",
     "coroutines-android",
@@ -225,6 +221,7 @@ testingUI = [
     "mockk-android",
     "threetenabp",
     "turbine",
+    "compose-ui-test",
 ]
 threetenabp = [
     "commons-threetenabp",
