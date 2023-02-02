@@ -42,8 +42,9 @@ The goal of this project is to do practice on the new technologies, patterns and
   - [x] Detekt integration
   - [x] Firebase app distribution
   - [x] Google Play integration
-- [x] Modularization
+- [x] Modularization by features
 - [ ] Dynamic feature modules with compose
 - [ ] Create catalog app module
 - [x] Version catalog for dependencies
+- [ ] Parameterized tests
 - [ ] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project

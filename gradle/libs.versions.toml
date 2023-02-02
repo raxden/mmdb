@@ -94,7 +94,7 @@ compose-navigation = { module = "androidx.navigation:navigation-compose", versio
 compose-navigation-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-navigation-hilt" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-ui-constraintlayout" }
-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
@@ -221,7 +221,7 @@ testingUI = [
     "mockk-android",
     "threetenabp",
     "turbine",
-    "compose-ui-test",
+    "compose-ui-test-junit4",
 ]
 threetenabp = [
     "commons-threetenabp",

@@ -178,7 +178,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            ./gradlew connectedAndroidTest --stacktrace --scan
+            ./gradlew connectedAndroidTest --no-configuration-cache --stacktrace --scan
 
 #  deploy-firebase:
 #    name: Build & Upload to Firebase App Distribution
