@@ -18,34 +18,48 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+interface WatchlistDataSource {
+
+    fun observe(): Flow<ResultData<List<Media>>>
+    fun observe(mediaType: MediaType): Flow<ResultData<List<Media>>>
+    fun observe(mediaId: MediaId, mediaType: MediaType): Flow<ResultData<Media>>
+    suspend fun fetch(): ResultData<List<Media>>
+    suspend fun fetch(mediaType: MediaType): ResultData<List<Media>>
+    suspend fun add(mediaId: MediaId, mediaType: MediaType): ResultData<Media>
+    suspend fun remove(mediaId: MediaId, mediaType: MediaType): ResultData<Boolean>
+}
+
 @Suppress("TooManyFunctions")
-class WatchlistDataSource @Inject constructor(
+class WatchlistDataSourceImpl @Inject constructor(
     private val watchListLocalDataSource: WatchlistLocalDataSource,
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val accountLocalDataSource: AccountLocalDataSource,
-) {
+) : WatchlistDataSource {
 
-    fun observe(): Flow<ResultData<List<Media>>> = flow {
+    override fun observe(): Flow<ResultData<List<Media>>> = flow {
         emitAll(watchListLocalDataSource.observe())
         updateLocalWatchlistFromRemoteIfNecessary()
     }.distinctUntilChanged()
 
-    fun observe(mediaType: MediaType) = flow {
+    override fun observe(mediaType: MediaType): Flow<ResultData<List<Media>>> = flow {
         emitAll(watchListLocalDataSource.observe(mediaType))
         updateLocalWatchlistFromRemoteIfNecessary(mediaType)
     }.distinctUntilChanged()
 
-    suspend fun fetch(): ResultData<List<Media>> {
+    override fun observe(mediaId: MediaId, mediaType: MediaType): Flow<ResultData<Media>> =
+        watchListLocalDataSource.observe(mediaId)
+
+    override suspend fun fetch(): ResultData<List<Media>> {
         updateLocalWatchlistFromRemoteIfNecessary()
         return watchListLocalDataSource.list()
     }
 
-    suspend fun fetch(mediaType: MediaType): ResultData<List<Media>> {
+    override suspend fun fetch(mediaType: MediaType): ResultData<List<Media>> {
         updateLocalWatchlistFromRemoteIfNecessary(mediaType)
         return watchListLocalDataSource.list(mediaType)
     }
 
-    suspend fun add(
+    override suspend fun add(
         mediaId: MediaId,
         mediaType: MediaType
     ): ResultData<Media> = when (val account = accountLocalDataSource.getAccount()) {
@@ -53,7 +67,7 @@ class WatchlistDataSource @Inject constructor(
         is Account.Logged -> add(mediaId, mediaType, account)
     }
 
-    suspend fun remove(
+    override suspend fun remove(
         mediaId: MediaId,
         mediaType: MediaType
     ): ResultData<Boolean> = when (val account = accountLocalDataSource.getAccount()) {

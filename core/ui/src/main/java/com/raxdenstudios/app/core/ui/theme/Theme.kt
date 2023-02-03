@@ -34,10 +34,10 @@ private val LightColorPalette = lightColors(
     surface = Color.White,
     error = BlazeOrangeDark,
     onPrimary = DeepOrange500,
-    onSecondary = Grey900,
+    onSecondary = Color.White,
     onBackground = Grey900,
     onSurface = Grey900,
-    onError= Grey900,
+    onError= Color.White,
 )
 
 @Composable

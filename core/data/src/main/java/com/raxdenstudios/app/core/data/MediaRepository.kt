@@ -7,12 +7,15 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.getValueOrNull
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -39,7 +42,13 @@ class MediaRepository @Inject constructor(
     suspend fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType,
-    ): ResultData<Media> = mediaDataSource.fetchById(mediaId, mediaType)
+    ): Flow<ResultData<Media>> = flow {
+        val watchlistMedia = watchlistDataSource.observe(mediaId, mediaType).firstOrNull()?.getValueOrNull()
+        val result = mediaDataSource.fetchById(mediaId, mediaType).map { media ->
+            media.copyWith(watchList = watchlistMedia != null)
+        }
+        emit(result)
+    }
 
     private fun PageList<Media>.markMediasAsWatched(watchlist: List<Media>): PageList<Media> =
         map { medias ->

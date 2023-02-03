@@ -42,6 +42,12 @@ class WatchlistLocalDataSource @Inject constructor(
             .map { medias -> medias.map { media -> media.copyWith(watchList = true) } }
             .map { medias -> ResultData.Success(medias) }
 
+    fun observe(id: MediaId): Flow<ResultData<Media>> =
+        mediaDao.observe(id.value)
+            .map { entity -> mediaEntityToDomainMapper.transform(entity) }
+            .map { media -> media.copyWith(watchList = true) }
+            .map { media -> ResultData.Success(media) }
+
     suspend fun list(mediaType: MediaType): ResultData<List<Media>> =
         observe(mediaType).first()
 

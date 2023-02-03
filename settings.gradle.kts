@@ -9,10 +9,10 @@ pluginManagement {
      * and the Maven Central Repository as the repositories Gradle should use to look for its dependencies.
      */
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
         mavenLocal()
+        gradlePluginPortal() // https://developer.android.com/studio/build/optimize-your-build#gradle_plugin_portal
     }
 }
 
@@ -58,6 +58,7 @@ include(":feature:home")
 include(":feature:list")
 include(":feature:account")
 include(":feature:search")
+include(":feature:detail")
 
 include(":core:ui")
 include(":core:network")
@@ -68,4 +69,3 @@ include(":core:navigation")
 include(":core:model")
 include(":core:test")
 include(":core:database")
-include(":feature:detail")

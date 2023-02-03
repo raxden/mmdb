@@ -5,6 +5,7 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.ResultData
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetMediaUseCase @Inject constructor(
@@ -13,7 +14,7 @@ class GetMediaUseCase @Inject constructor(
 
     suspend operator fun invoke(
         params: Params,
-    ): ResultData<Media> =
+    ): Flow<ResultData<Media>> =
         mediaRepository.fetchById(params.mediaId, params.mediaType)
 
     data class Params(

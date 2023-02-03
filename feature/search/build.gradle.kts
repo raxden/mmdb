@@ -31,6 +31,8 @@ android {
         }
     }
 
+    namespace = "com.raxdenstudios.app.feature.search"
+
     buildFeatures {
         compose = true
     }

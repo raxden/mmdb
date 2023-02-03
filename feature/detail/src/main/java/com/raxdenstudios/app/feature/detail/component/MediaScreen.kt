@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -30,13 +32,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.icon.AppIcons
@@ -140,7 +142,44 @@ private fun MediaScreen(
                 )
             }
         }
+        AddToWatchlistFloatingActionButton(
+            modifier = Modifier
+                .systemBarsPadding()
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            addToWatchlist = { onEvent(MediaContract.UserEvent.AddToWatchlist(media = uiState.media)) },
+            removeFromWatchlist = { onEvent(MediaContract.UserEvent.RemoveFromWatchlist(media = uiState.media)) },
+            isMediaAddedToWatchlist = uiState.media.watchlist,
+        )
     }
+}
+
+@Composable
+private fun AddToWatchlistFloatingActionButton(
+    modifier: Modifier = Modifier,
+    addToWatchlist: () -> Unit,
+    removeFromWatchlist: () -> Unit,
+    isMediaAddedToWatchlist: Boolean
+) {
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = {
+            if (isMediaAddedToWatchlist)
+                removeFromWatchlist()
+            else addToWatchlist()
+        },
+    ) {
+        Icon(
+            painter = painterResource(getResourceId(isMediaAddedToWatchlist)),
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun getResourceId(isSelected: Boolean): Int = when (isSelected) {
+    true -> AppIcons.Selected
+    false -> AppIcons.Unselected
 }
 
 @Composable

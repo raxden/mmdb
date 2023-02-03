@@ -21,6 +21,8 @@ object MediaContract {
 
     sealed interface UserEvent {
         object BackClicked : UserEvent
+        data class AddToWatchlist(val media: MediaModel) : UserEvent
+        data class RemoveFromWatchlist(val media: MediaModel) : UserEvent
     }
 
     /**
