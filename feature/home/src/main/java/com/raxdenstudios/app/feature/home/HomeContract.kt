@@ -38,7 +38,7 @@ object HomeContract {
 
         object ErrorDismissed : UserEvent
         data class MediaSelected(
-            val mediaItemModel: MediaModel,
+            val item: MediaModel,
         ) : UserEvent
 
         data class WatchButtonClicked(
@@ -65,5 +65,7 @@ object HomeContract {
             val mediaId: MediaId,
             val mediaType: MediaType,
         ) : UIEvent()
+
+        data class ShowMessage(val message: String) : UIEvent()
     }
 }

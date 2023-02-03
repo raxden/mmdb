@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.ui.graph
 
+import androidx.compose.material.ScaffoldState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,6 +17,7 @@ import com.raxdenstudios.app.feature.home.component.HomeScreen
 
 fun NavGraphBuilder.homeGraph(
     navController: NavHostController,
+    scaffoldState: ScaffoldState,
 ) {
     navigation(
         route = MainRoutes.home.value,
@@ -23,6 +25,7 @@ fun NavGraphBuilder.homeGraph(
     ) {
         composable(route = HomeRoutes.home.value) {
             HomeScreen(
+                scaffoldState = scaffoldState,
                 onNavigateToMedias = { mediaType, mediaCategory ->
                     navController.navigateToMedias(mediaType, mediaCategory)
                 },

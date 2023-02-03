@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +31,7 @@ import com.raxdenstudios.app.ui.graph.mainGraph
 fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     viewModel: MainViewModel = hiltViewModel(),
 ) {
 
@@ -42,6 +45,7 @@ fun MainScreen(
     MainScreen(
         modifier = modifier,
         navController = navController,
+        scaffoldState = scaffoldState,
         uiState = uiState,
     )
 }
@@ -50,10 +54,12 @@ fun MainScreen(
 private fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    scaffoldState: ScaffoldState,
     uiState: MainContract.UIState,
 ) {
     Scaffold(
         modifier = modifier,
+        scaffoldState = scaffoldState,
         bottomBar = {
             if (uiState.shouldShowBottomBar) {
                 Column {
@@ -76,7 +82,7 @@ private fun MainScreen(
             navController = navController,
             startDestination = MainRoutes.home.value,
         ) {
-            mainGraph(navController)
+            mainGraph(navController, scaffoldState)
         }
     }
 }

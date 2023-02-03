@@ -64,7 +64,9 @@ class HomeViewModelTest {
     private val homeModuleModelMapper = HomeModuleModelMapper(
         carouselModelMapper = carouselModelMapper
     )
-    private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true)
+    private val errorModelMapper = ErrorModelMapper(
+        stringProvider = stringProvider
+    )
     private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase = mockk()
     private lateinit var viewModel: HomeViewModel
 
@@ -78,6 +80,7 @@ class HomeViewModelTest {
             changeHomeModuleFilterUseCase = changeHomeModuleFilterUseCase,
             carouselModelToMediaFilterMapper = carouselModelToMediaFilterMapper,
             errorModelMapper = errorModelMapper,
+            stringProvider = stringProvider,
         )
     }
 

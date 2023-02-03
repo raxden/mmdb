@@ -6,15 +6,16 @@ import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.ChangeHomeModuleFilterUseCase
 import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
-import com.raxdenstudios.app.core.model.MediaId
-import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
+import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.provider.StringProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,7 @@ class HomeViewModel @Inject constructor(
     private val changeHomeModuleFilterUseCase: ChangeHomeModuleFilterUseCase,
     private val carouselModelToMediaFilterMapper: CarouselModelToMediaFilterMapper,
     private val errorModelMapper: ErrorModelMapper,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeContract.UIState.loading)
@@ -64,10 +66,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setUserEvent(event: HomeContract.UserEvent): Unit = when (event) {
-        is HomeContract.UserEvent.MediaSelected -> mediaSelected(
-            event.mediaItemModel.id,
-            event.mediaItemModel.mediaType
-        )
+        is HomeContract.UserEvent.MediaSelected -> mediaSelected(event.item)
         is HomeContract.UserEvent.WatchButtonClicked -> when (event.item.watchlist) {
             true -> removeFromWatchlist(event.item)
             false -> addToWatchlist(event.item)
@@ -102,40 +101,48 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun mediaSelected(
-        id: MediaId,
-        mediaType: MediaType
-    ) {
+    private fun mediaSelected(media: MediaModel) {
+        sendEvent(HomeContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
+    }
+
+    private fun sendEvent(event: HomeContract.UIEvent) {
         _uiState.update { value ->
-            val event = HomeContract.UIEvent.NavigateToMedia(id, mediaType)
             value.copy(events = value.events.plus(event))
         }
     }
 
-    private fun addToWatchlist(
-        mediaListItem: MediaModel,
-    ) {
+    private fun addToWatchlist(media: MediaModel) {
         viewModelScope.safeLaunch {
-            addMediaToWatchlistUseCase(
-                params = AddMediaToWatchlistUseCase.Params(
-                    mediaListItem.id,
-                    mediaListItem.mediaType
-                )
+            val params = AddMediaToWatchlistUseCase.Params(
+                media.id,
+                media.mediaType
             )
+            addMediaToWatchlistUseCase(params)
+                .onSuccess { mediaAddedToWatchlist(media) }
         }
     }
 
-    private fun removeFromWatchlist(
-        mediaListItem: MediaModel,
-    ) {
+    private fun mediaAddedToWatchlist(media: MediaModel) {
+        val message = stringProvider.getString(R.string.added_to_watchlist, media.title)
+        val event = HomeContract.UIEvent.ShowMessage(message)
+        sendEvent(event)
+    }
+
+    private fun removeFromWatchlist(media: MediaModel) {
         viewModelScope.safeLaunch {
-            removeMediaFromWatchlistUseCase(
-                params = RemoveMediaFromWatchlistUseCase.Params(
-                    mediaListItem.id,
-                    mediaListItem.mediaType
-                )
+            val params = RemoveMediaFromWatchlistUseCase.Params(
+                media.id,
+                media.mediaType
             )
+            removeMediaFromWatchlistUseCase(params)
+                .onSuccess { mediaRemovedFromWatchlist(media) }
         }
+    }
+
+    private fun mediaRemovedFromWatchlist(media: MediaModel) {
+        val message = stringProvider.getString(R.string.removed_from_watchlist, media.title)
+        val event = HomeContract.UIEvent.ShowMessage(message)
+        sendEvent(event)
     }
 
     private fun errorDismissed() {
