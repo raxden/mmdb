@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.account
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
@@ -37,6 +39,8 @@ private fun AccountScreen(
     modifier: Modifier = Modifier,
     uiState: AccountContract.UIState,
 ) {
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     uiState.sample
 
     Column(

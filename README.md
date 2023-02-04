@@ -8,15 +8,17 @@ Mobile movie database is a simple app to search movies and tv shows. It uses [Th
 
 ## What is it?
 
-The purpose of this app is to learn new technologies and improve my skills with android.
+The purpose of this app is to learn and improve my skills with android.
 
-## Requirements
+## Roadmap
 
-- [x] Show medias by modules
-- [x] Show medias by category
-- [ ] Search medias by query (WIP)
-- [x] Show media detail (WIP)
-- [ ] Show media trailer (WIP)
+- [x] Home
+- [x] Medias by category
+- [x] Dark mode
+- [x] Media detail (WIP)
+- [ ] Player
+- [ ] Search
+- [ ] Account
 
 ## Guidelines
 
@@ -32,29 +34,46 @@ The goal of this project is to do practice on the new technologies, patterns and
 - [x] MVVM
 - [x] Kotlin
 - [x] Room
+  - [x] Migration
+  - [ ] Type converters
 - [x] Coroutines
   - [x] Flow
   - [x] StateFlow
   - [ ] SharedFlow
 - [x] Hilt
 - [x] Compose
+  - [x] Navigation
+    - [x] NavHost
+  - [x] LaunchedEffect
+  - [x] DisposableEffect
 - [x] Junit
   - [x] Mockk
   - [x] Turbine
   - [x] Google Truth
+  - [ ] Robolectric
+  - [ ] Parameterized tests
 - [x] Instrumentation tests
   - [x] Espresso
   - [x] Using Hilt to inject dependencies into tests
   - [ ] Create largeTest using RestMock and Room in memory.
+  - [ ] MockWebServer
 - [x] CI
   - [x] Github actions
-  - [x] Codecov integration
+  - [x] Composite actions
+  - [x] Coverage
+    - [x] Codecov integration
+    - [ ] Sonarqube integration
   - [x] Detekt integration
-  - [x] Firebase app distribution
-  - [x] Google Play integration
-- [x] Modularization by features
-- [ ] Dynamic feature modules with compose
+  - [ ] Snapshot testing
+  - [ ] Firebase app distribution
+  - [ ] Google Play integration
+- [x] Architecture
+  - [x] Modularization by features
+  - [ ] Dynamic features
+  - [ ] Kotlin Multiplatform
 - [ ] Create catalog app module
-- [x] Version catalog for dependencies
-- [ ] Parameterized tests
-- [ ] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project
+- [x] Dependencies
+  - [x] Use gradle kotlin dsl
+  - [x] Use gradle plugin portal
+  - [x] Version catalog (.toml)
+  - [ ] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project
