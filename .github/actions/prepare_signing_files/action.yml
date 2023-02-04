@@ -1,0 +1,26 @@
+name: 'Prepare signing files'
+description: "Decode and extract signing files"
+inputs:
+  fileDir:
+    description: 'Directory to extract the files to'
+    required: true
+    default: './config'
+  encodedString:
+    description: 'Base64 encoded string of the file'
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: Decode secret files
+      id: decode_secret_files
+      uses: timheuer/base64-to-file@v1.2
+      with:
+        fileName: 'signing.tar.gz'
+        fileDir: ${{ inputs.fileDir }}
+        encodedString: ${{ inputs.encodedString }}
+
+    - name: Extract secret files
+      shell: bash
+      run:  |
+        tar xf ${{ steps.decode_secret_files.outputs.filePath }} --directory ${{ inputs.fileDir }}

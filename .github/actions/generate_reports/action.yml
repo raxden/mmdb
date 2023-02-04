@@ -1,0 +1,19 @@
+name: 'Generate reports'
+description: "Generate jacoco reports and upload to codecov"
+inputs:
+  token:
+    description: 'Codecov token'
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: Jacoco Reports
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: coverageReport --no-configuration-cache --stacktrace --scan
+
+    - name: Uploading reports to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ inputs.token }}
