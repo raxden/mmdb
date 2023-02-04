@@ -79,19 +79,11 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
-      - name: Decode secret files
-        id: decode_secret_files
+      - name: Prepare signing files
         if: ${{ matrix.buildType=='Release' }}
-        uses: timheuer/base64-to-file@v1.2
+        uses: ./.github/actions/prepare_signing_files
         with:
-          fileName: 'signing.tar.gz'
-          fileDir: './config/'
           encodedString: ${{ secrets.RELEASE_FILES }}
-
-      - name: Extract secret files
-        if: ${{ matrix.buildType=='Release' }}
-        run:  |
-          tar xf ${{ steps.decode_secret_files.outputs.filePath }} --directory ./config
 
       - name: Assemble apk
         uses: gradle/gradle-build-action@v2
@@ -122,13 +114,8 @@ jobs:
         with:
           arguments: testDebugUnitTest --stacktrace --scan
 
-      - name: Jacoco Reports
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: coverageReport --no-configuration-cache --stacktrace --scan
-
-      - name: Uploading reports to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Generate reports
+        uses: ./.github/actions/generate_reports
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
