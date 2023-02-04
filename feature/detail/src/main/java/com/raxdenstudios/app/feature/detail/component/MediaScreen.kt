@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.feature.detail.component
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
+import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -80,6 +82,8 @@ private fun MediaScreen(
     uiState: MediaContract.UIState,
     onEvent: (MediaContract.UserEvent) -> Unit = {},
 ) {
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     var headerHeightPx by remember { mutableStateOf(0f) }
     var topAppBarHeightPx by remember { mutableStateOf(0f) }
 //    val statusBarHeight = WindowInsets.statusBars.getTop(LocalDensity.current)

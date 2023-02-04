@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.component
 
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
@@ -12,6 +13,7 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
+import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.MediaListContract
@@ -25,7 +27,6 @@ fun MediasScreen(
     onNavigateToBack: () -> Unit,
     onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
 ) {
-
     val uiState by viewModel.uiState.collectAsState()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
@@ -48,6 +49,8 @@ private fun MediasScreen(
     uiState: MediaListContract.UIState,
     onEvent: (MediaListContract.UserEvent) -> Unit = {},
 ) {
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     if (uiState.error != null) {
         ErrorDialog(
             model = uiState.error,

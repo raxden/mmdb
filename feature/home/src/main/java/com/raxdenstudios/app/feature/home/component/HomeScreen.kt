@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.home.component
 
+import android.content.pm.ActivityInfo
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
+import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.ShowSnackbarMessage
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.HomeContract
@@ -59,6 +61,8 @@ private fun HomeScreen(
     uiState: HomeContract.UIState,
     onEvent: (HomeContract.UserEvent) -> Unit = {},
 ) {
+    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     if (uiState.error != null) {
         ErrorDialog(
             model = uiState.error,

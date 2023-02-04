@@ -1,14 +1,12 @@
 package com.raxdenstudios.app.ui.graph
 
-import androidx.compose.material.ScaffoldState
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import com.raxdenstudios.app.ui.AppState
 
 fun NavGraphBuilder.mainGraph(
-    navController: NavHostController,
-    scaffoldState: ScaffoldState,
+    appState: AppState,
 ) {
-    homeGraph(navController, scaffoldState)
+    homeGraph(appState)
     searchGraph()
     accountGraph()
 }
