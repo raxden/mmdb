@@ -13,6 +13,12 @@ runs:
       with:
         arguments: coverageReport --no-configuration-cache --stacktrace --scan
 
+    - name: Upload Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: reports-jacoco
+        path: ./**/build/reports/jacoco.xml
+
     - name: Uploading reports to Codecov
       uses: codecov/codecov-action@v3
       with:

@@ -114,10 +114,11 @@ jobs:
         with:
           arguments: testDebugUnitTest --stacktrace --scan
 
-      - name: Generate reports
-        uses: ./.github/actions/generate_reports
+      - name: Upload Outputs
+        uses: actions/upload-artifact@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: outputs-unit-tests
+          path: ./**/build/outputs/unit_test_code_coverage/
 
   instrumental-test:
     needs: [ checkstyle ]
@@ -164,6 +165,40 @@ jobs:
           disable-animations: true
           script: |
             ./gradlew connectedDebugAndroidTest --no-configuration-cache --stacktrace --scan
+
+      - name: Upload Outputs
+        uses: actions/upload-artifact@v3
+        with:
+          name: outputs-android-tests
+          path: ./**/build/outputs/code_coverage/
+
+  reports:
+    needs: [ test, instrumental-test ]
+    if: success()
+    name: Generate reports
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: Loading unit tests outputs
+        uses: actions/download-artifact@v3
+        with:
+          name: outputs-unit-tests
+
+      - name: Loading android tests outputs
+        uses: actions/download-artifact@v3
+        with:
+          name: outputs-android-tests
+
+      - name: Generate reports
+        uses: ./.github/actions/generate_reports
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
 #  deploy-firebase:
 #    name: Build & Upload to Firebase App Distribution
