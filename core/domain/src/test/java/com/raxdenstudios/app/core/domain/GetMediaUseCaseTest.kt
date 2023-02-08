@@ -55,6 +55,6 @@ internal class GetMediaUseCaseTest {
 
         private val mediaId = MediaId(1)
         private val mediaType = MediaType.Movie
-        private val media = Media.Movie.empty
+        private val media = Media.Movie.mock
     }
 }

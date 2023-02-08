@@ -53,6 +53,6 @@ internal class AddMediaToWatchlistUseCaseTest {
 
         private val mediaId = MediaId(1)
         private val mediaType = MediaType.Movie
-        private val media = Media.Movie.empty.copy(id = MediaId(1))
+        private val media = Media.Movie.mock.copy(id = MediaId(1))
     }
 }

@@ -49,7 +49,7 @@ sealed class Media {
             )
 
             @Suppress("MagicNumber")
-            val empty = Movie(
+            val mock = Movie(
                 id = MediaId(0L),
                 title = "",
                 overview = "",

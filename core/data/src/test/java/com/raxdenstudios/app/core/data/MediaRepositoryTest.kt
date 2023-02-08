@@ -6,6 +6,7 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -58,8 +59,8 @@ class MediaRepositoryTest {
                 ResultData.Success(
                     PageList(
                         items = listOf(
-                            Media.Movie.empty.copy(id = MediaId(1), watchList = true),
-                            Media.Movie.empty.copy(id = MediaId(2), watchList = true),
+                            Media.Movie.mock.copy(id = MediaId(1), watchList = true),
+                            Media.Movie.mock.copy(id = MediaId(2), watchList = true),
                         ),
                         page = Page(1),
                     )
@@ -77,19 +78,32 @@ class MediaRepositoryTest {
                 val result = awaitItem()
 
                 assertThat(result).isEqualTo(
-                    ResultData.Success(Media.Movie.empty.copy(id = MediaId(1), watchList = true))
+                    ResultData.Success(Media.Movie.mock.copy(id = MediaId(1), watchList = true))
                 )
                 awaitComplete()
             }
         }
 
+    @Test
+    fun `Given a mediaId and mediaType, When videos is called, Then return a list of videos`() = runTest {
+        val mediaId = MediaId(1L)
+        val mediaType = MediaType.Movie
+        coEvery {
+            mediaDataSource.videos(mediaId, mediaType)
+        } returns ResultData.Success(listOf(Video.mock))
+
+        val result = repository.videos(mediaId, mediaType)
+
+        assertThat(result).isEqualTo(ResultData.Success(listOf(Video.mock)))
+    }
+
     companion object {
 
         private val aMovies = listOf(
-            Media.Movie.empty.copy(id = MediaId(1)),
-            Media.Movie.empty.copy(id = MediaId(2)),
+            Media.Movie.mock.copy(id = MediaId(1)),
+            Media.Movie.mock.copy(id = MediaId(2)),
         )
-        private val movie = Media.Movie.empty.copy(id = MediaId(1))
+        private val movie = Media.Movie.mock.copy(id = MediaId(1))
         private val firstPage = Page(1)
         private val aPageSize = PageSize.defaultSize
         private val aPageList = PageList<Media>(

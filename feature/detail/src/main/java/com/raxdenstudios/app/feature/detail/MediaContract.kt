@@ -2,6 +2,7 @@ package com.raxdenstudios.app.feature.detail
 
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.detail.model.VideoModel
 import java.util.UUID
 
 object MediaContract {
@@ -9,6 +10,7 @@ object MediaContract {
     data class UIState(
         val isLoading: Boolean = false,
         val media: MediaModel = MediaModel.empty,
+        val videos: List<VideoModel> = emptyList(),
         val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     ) {
@@ -23,6 +25,7 @@ object MediaContract {
     sealed interface UserEvent {
         object BackClicked : UserEvent
         object ErrorDismissed : UserEvent
+        data class VideoClick(val video: VideoModel) : UserEvent
         data class AddToWatchlist(val media: MediaModel) : UserEvent
         data class RemoveFromWatchlist(val media: MediaModel) : UserEvent
     }
@@ -34,6 +37,7 @@ object MediaContract {
     sealed class UIEvent {
         val id: String = UUID.randomUUID().toString()
 
+        data class PlayYoutubeVideo(val url: String) : UIEvent()
         object NavigateToBack : UIEvent()
     }
 }

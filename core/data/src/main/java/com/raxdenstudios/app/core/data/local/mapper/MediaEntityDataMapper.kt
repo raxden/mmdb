@@ -10,8 +10,6 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Picture
 import com.raxdenstudios.app.core.model.Size
 import com.raxdenstudios.app.core.model.Vote
-import com.raxdenstudios.app.core.network.APIDataProvider
-import com.raxdenstudios.app.core.network.di.APIVersionV3
 import com.raxdenstudios.commons.DataMapper
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
@@ -126,24 +124,16 @@ class PictureEntityToDomainMapper @Inject constructor(
 class SizeToEntityMapper @Inject constructor() : DataMapper<Size, SizeEntity>() {
 
     override fun transform(source: Size): SizeEntity = when (source) {
-        is Size.Original -> SizeEntity(source.source, "original")
-        is Size.Thumbnail -> SizeEntity(source.source, "thumbnail")
+        is Size.Original -> SizeEntity(source.url, "original")
+        is Size.Thumbnail -> SizeEntity(source.url, "thumbnail")
     }
 }
 
-class SizeEntityToDomainMapper @Inject constructor(
-    @APIVersionV3 private val apiDataProvider: APIDataProvider,
-) : DataMapper<SizeEntity, Size>() {
+class SizeEntityToDomainMapper @Inject constructor() : DataMapper<SizeEntity, Size>() {
 
     override fun transform(source: SizeEntity): Size = when (source.type) {
-        "thumbnail" -> Size.Thumbnail(
-            apiDataProvider.baseImageUrl,
-            source.url
-        )
-        "original" -> Size.Original(
-            apiDataProvider.baseImageUrl,
-            source.url
-        )
+        "thumbnail" -> Size.Thumbnail(source.url)
+        "original" -> Size.Original(source.url)
         else -> error("Invalid field value to represent Picture.Size")
     }
 }

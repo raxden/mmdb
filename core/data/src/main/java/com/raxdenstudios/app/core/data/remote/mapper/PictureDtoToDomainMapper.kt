@@ -14,8 +14,8 @@ class PictureDtoToDomainMapper @Inject constructor(
     override fun transform(source: String?): Picture =
         source?.takeIf { it.isNotEmpty() }?.let {
             Picture.WithImage(
-                thumbnail = Size.Thumbnail(apiDataProvider.baseImageUrl, source),
-                original = Size.Original(apiDataProvider.baseImageUrl, source),
+                thumbnail = Size.Thumbnail("${apiDataProvider.baseImageUrl}w500$source"),
+                original = Size.Original("${apiDataProvider.baseImageUrl}original$source")
             )
         } ?: Picture.Empty
 }

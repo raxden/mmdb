@@ -2,7 +2,6 @@ package com.raxdenstudios.app.feature.home.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -21,13 +20,12 @@ import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.AppVideoImage
 import com.raxdenstudios.app.core.ui.component.PosterWithWatchButton
+import com.raxdenstudios.app.core.ui.component.aspectRatio169
+import com.raxdenstudios.app.core.ui.component.aspectRatio23
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
 import com.raxdenstudios.app.core.ui.theme.Typography
-
-private const val ASPECT_RATIO_16_9 = 16f / 9f
-private const val ASPECT_RATIO_2_3 = 2f / 3f
 
 @Suppress("LongMethod", "LongParameterList")
 @Composable
@@ -79,7 +77,7 @@ fun FeaturedMediaListItem(
                     .clickable(onClick = onClick)
                     .layoutId("posterVideo")
                     .fillMaxWidth()
-                    .aspectRatio(ASPECT_RATIO_16_9),
+                    .aspectRatio169(),
                 image = model.backdrop,
                 onPlayClick = onPlayClick,
             )
@@ -108,7 +106,7 @@ fun FeaturedMediaListItem(
                     .padding(start = 20.dp, top = 8.dp, bottom = 16.dp, end = 8.dp)
                     .offset(childOffset)
                     .width(100.dp)
-                    .aspectRatio(ASPECT_RATIO_2_3),
+                    .aspectRatio23(),
                 elevation = 4.dp,
                 shape = Shapes.small,
                 image = model.poster,

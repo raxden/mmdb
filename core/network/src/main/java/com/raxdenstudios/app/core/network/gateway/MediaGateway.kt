@@ -6,6 +6,7 @@ import com.raxdenstudios.app.core.network.model.MediaDetailDto
 import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.PageDto
+import com.raxdenstudios.app.core.network.model.VideoDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -62,5 +63,15 @@ class MediaGateway @Inject constructor(
         MediaType.Movie -> mediaV3Service.upcoming(page.value)
             .toResultData("Error occurred during fetching upcoming movies")
         MediaType.TvShow -> ResultData.Success(PageDto.empty())
+    }
+
+    suspend fun videos(
+        mediaId: MediaId,
+        mediaType: MediaType,
+    ): ResultData<PageDto<VideoDto>, NetworkErrorDto> = when (mediaType) {
+        MediaType.Movie -> mediaV3Service.movieVideos(mediaId.value.toString())
+            .toResultData("Error occurred during searching videos for movie with id: $mediaId")
+        MediaType.TvShow -> mediaV3Service.tvVideos(mediaId.value.toString())
+            .toResultData("Error occurred during searching videos for tv show with id: $mediaId")
     }
 }

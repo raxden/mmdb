@@ -3,7 +3,6 @@ package com.raxdenstudios.app.feature.detail.component
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -21,12 +20,12 @@ import androidx.constraintlayout.compose.ConstraintSet
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.AppImage
 import com.raxdenstudios.app.core.ui.component.Poster
+import com.raxdenstudios.app.core.ui.component.aspectRatio169
+import com.raxdenstudios.app.core.ui.component.aspectRatio23
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
 
-private const val ASPECT_RATIO_16_9 = 16f / 9f
-private const val ASPECT_RATIO_2_3 = 2f / 3f
 private const val PERCENT_3F = .3f
 private const val PERCENT_7F = .7f
 
@@ -77,7 +76,7 @@ fun MediaHeader(
                 AppImage(
                     modifier = Modifier
                         .layoutId("backdrop")
-                        .aspectRatio(ratio = ASPECT_RATIO_16_9),
+                        .aspectRatio169(),
                     image = media.backdrop,
                 )
                 Poster(
@@ -86,7 +85,7 @@ fun MediaHeader(
                         .layoutId("poster")
                         .padding(start = 16.dp, bottom = 16.dp)
                         .width(100.dp)
-                        .aspectRatio(ratio = ASPECT_RATIO_2_3),
+                        .aspectRatio23(),
                     elevation = 4.dp,
                     shape = Shapes.small,
                     image = media.poster,

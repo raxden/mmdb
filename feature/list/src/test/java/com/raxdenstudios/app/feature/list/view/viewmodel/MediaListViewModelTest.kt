@@ -107,7 +107,7 @@ class MediaListViewModelTest {
             watchlist = false,
         )
         coEvery { addMediaToWatchlistUseCase.invoke(any()) } returns ResultData.Success(
-            Media.Movie.empty.copy(id = MediaId(2L), watchList = true)
+            Media.Movie.mock.copy(id = MediaId(2L), watchList = true)
         )
 
         viewModel.uiState.test {
@@ -135,7 +135,7 @@ class MediaListViewModelTest {
     fun `when movie is removed from watchlist, movie is replaced in model`() = runTest {
         coEvery { getMediasUseCase.invoke(any()) } returns ResultData.Success(
             PageList(
-                items = listOf(Media.Movie.empty.copy(id = MediaId(1), watchList = true)),
+                items = listOf(Media.Movie.mock.copy(id = MediaId(1), watchList = true)),
                 page = Page(1)
             )
         )
@@ -232,12 +232,12 @@ class MediaListViewModelTest {
         private val aGetMoviesUseCaseSecondPageParams =
             GetMediasUseCase.Params(aMediaFilter, aSecondPage, aPageSize)
         private val aFirstPageMovies = listOf(
-            Media.Movie.empty.copy(id = MediaId(1)),
-            Media.Movie.empty.copy(id = MediaId(2)),
+            Media.Movie.mock.copy(id = MediaId(1)),
+            Media.Movie.mock.copy(id = MediaId(2)),
         )
         private val aSecondPageMovies = listOf(
-            Media.Movie.empty.copy(id = MediaId(3)),
-            Media.Movie.empty.copy(id = MediaId(4)),
+            Media.Movie.mock.copy(id = MediaId(3)),
+            Media.Movie.mock.copy(id = MediaId(4)),
         )
         private val aFirstPageList = PageList<Media>(
             items = aFirstPageMovies,

@@ -55,7 +55,7 @@ internal class GetMediasUseCaseTest {
     companion object {
 
         private val mediaType = MediaType.Movie
-        private val media = Media.Movie.empty
+        private val media = Media.Movie.mock
         private val mediaCategory = MediaCategory.Popular
         private val mediaFilter = MediaFilter(
             mediaType = mediaType,

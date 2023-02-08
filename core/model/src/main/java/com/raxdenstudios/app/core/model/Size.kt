@@ -1,12 +1,14 @@
 package com.raxdenstudios.app.core.model
 
-sealed class Size(
-    val url: String,
-) {
+sealed interface Size {
 
-    data class Thumbnail(val domain: String, val source: String) :
-        Size("${domain}w500$source")
+    val url: String
 
-    data class Original(val domain: String, val source: String) :
-        Size("${domain}original$source")
+    data class Thumbnail(
+        override val url: String
+    ) : Size
+
+    data class Original(
+        override val url: String
+    ) : Size
 }

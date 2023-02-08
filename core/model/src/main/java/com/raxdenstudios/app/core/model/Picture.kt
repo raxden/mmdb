@@ -12,8 +12,8 @@ sealed class Picture {
         companion object {
 
             val empty = WithImage(
-                thumbnail = Size.Thumbnail("", ""),
-                original = Size.Original("", ""),
+                thumbnail = Size.Thumbnail(""),
+                original = Size.Original(""),
             )
         }
     }
