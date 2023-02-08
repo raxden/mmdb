@@ -1,6 +1,8 @@
 package com.raxdenstudios.app.core.network.model
 
 import com.google.gson.annotations.Expose
+import com.raxdenstudios.commons.pagination.model.Page
+import com.raxdenstudios.commons.pagination.model.PageList
 
 @Suppress("ConstructorParameterNaming")
 data class PageDto<T>(
@@ -20,3 +22,8 @@ data class PageDto<T>(
         )
     }
 }
+
+fun <T, R> PageDto<T>.toPageList(transform: (List<T>) -> List<R>) = PageList(
+    items = transform(results),
+    page = Page(page)
+)

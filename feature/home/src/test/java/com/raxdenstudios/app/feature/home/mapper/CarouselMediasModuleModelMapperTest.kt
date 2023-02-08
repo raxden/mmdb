@@ -135,7 +135,7 @@ class CarouselMediasModuleModelMapperTest {
     companion object {
 
         private val medias = listOf(
-            Media.Movie.empty.copy(id = MediaId(1L))
+            Media.Movie.mock.copy(id = MediaId(1L))
         )
     }
 }

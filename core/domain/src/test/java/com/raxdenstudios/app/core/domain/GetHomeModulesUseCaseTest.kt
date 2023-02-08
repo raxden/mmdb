@@ -66,12 +66,12 @@ class GetHomeModulesUseCaseTest {
                             0,
                             0,
                             MediaType.Movie,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                         HomeModule.Carousel.nowPlaying(
                             0,
                             0,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                     )
                 )
@@ -99,7 +99,7 @@ class GetHomeModulesUseCaseTest {
                                 0,
                                 mediaType = MediaType.Movie,
                                 mediaCategory = MediaCategory.Popular,
-                                medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                                medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                             ),
                             HomeModule.Carousel(
                                 0,
@@ -127,12 +127,12 @@ class GetHomeModulesUseCaseTest {
                             0,
                             0,
                             MediaType.Movie,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                         HomeModule.Carousel.nowPlaying(
                             0,
                             0,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                     )
                 )
@@ -148,18 +148,18 @@ class GetHomeModulesUseCaseTest {
                             0,
                             0,
                             MediaType.Movie,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1))),
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1))),
                         ),
                         HomeModule.Carousel.nowPlaying(
                             0,
                             0,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                         HomeModule.Carousel.topRated(
                             0,
                             0,
                             MediaType.Movie,
-                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                         ),
                     )
                 )
@@ -172,7 +172,7 @@ class GetHomeModulesUseCaseTest {
     companion object {
 
         private val firstPage = Page(1)
-        private val medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+        private val medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
         private val pageListOfMedias = PageList<Media>(medias, firstPage)
     }
 }

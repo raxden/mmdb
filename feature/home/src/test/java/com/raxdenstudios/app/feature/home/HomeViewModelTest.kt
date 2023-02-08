@@ -143,7 +143,7 @@ class HomeViewModelTest {
     @Test
     fun `When watchButton is selected, Then add to watchlist`() {
         runTest {
-            coEvery { addMediaToWatchlistUseCase.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
+            coEvery { addMediaToWatchlistUseCase.invoke(any()) } returns ResultData.Success(Media.Movie.mock)
 
             viewModel.setUserEvent(HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock))
 
@@ -207,8 +207,8 @@ class HomeViewModelTest {
     companion object {
 
         private val medias = listOf(
-            Media.Movie.empty.copy(id = MediaId(1)),
-            Media.Movie.empty.copy(id = MediaId(2)),
+            Media.Movie.mock.copy(id = MediaId(1)),
+            Media.Movie.mock.copy(id = MediaId(2)),
         )
         private val modules: List<HomeModule> =
             listOf(

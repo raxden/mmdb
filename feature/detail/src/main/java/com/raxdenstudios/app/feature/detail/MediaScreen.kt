@@ -1,7 +1,9 @@
 package com.raxdenstudios.app.feature.detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -37,10 +39,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
@@ -64,6 +68,11 @@ fun MediaScreen(
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MediaContract.UIEvent.NavigateToBack -> onNavigateToBack()
+            is MediaContract.UIEvent.PlayYoutubeVideo -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.url))
+                val context = LocalContext.current
+                startActivity(context, intent, null)
+            }
         }
         viewModel.eventConsumed(event)
     }
@@ -124,6 +133,8 @@ private fun MediaScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 media = uiState.media,
+                videos = uiState.videos,
+                onVideoClick = { video -> onEvent(MediaContract.UserEvent.VideoClick(video)) },
             )
         }
         BackButton(

@@ -77,8 +77,8 @@ class WatchlistDataSourceTest {
     companion object {
 
         private val aMovies = listOf(
-            Media.Movie.empty.copy(id = MediaId(1)),
-            Media.Movie.empty.copy(id = MediaId(2)),
+            Media.Movie.mock.copy(id = MediaId(1)),
+            Media.Movie.mock.copy(id = MediaId(2)),
         )
         private const val aCredentialsAccountId = "aCredentialsAccountId"
         private val aAccountLogged = com.raxdenstudios.core.model.Account.Logged.empty.copy(

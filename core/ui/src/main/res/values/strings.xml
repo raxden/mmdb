@@ -33,4 +33,5 @@
     <string name="list_from_your_watchlist">From your Watchlist</string>
     <string name="added_to_watchlist">%1$s has been added to watchlist</string>
     <string name="removed_from_watchlist">%1$s has been removed from watchlist</string>
+    <string name="videos">Videos</string>
 </resources>

@@ -7,6 +7,7 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
@@ -35,6 +36,16 @@ class MediaDataSource @Inject constructor(
         mediaType: MediaType,
     ): ResultData<Media, ErrorDomain> =
         mediaRemoteDataSource.fetchById(
+            mediaId = mediaId,
+            mediaType = mediaType,
+        )
+
+    @Suppress("UnusedPrivateMember")
+    suspend fun videos(
+        mediaId: MediaId,
+        mediaType: MediaType,
+    ): ResultData<List<Video>, ErrorDomain> =
+        mediaRemoteDataSource.videos(
             mediaId = mediaId,
             mediaType = mediaType,
         )
