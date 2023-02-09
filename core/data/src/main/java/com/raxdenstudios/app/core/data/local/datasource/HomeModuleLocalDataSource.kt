@@ -32,11 +32,13 @@ class HomeModuleLocalDataSource @Inject constructor(
         homeModuleEntityToDomainMapper.transform(dao.get(moduleId))
     }
 
-    fun observe(): Flow<List<HomeModule>> = dao.observeAll()
-        .map { entityList ->
-            if (entityList.isEmpty()) initModules()
-            homeModuleEntityToDomainMapper.transform(entityList)
-        }
+    fun observe(): Flow<ResultData<List<HomeModule>>> =
+        dao.observeAll()
+            .map { entityList ->
+                if (entityList.isEmpty()) initModules()
+                homeModuleEntityToDomainMapper.transform(entityList)
+            }
+            .map { modules -> ResultData.Success(modules) }
 
     private suspend fun initModules() {
         val modules = listOf(

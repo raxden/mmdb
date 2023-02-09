@@ -51,7 +51,7 @@ internal class ChangeHomeModuleFilterUseCaseTest {
 
     companion object {
 
-        private val module = HomeModule.Popular.empty
+        private val module = HomeModule.Carousel.popular(0, 0, MediaType.Movie)
         private val moduleId = module.id
         private val mediaType = MediaType.Movie
     }

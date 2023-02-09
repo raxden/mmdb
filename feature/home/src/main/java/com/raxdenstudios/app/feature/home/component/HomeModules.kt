@@ -81,6 +81,7 @@ fun HomeModules(
                             onItemClick = onModuleItemClick,
                             onItemWatchButtonClick = onModuleItemWatchButtonClick,
                         )
+                    is HomeModuleModel.OtherModule -> Unit
                 }
             }
         }

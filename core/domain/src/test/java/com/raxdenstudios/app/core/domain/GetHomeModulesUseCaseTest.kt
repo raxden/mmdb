@@ -6,8 +6,10 @@ import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
+import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
@@ -57,10 +59,21 @@ class GetHomeModulesUseCaseTest {
             val modules = awaitItem()
 
             assertThat(modules).isEqualTo(
-                mapOf(
-                    HomeModule.Popular.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                    HomeModule.NowPlaying.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                ),
+                ResultData.Success(
+                    listOf(
+                        HomeModule.Carousel.popular(
+                            0,
+                            0,
+                            MediaType.Movie,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                        HomeModule.Carousel.nowPlaying(
+                            0,
+                            0,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                    )
+                )
             )
 
             cancelAndIgnoreRemainingEvents()
@@ -78,10 +91,24 @@ class GetHomeModulesUseCaseTest {
                 val modules = awaitItem()
 
                 assertThat(modules).isEqualTo(
-                    mapOf(
-                        HomeModule.Popular.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                        HomeModule.NowPlaying.empty to emptyList(),
-                    ),
+                    ResultData.Success(
+                        listOf(
+                            HomeModule.Carousel(
+                                0,
+                                0,
+                                mediaType = MediaType.Movie,
+                                mediaCategory = MediaCategory.Popular,
+                                medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                            ),
+                            HomeModule.Carousel(
+                                0,
+                                0,
+                                mediaType = MediaType.Movie,
+                                mediaCategory = MediaCategory.NowPlaying,
+                                medias = emptyList()
+                            )
+                        )
+                    )
                 )
 
                 cancelAndIgnoreRemainingEvents()
@@ -93,21 +120,48 @@ class GetHomeModulesUseCaseTest {
         useCase().test {
             val modules = awaitItem()
             assertThat(modules).isEqualTo(
-                mapOf(
-                    HomeModule.Popular.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                    HomeModule.NowPlaying.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                ),
+                ResultData.Success(
+                    listOf(
+                        HomeModule.Carousel.popular(
+                            0,
+                            0,
+                            MediaType.Movie,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                        HomeModule.Carousel.nowPlaying(
+                            0,
+                            0,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                    )
+                )
             )
 
-            homeModuleRepository.save(HomeModule.TopRated.empty)
+            homeModuleRepository.save(HomeModule.Carousel.topRated(0, 0, MediaType.Movie))
 
             val modulesUpdated = awaitItem()
             assertThat(modulesUpdated).isEqualTo(
-                mapOf(
-                    HomeModule.Popular.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                    HomeModule.NowPlaying.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                    HomeModule.TopRated.empty to listOf(Media.Movie.empty.copy(id = MediaId(1))),
-                ),
+                ResultData.Success(
+                    listOf(
+                        HomeModule.Carousel.popular(
+                            0,
+                            0,
+                            MediaType.Movie,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1))),
+                        ),
+                        HomeModule.Carousel.nowPlaying(
+                            0,
+                            0,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                        HomeModule.Carousel.topRated(
+                            0,
+                            0,
+                            MediaType.Movie,
+                            medias = listOf(Media.Movie.empty.copy(id = MediaId(1)))
+                        ),
+                    )
+                )
             )
 
             cancelAndIgnoreRemainingEvents()

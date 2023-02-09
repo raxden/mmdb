@@ -46,7 +46,7 @@ class HomeViewModelTest {
 
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val getHomeModulesUseCase: GetHomeModulesUseCase = mockk {
-        coEvery { this@mockk.invoke() } returns flow { emit(modulesWithMedias) }
+        coEvery { this@mockk.invoke() } returns flow { emit(ResultData.Success(modules)) }
     }
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
     private val removeMediaToWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
@@ -206,14 +206,15 @@ class HomeViewModelTest {
 
     companion object {
 
-        private val modules = listOf(
-            HomeModule.Popular.empty,
-        )
         private val medias = listOf(
             Media.Movie.empty.copy(id = MediaId(1)),
             Media.Movie.empty.copy(id = MediaId(2)),
         )
-        private val modulesWithMedias: Map<HomeModule, List<Media>> =
-            modules.associateWith { medias }
+        private val modules: List<HomeModule> =
+            listOf(
+                HomeModule.Carousel.popular(0, 0, MediaType.Movie).copy(
+                    medias = medias
+                ),
+            )
     }
 }

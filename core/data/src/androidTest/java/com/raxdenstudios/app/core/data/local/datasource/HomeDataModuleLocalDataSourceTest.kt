@@ -7,6 +7,8 @@ import com.raxdenstudios.app.core.data.local.mapper.HomeModuleEntityToDomainMapp
 import com.raxdenstudios.app.core.data.local.mapper.HomeModuleToEntityMapper
 import com.raxdenstudios.app.core.database.HomeModuleDatabase
 import com.raxdenstudios.app.core.model.HomeModule
+import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.commons.ResultData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -42,19 +44,21 @@ class HomeDataModuleLocalDataSourceTest {
     fun given_an_empty_database_When_modules_is_called_Then_default_modules_are_inserted_in_database() {
         runTest {
             dataSource.observe().test {
-                val emptyModules = awaitItem()
-                assertEquals(emptyModules.size, 0)
+                val result = awaitItem()
+                assertEquals(ResultData.Success(emptyList<HomeModule>()), result)
 
-                val modules = awaitItem()
+                val result2 = awaitItem()
                 assertEquals(
-                    listOf(
-                        HomeModule.NowPlaying.empty.copy(id = 2, order = 1),
-                        HomeModule.Popular.empty.copy(id = 1, order = 2),
-                        HomeModule.Watchlist.empty.copy(id = 5, order = 3),
-                        HomeModule.TopRated.empty.copy(id = 3, order = 4),
-                        HomeModule.Upcoming.empty.copy(id = 4, order = 5),
+                    ResultData.Success(
+                        listOf(
+                            HomeModule.Carousel.nowPlaying(id = 2, order = 1),
+                            HomeModule.Carousel.popular(id = 1, order = 2, mediaType = MediaType.Movie),
+                            HomeModule.Carousel.watchlist(id = 5, order = 3, mediaType = MediaType.Movie),
+                            HomeModule.Carousel.topRated(id = 3, order = 4, mediaType = MediaType.Movie),
+                            HomeModule.Carousel.upcoming(id = 4, order = 5),
+                        )
                     ),
-                    modules
+                    result2
                 )
             }
         }

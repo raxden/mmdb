@@ -13,6 +13,8 @@ import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
+import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.provider.StringProvider
@@ -20,7 +22,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
@@ -46,23 +47,33 @@ class HomeViewModel @Inject constructor(
 
     private fun loadData() = viewModelScope.safeLaunch {
         getHomeModulesUseCase()
-            .map { modules -> homeModuleModelMapper.transform(modules) }
-            .catch { error ->
-                _uiState.update { value ->
-                    value.copy(
-                        isLoading = false,
-                        error = errorModelMapper.transform(error)
-                    )
+            .map { result ->
+                result.map { modules -> homeModuleModelMapper.transform(modules) }
+            }
+            .collect { result ->
+                when (result) {
+                    is ResultData.Error -> onLoadDataFailure(result.throwable)
+                    is ResultData.Success -> onLoadDataSuccess(result.value)
                 }
             }
-            .collect { modules ->
-                _uiState.update { value ->
-                    value.copy(
-                        isLoading = false,
-                        modules = modules
-                    )
-                }
-            }
+    }
+
+    private fun onLoadDataFailure(error: Throwable) {
+        _uiState.update { value ->
+            value.copy(
+                isLoading = false,
+                error = errorModelMapper.transform(error)
+            )
+        }
+    }
+
+    private fun onLoadDataSuccess(modules: List<HomeModuleModel>) {
+        _uiState.update { value ->
+            value.copy(
+                isLoading = false,
+                modules = modules
+            )
+        }
     }
 
     fun setUserEvent(event: HomeContract.UserEvent): Unit = when (event) {

@@ -8,6 +8,7 @@ import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.DispatcherProvider
+import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
@@ -24,36 +25,33 @@ class GetHomeModulesUseCase @Inject constructor(
     private val mediasRepository: MediaRepository,
 ) {
 
-    operator fun invoke(): Flow<Map<HomeModule, List<Media>>> {
+    operator fun invoke(): Flow<ResultData<List<HomeModule>>> {
         val observeModules = homeModuleRepository.observe()
         val observeWatchlist = mediasRepository.observeWatchlist()
 
-        return observeModules.combine(observeWatchlist) { modules, watchListResult ->
-            withContext(dispatcher.io) {
-                modules.associateWith { module ->
+        return observeModules.combine(observeWatchlist) { modulesResult, watchListResult ->
+            val modules = modulesResult.getValueOrDefault(emptyList())
+            val mediaWatchlist = watchListResult.getValueOrDefault(emptyList())
+            val modulesWithMedias = withContext(dispatcher.io) {
+                modules.map { module ->
                     val deferred = async {
-                        fetchMedias(module, watchListResult.getValueOrDefault(emptyList()))
+                        when (module) {
+                            is HomeModule.Carousel -> module.fetchMedias(mediaWatchlist)
+                            is HomeModule.OtherModule -> error("Not implemented")
+                        }
                     }
                     deferred.await()
                 }
             }
+            ResultData.Success(modulesWithMedias)
         }
     }
 
-    private suspend fun fetchMedias(
-        module: HomeModule,
-        watchList: List<Media>
-    ): List<Media> = when (module) {
-        is HomeModule.Watchlist ->
-            watchList
-        is HomeModule.NowPlaying ->
-            fetchMedias(module.mediaType, MediaCategory.NowPlaying)
-        is HomeModule.Popular ->
-            fetchMedias(module.mediaType, MediaCategory.Popular)
-        is HomeModule.TopRated ->
-            fetchMedias(module.mediaType, MediaCategory.TopRated)
-        is HomeModule.Upcoming ->
-            fetchMedias(module.mediaType, MediaCategory.Upcoming)
+    private suspend fun HomeModule.Carousel.fetchMedias(
+        mediaWatchlist: List<Media>,
+    ): HomeModule.Carousel = when (mediaCategory) {
+        MediaCategory.Watchlist -> copy(medias = mediaWatchlist)
+        else -> copy(medias = fetchMedias(mediaType, mediaCategory))
     }
 
     private suspend fun fetchMedias(

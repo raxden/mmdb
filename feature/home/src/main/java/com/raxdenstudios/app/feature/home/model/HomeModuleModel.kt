@@ -105,4 +105,8 @@ sealed interface HomeModuleModel {
             }
         }
     }
+
+    data class OtherModule(
+        override val id: Long,
+    ) : HomeModuleModel
 }
