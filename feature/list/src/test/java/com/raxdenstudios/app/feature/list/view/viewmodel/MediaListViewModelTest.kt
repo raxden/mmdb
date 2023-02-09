@@ -44,9 +44,7 @@ class MediaListViewModelTest {
     @get:Rule
     val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()
 
-    private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk {
-        coEvery { this@mockk.invoke(any()) } returns ResultData.Success(Media.Movie.empty)
-    }
+    private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk()
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk {
         coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
     }
@@ -108,11 +106,17 @@ class MediaListViewModelTest {
             id = MediaId(2L),
             watchlist = false,
         )
+        coEvery { addMediaToWatchlistUseCase.invoke(any()) } returns ResultData.Success(
+            Media.Movie.empty.copy(id = MediaId(2L), watchList = true)
+        )
 
         viewModel.uiState.test {
             skipItems(2)
+
             viewModel.setUserEvent(MediaListContract.UserEvent.WatchButtonClicked(mediaModel))
-            assertThat(awaitItem()).isEqualTo(
+
+            val result = awaitItem()
+            assertThat(result).isEqualTo(
                 MediaListContract.UIState.empty.copy(
                     items = listOf(
                         MediaModel.empty.copy(id = MediaId(1L)),

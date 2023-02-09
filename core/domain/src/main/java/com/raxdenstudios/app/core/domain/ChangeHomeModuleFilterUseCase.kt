@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.HomeModuleRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.ResultData
@@ -12,7 +13,7 @@ class ChangeHomeModuleFilterUseCase @Inject constructor(
     private val homeModuleRepository: HomeModuleRepository,
 ) {
 
-    suspend operator fun invoke(params: Params): ResultData<Boolean> =
+    suspend operator fun invoke(params: Params): ResultData<Boolean, ErrorDomain> =
         homeModuleRepository.fetch(params.moduleId)
             .map { module ->
                 when (module) {

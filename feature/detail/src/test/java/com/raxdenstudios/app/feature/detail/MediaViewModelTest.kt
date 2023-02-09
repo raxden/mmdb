@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediaUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
@@ -46,6 +47,7 @@ internal class MediaViewModelTest {
     }
     private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true) {
         every { transform(any<Throwable>()) } returns ErrorModel.mock
+        every { transform(any<ErrorDomain>()) } returns ErrorModel.mock
     }
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
@@ -80,7 +82,7 @@ internal class MediaViewModelTest {
 
     @Test
     fun `Given an error, When viewModel is started, Then error is loaded`() = runTest {
-        coEvery { getMediaUseCase.invoke(any()) } returns flowOf(ResultData.Error(IllegalStateException()))
+        coEvery { getMediaUseCase.invoke(any()) } returns flowOf(ResultData.Failure(ErrorDomain.Unknown("")))
 
         viewModel.uiState.test {
             val uiState = awaitItem()

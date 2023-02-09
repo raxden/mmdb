@@ -7,9 +7,11 @@ import com.raxdenstudios.app.core.domain.GetMediaUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.detail.model.MediaParams
 import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.ext.mapFailure
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
@@ -17,10 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,20 +64,21 @@ class MediaViewModel @Inject constructor(
             mediaType = params.mediaType,
         )
         getMediaUseCase(params)
-            .map { result -> result.map { media -> mediaModelMapper.transform(media) } }
+            .map { result ->
+                result.map { media -> mediaModelMapper.transform(media) }
+                    .mapFailure { error -> errorModelMapper.transform(error) }
+            }
             .collect { result ->
-                result.run {
-                    onSuccess { media -> loadDataSuccess(media) }
-                    onFailure { error -> loadDataFailure(error) }
-                }
+                result.onSuccess { media -> loadDataSuccess(media) }
+                    .onFailure { error -> loadDataFailure(error) }
             }
     }
 
-    private fun loadDataFailure(error: Throwable) {
+    private fun loadDataFailure(error: ErrorModel) {
         _uiState.update { value ->
             value.copy(
                 isLoading = false,
-                error = errorModelMapper.transform(error)
+                error = error
             )
         }
     }

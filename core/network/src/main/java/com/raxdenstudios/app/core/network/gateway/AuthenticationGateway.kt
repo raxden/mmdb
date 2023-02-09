@@ -2,6 +2,7 @@ package com.raxdenstudios.app.core.network.gateway
 
 import com.raxdenstudios.app.core.network.model.AccessTokenRequestDto
 import com.raxdenstudios.app.core.network.model.AccessTokenResponseDto
+import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.RequestTokenResponseDto
 import com.raxdenstudios.app.core.network.model.SessionRequestDto
 import com.raxdenstudios.app.core.network.model.SessionResponseDto
@@ -16,16 +17,15 @@ class AuthenticationGateway @Inject constructor(
     private val authenticationV3Service: AuthenticationV3Service,
 ) {
 
-    suspend fun requestToken(): ResultData<RequestTokenResponseDto> =
-        authenticationV4Service.requestToken().toResultData("Error occurred during requesting token")
+    suspend fun requestToken(): ResultData<RequestTokenResponseDto, NetworkErrorDto> =
+        authenticationV4Service.requestToken()
+            .toResultData("Error occurred during requesting token")
 
-    suspend fun requestAccessToken(token: String): ResultData<AccessTokenResponseDto> =
-        authenticationV4Service.requestAccessToken(
-            AccessTokenRequestDto(token)
-        ).toResultData("Error occurred during requesting token")
+    suspend fun requestAccessToken(token: String): ResultData<AccessTokenResponseDto, NetworkErrorDto> =
+        authenticationV4Service.requestAccessToken(AccessTokenRequestDto(token))
+            .toResultData("Error occurred during requesting token")
 
-    suspend fun requestSessionId(accessToken: String): ResultData<SessionResponseDto> =
-        authenticationV3Service.requestSessionId(
-            SessionRequestDto(accessToken)
-        ).toResultData("Error occurred during requesting session")
+    suspend fun requestSessionId(accessToken: String): ResultData<SessionResponseDto, NetworkErrorDto> =
+        authenticationV3Service.requestSessionId(SessionRequestDto(accessToken))
+            .toResultData("Error occurred during requesting session")
 }

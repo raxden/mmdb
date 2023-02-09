@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.commons.ResultData
@@ -13,7 +14,7 @@ class GetMediasUseCase @Inject constructor(
     private val mediaRepository: MediaRepository,
 ) {
 
-    suspend operator fun invoke(params: Params): ResultData<PageList<Media>> =
+    suspend operator fun invoke(params: Params): ResultData<PageList<Media>, ErrorDomain> =
         mediaRepository.medias(params.mediaFilter, params.page, params.pageSize)
 
     data class Params(

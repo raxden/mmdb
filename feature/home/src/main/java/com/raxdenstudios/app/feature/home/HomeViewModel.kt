@@ -8,13 +8,15 @@ import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.provider.StringProvider
@@ -49,25 +51,24 @@ class HomeViewModel @Inject constructor(
         getHomeModulesUseCase()
             .map { result ->
                 result.map { modules -> homeModuleModelMapper.transform(modules) }
+                    .mapFailure { error -> errorModelMapper.transform(error) }
             }
             .collect { result ->
-                when (result) {
-                    is ResultData.Error -> onLoadDataFailure(result.throwable)
-                    is ResultData.Success -> onLoadDataSuccess(result.value)
-                }
+                result.onSuccess { media -> loadDataSuccess(media) }
+                    .onFailure { error -> loadDataFailure(error) }
             }
     }
 
-    private fun onLoadDataFailure(error: Throwable) {
+    private fun loadDataFailure(error: ErrorModel) {
         _uiState.update { value ->
             value.copy(
                 isLoading = false,
-                error = errorModelMapper.transform(error)
+                error = error
             )
         }
     }
 
-    private fun onLoadDataSuccess(modules: List<HomeModuleModel>) {
+    private fun loadDataSuccess(modules: List<HomeModuleModel>) {
         _uiState.update { value ->
             value.copy(
                 isLoading = false,

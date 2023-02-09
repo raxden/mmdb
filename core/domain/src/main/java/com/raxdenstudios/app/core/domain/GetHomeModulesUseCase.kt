@@ -2,6 +2,7 @@ package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaCategory
@@ -25,7 +26,7 @@ class GetHomeModulesUseCase @Inject constructor(
     private val mediasRepository: MediaRepository,
 ) {
 
-    operator fun invoke(): Flow<ResultData<List<HomeModule>>> {
+    operator fun invoke(): Flow<ResultData<List<HomeModule>, ErrorDomain>> {
         val observeModules = homeModuleRepository.observe()
         val observeWatchlist = mediasRepository.observeWatchlist()
 

@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.core.data
 
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
@@ -33,7 +34,7 @@ class MediaRepository @Inject constructor(
         mediaFilter: MediaFilter,
         page: Page,
         pageSize: PageSize,
-    ): ResultData<PageList<Media>> = withContext(dispatcher.io) {
+    ): ResultData<PageList<Media>, ErrorDomain> = withContext(dispatcher.io) {
         val watchlistDeferred = async { watchlistDataSource.observe().first() }
         val pageListDeferred = async { mediaDataSource.fetch(mediaFilter, page, pageSize) }
 
@@ -46,7 +47,7 @@ class MediaRepository @Inject constructor(
     suspend fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType,
-    ): Flow<ResultData<Media>> = flow {
+    ): Flow<ResultData<Media, ErrorDomain>> = flow {
         val mediaResult = mediaDataSource.fetchById(mediaId, mediaType)
         val flow = watchlistDataSource.observe(mediaId, mediaType)
             .map { result -> result.getValueOrNull() }
@@ -63,16 +64,16 @@ class MediaRepository @Inject constructor(
             }
         }
 
-    fun observeWatchlist(): Flow<ResultData<List<Media>>> =
+    fun observeWatchlist(): Flow<ResultData<List<Media>, ErrorDomain>> =
         watchlistDataSource.observe()
 
     suspend fun addToWatchlist(
         mediaId: MediaId,
         mediaType: MediaType
-    ): ResultData<Media> = watchlistDataSource.add(mediaId, mediaType)
+    ): ResultData<Media, ErrorDomain> = watchlistDataSource.add(mediaId, mediaType)
 
     suspend fun removeFromWatchlist(
         mediaId: MediaId,
         mediaType: MediaType
-    ): ResultData<Boolean> = watchlistDataSource.remove(mediaId, mediaType)
+    ): ResultData<Boolean, ErrorDomain> = watchlistDataSource.remove(mediaId, mediaType)
 }

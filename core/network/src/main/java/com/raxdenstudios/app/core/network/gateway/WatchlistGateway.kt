@@ -1,12 +1,13 @@
 package com.raxdenstudios.app.core.network.gateway
 
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.network.model.MediaDto
+import com.raxdenstudios.app.core.network.model.NetworkErrorDto
+import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.WatchlistDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
 import com.raxdenstudios.app.core.network.service.MediaV4Service
-import com.raxdenstudios.app.core.model.MediaId
-import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.commons.DispatcherProvider
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.coMap
@@ -31,7 +32,7 @@ class WatchlistGateway @Inject constructor(
     suspend fun fetchAll(
         mediaType: MediaType,
         accountId: String
-    ): ResultData<List<MediaDto>> =
+    ): ResultData<List<MediaDto>, NetworkErrorDto> =
         fetchByPage(mediaType, FIRST_PAGE, accountId)
             .coMap { pageDto ->
                 withContext(dispatcher.io) {
@@ -51,7 +52,7 @@ class WatchlistGateway @Inject constructor(
         mediaType: MediaType,
         page: Page,
         accountId: String,
-    ): ResultData<PageDto<MediaDto>> = when (mediaType) {
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV4Service.watchListMovies(accountId, page.value)
             .toResultData("Error occurred during fetching watch list movies")
         MediaType.TvShow -> mediaV4Service.watchListTVShows(accountId, page.value)
@@ -62,7 +63,7 @@ class WatchlistGateway @Inject constructor(
         mediaId: MediaId,
         mediaType: String,
         accountId: String,
-    ): ResultData<Boolean> =
+    ): ResultData<Boolean, NetworkErrorDto> =
         mediaV3Service.watchList(
             accountId,
             WatchlistDto.Request.Add(mediaId.value, mediaType)
@@ -72,7 +73,7 @@ class WatchlistGateway @Inject constructor(
         mediaId: MediaId,
         mediaType: String,
         accountId: String,
-    ): ResultData<Boolean> =
+    ): ResultData<Boolean, NetworkErrorDto> =
         mediaV3Service.watchList(
             accountId,
             WatchlistDto.Request.Remove(mediaId.value, mediaType)

@@ -3,6 +3,7 @@ package com.raxdenstudios.app.core.data.local.datasource
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import app.cash.turbine.test
+import com.raxdenstudios.app.core.data.local.mapper.ExceptionToErrorMapper
 import com.raxdenstudios.app.core.data.local.mapper.HomeModuleEntityToDomainMapper
 import com.raxdenstudios.app.core.data.local.mapper.HomeModuleToEntityMapper
 import com.raxdenstudios.app.core.database.HomeModuleDatabase
@@ -26,6 +27,7 @@ class HomeDataModuleLocalDataSourceTest {
             database = database,
             homeModuleEntityToDomainMapper = HomeModuleEntityToDomainMapper(),
             homeModuleToEntityMapper = HomeModuleToEntityMapper(),
+            exceptionToErrorMapper = ExceptionToErrorMapper()
         )
     }
 

@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
@@ -14,7 +15,7 @@ class GetMediaUseCase @Inject constructor(
 
     suspend operator fun invoke(
         params: Params,
-    ): Flow<ResultData<Media>> =
+    ): Flow<ResultData<Media, ErrorDomain>> =
         mediaRepository.fetchById(params.mediaId, params.mediaType)
 
     data class Params(

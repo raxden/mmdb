@@ -1,11 +1,9 @@
 package com.raxdenstudios.app.core.ui.component
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
+import com.raxdenstudios.commons.ext.findActivity
 
 @Composable
 fun LockScreenOrientation(orientation: Int) {
@@ -20,11 +18,4 @@ fun LockScreenOrientation(orientation: Int) {
             activity.requestedOrientation = originalOrientation
         }
     }
-}
-
-@Deprecated("Use com.raxdenstudios.commons.ext.findActivity instead")
-private fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
 }

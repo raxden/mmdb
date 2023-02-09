@@ -3,6 +3,7 @@ package com.raxdenstudios.app.core.data.local.datasource
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import app.cash.turbine.test
+import com.raxdenstudios.app.core.data.local.mapper.ExceptionToErrorMapper
 import com.raxdenstudios.app.core.data.local.mapper.MediaEntityToDomainMapper
 import com.raxdenstudios.app.core.data.local.mapper.MediaToEntityMapper
 import com.raxdenstudios.app.core.data.local.mapper.MediaToWatchlistEntityMapper
@@ -32,6 +33,7 @@ class WatchlistLocalDataSourceInstrumentalTest {
             mediaToEntityMapper = mediaToEntityMapper,
             mediaEntityToDomainMapper = mediaEntityToDomainMapper,
             mediaToWatchlistEntityMapper = mediaToWatchlistEntityMapper,
+            exceptionToErrorMapper = ExceptionToErrorMapper()
         )
     }
 
@@ -60,7 +62,7 @@ class WatchlistLocalDataSourceInstrumentalTest {
             val mediaId = MediaId(1)
             dataSource.observe(mediaId).test {
                 val result = awaitItem()
-                assertTrue(result is ResultData.Error)
+                assertTrue(result is ResultData.Failure)
             }
         }
     }

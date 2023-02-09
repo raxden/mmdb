@@ -4,6 +4,7 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.network.model.MediaDetailDto
 import com.raxdenstudios.app.core.network.model.MediaDto
+import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
 import com.raxdenstudios.commons.ResultData
@@ -18,25 +19,25 @@ class MediaGateway @Inject constructor(
     suspend fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType
-    ): ResultData<MediaDetailDto> = when (mediaType) {
+    ): ResultData<MediaDetailDto, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.movie(mediaId.value.toString())
         MediaType.TvShow -> mediaV3Service.tvShow(mediaId.value.toString())
     }.toResultData("Error occurred during fetching detail with id: $mediaId")
 
-    @Suppress("UNCHECKED_CAST")
+
     suspend fun nowPlaying(
         mediaType: MediaType,
         page: Page,
-    ): ResultData<PageDto<MediaDto>> = when (mediaType) {
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.nowPlayingMovies(page.value)
             .toResultData("Error occurred during fetching now playing movies")
-        MediaType.TvShow -> ResultData.Success(PageDto.empty) as ResultData<PageDto<MediaDto>>
+        MediaType.TvShow -> ResultData.Success(PageDto.empty())
     }
 
     suspend fun popular(
         mediaType: MediaType,
         page: Page,
-    ): ResultData<PageDto<MediaDto>> = when (mediaType) {
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.popularMovies(page.value)
             .toResultData("Error occurred during fetching popular movies")
         MediaType.TvShow -> mediaV3Service.popularTVShows(page.value)
@@ -46,7 +47,7 @@ class MediaGateway @Inject constructor(
     suspend fun topRated(
         mediaType: MediaType,
         page: Page,
-    ): ResultData<PageDto<MediaDto>> = when (mediaType) {
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.topRatedMovies(page.value)
             .toResultData("Error occurred during fetching top rated movies")
         MediaType.TvShow -> mediaV3Service.topRatedTVShows(page.value)
@@ -57,9 +58,9 @@ class MediaGateway @Inject constructor(
     suspend fun upcoming(
         mediaType: MediaType,
         page: Page,
-    ): ResultData<PageDto<MediaDto>> = when (mediaType) {
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.upcoming(page.value)
             .toResultData("Error occurred during fetching upcoming movies")
-        MediaType.TvShow -> ResultData.Success(PageDto.empty) as ResultData<PageDto<MediaDto>>
+        MediaType.TvShow -> ResultData.Success(PageDto.empty())
     }
 }

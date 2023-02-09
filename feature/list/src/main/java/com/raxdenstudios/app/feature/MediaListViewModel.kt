@@ -8,10 +8,14 @@ import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
 import com.raxdenstudios.app.feature.model.MediaListParams
+import com.raxdenstudios.commons.ext.fold
 import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.ext.mapFailure
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.replaceItem
@@ -84,12 +88,17 @@ class MediaListViewModel @Inject constructor(
 
     private fun addMovieToWatchlist(item: MediaModel) {
         viewModelScope.safeLaunch {
-            val itemToReplace = item.copy(watchlist = true)
             val params = AddMediaToWatchlistUseCase.Params(item.id, item.mediaType)
             addMediaToWatchlistUseCase(params)
+                .map { media -> mediaModelMapper.transform(media) }
+                .mapFailure { error -> errorModelMapper.transform(error) }
+                .onSuccess { item -> updateMediaItem(item) }
                 .onFailure { error -> handleError(error) }
-                .onSuccess { _uiState.update { value -> value.replaceItem(itemToReplace) } }
         }
+    }
+
+    private fun updateMediaItem(item: MediaModel) {
+        _uiState.update { value -> value.replaceItem(item) }
     }
 
     private fun MediaListContract.UIState.replaceItem(itemToReplace: MediaModel) = copy(
@@ -101,8 +110,10 @@ class MediaListViewModel @Inject constructor(
             val itemToReplace = item.copy(watchlist = false)
             val params = RemoveMediaFromWatchlistUseCase.Params(item.id, item.mediaType)
             removeMediaFromWatchlistUseCase(params)
+                .map { itemToReplace }
+                .mapFailure { error -> errorModelMapper.transform(error) }
+                .onSuccess { item -> updateMediaItem(item) }
                 .onFailure { error -> handleError(error) }
-                .onSuccess { _uiState.update { value -> value.replaceItem(itemToReplace) } }
         }
     }
 
@@ -130,27 +141,14 @@ class MediaListViewModel @Inject constructor(
     private fun pageResponse(pageResult: PageResult<Media>) =
         when (pageResult) {
             is PageResult.Content -> handlePageResultContent(pageResult)
-            is PageResult.Error -> handleError(pageResult.throwable)
+            is PageResult.Error -> handleError(errorModelMapper.transform(pageResult.throwable))
             PageResult.Loading -> Unit
-            PageResult.NoMoreResults -> handlePageNoMoreResults()
-            PageResult.NoResults -> handlePageResultNoResults()
+            PageResult.NoMoreResults -> _uiState.update { value -> value.copy(isLoading = false) }
+            PageResult.NoResults -> _uiState.update { value -> value.copy(isLoading = false, items = emptyList()) }
         }
 
-    private fun handleError(error: Throwable) {
-        _uiState.update { value -> value.copy(error = errorModelMapper.transform(error)) }
-    }
-
-    private fun handlePageNoMoreResults() {
-        _uiState.update { value -> value.copy(isLoading = false) }
-    }
-
-    private fun handlePageResultNoResults() {
-        _uiState.update { value ->
-            value.copy(
-                isLoading = false,
-                items = emptyList()
-            )
-        }
+    private fun handleError(error: ErrorModel) {
+        _uiState.update { value -> value.copy(error = error) }
     }
 
     private fun handlePageResultContent(

@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.HomeModuleRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.ResultData
@@ -18,12 +19,13 @@ class FakeHomeModuleRepository : HomeModuleRepository {
         )
     )
 
-    override fun observe(): Flow<ResultData<List<HomeModule>>> = modules.map { ResultData.Success(it) }
+    override fun observe(): Flow<ResultData<List<HomeModule>, ErrorDomain>> =
+        modules.map { ResultData.Success(it) }
 
-    override suspend fun fetch(moduleId: Long): ResultData<HomeModule> =
+    override suspend fun fetch(moduleId: Long): ResultData<HomeModule, ErrorDomain> =
         ResultData.Success(HomeModule.Carousel.watchlist(0, 0, MediaType.Movie))
 
-    override suspend fun save(module: HomeModule): ResultData<Boolean> {
+    override suspend fun save(module: HomeModule): ResultData<Boolean, ErrorDomain> {
         modules.update { value ->
             value.toMutableList().also { list ->
                 list.add(module)

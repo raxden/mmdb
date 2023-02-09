@@ -2,6 +2,7 @@ package com.raxdenstudios.app.core.data
 
 import com.raxdenstudios.app.core.data.local.datasource.AccountLocalDataSource
 import com.raxdenstudios.app.core.data.remote.datasource.MediaRemoteDataSource
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
@@ -22,7 +23,7 @@ class MediaDataSource @Inject constructor(
         mediaFilter: MediaFilter,
         page: Page,
         pageSize: PageSize,
-    ): ResultData<PageList<Media>> =
+    ): ResultData<PageList<Media>, ErrorDomain> =
         mediaRemoteDataSource.fetch(
             mediaFilter = mediaFilter,
             page = page,
@@ -32,7 +33,7 @@ class MediaDataSource @Inject constructor(
     suspend fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType,
-    ): ResultData<Media> =
+    ): ResultData<Media, ErrorDomain> =
         mediaRemoteDataSource.fetchById(
             mediaId = mediaId,
             mediaType = mediaType,

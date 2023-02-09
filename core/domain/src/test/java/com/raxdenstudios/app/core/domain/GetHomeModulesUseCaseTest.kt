@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaCategory
@@ -85,7 +86,7 @@ class GetHomeModulesUseCaseTest {
         runTest {
             coEvery {
                 mediasRepository.medias(MediaFilter.nowPlaying, any(), any())
-            } returns ResultData.Error(IllegalStateException(""))
+            } returns ResultData.Failure(ErrorDomain.Unknown(""))
 
             useCase().test {
                 val modules = awaitItem()

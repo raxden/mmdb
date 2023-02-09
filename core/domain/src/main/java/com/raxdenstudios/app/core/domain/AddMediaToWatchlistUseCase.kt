@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
@@ -11,7 +12,7 @@ class AddMediaToWatchlistUseCase @Inject constructor(
     private val mediaRepository: MediaRepository,
 ) {
 
-    suspend operator fun invoke(params: Params): ResultData<Media> =
+    suspend operator fun invoke(params: Params): ResultData<Media, ErrorDomain> =
         mediaRepository.addToWatchlist(params.mediaId, params.mediaType)
 
     data class Params(
