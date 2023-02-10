@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.secrets)
 }
 
 android {
@@ -27,10 +26,19 @@ android {
     namespace = "com.raxdenstudios.app.core.network"
 
     buildTypes {
+        val tmdbTokenV3: String? by project
+        val tmdbTokenV4: String? by project
+
         getByName("debug") {
+            buildConfigField("String", "TMDB_TOKEN_V3", tmdbTokenV3 ?: System.getenv("TMDB_TOKEN_V3") ?: "")
+            buildConfigField("String", "TMDB_TOKEN_V4", tmdbTokenV4 ?: System.getenv("TMDB_TOKEN_V4") ?: "")
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
             isMinifyEnabled = false
+        }
+        getByName("release") {
+            buildConfigField("String", "TMDB_TOKEN_V3", tmdbTokenV3 ?: System.getenv("TMDB_TOKEN_V3") ?: "")
+            buildConfigField("String", "TMDB_TOKEN_V4", tmdbTokenV4 ?: System.getenv("TMDB_TOKEN_V4") ?: "")
         }
     }
 
