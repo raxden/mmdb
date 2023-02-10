@@ -160,6 +160,12 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
+      - name: Load secrets
+        uses: ./.github/actions/load_secrets
+        with:
+          tmdb-token-v3: ${{ secrets.TMDB_TOKEN_V3 }}
+          tmdb-token-v4: ${{ secrets.TMDB_TOKEN_V4 }}
+
       - name: Generate jacoco reports and upload to codecov
         uses: ./.github/actions/generate_reports
         with:
