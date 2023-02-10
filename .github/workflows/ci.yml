@@ -165,31 +165,27 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-#  deploy-firebase:
-#    name: Build & Upload to Firebase App Distribution
-#    if: github.event.pull_request.base.ref == 'master' || startsWith(github.ref, 'refs/heads/release/')
-#    runs-on: ubuntu-latest
-#
-#    needs: test
-#
-#    steps:
-#      - name: Check out code
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#          submodules: 'true'
-#          token: ${{ secrets.RELEASE_HUB_SECRET }}
-#
-#      - name: Setup machine
-#        uses: ./.github/actions/common_setup
-#
-#      - name: Recover build files
-#        uses: ./.github/actions/recover_builds
-#
-#      - name: Deploy in Firebase App Distribution
-#        env:
-#          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-#        run: bash ./gradlew appDistributionUploadRelease --stacktrace
+  deploy-firebase:
+    needs: [ test, instrumental-test ]
+    if: success() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
+    name: Build & Upload to Firebase App Distribution
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        buildType: [ "Debug", "Release" ]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup machine
+        uses: ./.github/actions/common_setup
+
+      - name: Deploy APK in Firebase App Distribution
+        uses: ./.github/actions/deploy_in_firebase
+        with:
+          buildType: ${{ matrix.buildType }}
+          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
 
 #  deploy-playstore:
 #    name: Build & Upload to Playstore
