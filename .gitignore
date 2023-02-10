@@ -47,3 +47,4 @@ reports
 *.DS_Store
 
 config/signing_release.properties
+secrets.properties

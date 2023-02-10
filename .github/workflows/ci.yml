@@ -58,6 +58,12 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
+      - name: Load secrets
+        uses: ./.github/actions/load_secrets
+        with:
+          tmdb-token-v3: ${{ secrets.TMDB_TOKEN_V3 }}
+          tmdb-token-v4: ${{ secrets.TMDB_TOKEN_V4 }}
+
       - name: Check code via Detekt
         uses: gradle/gradle-build-action@v2
         with:
@@ -79,22 +85,17 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
-      - name: Prepare signing files
-        if: ${{ matrix.buildType=='Release' }}
-        uses: ./.github/actions/prepare_signing_files
+      - name: Load secrets
+        uses: ./.github/actions/load_secrets
         with:
-          encodedString: ${{ secrets.RELEASE_FILES }}
+          tmdb-token-v3: ${{ secrets.TMDB_TOKEN_V3 }}
+          tmdb-token-v4: ${{ secrets.TMDB_TOKEN_V4 }}
 
-      - name: Assemble apk
-        uses: gradle/gradle-build-action@v2
+      - name: Assemble APK ${{ matrix.buildType }}
+        uses: ./.github/actions/assemble_apk
         with:
-          arguments: assemble${{ matrix.buildType }} --stacktrace --scan
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: assembled-builds
-          path: |
-            app/build/outputs/apk/
+          buildType: ${{ matrix.buildType }}
+          signingFiles: ${{ secrets.RELEASE_FILES }}
 
   test:
     needs: [ checkstyle ]
@@ -109,16 +110,14 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
-      - name: Unit tests
-        uses: gradle/gradle-build-action@v2
+      - name: Load secrets
+        uses: ./.github/actions/load_secrets
         with:
-          arguments: testDebugUnitTest --stacktrace --scan
+          tmdb-token-v3: ${{ secrets.TMDB_TOKEN_V3 }}
+          tmdb-token-v4: ${{ secrets.TMDB_TOKEN_V4 }}
 
-      - name: Upload Outputs
-        uses: actions/upload-artifact@v3
-        with:
-          name: outputs-unit-tests
-          path: ./**/build/outputs/unit_test_code_coverage/
+      - name: Unit tests
+        uses: ./.github/actions/unit_tests
 
   instrumental-test:
     needs: [ checkstyle ]
@@ -137,40 +136,16 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
-      - name: AVD cache
-        uses: actions/cache@v3
-        id: avd-cache
+      - name: Load secrets
+        uses: ./.github/actions/load_secrets
         with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
+          tmdb-token-v3: ${{ secrets.TMDB_TOKEN_V3 }}
+          tmdb-token-v4: ${{ secrets.TMDB_TOKEN_V4 }}
 
-      - name: create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2  # https://github.com/ReactiveCircus/android-emulator-runner
+      - name: Launch Instrumental tests
+        uses: ./.github/actions/instrumental_tests
         with:
           api-level: ${{ matrix.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: Run instrumental tests
-        uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
-        with:
-          api-level: ${{ matrix.api-level }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: |
-            ./gradlew connectedDebugAndroidTest --no-configuration-cache --stacktrace --scan
-
-      - name: Upload Outputs
-        uses: actions/upload-artifact@v3
-        with:
-          name: outputs-android-tests
-          path: ./**/build/outputs/code_coverage/
 
   reports:
     needs: [ test, instrumental-test ]
@@ -185,17 +160,7 @@ jobs:
       - name: Setup machine
         uses: ./.github/actions/common_setup
 
-      - name: Loading unit tests outputs
-        uses: actions/download-artifact@v3
-        with:
-          name: outputs-unit-tests
-
-      - name: Loading android tests outputs
-        uses: actions/download-artifact@v3
-        with:
-          name: outputs-android-tests
-
-      - name: Generate reports
+      - name: Generate jacoco reports and upload to codecov
         uses: ./.github/actions/generate_reports
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

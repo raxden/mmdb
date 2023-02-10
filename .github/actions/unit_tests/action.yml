@@ -1,0 +1,17 @@
+name: 'Launch Unit tests'
+description: "Launch Unit tests and upload outputs to GitHub"
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: Unit tests
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: testDebugUnitTest --stacktrace --scan
+
+    - name: Upload Outputs
+      uses: actions/upload-artifact@v3
+      with:
+        name: outputs-unit-tests
+        path: ./**/build/outputs/unit_test_code_coverage/
+        retention-days: 3

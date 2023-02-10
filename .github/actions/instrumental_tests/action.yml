@@ -1,0 +1,45 @@
+name: 'Launch Instrumental tests'
+description: "Launch Instrumental tests and upload outputs to GitHub"
+inputs:
+  api-level:
+    description: 'API level'
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: AVD cache
+      uses: actions/cache@v3
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-${{ inputs.api-level }}
+
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2  # https://github.com/ReactiveCircus/android-emulator-runner
+      with:
+        api-level: ${{ inputs.api-level }}
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: false
+        script: echo "Generated AVD snapshot for caching."
+
+    - name: Run instrumental tests
+      uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
+      with:
+        api-level: ${{ inputs.api-level }}
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        script: |
+          ./gradlew connectedDebugAndroidTest --no-configuration-cache --stacktrace --scan
+
+    - name: Upload Outputs
+      uses: actions/upload-artifact@v3
+      with:
+        name: outputs-android-tests
+        path: ./**/build/outputs/code_coverage/
+        retention-days: 3
