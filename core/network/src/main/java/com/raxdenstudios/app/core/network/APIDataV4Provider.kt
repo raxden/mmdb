@@ -8,6 +8,5 @@ class APIDataV4Provider @Inject constructor() : APIDataProvider {
 
     override fun getImageDomain(): String = "https://image.tmdb.org/t/p/"
 
-    override fun getToken(): String =
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZTkyYzk2Y2JkYmMxMWIzZjUyYzZmZWZlNDk1MGI5NiIsInN1YiI6IjYwNGY3N2Q0MTdiNWVmMDA2YmViNTAyZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.K6xG2lv4Wmi-fLR3aUS4YR7nAWUxX7tm__2wsOCyz38"
+    override fun getToken(): String = BuildConfig.TMDB_TOKEN_V4
 }

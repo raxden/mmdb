@@ -28,6 +28,7 @@ plugins {
     alias(libs.plugins.gradle.play.publisher) apply false
     alias(libs.plugins.benManes)
     alias(libs.plugins.versionCatalogUpdate)
+    alias(libs.plugins.secrets)
 }
 
 rootCoverage {
@@ -105,6 +106,10 @@ detekt {
     ignoredBuildTypes = listOf("release")
     // Specify the base path for file paths in the formatted reports.
     basePath = "${rootProject.projectDir}"
+}
+
+secrets {
+    propertiesFileName = "gradle.properties"
 }
 
 subprojects {
