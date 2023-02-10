@@ -1,0 +1,25 @@
+name: 'Deploy APK in Firebase App Distribution'
+description: "Deploy APK in Firebase App Distribution"
+inputs:
+  buildType:
+    description: "Build type"
+    required: true
+  firebaseToken:
+    description: 'Firebase token'
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: assembled-builds
+        path: |
+          app/build/outputs/apk/
+
+    - name: Deploy APK in Firebase App Distribution
+      uses: gradle/gradle-build-action@v2
+      env:
+        FIREBASE_TOKEN: ${{ inputs.firebaseToken }}
+      with:
+        arguments: appDistributionUpload${{ inputs.buildType }} --stacktrace --scan
