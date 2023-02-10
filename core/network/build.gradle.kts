@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.secrets)
 }
 
 android {
