@@ -1,0 +1,39 @@
+name: 'Assemble APK'
+description: "Assemble APK and Upload artifact to GitHub"
+inputs:
+  buildType:
+    description: "Build type"
+    required: true
+  signingFiles:
+    description: 'Base64 encoded string of the file'
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: Decode secret files
+      if: ${{ inputs.buildType=='Release' }}
+      id: decode_secret_files
+      uses: timheuer/base64-to-file@v1.2
+      with:
+        fileName: 'signing.tar.gz'
+        fileDir: './config'
+        encodedString: ${{ inputs.signingFiles }}
+
+    - name: Extract secret files
+      if: ${{ inputs.buildType=='Release' }}
+      shell: bash
+      run:  |
+        tar xf ${{ steps.decode_secret_files.outputs.filePath }} --directory ./config
+
+    - name: Assemble apk
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: assemble${{ inputs.buildType }} --stacktrace --scan
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: assembled-builds
+        path: |
+          app/build/outputs/apk/
+        retention-days: 3

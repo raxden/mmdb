@@ -1,0 +1,18 @@
+name: 'Load secrets'
+description: "Load secrets into secrets.properties"
+inputs:
+  tmdb-token-v3:
+    description: "tmdb token v3"
+    required: true
+  tmdb-token-v4:
+    description: "tmdb token v4"
+    required: true
+outputs: { }
+runs:
+  using: "composite"
+  steps:
+    - name: Load secrets into secrets.properties
+      shell: bash
+      run: |
+        echo "TMDB_TOKEN_V3=${{ inputs.tmdb-token-v3 }}" >> ./secrets.properties
+        echo "TMDB_TOKEN_V4=${{ inputs.tmdb-token-v4 }}" >> ./secrets.properties

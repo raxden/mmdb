@@ -8,6 +8,16 @@ outputs: { }
 runs:
   using: "composite"
   steps:
+    - name: Load unit tests outputs
+      uses: actions/download-artifact@v3
+      with:
+        name: outputs-unit-tests
+
+    - name: Load instrumental tests outputs
+      uses: actions/download-artifact@v3
+      with:
+        name: outputs-android-tests
+
     - name: Jacoco Reports
       uses: gradle/gradle-build-action@v2
       with:
@@ -18,6 +28,7 @@ runs:
       with:
         name: reports-jacoco
         path: ./**/build/reports/jacoco.xml
+        retention-days: 3
 
     - name: Uploading reports to Codecov
       uses: codecov/codecov-action@v3
