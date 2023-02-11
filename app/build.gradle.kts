@@ -69,6 +69,11 @@ android {
             enableAndroidTestCoverage = true
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")
+            firebaseAppDistribution {
+                appId = "1:657739180104:android:7000f519ef3acb0bea507d"
+                releaseNotesFile = "$rootDir/release_notes.txt"
+                groups = "mmdb-team"
+            }
         }
         getByName("release") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
@@ -79,8 +84,8 @@ android {
                 "proguard-android-optimize.txt",
                 "proguard-rules.pro"
             )
-
             firebaseAppDistribution {
+                appId = "1:657739180104:android:3cdc3635d3de8978ea507d"
                 releaseNotesFile = "$rootDir/release_notes.txt"
                 groups = "mmdb-team"
             }
