@@ -173,7 +173,7 @@ jobs:
 
   deploy-firebase:
     needs: [ test, instrumental-test ]
-#    if: success() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
+    if: success() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
     name: Build & Upload to Firebase App Distribution
     runs-on: ubuntu-latest
     strategy:

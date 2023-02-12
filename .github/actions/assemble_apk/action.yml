@@ -34,6 +34,11 @@ runs:
     - uses: actions/upload-artifact@v3
       with:
         name: assembled-builds
-        path: |
-          app/build/outputs/apk/
+        path: app/build/outputs/apk/
+        retention-days: 3
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: google-services
+        path: app/build/generated/res/google-services/
         retention-days: 3
