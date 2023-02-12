@@ -4,8 +4,12 @@ inputs:
   buildType:
     description: "Build type"
     required: true
-  firebaseToken:
-    description: 'Firebase token'
+  fileDir:
+    description: 'Directory to extract the files to'
+    required: true
+    default: './config'
+  googleApplicationCredentials:
+    description: 'Google Application Credentials
     required: true
 outputs: { }
 runs:
@@ -17,9 +21,15 @@ runs:
         path: |
           app/build/outputs/apk/
 
+    - name: Decode service credentials
+      id: decode_service_credentials
+      uses: timheuer/base64-to-file@v1.2
+      with:
+        fileName: "service_credentials.json"
+        fileDir: ${{ inputs.fileDir }}
+        encodedString: ${{ inputs.googleApplicationCredentials }}
+
     - name: Deploy APK in Firebase App Distribution
       uses: gradle/gradle-build-action@v2
-      env:
-        FIREBASE_TOKEN: ${{ inputs.firebaseToken }}
       with:
         arguments: appDistributionUpload${{ inputs.buildType }} --stacktrace --scan

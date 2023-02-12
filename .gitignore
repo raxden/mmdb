@@ -47,4 +47,5 @@ reports
 *.DS_Store
 
 config/signing_release.properties
+config/service_credentials.json
 secrets.properties

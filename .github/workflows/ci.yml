@@ -171,27 +171,27 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  deploy-firebase:
-    needs: [ test, instrumental-test ]
-    if: success() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
-    name: Build & Upload to Firebase App Distribution
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        buildType: [ "Debug", "Release" ]
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Setup machine
-        uses: ./.github/actions/common_setup
-
-      - name: Deploy APK in Firebase App Distribution
-        uses: ./.github/actions/deploy_in_firebase
-        with:
-          buildType: ${{ matrix.buildType }}
-          firebaseToken: ${{ secrets.FIREBASE_TOKEN }}
+#  deploy-firebase:
+#    needs: [ test, instrumental-test ]
+#    if: success() && github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/release/')
+#    name: Build & Upload to Firebase App Distribution
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        buildType: [ "Debug", "Release" ]
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Setup machine
+#        uses: ./.github/actions/common_setup
+#
+#      - name: Deploy APK in Firebase App Distribution
+#        uses: ./.github/actions/deploy_in_firebase
+#        with:
+#          buildType: ${{ matrix.buildType }}
+#          googleApplicationCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
 #  deploy-playstore:
 #    name: Build & Upload to Playstore
