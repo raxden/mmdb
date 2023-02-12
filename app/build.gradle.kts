@@ -44,12 +44,10 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            getSigningConfigProperties("debug").run {
-                storeFile = file("$rootDir${getProperty("storeFile")}")
-                storePassword = getProperty("storePassword")
-                keyAlias = getProperty("keyAlias")
-                keyPassword = getProperty("keyPassword")
-            }
+            storeFile = file("$rootDir/config/debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
         }
         create("release") {
             getSigningConfigProperties("release").run {

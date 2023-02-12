@@ -48,4 +48,5 @@ reports
 
 config/signing_release.properties
 config/service_credentials.json
-secrets.properties
+config/secrets.properties
+config/release.jks
