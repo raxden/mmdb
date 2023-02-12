@@ -70,9 +70,7 @@ android {
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")
             firebaseAppDistribution {
-                releaseNotesFile = "$rootDir/release_notes.txt"
                 serviceCredentialsFile = "$rootDir/config/service_credentials.json"
-                groups = "mmdb-team"
             }
         }
         getByName("release") {
@@ -85,9 +83,7 @@ android {
                 "proguard-rules.pro"
             )
             firebaseAppDistribution {
-                releaseNotesFile = "$rootDir/release_notes.txt"
                 serviceCredentialsFile = "$rootDir/config/service_credentials.json"
-                groups = "mmdb-team"
             }
         }
     }

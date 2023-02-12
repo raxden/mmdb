@@ -9,7 +9,7 @@ inputs:
     required: true
     default: './config'
   googleApplicationCredentials:
-    description: 'Google Application Credentials
+    description: 'Google Application Credentials'
     required: true
 outputs: { }
 runs:
