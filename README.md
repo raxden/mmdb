@@ -6,9 +6,13 @@ Mobile movie database
 
 Mobile movie database is a simple app to search movies and tv shows. It uses [The Movie Database API](https://developers.themoviedb.org/3/getting-started/introduction) to get the data. Currently in development.
 
-## What is it?
+## How to build on your environment
 
-The purpose of this app is to learn and improve my skills with android.
+Add your [The Movie DB](https://www.themoviedb.org)'s API key in your `./config/secrets.properties` file.
+```xml
+TMDB_TOKEN_V3=YOUR_API_KEY
+TMDB_TOKEN_V4=YOUR_API_KEY
+```
 
 ## Roadmap
 
