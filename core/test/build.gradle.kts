@@ -51,6 +51,5 @@ dependencies {
     implementation(libs.bundles.testing)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.testingUI)
-    implementation(libs.hilt.test)
     kapt(libs.hilt.compiler)
 }

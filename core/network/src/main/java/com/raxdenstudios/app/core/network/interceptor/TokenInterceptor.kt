@@ -16,7 +16,7 @@ class TokenInterceptor @Inject constructor(
     }
 
     private val apiToken: String
-        get() = apiDataProvider.getToken()
+        get() = apiDataProvider.token
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

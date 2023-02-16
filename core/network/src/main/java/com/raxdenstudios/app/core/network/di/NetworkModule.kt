@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.raxdenstudios.app.core.network.APIDataProvider
-import com.raxdenstudios.app.core.network.APIDataProviderFactory
 import com.raxdenstudios.app.core.network.HttpClientFactory
 import com.raxdenstudios.app.core.network.interceptor.AuthorizationBearerInterceptor
 import com.raxdenstudios.app.core.network.model.APIVersion
@@ -24,16 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    @Provides
-    @APIVersionV3
-    fun apiV3DataProvider(factory: APIDataProviderFactory): APIDataProvider =
-        factory.create(APIVersion.V3)
-
-    @Provides
-    @APIVersionV4
-    fun apiV4DataProvider(factory: APIDataProviderFactory): APIDataProvider =
-        factory.create(APIVersion.V4)
 
     @Provides
     @APIVersionV3
@@ -58,7 +47,7 @@ object NetworkModule {
         @APIVersionV3 okHttpClient: OkHttpClient,
         gson: Gson,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(apiDataProvider.getDomain())
+        .baseUrl(apiDataProvider.baseUrl)
         .client(okHttpClient)
         .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -71,7 +60,7 @@ object NetworkModule {
         @APIVersionV4 okHttpClient: OkHttpClient,
         gson: Gson,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(apiDataProvider.getDomain())
+        .baseUrl(apiDataProvider.baseUrl)
         .client(okHttpClient)
         .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -104,7 +93,7 @@ object NetworkModule {
         @Auth okHttpClient: OkHttpClient,
         gson: Gson,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(apiDataProvider.getDomain())
+        .baseUrl(apiDataProvider.baseUrl)
         .client(okHttpClient)
         .addCallAdapterFactory(NetworkResponseAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create(gson))

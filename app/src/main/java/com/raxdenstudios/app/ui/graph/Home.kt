@@ -7,8 +7,8 @@ import com.raxdenstudios.app.core.navigation.HomeDirections
 import com.raxdenstudios.app.core.navigation.HomeRoutes
 import com.raxdenstudios.app.core.navigation.MainRoutes
 import com.raxdenstudios.app.feature.component.MediasScreen
-import com.raxdenstudios.app.feature.detail.component.MediaScreen
-import com.raxdenstudios.app.feature.home.component.HomeScreen
+import com.raxdenstudios.app.feature.detail.MediaScreen
+import com.raxdenstudios.app.feature.home.HomeScreen
 import com.raxdenstudios.app.ui.AppState
 
 fun NavGraphBuilder.homeGraph(

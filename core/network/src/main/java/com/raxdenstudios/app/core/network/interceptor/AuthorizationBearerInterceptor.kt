@@ -19,7 +19,7 @@ class AuthorizationBearerInterceptor @Inject constructor(
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-            .addHeader(AUTHORIZATION, "Bearer ${apiDataProvider.getToken()}")
+            .addHeader(AUTHORIZATION, "Bearer ${apiDataProvider.token}")
             .build()
         return chain.proceed(request)
     }

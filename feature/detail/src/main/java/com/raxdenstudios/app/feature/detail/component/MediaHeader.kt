@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
@@ -36,6 +38,7 @@ fun MediaHeader(
 ) {
     Surface(
         modifier = modifier
+            .semantics { contentDescription = "Media Header" }
             .fillMaxWidth()
             .padding(bottom = 8.dp),
         shape = Shapes.medium,

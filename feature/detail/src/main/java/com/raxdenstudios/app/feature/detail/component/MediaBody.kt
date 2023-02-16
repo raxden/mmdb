@@ -9,6 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -22,6 +24,7 @@ fun MediaBody(
 ) {
     Column(
         modifier = modifier
+            .semantics { contentDescription = "Media Body" }
             .fillMaxWidth()
             .background(color = MaterialTheme.colors.background),
     ) {

@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.feature.detail.component
+package com.raxdenstudios.app.feature.detail
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -38,6 +38,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.ui.DevicePreviews
@@ -48,14 +50,14 @@ import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Grey900Translucent
-import com.raxdenstudios.app.feature.detail.MediaContract
-import com.raxdenstudios.app.feature.detail.MediaViewModel
+import com.raxdenstudios.app.feature.detail.component.MediaBody
+import com.raxdenstudios.app.feature.detail.component.MediaHeader
 
 @Composable
 fun MediaScreen(
     modifier: Modifier = Modifier,
     viewModel: MediaViewModel = hiltViewModel(),
-    onNavigateToBack: () -> Unit,
+    onNavigateToBack: () -> Unit = {},
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -174,7 +176,8 @@ private fun AddToWatchlistFloatingActionButton(
     isMediaAddedToWatchlist: Boolean
 ) {
     FloatingActionButton(
-        modifier = modifier,
+        modifier = modifier
+            .semantics { contentDescription = "Add to watchlist" },
         onClick = {
             if (isMediaAddedToWatchlist)
                 removeFromWatchlist()
@@ -202,6 +205,7 @@ private fun BackButton(
     IconButton(
         onClick = onNavigateToBack,
         modifier = modifier
+            .semantics { contentDescription = "Back Button" }
             .padding(horizontal = 10.dp, vertical = 10.dp)
             .size(36.dp)
             .background(
