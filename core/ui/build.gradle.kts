@@ -79,6 +79,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // debug libraries
+    debugImplementation(platform(libs.firebase.bom))
     debugImplementation(libs.bundles.compose.debug)
 
     // test libraries
@@ -87,6 +88,7 @@ dependencies {
 
     // instrumental test libraries
     androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)
 }

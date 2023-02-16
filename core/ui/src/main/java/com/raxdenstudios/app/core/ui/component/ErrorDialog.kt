@@ -7,6 +7,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
@@ -18,7 +20,8 @@ fun ErrorDialog(
     onDismiss: () -> Unit = {},
 ) {
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier
+            .semantics { contentDescription = "Error Dialog" },
         title = {
             Text(
                 style = MaterialTheme.typography.body1,

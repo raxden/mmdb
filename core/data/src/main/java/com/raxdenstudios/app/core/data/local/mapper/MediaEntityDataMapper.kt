@@ -137,11 +137,11 @@ class SizeEntityToDomainMapper @Inject constructor(
 
     override fun transform(source: SizeEntity): Size = when (source.type) {
         "thumbnail" -> Size.Thumbnail(
-            apiDataProvider.getImageDomain(),
+            apiDataProvider.baseImageUrl,
             source.url
         )
         "original" -> Size.Original(
-            apiDataProvider.getImageDomain(),
+            apiDataProvider.baseImageUrl,
             source.url
         )
         else -> error("Invalid field value to represent Picture.Size")

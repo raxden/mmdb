@@ -1,12 +1,11 @@
 package com.raxdenstudios.app.core.network
 
-import javax.inject.Inject
+class APIDataV3Provider : APIDataProvider {
 
-class APIDataV3Provider @Inject constructor() : APIDataProvider {
-
-    override fun getDomain(): String = "https://api.themoviedb.org/3/"
-
-    override fun getImageDomain(): String = "https://image.tmdb.org/t/p/"
-
-    override fun getToken(): String = BuildConfig.TMDB_TOKEN_V3
+    override val baseUrl: String
+        get() = "https://api.themoviedb.org/3/"
+    override val baseImageUrl: String
+        get() = "https://image.tmdb.org/t/p/"
+    override val token: String
+        get() = BuildConfig.TMDB_TOKEN_V3
 }

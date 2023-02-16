@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.feature.home.component
+package com.raxdenstudios.app.feature.home
 
 import android.content.pm.ActivityInfo
 import androidx.compose.material.ScaffoldState
@@ -18,6 +18,7 @@ import com.raxdenstudios.app.core.ui.component.ShowSnackbarMessage
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.HomeContract
 import com.raxdenstudios.app.feature.home.HomeViewModel
+import com.raxdenstudios.app.feature.home.component.HomeModules
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.modules
 
 @Composable
@@ -25,7 +26,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
+    onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit = { _, _ -> },
     onNavigateToMedias: (mediaType: MediaType, mediaCategory: MediaCategory) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsState()
