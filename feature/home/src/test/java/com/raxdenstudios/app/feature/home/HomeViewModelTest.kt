@@ -97,8 +97,8 @@ class HomeViewModelTest {
                         modules = listOf(
                             HomeModuleModel.Carousel.Popular.empty.copy(
                                 medias = listOf(
-                                    MediaModel.empty.copy(id = MediaId(1L)),
-                                    MediaModel.empty.copy(id = MediaId(2L)),
+                                    MediaModel.mock.copy(id = MediaId(1L)),
+                                    MediaModel.mock.copy(id = MediaId(2L)),
                                 ),
                                 filters = listOf(
                                     MediaFilterModel(

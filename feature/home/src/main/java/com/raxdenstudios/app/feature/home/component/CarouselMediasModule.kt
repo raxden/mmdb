@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.feature.home.component.HomePreviewData.popularModule
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
+import com.raxdenstudios.app.core.ui.component.CarouselMedias
+import com.raxdenstudios.app.core.ui.component.Header
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
+import com.raxdenstudios.app.feature.home.component.HomePreviewData.popularModule
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 
 @Composable
 fun CarouselMediasModule(
@@ -34,10 +36,11 @@ fun CarouselMediasModule(
         Column(
             modifier = Modifier
         ) {
-            CarouselMediasHeader(
+            Header(
                 modifier = Modifier
                     .padding(start = 8.dp, top = 8.dp, end = 8.dp),
                 title = module.label,
+                seeAllVisible = true,
                 onSeeAllClick = { onSeeAllClick(module) },
             )
             CarouselMediasFilter(
@@ -49,7 +52,7 @@ fun CarouselMediasModule(
             )
             CarouselMedias(
                 modifier = Modifier,
-                items = module.medias,
+                medias = module.medias,
                 onItemClick = { item -> onItemClick(module, item) },
                 onItemWatchButtonClick = { item -> onItemWatchButtonClick(module, item) },
             )

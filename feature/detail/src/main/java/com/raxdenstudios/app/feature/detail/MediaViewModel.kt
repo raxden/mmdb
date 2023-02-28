@@ -5,15 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediaUseCase
 import com.raxdenstudios.app.core.domain.GetMediaVideosUseCase
+import com.raxdenstudios.app.core.domain.GetRelatedMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
-import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
-import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.detail.mapper.MediaPageListResultModelMapper
+import com.raxdenstudios.app.feature.detail.mapper.MediaResultModelMapper
 import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
+import com.raxdenstudios.app.feature.detail.model.VideoModel
 import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
 import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
@@ -31,10 +32,11 @@ class MediaViewModel @Inject constructor(
     private val getMediaVideosUseCase: GetMediaVideosUseCase,
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase,
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase,
+    private val getRelatedMediasUseCase: GetRelatedMediasUseCase,
     private val mediaParamsFactory: MediaParamsFactory,
-    private val mediaModelMapper: MediaModelMapper,
+    private val mediaResultModelMapper: MediaResultModelMapper,
+    private val mediaPageListResultModelMapper: MediaPageListResultModelMapper,
     private val videoModelMapper: VideoModelMapper,
-    private val errorModelMapper: ErrorModelMapper,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MediaContract.UIState.loading)
@@ -45,15 +47,17 @@ class MediaViewModel @Inject constructor(
     init {
         loadMedia()
         loadMediaVideos()
+        loadRelatedMedias()
     }
 
     fun setUserEvent(event: MediaContract.UserEvent): Unit = when (event) {
-        MediaContract.UserEvent.BackClicked -> updateUIStateWithEvent(MediaContract.UIEvent.NavigateToBack)
-        is MediaContract.UserEvent.AddToWatchlist -> addToWatchlist(event.media)
-        is MediaContract.UserEvent.RemoveFromWatchlist -> removeFromWatchlist(event.media)
+        MediaContract.UserEvent.BackClicked -> backClicked()
         MediaContract.UserEvent.ErrorDismissed -> errorDismissed()
-        is MediaContract.UserEvent.VideoClick ->
-            updateUIStateWithEvent(MediaContract.UIEvent.PlayYoutubeVideo(event.video.uri))
+        is MediaContract.UserEvent.VideoClick -> videoClick(event.video)
+        is MediaContract.UserEvent.RelatedMediaClick -> relatedMediaClick(event.media)
+        is MediaContract.UserEvent.RelatedWatchlistClick -> watchlistClick(event.media)
+        is MediaContract.UserEvent.WatchlistClick -> watchlistClick(event.media)
+        MediaContract.UserEvent.RelatedSeeAllButtonClicked -> relatedSeeAllClick()
     }
 
     fun eventConsumed(event: MediaContract.UIEvent) {
@@ -70,10 +74,7 @@ class MediaViewModel @Inject constructor(
             mediaType = params.mediaType,
         )
         getMediaUseCase(params)
-            .map { result ->
-                result.map { media -> mediaModelMapper.transform(media) }
-                    .mapFailure { error -> errorModelMapper.transform(error) }
-            }
+            .map { result -> mediaResultModelMapper.transform(result) }
             .collect { result ->
                 result.onSuccess { media -> loadDataSuccess(media) }
                     .onFailure { error -> loadDataFailure(error) }
@@ -89,6 +90,22 @@ class MediaViewModel @Inject constructor(
             getMediaVideosUseCase(params)
                 .map { videos -> videoModelMapper.transform(videos) }
                 .map { videos -> _uiState.update { value -> value.copy(videos = videos) } }
+        }
+    }
+
+    private fun loadRelatedMedias() {
+        val params = GetRelatedMediasUseCase.Params(
+            mediaId = params.mediaId,
+            mediaType = params.mediaType,
+        )
+        viewModelScope.safeLaunch {
+            getRelatedMediasUseCase(params)
+                .map { result -> mediaPageListResultModelMapper.transform(result) }
+                .collect { result ->
+                    result.onSuccess { relatedMedias ->
+                        _uiState.update { value -> value.copy(relatedMedias = relatedMedias) }
+                    }
+                }
         }
     }
 
@@ -110,30 +127,58 @@ class MediaViewModel @Inject constructor(
         }
     }
 
+    private fun relatedSeeAllClick() {
+        val event = MediaContract.UIEvent.NavigateToRelatedMedias(params.mediaId, params.mediaType)
+        updateUIStateWithEvent(event)
+    }
+
+    private fun relatedMediaClick(media: MediaModel) {
+        val event = MediaContract.UIEvent.NavigateToMedia(media.id, media.mediaType)
+        updateUIStateWithEvent(event)
+    }
+
+    private fun watchlistClick(media: MediaModel) {
+        if (media.watchlist) {
+            removeFromWatchlist(media)
+        } else {
+            addToWatchlist(media)
+        }
+    }
+
     private fun addToWatchlist(
-        mediaListItem: MediaModel,
+        media: MediaModel,
     ) {
         viewModelScope.safeLaunch {
             addMediaToWatchlistUseCase(
                 params = AddMediaToWatchlistUseCase.Params(
-                    mediaListItem.id,
-                    mediaListItem.mediaType
+                    media.id,
+                    media.mediaType
                 )
             )
         }
     }
 
     private fun removeFromWatchlist(
-        mediaListItem: MediaModel,
+        media: MediaModel,
     ) {
         viewModelScope.safeLaunch {
             removeMediaFromWatchlistUseCase(
                 params = RemoveMediaFromWatchlistUseCase.Params(
-                    mediaListItem.id,
-                    mediaListItem.mediaType
+                    media.id,
+                    media.mediaType
                 )
             )
         }
+    }
+
+    private fun backClicked() {
+        val event = MediaContract.UIEvent.NavigateToBack
+        updateUIStateWithEvent(event)
+    }
+
+    private fun videoClick(video: VideoModel) {
+        val event = MediaContract.UIEvent.PlayYoutubeVideo(video.uri)
+        updateUIStateWithEvent(event)
     }
 
     private fun errorDismissed() {

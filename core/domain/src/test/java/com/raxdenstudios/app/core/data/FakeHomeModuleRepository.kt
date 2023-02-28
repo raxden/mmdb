@@ -1,6 +1,5 @@
-package com.raxdenstudios.app.core.domain
+package com.raxdenstudios.app.core.data
 
-import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaType

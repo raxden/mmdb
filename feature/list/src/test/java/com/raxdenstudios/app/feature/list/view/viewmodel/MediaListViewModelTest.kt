@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediasUseCase
+import com.raxdenstudios.app.core.domain.GetRelatedMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaFilter
@@ -48,6 +49,7 @@ class MediaListViewModelTest {
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk {
         coEvery { this@mockk.invoke(any()) } returns ResultData.Success(true)
     }
+    private val getRelatedMediasUseCase: GetRelatedMediasUseCase = mockk()
     private val getMediasUseCase: GetMediasUseCase = mockk {
         coEvery { this@mockk.invoke(aGetMoviesUseCaseFirstPageParams) } returns ResultData.Success(aFirstPageList)
         coEvery { this@mockk.invoke(aGetMoviesUseCaseSecondPageParams) } returns ResultData.Success(aSecondPageList)
@@ -69,13 +71,14 @@ class MediaListViewModelTest {
     )
     private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true)
     private val mediaListParamsFactory: MediaListParamsFactory = mockk(relaxed = true) {
-        every { create() } returns MediaListParams(MediaFilter.popular(MediaType.Movie))
+        every { create() } returns MediaListParams.List(MediaFilter.popular(MediaType.Movie))
     }
     private val viewModel: MediaListViewModel by lazy {
         MediaListViewModel(
             mediaListParamsFactory = mediaListParamsFactory,
             paginationConfig = paginationConfig,
             getMediasUseCase = getMediasUseCase,
+            getRelatedMediasUseCase = getRelatedMediasUseCase,
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             mediaListTitleModelMapper = mediaListTitleModelMapper,
@@ -91,8 +94,8 @@ class MediaListViewModelTest {
             assertThat(awaitItem()).isEqualTo(
                 MediaListContract.UIState.empty.copy(
                     items = listOf(
-                        MediaModel.empty.copy(id = MediaId(1L)),
-                        MediaModel.empty.copy(id = MediaId(2L)),
+                        MediaModel.mock.copy(id = MediaId(1L)),
+                        MediaModel.mock.copy(id = MediaId(2L)),
                     )
                 )
             )
@@ -102,7 +105,7 @@ class MediaListViewModelTest {
 
     @Test
     fun `Given a movie, When addMovieToWatchlist is called, Then movie is replaced in model`() = runTest {
-        val mediaModel = MediaModel.empty.copy(
+        val mediaModel = MediaModel.mock.copy(
             id = MediaId(2L),
             watchlist = false,
         )
@@ -119,8 +122,8 @@ class MediaListViewModelTest {
             assertThat(result).isEqualTo(
                 MediaListContract.UIState.empty.copy(
                     items = listOf(
-                        MediaModel.empty.copy(id = MediaId(1L)),
-                        MediaModel.empty.copy(
+                        MediaModel.mock.copy(id = MediaId(1L)),
+                        MediaModel.mock.copy(
                             id = MediaId(2L),
                             watchlist = true,
                         ),
@@ -139,7 +142,7 @@ class MediaListViewModelTest {
                 page = Page(1)
             )
         )
-        val mediaModel = MediaModel.empty.copy(
+        val mediaModel = MediaModel.mock.copy(
             id = MediaId(1L),
             watchlist = true,
         )
@@ -150,7 +153,7 @@ class MediaListViewModelTest {
             assertThat(awaitItem()).isEqualTo(
                 MediaListContract.UIState.empty.copy(
                     items = listOf(
-                        MediaModel.empty.copy(
+                        MediaModel.mock.copy(
                             id = MediaId(1L),
                             watchlist = false,
                         ),
@@ -171,16 +174,16 @@ class MediaListViewModelTest {
                     MediaListContract.UIState.empty.copy(
                         isLoading = true,
                         items = listOf(
-                            MediaModel.empty.copy(id = MediaId(1L)),
-                            MediaModel.empty.copy(id = MediaId(2L)),
+                            MediaModel.mock.copy(id = MediaId(1L)),
+                            MediaModel.mock.copy(id = MediaId(2L)),
                         )
                     )
                 )
                 assertThat(awaitItem()).isEqualTo(
                     MediaListContract.UIState.empty.copy(
                         items = listOf(
-                            MediaModel.empty.copy(id = MediaId(1L)),
-                            MediaModel.empty.copy(id = MediaId(2L)),
+                            MediaModel.mock.copy(id = MediaId(1L)),
+                            MediaModel.mock.copy(id = MediaId(2L)),
                         )
                     )
                 )
@@ -200,8 +203,8 @@ class MediaListViewModelTest {
                 assertThat(item2).isEqualTo(
                     MediaListContract.UIState.empty.copy(
                         items = listOf(
-                            MediaModel.empty.copy(id = MediaId(1L)),
-                            MediaModel.empty.copy(id = MediaId(2L)),
+                            MediaModel.mock.copy(id = MediaId(1L)),
+                            MediaModel.mock.copy(id = MediaId(2L)),
                         )
                     )
                 )
@@ -210,10 +213,10 @@ class MediaListViewModelTest {
                 assertThat(item3).isEqualTo(
                     MediaListContract.UIState.empty.copy(
                         items = listOf(
-                            MediaModel.empty.copy(id = MediaId(1L)),
-                            MediaModel.empty.copy(id = MediaId(2L)),
-                            MediaModel.empty.copy(id = MediaId(3L)),
-                            MediaModel.empty.copy(id = MediaId(4L)),
+                            MediaModel.mock.copy(id = MediaId(1L)),
+                            MediaModel.mock.copy(id = MediaId(2L)),
+                            MediaModel.mock.copy(id = MediaId(3L)),
+                            MediaModel.mock.copy(id = MediaId(4L)),
                         )
                     )
                 )

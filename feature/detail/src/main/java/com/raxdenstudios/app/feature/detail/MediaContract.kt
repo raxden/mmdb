@@ -1,7 +1,11 @@
 package com.raxdenstudios.app.feature.detail
 
+import com.raxdenstudios.app.core.model.MediaCategory
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
 import java.util.UUID
 
@@ -11,6 +15,7 @@ object MediaContract {
         val isLoading: Boolean = false,
         val media: MediaModel = MediaModel.empty,
         val videos: List<VideoModel> = emptyList(),
+        val relatedMedias: RelatedMediasModel = RelatedMediasModel.empty,
         val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     ) {
@@ -26,8 +31,10 @@ object MediaContract {
         object BackClicked : UserEvent
         object ErrorDismissed : UserEvent
         data class VideoClick(val video: VideoModel) : UserEvent
-        data class AddToWatchlist(val media: MediaModel) : UserEvent
-        data class RemoveFromWatchlist(val media: MediaModel) : UserEvent
+        data class WatchlistClick(val media: MediaModel) : UserEvent
+        data class RelatedMediaClick(val media: MediaModel) : UserEvent
+        data class RelatedWatchlistClick(val media: MediaModel) : UserEvent
+        object RelatedSeeAllButtonClicked : UserEvent
     }
 
     /**
@@ -39,5 +46,19 @@ object MediaContract {
 
         data class PlayYoutubeVideo(val url: String) : UIEvent()
         object NavigateToBack : UIEvent()
+        data class NavigateToMedia(
+            val mediaId: MediaId,
+            val mediaType: MediaType,
+        ) : UIEvent()
+
+        data class NavigateToMedias(
+            val mediaType: MediaType,
+            val mediaCategory: MediaCategory,
+        ) : UIEvent()
+
+        data class NavigateToRelatedMedias(
+            val mediaId: MediaId,
+            val mediaType: MediaType,
+        ) : UIEvent()
     }
 }

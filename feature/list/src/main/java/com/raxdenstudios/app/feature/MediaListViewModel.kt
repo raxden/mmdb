@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediasUseCase
+import com.raxdenstudios.app.core.domain.GetRelatedMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
@@ -12,7 +13,6 @@ import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
 import com.raxdenstudios.app.feature.model.MediaListParams
-import com.raxdenstudios.commons.ext.fold
 import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.ext.mapFailure
@@ -31,6 +31,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,6 +42,7 @@ class MediaListViewModel @Inject constructor(
     private val mediaListParamsFactory: MediaListParamsFactory,
     private val paginationConfig: Pagination.Config,
     private val getMediasUseCase: GetMediasUseCase,
+    private val getRelatedMediasUseCase: GetRelatedMediasUseCase,
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase,
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase,
     private val mediaListTitleModelMapper: MediaListTitleModelMapper,
@@ -59,7 +61,7 @@ class MediaListViewModel @Inject constructor(
     val uiState: StateFlow<MediaListContract.UIState> = _uiState.asStateFlow()
 
     init {
-        _uiState.update { value -> value.copy(title = mediaListTitleModelMapper.transform(params)) }
+        setTitle(params)
         requestFirstPage(params)
     }
 
@@ -122,6 +124,12 @@ class MediaListViewModel @Inject constructor(
         requestFirstPage(params)
     }
 
+    private fun setTitle(params: MediaListParams) {
+        viewModelScope.safeLaunch {
+            _uiState.update { value -> value.copy(title = mediaListTitleModelMapper.transform(params)) }
+        }
+    }
+
     private fun requestFirstPage(params: MediaListParams) {
         _uiState.update { value -> value.copy(isLoading = true) }
         pagination.requestFirstPage(
@@ -168,11 +176,19 @@ class MediaListViewModel @Inject constructor(
         params: MediaListParams,
         page: Page,
         pageSize: PageSize,
-    ): PageList<Media> {
-        val useCaseParams = GetMediasUseCase.Params(params.mediaFilter, page, pageSize)
-        return getMediasUseCase(useCaseParams)
-            .getValueOrDefault(PageList(emptyList(), page))
-    }
+    ): PageList<Media> =
+        when (params) {
+            is MediaListParams.List -> {
+                val useCaseParams = GetMediasUseCase.Params(params.mediaFilter, page, pageSize)
+                getMediasUseCase(useCaseParams)
+                    .getValueOrDefault(PageList(emptyList(), page))
+            }
+            is MediaListParams.Related -> {
+                val useCaseParams = GetRelatedMediasUseCase.Params(params.mediaId, params.mediaType, page, pageSize)
+                getRelatedMediasUseCase(useCaseParams).first()
+                    .getValueOrDefault(PageList(emptyList(), page))
+            }
+        }
 
     fun eventConsumed(event: MediaListContract.UIEvent) {
         _uiState.update { value -> value.copy(events = value.events.minus(event)) }

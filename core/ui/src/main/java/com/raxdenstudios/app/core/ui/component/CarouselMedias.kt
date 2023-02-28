@@ -1,5 +1,6 @@
-package com.raxdenstudios.app.feature.home.component
+package com.raxdenstudios.app.core.ui.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,17 +9,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.raxdenstudios.app.core.ui.component.MediaListItem
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
-
 @Composable
 fun CarouselMedias(
     modifier: Modifier = Modifier,
-    items: List<MediaModel>,
+    contentPadding: PaddingValues = PaddingValues(all = 8.dp),
+    horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(4.dp),
+    medias: List<MediaModel>,
     onItemClick: (MediaModel) -> Unit = {},
     onItemWatchButtonClick: (MediaModel) -> Unit = {}
 ) {
@@ -26,18 +27,18 @@ fun CarouselMedias(
         modifier = modifier
             .fillMaxWidth()
             .height(300.dp),
-        contentPadding = PaddingValues(all =  8.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        contentPadding = contentPadding,
+        horizontalArrangement = horizontalArrangement,
         content = {
             items(
-                count = items.size,
-                key = { index -> items[index].id.value },
+                count = medias.size,
+                key = { index -> medias[index].id.value },
             ) { index ->
-                MediaListItem(
+                Media(
                     modifier = Modifier,
-                    model = items[index],
-                    onClick = { onItemClick(items[index]) },
-                    onWatchButtonClick = { onItemWatchButtonClick(items[index]) }
+                    model = medias[index],
+                    onClick = { onItemClick(medias[index]) },
+                    onWatchButtonClick = { onItemWatchButtonClick(medias[index]) }
                 )
             }
         }
@@ -49,14 +50,15 @@ fun CarouselMedias(
 fun CarouselMediasPreview() {
     AppComposeTheme {
         CarouselMedias(
-            items = items,
+            medias = items,
         )
     }
 }
 
+@SuppressLint("VisibleForTests")
 @SuppressWarnings("MagicNumber")
 private val items = List(10) {
-    MediaModel.empty.copy(
+    MediaModel.mock.copy(
         id = MediaId(it.toLong()),
         title = "The Batman",
         releaseDate = "2011",

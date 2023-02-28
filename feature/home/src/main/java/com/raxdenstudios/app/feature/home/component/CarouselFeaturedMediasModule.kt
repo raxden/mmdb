@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.Header
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.nowPlayingModule
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -33,10 +33,11 @@ fun CarouselFeaturedMediasModule(
         Column(
             modifier = Modifier
         ) {
-            CarouselMediasHeader(
+            Header(
                 modifier = Modifier
                     .padding(all = 8.dp),
                 title = module.label,
+                seeAllVisible = true,
                 onSeeAllClick = { onSeeAllClick(module) },
             )
             CarouselFeaturedMedias(

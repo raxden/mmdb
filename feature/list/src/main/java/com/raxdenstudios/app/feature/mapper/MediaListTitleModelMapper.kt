@@ -13,17 +13,24 @@ class MediaListTitleModelMapper @Inject constructor(
 
     fun transform(
         params: MediaListParams,
-    ) = when (params.mediaFilter.mediaCategory) {
-        MediaCategory.NowPlaying -> stringProvider.getString(R.string.list_now_playing_in_theaters)
-        MediaCategory.Popular -> when (params.mediaFilter.mediaType) {
-            MediaType.Movie -> stringProvider.getString(R.string.list_popular_movies)
-            MediaType.TvShow -> stringProvider.getString(R.string.list_popular_tv_shows)
+    ) = when (params) {
+        is MediaListParams.List ->
+            when (params.mediaFilter.mediaCategory) {
+                MediaCategory.NowPlaying -> stringProvider.getString(R.string.list_now_playing_in_theaters)
+                MediaCategory.Popular -> when (params.mediaFilter.mediaType) {
+                    MediaType.Movie -> stringProvider.getString(R.string.list_popular_movies)
+                    MediaType.TvShow -> stringProvider.getString(R.string.list_popular_tv_shows)
+                }
+                MediaCategory.TopRated -> when (params.mediaFilter.mediaType) {
+                    MediaType.Movie -> stringProvider.getString(R.string.list_top_rated_movies)
+                    MediaType.TvShow -> stringProvider.getString(R.string.list_top_rated_tv_shows)
+                }
+                MediaCategory.Upcoming -> stringProvider.getString(R.string.list_upcoming_in_theaters)
+                MediaCategory.Watchlist -> stringProvider.getString(R.string.list_from_your_watchlist)
+            }
+        is MediaListParams.Related -> when (params.mediaType) {
+            MediaType.Movie -> stringProvider.getString(R.string.similar_movies)
+            MediaType.TvShow -> stringProvider.getString(R.string.similar_tv_shows)
         }
-        MediaCategory.TopRated -> when (params.mediaFilter.mediaType) {
-            MediaType.Movie -> stringProvider.getString(R.string.list_top_rated_movies)
-            MediaType.TvShow -> stringProvider.getString(R.string.list_top_rated_tv_shows)
-        }
-        MediaCategory.Upcoming -> stringProvider.getString(R.string.list_upcoming_in_theaters)
-        MediaCategory.Watchlist -> stringProvider.getString(R.string.list_from_your_watchlist)
     }
 }

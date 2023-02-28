@@ -2,6 +2,8 @@ package com.raxdenstudios.app.core.data.di
 
 import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.data.HomeModuleRepositoryImpl
+import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.data.MediaRepositoryImpl
 import com.raxdenstudios.app.core.data.WatchlistDataSource
 import com.raxdenstudios.app.core.data.WatchlistDataSourceImpl
 import dagger.Binds
@@ -15,6 +17,9 @@ interface DataModule {
 
     @Binds
     fun bindHomeModuleRepository(repository: HomeModuleRepositoryImpl): HomeModuleRepository
+
+    @Binds
+    fun bindMediaRepository(repository: MediaRepositoryImpl): MediaRepository
 
     @Binds
     fun bindWatchlistDataSource(dataSource: WatchlistDataSourceImpl): WatchlistDataSource

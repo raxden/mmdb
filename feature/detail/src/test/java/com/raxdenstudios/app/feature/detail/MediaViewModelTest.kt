@@ -5,26 +5,34 @@ import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.GetMediaUseCase
 import com.raxdenstudios.app.core.domain.GetMediaVideosUseCase
+import com.raxdenstudios.app.core.domain.GetRelatedMediasUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
+import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.detail.mapper.MediaPageListResultModelMapper
+import com.raxdenstudios.app.feature.detail.mapper.MediaResultModelMapper
 import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
+import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.pagination.model.Page
+import com.raxdenstudios.commons.pagination.model.PageList
+import com.raxdenstudios.commons.provider.StringProvider
 import com.raxdenstudios.commons.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.lachlanmckee.timberjunit.TimberTestRule
@@ -44,22 +52,29 @@ internal class MediaViewModelTest {
     private val getMediaUseCase: GetMediaUseCase = mockk {
         coEvery { this@mockk.invoke(any()) } returns flowOf(ResultData.Success(media))
     }
+    private val getRelatedMediasUseCase: GetRelatedMediasUseCase = mockk {
+        coEvery { this@mockk.invoke(any()) } returns flow { emit(ResultData.Success(mediasPaged)) }
+    }
     private val getMediaVideosUseCase: GetMediaVideosUseCase = mockk {
         coEvery { this@mockk.invoke(any()) } returns ResultData.Success(videos)
     }
     private val mediaParamsFactory: MediaParamsFactory = mockk {
         coEvery { create() } returns params
     }
-    private val mediaModelMapper: MediaModelMapper = mockk {
-        every { transform(media) } returns mediaModel
-    }
-    private val videoModelMapper: VideoModelMapper = mockk {
-        every { transform(videos) } returns videosModel
-    }
-    private val errorModelMapper: ErrorModelMapper = mockk(relaxed = true) {
-        every { transform(any<Throwable>()) } returns ErrorModel.mock
-        every { transform(any<ErrorDomain>()) } returns ErrorModel.mock
-    }
+    private val stringProvider: StringProvider = mockk(relaxed = true)
+    private val durationModelMapper: DurationModelMapper = DurationModelMapper(stringProvider)
+    private val videoModelMapper: VideoModelMapper = VideoModelMapper()
+    private val mediaModelMapper: MediaModelMapper = MediaModelMapper(durationModelMapper)
+    private val errorModelMapper: ErrorModelMapper = ErrorModelMapper(stringProvider)
+    private val mediaResultModelMapper: MediaResultModelMapper = MediaResultModelMapper(
+        mediaModelMapper = mediaModelMapper,
+        errorModelMapper = errorModelMapper,
+    )
+    private val mediaPageListResultModelMapper: MediaPageListResultModelMapper = MediaPageListResultModelMapper(
+        mediaModelMapper = mediaModelMapper,
+        errorModelMapper = errorModelMapper,
+        stringProvider = stringProvider,
+    )
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
     private lateinit var viewModel: MediaViewModel
@@ -69,12 +84,13 @@ internal class MediaViewModelTest {
         viewModel = MediaViewModel(
             getMediaUseCase = getMediaUseCase,
             getMediaVideosUseCase = getMediaVideosUseCase,
-            mediaParamsFactory = mediaParamsFactory,
-            mediaModelMapper = mediaModelMapper,
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
+            getRelatedMediasUseCase = getRelatedMediasUseCase,
+            mediaParamsFactory = mediaParamsFactory,
+            mediaResultModelMapper = mediaResultModelMapper,
+            mediaPageListResultModelMapper = mediaPageListResultModelMapper,
             videoModelMapper = videoModelMapper,
-            errorModelMapper = errorModelMapper,
         )
     }
 
@@ -88,6 +104,7 @@ internal class MediaViewModelTest {
             assertThat(uiState2).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                 )
             )
@@ -104,6 +121,7 @@ internal class MediaViewModelTest {
             assertThat(uiState2).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                 )
             )
@@ -123,6 +141,7 @@ internal class MediaViewModelTest {
                 MediaContract.UIState(
                     videos = listOf(VideoModel.mock),
                     error = ErrorModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                 )
             )
         }
@@ -139,6 +158,7 @@ internal class MediaViewModelTest {
             assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                     events = setOf(MediaContract.UIEvent.NavigateToBack),
                 )
@@ -148,15 +168,18 @@ internal class MediaViewModelTest {
 
     @Test
     fun `When addToWatchlistClicked is received, Then update uiState`() = runTest {
+        val media = MediaModel.mock.copy(watchlist = false)
+
         viewModel.uiState.test {
             skipItems(1)
 
-            viewModel.setUserEvent(MediaContract.UserEvent.AddToWatchlist(mediaModel))
+            viewModel.setUserEvent(MediaContract.UserEvent.WatchlistClick(media))
 
             val uiState = awaitItem()
             assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                 )
             )
@@ -166,15 +189,18 @@ internal class MediaViewModelTest {
 
     @Test
     fun `When removeFromWatchlistClicked is received, Then update uiState`() = runTest {
+        val media = MediaModel.mock.copy(watchlist = true)
+
         viewModel.uiState.test {
             skipItems(1)
 
-            viewModel.setUserEvent(MediaContract.UserEvent.RemoveFromWatchlist(mediaModel))
+            viewModel.setUserEvent(MediaContract.UserEvent.WatchlistClick(media))
 
             val uiState = awaitItem()
             assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                 )
             )
@@ -193,6 +219,7 @@ internal class MediaViewModelTest {
             assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = listOf(VideoModel.mock),
                     events = setOf(MediaContract.UIEvent.PlayYoutubeVideo("https://www.youtube.com/watch?v=l6rAoph5UgI")),
                 )
@@ -213,7 +240,29 @@ internal class MediaViewModelTest {
             assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
                     videos = emptyList(),
+                    error = null,
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `When eventConsumed is called, Then remove the event from uiState`() = runTest {
+        viewModel.uiState.test {
+            skipItems(2)
+
+            viewModel.setUserEvent(MediaContract.UserEvent.BackClicked)
+            skipItems(1)
+            viewModel.eventConsumed(MediaContract.UIEvent.NavigateToBack)
+
+            val uiState = awaitItem()
+            assertThat(uiState).isEqualTo(
+                MediaContract.UIState(
+                    media = MediaModel.mock,
+                    relatedMedias = RelatedMediasModel.mock,
+                    videos = listOf(VideoModel.mock),
                     error = null,
                 )
             )
@@ -227,9 +276,11 @@ internal class MediaViewModelTest {
             mediaType = MediaType.Movie
         )
         private val media = Media.Movie.mock
-        private val mediaModel = MediaModel.mock
         private val videoModel = VideoModel.mock
         private val videos = listOf(Video.mock)
-        private val videosModel = listOf(VideoModel.mock)
+        private val mediasPaged = PageList<Media>(
+            items = listOf(Media.Movie.mock),
+            page = Page(1),
+        )
     }
 }

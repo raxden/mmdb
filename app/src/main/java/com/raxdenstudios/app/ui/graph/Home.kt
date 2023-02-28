@@ -24,9 +24,7 @@ fun NavGraphBuilder.homeGraph(
                 onNavigateToMedias = { mediaType, mediaCategory ->
                     appState.navigateToMedias(mediaType, mediaCategory)
                 },
-                onNavigateToMedia = { mediaId, mediaType ->
-                    appState.navigateToMedia(mediaId, mediaType)
-                }
+                onNavigateToMedia = { mediaId, mediaType -> appState.navigateToMedia(mediaId, mediaType) }
             )
         }
         composable(
@@ -35,9 +33,7 @@ fun NavGraphBuilder.homeGraph(
         ) {
             MediasScreen(
                 onNavigateToBack = { appState.navigateUp() },
-                onNavigateToMedia = { mediaId, mediaType ->
-                    appState.navigateToMedia(mediaId, mediaType)
-                }
+                onNavigateToMedia = { mediaId, mediaType -> appState.navigateToMedia(mediaId, mediaType) }
             )
         }
         composable(
@@ -45,7 +41,26 @@ fun NavGraphBuilder.homeGraph(
             arguments = HomeDirections.media.arguments
         ) {
             MediaScreen(
-                onNavigateToBack = { appState.navigateUp() }
+                onNavigateToYoutubeVideo = { url -> appState.navigateToYoutubeVideo(url) },
+                onNavigateToBack = { appState.navigateUp() },
+                onNavigateToMedias = { mediaType, mediaCategory ->
+                    appState.navigateToMedias(mediaType, mediaCategory)
+                },
+                onNavigateToMedia = { mediaId, mediaType ->
+                    appState.navigateToMedia(mediaId, mediaType)
+                },
+                onNavigateToRelatedMedias = { mediaId, mediaType ->
+                    appState.navigateToRelatedMedias(mediaId, mediaType)
+                }
+            )
+        }
+        composable(
+            route = HomeRoutes.relatedMedias.value,
+            arguments = HomeDirections.relatedMedias.arguments
+        ) {
+            MediasScreen(
+                onNavigateToBack = { appState.navigateUp() },
+                onNavigateToMedia = { mediaId, mediaType -> appState.navigateToMedia(mediaId, mediaType) }
             )
         }
     }

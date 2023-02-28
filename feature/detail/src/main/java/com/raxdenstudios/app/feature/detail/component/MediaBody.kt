@@ -12,6 +12,7 @@ import androidx.compose.ui.semantics.semantics
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
+import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
 
 @Composable
@@ -20,6 +21,10 @@ fun MediaBody(
     media: MediaModel,
     videos: List<VideoModel>,
     onVideoClick: (VideoModel) -> Unit = {},
+    relatedMedias: RelatedMediasModel,
+    onRelatedMediaClick: (MediaModel) -> Unit = {},
+    onRelatedMediaWatchButtonClick: (MediaModel) -> Unit = {},
+    onRelatedSeeAllClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -32,6 +37,13 @@ fun MediaBody(
             modifier = Modifier,
             videos = videos,
             onVideoClick = onVideoClick
+        )
+        RelatedMedias(
+            modifier = Modifier,
+            relatedMedias = relatedMedias,
+            onItemClick = { item -> onRelatedMediaClick(item) },
+            onItemWatchButtonClick = { item -> onRelatedMediaWatchButtonClick(item) },
+            onSeeAllClick = onRelatedSeeAllClick,
         )
     }
 }
@@ -46,9 +58,8 @@ fun MediaBodyPreview() {
             videos = listOf(
                 VideoModel.mock,
                 VideoModel.mock,
-                VideoModel.mock,
-                VideoModel.mock,
             ),
+            relatedMedias = RelatedMediasModel.mock,
         )
     }
 }

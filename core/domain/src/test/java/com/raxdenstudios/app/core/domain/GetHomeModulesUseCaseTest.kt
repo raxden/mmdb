@@ -2,6 +2,7 @@ package com.raxdenstudios.app.core.domain
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.raxdenstudios.app.core.data.FakeHomeModuleRepository
 import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
@@ -28,8 +29,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class GetHomeModulesUseCaseTest {
 
-    @ExperimentalCoroutinesApi
-    val testDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(
@@ -42,7 +42,7 @@ class GetHomeModulesUseCaseTest {
         override val io = testDispatcher
     }
     private val homeModuleRepository: HomeModuleRepository = FakeHomeModuleRepository()
-    private val mediasRepository: MediaRepository = mockk {
+    private val mediaRepository: MediaRepository = mockk {
         coEvery { medias(any(), any(), any()) } returns ResultData.Success(pageListOfMedias)
         coEvery { observeWatchlist() } returns flowOf(ResultData.Success(medias))
     }
@@ -50,7 +50,7 @@ class GetHomeModulesUseCaseTest {
         GetHomeModulesUseCase(
             dispatcher = dispatcherProvider,
             homeModuleRepository = homeModuleRepository,
-            mediasRepository = mediasRepository,
+            mediaRepository = mediaRepository,
         )
     }
 
@@ -85,7 +85,7 @@ class GetHomeModulesUseCaseTest {
     fun `Given an error produced when retrieve medias from nowplaying, When execute is called, Then return a list of modules with movies except nowplaying`() =
         runTest {
             coEvery {
-                mediasRepository.medias(MediaFilter.nowPlaying, any(), any())
+                mediaRepository.medias(MediaFilter.nowPlaying, any(), any())
             } returns ResultData.Failure(ErrorDomain.Unknown(""))
 
             useCase().test {

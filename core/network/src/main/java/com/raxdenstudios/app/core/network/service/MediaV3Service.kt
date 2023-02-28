@@ -70,4 +70,16 @@ interface MediaV3Service {
     suspend fun tvVideos(
         @Path("media_id") mediaId: String,
     ): NetworkResponse<PageDto<VideoDto>, ErrorDto>
+
+    @GET("movie/{media_id}/similar")
+    suspend fun relatedMovies(
+        @Path("media_id") mediaId: String,
+        @Query("page") page: Int,
+    ): NetworkResponse<PageDto<MediaDto.Movie>, ErrorDto>
+
+    @GET("tv/{media_id}/similar")
+    suspend fun relatedTVShows(
+        @Path("media_id") mediaId: String,
+        @Query("page") page: Int,
+    ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
 }

@@ -1,9 +1,7 @@
 package com.raxdenstudios.app.feature.detail
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -15,18 +13,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,42 +33,48 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.raxdenstudios.app.core.model.MediaCategory
+import com.raxdenstudios.app.core.model.MediaId
+import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.component.BackButton
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
-import com.raxdenstudios.app.core.ui.theme.Grey900Translucent
 import com.raxdenstudios.app.feature.detail.component.MediaBody
 import com.raxdenstudios.app.feature.detail.component.MediaHeader
+import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
+import com.raxdenstudios.app.feature.detail.model.VideoModel
 
 @Composable
 fun MediaScreen(
     modifier: Modifier = Modifier,
     viewModel: MediaViewModel = hiltViewModel(),
+    onNavigateToYoutubeVideo: (String) -> Unit = {},
     onNavigateToBack: () -> Unit = {},
+    onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit = { _, _ -> },
+    onNavigateToMedias: (mediaType: MediaType, mediaCategory: MediaCategory) -> Unit = { _, _ -> },
+    onNavigateToRelatedMedias: (id: MediaId, mediaType: MediaType) -> Unit = { _, _ -> },
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MediaContract.UIEvent.NavigateToBack -> onNavigateToBack()
-            is MediaContract.UIEvent.PlayYoutubeVideo -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.url))
-                val context = LocalContext.current
-                startActivity(context, intent, null)
-            }
+            is MediaContract.UIEvent.PlayYoutubeVideo -> onNavigateToYoutubeVideo(event.url)
+            is MediaContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
+            is MediaContract.UIEvent.NavigateToMedias -> onNavigateToMedias(event.mediaType, event.mediaCategory)
+            is MediaContract.UIEvent.NavigateToRelatedMedias ->
+                onNavigateToRelatedMedias(event.mediaId, event.mediaType)
         }
         viewModel.eventConsumed(event)
     }
@@ -135,7 +137,14 @@ private fun MediaScreen(
                 media = uiState.media,
                 videos = uiState.videos,
                 onVideoClick = { video -> onEvent(MediaContract.UserEvent.VideoClick(video)) },
+                relatedMedias = uiState.relatedMedias,
+                onRelatedMediaClick = { media -> onEvent(MediaContract.UserEvent.RelatedMediaClick(media)) },
+                onRelatedMediaWatchButtonClick = { media ->
+                    onEvent(MediaContract.UserEvent.RelatedWatchlistClick(media))
+                },
+                onRelatedSeeAllClick = { onEvent(MediaContract.UserEvent.RelatedSeeAllButtonClicked) },
             )
+            Spacer(modifier = Modifier.height(40.dp))
         }
         BackButton(
             modifier = Modifier
@@ -167,36 +176,30 @@ private fun MediaScreen(
                 )
             }
         }
-        AddToWatchlistFloatingActionButton(
+        WatchlistFloatingActionButton(
             modifier = Modifier
                 .systemBarsPadding()
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
-            addToWatchlist = { onEvent(MediaContract.UserEvent.AddToWatchlist(media = uiState.media)) },
-            removeFromWatchlist = { onEvent(MediaContract.UserEvent.RemoveFromWatchlist(media = uiState.media)) },
-            isMediaAddedToWatchlist = uiState.media.watchlist,
+            onClick = { onEvent(MediaContract.UserEvent.WatchlistClick(media = uiState.media)) },
+            isWatchlist = uiState.media.watchlist,
         )
     }
 }
 
 @Composable
-private fun AddToWatchlistFloatingActionButton(
+private fun WatchlistFloatingActionButton(
     modifier: Modifier = Modifier,
-    addToWatchlist: () -> Unit,
-    removeFromWatchlist: () -> Unit,
-    isMediaAddedToWatchlist: Boolean
+    onClick: () -> Unit,
+    isWatchlist: Boolean
 ) {
     FloatingActionButton(
         modifier = modifier
             .semantics { contentDescription = "Add to watchlist" },
-        onClick = {
-            if (isMediaAddedToWatchlist)
-                removeFromWatchlist()
-            else addToWatchlist()
-        },
+        onClick = onClick,
     ) {
         Icon(
-            painter = painterResource(getResourceId(isMediaAddedToWatchlist)),
+            painter = painterResource(getResourceId(isWatchlist)),
             contentDescription = null
         )
     }
@@ -208,30 +211,6 @@ private fun getResourceId(isSelected: Boolean): Int = when (isSelected) {
     false -> AppIcons.Unselected
 }
 
-@Composable
-private fun BackButton(
-    modifier: Modifier = Modifier,
-    onNavigateToBack: () -> Unit,
-) {
-    IconButton(
-        onClick = onNavigateToBack,
-        modifier = modifier
-            .semantics { contentDescription = "Back Button" }
-            .padding(horizontal = 10.dp, vertical = 10.dp)
-            .size(36.dp)
-            .background(
-                color = Grey900Translucent,
-                shape = CircleShape
-            )
-    ) {
-        Icon(
-            painter = painterResource(id = AppIcons.BackArrow),
-            tint = Color.White,
-            contentDescription = null
-        )
-    }
-}
-
 @SuppressLint("VisibleForTests")
 @DevicePreviews
 @Composable
@@ -240,6 +219,11 @@ fun MediaScreenPreview() {
         MediaScreen(
             uiState = MediaContract.UIState(
                 media = MediaModel.mock,
+                videos = listOf(
+                    VideoModel.mock,
+                    VideoModel.mock,
+                ),
+                relatedMedias = RelatedMediasModel.mock,
             ),
         )
     }

@@ -26,7 +26,7 @@ import com.raxdenstudios.app.core.ui.theme.Typography
 private const val ASPECT_RATIO = 9f / 18f
 
 @Composable
-fun MediaListItem(
+fun Media(
     modifier: Modifier = Modifier,
     model: MediaModel,
     onClick: () -> Unit = {},
@@ -89,9 +89,9 @@ fun MediaListItem(
 @SuppressLint("VisibleForTests")
 @DevicePreviews
 @Composable
-fun MediaListItemPreview() {
+fun MediaPreview() {
     AppComposeTheme {
-        MediaListItem(
+        Media(
             model = MediaModel.mock
         )
     }

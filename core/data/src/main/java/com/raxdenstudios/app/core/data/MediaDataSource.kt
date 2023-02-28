@@ -49,4 +49,17 @@ class MediaDataSource @Inject constructor(
             mediaId = mediaId,
             mediaType = mediaType,
         )
+
+    @Suppress("UnusedPrivateMember")
+    suspend fun related(
+        mediaId: MediaId,
+        mediaType: MediaType,
+        page: Page,
+        pageSize: PageSize,
+    ): ResultData<PageList<Media>, ErrorDomain> =
+        mediaRemoteDataSource.related(
+            mediaId = mediaId,
+            mediaType = mediaType,
+            page = page,
+        )
 }

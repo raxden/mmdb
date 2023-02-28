@@ -18,11 +18,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.component.MediaListItem
+import com.raxdenstudios.app.core.ui.component.Media
 import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
@@ -71,7 +69,7 @@ fun MediaGrid(
                     count = items.size,
                     key = { index -> items[index].id.value },
                 ) { index ->
-                    MediaListItem(
+                    Media(
                         modifier = Modifier,
                         model = items[index],
                         onClick = { onItemClick(items[index]) },

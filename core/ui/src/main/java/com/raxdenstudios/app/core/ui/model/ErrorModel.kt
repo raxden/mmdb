@@ -11,8 +11,8 @@ data class ErrorModel(
 
         @VisibleForTesting
         val mock = ErrorModel(
-            title = "title error",
-            message = "description error",
+            title = "",
+            message = "",
         )
     }
 }

@@ -27,6 +27,14 @@ object HomeDirections {
         override val arguments = emptyList<NamedNavArgument>()
     }
 
+    val relatedMedias = object : NavigationCommand {
+        override val arguments = listOf(
+            navArgument("mediaId") { type = NavType.IntType },
+            navArgument("mediaType") { type = NavType.IntType },
+        )
+        override val route = HomeRoutes.relatedMedias
+    }
+
     val medias = object : NavigationCommand {
         override val arguments = listOf(
             navArgument("mediaType") { type = NavType.IntType },
