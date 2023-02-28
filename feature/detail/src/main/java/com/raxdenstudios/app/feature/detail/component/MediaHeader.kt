@@ -20,8 +20,8 @@ import androidx.constraintlayout.compose.ConstraintSet
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.AppImage
 import com.raxdenstudios.app.core.ui.component.Poster
-import com.raxdenstudios.app.core.ui.component.aspectRatio169
 import com.raxdenstudios.app.core.ui.component.aspectRatio23
+import com.raxdenstudios.app.core.ui.component.aspectRatio43
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
@@ -76,7 +76,7 @@ fun MediaHeader(
                 AppImage(
                     modifier = Modifier
                         .layoutId("backdrop")
-                        .aspectRatio169(),
+                        .aspectRatio43(),
                     image = media.backdrop,
                 )
                 Poster(

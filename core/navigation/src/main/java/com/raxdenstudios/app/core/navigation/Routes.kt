@@ -4,6 +4,7 @@ object HomeRoutes {
 
     val home = NavigationRoute("home")
     val medias = NavigationRoute("medias/{mediaType}/{mediaCategory}")
+    val relatedMedias = NavigationRoute("related/{mediaId}/{mediaType}")
     val media = NavigationRoute("media/{mediaId}/{mediaType}")
 }
 

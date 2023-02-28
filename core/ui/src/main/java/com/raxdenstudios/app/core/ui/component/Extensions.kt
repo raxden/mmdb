@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.ui.Modifier
 
 private const val ASPECT_RATIO_16_9 = 16f / 9f
+private const val ASPECT_RATIO_4_3 = 4f / 3f
 private const val ASPECT_RATIO_2_3 = 2f / 3f
+
+fun Modifier.aspectRatio43() = aspectRatio(ASPECT_RATIO_4_3)
 
 fun Modifier.aspectRatio169() = aspectRatio(ASPECT_RATIO_16_9)
 

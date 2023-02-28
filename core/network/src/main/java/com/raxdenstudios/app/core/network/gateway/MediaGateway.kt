@@ -74,4 +74,15 @@ class MediaGateway @Inject constructor(
         MediaType.TvShow -> mediaV3Service.tvVideos(mediaId.value.toString())
             .toResultData("Error occurred during searching videos for tv show with id: $mediaId")
     }
+
+    suspend fun related(
+        mediaId: MediaId,
+        mediaType: MediaType,
+        page: Page,
+    ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
+        MediaType.Movie -> mediaV3Service.relatedMovies(mediaId.value.toString(), page.value)
+            .toResultData("Error occurred during related videos for movie with id: $mediaId")
+        MediaType.TvShow -> mediaV3Service.relatedTVShows(mediaId.value.toString(), page.value)
+            .toResultData("Error occurred during related videos for tv show with id: $mediaId")
+    }
 }

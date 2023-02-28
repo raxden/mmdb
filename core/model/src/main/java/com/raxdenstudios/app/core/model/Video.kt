@@ -16,8 +16,8 @@ data class Video(
     companion object {
 
         val mock = Video(
-            uri = "",
-            name = "",
+            uri = "https://www.youtube.com/watch?v=l6rAoph5UgI",
+            name = "The Last of Us",
             site = "",
             size = 0,
             official = false,

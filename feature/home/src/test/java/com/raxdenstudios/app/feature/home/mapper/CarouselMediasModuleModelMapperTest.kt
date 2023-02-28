@@ -39,7 +39,7 @@ class CarouselMediasModuleModelMapperTest {
 
         assertThat(result).isEqualTo(
             HomeModuleModel.Carousel.NowPlaying.empty.copy(
-                medias = listOf(MediaModel.empty.copy(id = MediaId(1L)))
+                medias = listOf(MediaModel.mock.copy(id = MediaId(1L)))
             )
         )
     }
@@ -52,7 +52,7 @@ class CarouselMediasModuleModelMapperTest {
 
         assertThat(result).isEqualTo(
             HomeModuleModel.Carousel.Popular.empty.copy(
-                medias = listOf(MediaModel.empty.copy(id = MediaId(1L))),
+                medias = listOf(MediaModel.mock.copy(id = MediaId(1L))),
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
@@ -77,7 +77,7 @@ class CarouselMediasModuleModelMapperTest {
 
         assertThat(result).isEqualTo(
             HomeModuleModel.Carousel.TopRated.empty.copy(
-                medias = listOf(MediaModel.empty.copy(id = MediaId(1L))),
+                medias = listOf(MediaModel.mock.copy(id = MediaId(1L))),
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
@@ -102,7 +102,7 @@ class CarouselMediasModuleModelMapperTest {
 
         assertThat(result).isEqualTo(
             HomeModuleModel.Carousel.Upcoming.empty.copy(
-                medias = listOf(MediaModel.empty.copy(id = MediaId(1L)))
+                medias = listOf(MediaModel.mock.copy(id = MediaId(1L)))
             )
         )
     }
@@ -115,7 +115,7 @@ class CarouselMediasModuleModelMapperTest {
 
         assertThat(result).isEqualTo(
             HomeModuleModel.Carousel.Watchlist.empty.copy(
-                medias = listOf(MediaModel.empty.copy(id = MediaId(1L))),
+                medias = listOf(MediaModel.mock.copy(id = MediaId(1L))),
                 filters = listOf(
                     MediaFilterModel(
                         id = MediaType.Movie,
@@ -135,7 +135,7 @@ class CarouselMediasModuleModelMapperTest {
     companion object {
 
         private val medias = listOf(
-            Media.Movie.mock.copy(id = MediaId(1L))
+            Media.Movie.mock
         )
     }
 }

@@ -44,7 +44,7 @@ class MediaRepositoryTest {
         coEvery { observe() } returns flowOf(ResultData.Success(aMovies))
         coEvery { observe(any(), any()) } returns flowOf(ResultData.Success(movie))
     }
-    private val repository: MediaRepository = MediaRepository(
+    private val repository: MediaRepository = MediaRepositoryImpl(
         dispatcher = dispatcherProvider,
         mediaDataSource = mediaDataSource,
         watchlistDataSource = watchlistDataSource,

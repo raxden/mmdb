@@ -103,6 +103,16 @@ class MediaRemoteDataSource @Inject constructor(
             .map { pageDto -> videoDtoToDomainMapper.transform(pageDto.results) }
             .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
 
+
+    suspend fun related(
+        mediaId: MediaId,
+        mediaType: MediaType,
+        page: Page,
+    ): ResultData<PageList<Media>, ErrorDomain> =
+        mediaGateway.related(mediaId, mediaType, page)
+            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
+            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
+
     private suspend fun fetchWatchlist(
         mediaFilter: MediaFilter,
         page: Page,

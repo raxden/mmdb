@@ -50,12 +50,15 @@ sealed class Media {
 
             @Suppress("MagicNumber")
             val mock = Movie(
-                id = MediaId(0L),
-                title = "",
-                overview = "",
+                id = MediaId(1L),
+                title = "The Last of Us",
+                overview = "Twenty years after modern civilization has been destroyed...",
                 backdrop = Picture.Empty,
                 poster = Picture.Empty,
-                genres = emptyList(),
+                genres = listOf(
+                    Genre(GenreId(1L), "Drama"),
+                    Genre(GenreId(1L), "Sci-Fi & Fantasy"),
+                ),
                 duration = Duration.ofMinutes(0),
                 release = LocalDate.of(1970, 1, 1),
                 vote = Vote.empty,

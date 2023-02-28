@@ -1,8 +1,11 @@
 package com.raxdenstudios.app.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -62,5 +65,20 @@ class AppState(
         val params = listOf(mediaType.value.toString(), mediaCategory.value.toString())
         val route = HomeDirections.medias.createRoute(params)
         navController.navigate(route.value)
+    }
+
+    fun navigateToRelatedMedias(
+        mediaId: MediaId,
+        mediaType: MediaType,
+    ) {
+        val params = listOf(mediaId.value.toString(), mediaType.value.toString())
+        val route = HomeDirections.relatedMedias.createRoute(params)
+        navController.navigate(route.value)
+    }
+
+    fun navigateToYoutubeVideo(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val context = navController.context
+        ContextCompat.startActivity(context, intent, null)
     }
 }

@@ -23,12 +23,12 @@ import javax.inject.Inject
 class GetHomeModulesUseCase @Inject constructor(
     private val dispatcher: DispatcherProvider,
     private val homeModuleRepository: HomeModuleRepository,
-    private val mediasRepository: MediaRepository,
+    private val mediaRepository: MediaRepository,
 ) {
 
     operator fun invoke(): Flow<ResultData<List<HomeModule>, ErrorDomain>> {
         val observeModules = homeModuleRepository.observe()
-        val observeWatchlist = mediasRepository.observeWatchlist()
+        val observeWatchlist = mediaRepository.observeWatchlist()
 
         return observeModules.combine(observeWatchlist) { modulesResult, watchListResult ->
             val modules = modulesResult.getValueOrDefault(emptyList())
@@ -58,7 +58,7 @@ class GetHomeModulesUseCase @Inject constructor(
     private suspend fun fetchMedias(
         mediaType: MediaType,
         mediaCategory: MediaCategory,
-    ): List<Media> = mediasRepository.medias(
+    ): List<Media> = mediaRepository.medias(
         mediaFilter = MediaFilter(
             mediaType = mediaType,
             mediaCategory = mediaCategory,
