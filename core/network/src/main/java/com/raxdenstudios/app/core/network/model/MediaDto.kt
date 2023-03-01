@@ -50,6 +50,27 @@ sealed class MediaDto {
             vote_average = 0.0,
             vote_count = 0,
         )
+
+        companion object {
+
+            @VisibleForTesting
+            val mock = Movie(
+                adult = false,
+                backdrop_path = "",
+                genre_ids = emptyList(),
+                id = 1,
+                original_language = "",
+                original_title = "",
+                overview = "Twenty years after modern civilization has been destroyed...",
+                popularity = 0.0,
+                poster_path = "",
+                release_date = "1970-01-01",
+                title = "The Last of Us",
+                video = false,
+                vote_average = 0.0,
+                vote_count = 0,
+            )
+        }
     }
 
     data class TVShow(

@@ -14,7 +14,7 @@ data class VideoModel(
         val mock = VideoModel(
             name = "The Last of Us",
             uri = "https://www.youtube.com/watch?v=l6rAoph5UgI",
-            thumbnail = "",
+            thumbnail = "https://img.youtube.com/vi/l6rAoph5UgI/hqdefault.jpg",
         )
     }
 }

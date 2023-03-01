@@ -18,12 +18,15 @@ data class Video(
         val mock = Video(
             uri = "https://www.youtube.com/watch?v=l6rAoph5UgI",
             name = "The Last of Us",
-            site = "",
+            site = "YouTube",
             size = 0,
             official = false,
             type = VideoType.Trailer,
             published = LocalDate.of(1970, 1, 1),
-            picture = Picture.Empty,
+            picture = Picture.WithImage(
+                thumbnail = Size.Thumbnail("https://img.youtube.com/vi/l6rAoph5UgI/hqdefault.jpg"),
+                original = Size.Original("https://img.youtube.com/vi/l6rAoph5UgI/maxresdefault.jpg"),
+            ),
         )
     }
 }

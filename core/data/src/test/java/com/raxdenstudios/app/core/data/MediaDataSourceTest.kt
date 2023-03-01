@@ -78,4 +78,19 @@ internal class MediaDataSourceTest {
 
         assertThat(result).isEqualTo(ResultData.Success(listOf(Video.mock)))
     }
+
+    @Test
+    fun `related should return PageList of Media`() = runTest {
+        val mediaId = MediaId(1L)
+        val mediaType = MediaType.Movie
+        val page = Page(1)
+        val pageSize = PageSize(20)
+        coEvery {
+            mediaRemoteDataSource.related(mediaId, mediaType, page)
+        } returns ResultData.Success(PageList(listOf(Media.Movie.mock), page))
+
+        val result = mediaDataSource.related(mediaId, mediaType, page, pageSize)
+
+        assertThat(result).isEqualTo(ResultData.Success(PageList(listOf(Media.Movie.mock), page)))
+    }
 }
