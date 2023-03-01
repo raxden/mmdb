@@ -57,7 +57,7 @@ sealed class Media {
                 poster = Picture.Empty,
                 genres = listOf(
                     Genre(GenreId(1L), "Drama"),
-                    Genre(GenreId(1L), "Sci-Fi & Fantasy"),
+                    Genre(GenreId(2L), "Sci-Fi & Fantasy"),
                 ),
                 duration = Duration.ofMinutes(0),
                 release = LocalDate.of(1970, 1, 1),

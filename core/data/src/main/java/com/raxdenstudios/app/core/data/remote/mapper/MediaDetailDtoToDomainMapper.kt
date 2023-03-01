@@ -6,14 +6,14 @@ import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
 
 class MediaDetailDtoToDomainMapper @Inject constructor(
-    private val movieDtoToDomainMapper: MovieDetailDtoToDomainMapper,
-    private val tvShowDtoToDomainMapper: TVShowDetailDtoToDomainMapper,
+    private val movieDetailDtoToDomainMapper: MovieDetailDtoToDomainMapper,
+    private val tvShowDetailDtoToDomainMapper: TVShowDetailDtoToDomainMapper,
 ) : DataMapper<MediaDetailDto, Media>() {
 
     override fun transform(source: MediaDetailDto): Media = source.toDomain()
 
     private fun MediaDetailDto.toDomain() = when (this) {
-        is MediaDetailDto.Movie -> movieDtoToDomainMapper.transform(this)
-        is MediaDetailDto.TVShow -> tvShowDtoToDomainMapper.transform(this)
+        is MediaDetailDto.Movie -> movieDetailDtoToDomainMapper.transform(this)
+        is MediaDetailDto.TVShow -> tvShowDetailDtoToDomainMapper.transform(this)
     }
 }
