@@ -15,6 +15,7 @@ import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
 
+@SuppressWarnings("LongParameterList")
 @Composable
 fun MediaBody(
     modifier: Modifier = Modifier,

@@ -10,19 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Grey400
-import com.raxdenstudios.app.core.ui.theme.Grey50
 import com.raxdenstudios.app.core.ui.theme.Typography
 
 @Composable
@@ -65,17 +62,19 @@ private fun HeaderInfoRating(
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(
-            modifier = Modifier
-                .border(BorderStroke(1.dp, Grey400))
-                .padding(3.dp),
-        ) {
-            Text(
-                style = Typography.caption,
-                text = media.contentRating,
-            )
+        if (media.certification.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .border(BorderStroke(1.dp, Grey400))
+                    .padding(3.dp),
+            ) {
+                Text(
+                    style = Typography.caption,
+                    text = media.certification,
+                )
+            }
+            DotSeparator()
         }
-        DotSeparator()
         Text(
             style = Typography.caption,
             text = media.releaseDate,

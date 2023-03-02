@@ -23,6 +23,7 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.core.model.Account
 import javax.inject.Inject
 
+@Suppress("LongParameterList")
 class MediaRemoteDataSource @Inject constructor(
     private val mediaGateway: MediaGateway,
     private val watchlistGateway: WatchlistGateway,

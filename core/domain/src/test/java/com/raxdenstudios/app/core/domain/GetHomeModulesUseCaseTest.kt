@@ -101,13 +101,6 @@ class GetHomeModulesUseCaseTest {
                                 mediaCategory = MediaCategory.Popular,
                                 medias = listOf(Media.Movie.mock.copy(id = MediaId(1)))
                             ),
-                            HomeModule.Carousel(
-                                0,
-                                0,
-                                mediaType = MediaType.Movie,
-                                mediaCategory = MediaCategory.NowPlaying,
-                                medias = emptyList()
-                            )
                         )
                     )
                 )
