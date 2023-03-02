@@ -13,6 +13,7 @@ sealed class Media {
     abstract val watchList: Boolean
     abstract val genres: List<Genre>
     abstract val duration: Duration
+    abstract val certification: String
 
     fun copyWith(watchList: Boolean): Media = when (this) {
         is Movie -> copy(watchList = watchList)
@@ -28,6 +29,7 @@ sealed class Media {
         override val watchList: Boolean,
         override val genres: List<Genre>,
         override val duration: Duration,
+        override val certification: String = "",
         val title: String,
         val release: LocalDate,
     ) : Media() {
@@ -46,6 +48,7 @@ sealed class Media {
                 release = LocalDate.of(1970, 1, 1),
                 vote = Vote.empty,
                 watchList = false,
+                certification = "",
             )
 
             @Suppress("MagicNumber")
@@ -63,6 +66,7 @@ sealed class Media {
                 release = LocalDate.of(1970, 1, 1),
                 vote = Vote.empty,
                 watchList = false,
+                certification = "PEGI 18",
             )
         }
     }
@@ -76,6 +80,7 @@ sealed class Media {
         override val watchList: Boolean,
         override val genres: List<Genre>,
         override val duration: Duration,
+        override val certification: String = "",
         val name: String,
         val firstAirDate: LocalDate,
     ) : Media()

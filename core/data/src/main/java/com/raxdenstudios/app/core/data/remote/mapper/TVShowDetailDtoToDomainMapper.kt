@@ -11,6 +11,7 @@ class TVShowDetailDtoToDomainMapper @Inject constructor(
     private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
     private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
     private val genreDtoToDomainMapper: GenreDtoToDomainMapper,
+    private val certificationDtoToDomainMapper: CertificationDtoToDomainMapper,
 ) {
 
     fun transform(source: MediaDetailDto.TVShow): Media = source.toDomain()
@@ -28,5 +29,6 @@ class TVShowDetailDtoToDomainMapper @Inject constructor(
             Duration.ofMinutes(duration.toLong())
         } ?: Duration.ofMinutes(0),
         genres = genres.map { genre -> genreDtoToDomainMapper.transform(genre) },
+        certification = certificationDtoToDomainMapper.transform(release_dates),
     )
 }

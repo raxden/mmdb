@@ -55,6 +55,7 @@ import com.raxdenstudios.app.feature.detail.component.MediaHeader
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
 
+@SuppressWarnings("LongParameterList")
 @Composable
 fun MediaScreen(
     modifier: Modifier = Modifier,

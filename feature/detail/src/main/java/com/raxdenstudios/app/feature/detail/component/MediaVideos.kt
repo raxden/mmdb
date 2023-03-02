@@ -30,6 +30,7 @@ fun MediaVideos(
     videos: List<VideoModel>,
     onVideoClick: (VideoModel) -> Unit = {},
 ) {
+    if (videos.isEmpty()) return
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -42,7 +43,7 @@ fun MediaVideos(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             content = {
                 items(

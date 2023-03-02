@@ -27,7 +27,7 @@ class MediaModelMapper @Inject constructor(
                 Picture.Empty -> ""
                 is Picture.WithImage -> poster.thumbnail.url
             },
-            contentRating = "",
+            certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
@@ -47,7 +47,7 @@ class MediaModelMapper @Inject constructor(
                 Picture.Empty -> ""
                 is Picture.WithImage -> poster.thumbnail.url
             },
-            contentRating = "",
+            certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),

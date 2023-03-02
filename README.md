@@ -59,8 +59,8 @@ The goal of this project is to do practice on the new technologies, patterns and
 - [x] Instrumentation tests
   - [x] Espresso
   - [x] Using Hilt to inject dependencies into tests
-  - [ ] Create largeTest using RestMock and Room in memory.
-  - [ ] MockWebServer
+  - [x] Create largeTest using RestMock and Room in memory.
+  - [x] MockWebServer
 - [x] CI
   - [x] Github actions
   - [x] Composite actions
@@ -69,7 +69,7 @@ The goal of this project is to do practice on the new technologies, patterns and
     - [ ] Sonarqube integration
   - [x] Detekt integration
   - [ ] Snapshot testing
-  - [ ] Firebase app distribution
+  - [x] Firebase app distribution
   - [ ] Google Play integration
 - [x] Architecture
   - [x] Modularization by features

@@ -19,6 +19,7 @@ sealed class MediaDetailDto {
     abstract val adult: Boolean
     abstract val status: String
     abstract val tagline: String
+    abstract val release_dates: ResultsDto<RegionReleaseDateDto>
 
     data class Movie(
         @Expose override val backdrop_path: String?,
@@ -34,6 +35,7 @@ sealed class MediaDetailDto {
         @Expose override val adult: Boolean,
         @Expose override val status: String,
         @Expose override val tagline: String,
+        @Expose override val release_dates: ResultsDto<RegionReleaseDateDto>,
         @Expose val budget: Int,
         @Expose val runtime: Int,
         @Expose val title: String,
@@ -63,6 +65,7 @@ sealed class MediaDetailDto {
             video = false,
             vote_average = 0.0,
             vote_count = 0,
+            release_dates = ResultsDto(emptyList()),
         )
 
         companion object {
@@ -88,6 +91,9 @@ sealed class MediaDetailDto {
                 video = false,
                 vote_average = 0.0,
                 vote_count = 0,
+                release_dates = ResultsDto(
+                    listOf(RegionReleaseDateDto.mock)
+                ),
             )
         }
     }
@@ -106,6 +112,7 @@ sealed class MediaDetailDto {
         @Expose override val adult: Boolean,
         @Expose override val status: String,
         @Expose override val tagline: String,
+        @Expose override val release_dates: ResultsDto<RegionReleaseDateDto>,
         @Expose val name: String,
         @Expose val episode_run_time: List<Int>,
         @Expose val original_name: String,

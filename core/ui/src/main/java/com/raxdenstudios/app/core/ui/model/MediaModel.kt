@@ -14,7 +14,7 @@ data class MediaModel(
     val rating: String,
     val releaseDate: String,
     val duration: String,
-    val contentRating: String,
+    val certification: String,
     val genres: String,
     val watchlist: Boolean,
 ) {
@@ -29,9 +29,9 @@ data class MediaModel(
             backdrop = "",
             poster = "",
             rating = "0.0",
-            releaseDate = "1970",
+            releaseDate = "",
             duration = "",
-            contentRating = "",
+            certification = "",
             genres = "",
             watchlist = false,
         )
@@ -47,7 +47,7 @@ data class MediaModel(
             rating = "0.0",
             releaseDate = "1970",
             duration = "",
-            contentRating = "",
+            certification = "PEGI 18",
             genres = "Drama, Sci-Fi & Fantasy",
             watchlist = false,
         )

@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.core.data.remote.datasource
 
 import com.google.common.truth.Truth.assertThat
+import com.raxdenstudios.app.core.data.remote.mapper.CertificationDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.DateDtoToLocalDateMapper
 import com.raxdenstudios.app.core.data.remote.mapper.GenreDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaDetailDtoToDomainMapper
@@ -19,6 +20,7 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.network.APIDataProvider
+import com.raxdenstudios.app.core.network.ConfigProvider
 import com.raxdenstudios.app.core.network.gateway.MediaGateway
 import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
 import com.raxdenstudios.app.core.network.model.MediaDetailDto
@@ -47,6 +49,10 @@ internal class MediaRemoteDataSourceTest {
         override val baseImageUrl: String = ""
         override val token: String = ""
     }
+    private val configProvider: ConfigProvider = mockk {
+        every { language } returns "es-ES"
+        every { region } returns "ES"
+    }
     private val voteDtoToDomainMapper: VoteDtoToDomainMapper = VoteDtoToDomainMapper()
     private val pictureDtoToDomainMapper: PictureDtoToDomainMapper = PictureDtoToDomainMapper(
         apiDataProvider = apiDataProvider
@@ -71,17 +77,22 @@ internal class MediaRemoteDataSourceTest {
         movieDtoToDomainMapper = movieDtoToDomainMapper,
         tvShowDtoToDomainMapper = tvShowDtoToDomainMapper,
     )
+    private val certificationDtoToDomainMapper: CertificationDtoToDomainMapper = CertificationDtoToDomainMapper(
+        configProvider = configProvider
+    )
     private val movieDetailDtoToDomainMapper: MovieDetailDtoToDomainMapper = MovieDetailDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
+        certificationDtoToDomainMapper = certificationDtoToDomainMapper,
     )
     private val tvShowDetailDtoToDomainMapper: TVShowDetailDtoToDomainMapper = TVShowDetailDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
+        certificationDtoToDomainMapper = certificationDtoToDomainMapper,
     )
     private val mediaDetailDtoToDomainMapper: MediaDetailDtoToDomainMapper = MediaDetailDtoToDomainMapper(
         movieDetailDtoToDomainMapper = movieDetailDtoToDomainMapper,
@@ -141,7 +152,12 @@ internal class MediaRemoteDataSourceTest {
         assertThat(result).isEqualTo(
             ResultData.Success(
                 PageList(
-                    items = listOf(Media.Movie.mock.copy(genres = emptyList())),
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = ""
+                        )
+                    ),
                     page = Page(1)
                 )
             )

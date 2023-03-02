@@ -23,6 +23,7 @@ fun RelatedMedias(
     onItemWatchButtonClick: (MediaModel) -> Unit = {},
     onSeeAllClick: () -> Unit = {},
 ) {
+    if (relatedMedias.medias.isEmpty()) return
     Column(
         modifier = modifier
             .fillMaxWidth(),

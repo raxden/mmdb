@@ -54,11 +54,13 @@ interface MediaV3Service {
     @GET("movie/{media_id}")
     suspend fun movie(
         @Path("media_id") mediaId: String,
+        @Query("append_to_response") appendToResponse: String = "release_dates",
     ): NetworkResponse<MediaDetailDto.Movie, ErrorDto>
 
     @GET("tv/{media_id}")
     suspend fun tvShow(
         @Path("media_id") mediaId: String,
+        @Query("append_to_response") appendToResponse: String = "release_dates",
     ): NetworkResponse<MediaDetailDto.TVShow, ErrorDto>
 
     @GET("movie/{media_id}/videos")
