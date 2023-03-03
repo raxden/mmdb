@@ -76,7 +76,7 @@ fun Media(
                 )
                 Text(
                     style = Typography.caption,
-                    text = model.releaseDate,
+                    text = model.releaseYear,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.End)

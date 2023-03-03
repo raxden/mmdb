@@ -33,7 +33,10 @@ fun MediaBody(
             .fillMaxWidth()
             .background(color = MaterialTheme.colors.background),
     ) {
-        MediaOverview(media = media)
+        MediaOverview(
+            modifier = Modifier,
+            media = media
+        )
         MediaVideos(
             modifier = Modifier,
             videos = videos,
@@ -45,6 +48,10 @@ fun MediaBody(
             onItemClick = { item -> onRelatedMediaClick(item) },
             onItemWatchButtonClick = { item -> onRelatedMediaWatchButtonClick(item) },
             onSeeAllClick = onRelatedSeeAllClick,
+        )
+        MediaDetails(
+            modifier = Modifier,
+            media = media
         )
     }
 }

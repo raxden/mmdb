@@ -29,8 +29,7 @@ fun RelatedMedias(
             .fillMaxWidth(),
     ) {
         Header(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier,
             title = relatedMedias.label,
             seeAllVisible = true,
             onSeeAllClick = onSeeAllClick,

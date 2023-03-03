@@ -125,7 +125,7 @@ fun FeaturedMediaListItemPreview() {
             model = MediaModel.empty.copy(
                 title = "The Batman",
                 overview = "The rise of Sacha Baron Cohen",
-                releaseDate = "2011",
+                releaseYear = "2011",
                 rating = "7.8",
                 poster = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
             )

@@ -37,8 +37,7 @@ fun CarouselMediasModule(
             modifier = Modifier
         ) {
             Header(
-                modifier = Modifier
-                    .padding(start = 8.dp, top = 8.dp, end = 8.dp),
+                modifier = Modifier,
                 title = module.label,
                 seeAllVisible = true,
                 onSeeAllClick = { onSeeAllClick(module) },
@@ -46,7 +45,7 @@ fun CarouselMediasModule(
             CarouselMediasFilter(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = 16.dp),
                 filters = module.filters,
                 onclick = { filter -> onFilterClick(module, filter) },
             )

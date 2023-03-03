@@ -26,7 +26,7 @@ object HomePreviewData {
         MediaModel.empty.copy(
             id = MediaId(it.toLong()),
             title = "The Batman",
-            releaseDate = "2011",
+            releaseYear = "2011",
             rating = "7.8",
             poster = "https://image.tmdb.org/t/p/w500/8Y43POKjjKDGI9MH89NW0NAzzp8.jpg"
         )

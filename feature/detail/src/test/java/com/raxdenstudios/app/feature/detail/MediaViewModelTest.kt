@@ -12,8 +12,11 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
+import com.raxdenstudios.app.core.ui.mapper.CurrencyModelMapper
+import com.raxdenstudios.app.core.ui.mapper.DateModelMapper
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
+import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -64,7 +67,15 @@ internal class MediaViewModelTest {
     private val stringProvider: StringProvider = mockk(relaxed = true)
     private val durationModelMapper: DurationModelMapper = DurationModelMapper(stringProvider)
     private val videoModelMapper: VideoModelMapper = VideoModelMapper()
-    private val mediaModelMapper: MediaModelMapper = MediaModelMapper(durationModelMapper)
+    private val dateModelMapper = DateModelMapper()
+    private val languageModelMapper = LanguageModelMapper()
+    private val currencyModelMapper = CurrencyModelMapper()
+    private val mediaModelMapper: MediaModelMapper = MediaModelMapper(
+        durationModelMapper = durationModelMapper,
+        dateModelMapper = dateModelMapper,
+        languageModelMapper = languageModelMapper,
+        currencyModelMapper = currencyModelMapper,
+    )
     private val errorModelMapper: ErrorModelMapper = ErrorModelMapper(stringProvider)
     private val mediaResultModelMapper: MediaResultModelMapper = MediaResultModelMapper(
         mediaModelMapper = mediaModelMapper,

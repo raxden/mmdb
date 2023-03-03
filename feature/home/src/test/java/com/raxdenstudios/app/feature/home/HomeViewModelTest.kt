@@ -11,8 +11,11 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.ui.mapper.CurrencyModelMapper
+import com.raxdenstudios.app.core.ui.mapper.DateModelMapper
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
+import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -51,11 +54,17 @@ class HomeViewModelTest {
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
     private val removeMediaToWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
     private val carouselModelToMediaFilterMapper = CarouselModelToMediaFilterMapper()
+    private val dateModelMapper = DateModelMapper()
+    private val languageModelMapper = LanguageModelMapper()
+    private val currencyModelMapper = CurrencyModelMapper()
     private val durationModelMapper = DurationModelMapper(
         stringProvider = stringProvider
     )
     private val mediaModelMapper = MediaModelMapper(
         durationModelMapper = durationModelMapper,
+        dateModelMapper = dateModelMapper,
+        languageModelMapper = languageModelMapper,
+        currencyModelMapper = currencyModelMapper,
     )
     private val carouselModelMapper = CarouselModelMapper(
         stringProvider = stringProvider,

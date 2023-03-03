@@ -11,7 +11,8 @@ class TVShowDetailDtoToDomainMapper @Inject constructor(
     private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
     private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
     private val genreDtoToDomainMapper: GenreDtoToDomainMapper,
-    private val certificationDtoToDomainMapper: CertificationDtoToDomainMapper,
+    private val contentRatingDtoToDomainMapper: ContentRatingDtoToDomainMapper,
+    private val localeDtoToDomainMapper: LocaleDtoToDomainMapper,
 ) {
 
     fun transform(source: MediaDetailDto.TVShow): Media = source.toDomain()
@@ -29,6 +30,8 @@ class TVShowDetailDtoToDomainMapper @Inject constructor(
             Duration.ofMinutes(duration.toLong())
         } ?: Duration.ofMinutes(0),
         genres = genres.map { genre -> genreDtoToDomainMapper.transform(genre) },
-        certification = certificationDtoToDomainMapper.transform(release_dates),
+        certification = contentRatingDtoToDomainMapper.transform(content_ratings),
+        originalLanguage = localeDtoToDomainMapper.transform(original_language),
+        spokenLanguages = spoken_languages.map { localeDtoToDomainMapper.transform(it.iso_639_1) },
     )
 }

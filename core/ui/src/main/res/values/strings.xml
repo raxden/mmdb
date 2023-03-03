@@ -34,6 +34,14 @@
     <string name="added_to_watchlist">%1$s has been added to watchlist</string>
     <string name="removed_from_watchlist">%1$s has been removed from watchlist</string>
     <string name="videos">Videos</string>
+    <string name="details">Details</string>
     <string name="similar_movies">Similar Movies</string>
     <string name="similar_tv_shows">Similar TV Shows</string>
+    <string name="original_title">Original title</string>
+    <string name="original_language">Original language</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="release_date">Release Date</string>
+    <string name="country_of_origin">Country of origin</string>
+    <string name="language_spoken">Language Spoken</string>
 </resources>

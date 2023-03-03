@@ -2,8 +2,10 @@ package com.raxdenstudios.app.core.data.remote.datasource
 
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.data.remote.mapper.CertificationDtoToDomainMapper
+import com.raxdenstudios.app.core.data.remote.mapper.ContentRatingDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.DateDtoToLocalDateMapper
 import com.raxdenstudios.app.core.data.remote.mapper.GenreDtoToDomainMapper
+import com.raxdenstudios.app.core.data.remote.mapper.LocaleDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaDetailDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.MediaTypeToDtoMapper
@@ -20,6 +22,7 @@ import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.network.APIDataProvider
+import com.raxdenstudios.app.core.network.APIDataV3Provider
 import com.raxdenstudios.app.core.network.ConfigProvider
 import com.raxdenstudios.app.core.network.gateway.MediaGateway
 import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
@@ -38,71 +41,76 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.LocalDate
+import java.util.Locale
 
 @ExperimentalCoroutinesApi
 internal class MediaRemoteDataSourceTest {
 
     private val mediaGateway: MediaGateway = mockk()
     private val watchlistGateway: WatchlistGateway = mockk()
-    private val apiDataProvider: APIDataProvider = object : APIDataProvider {
-        override val baseUrl: String = ""
-        override val baseImageUrl: String = ""
-        override val token: String = ""
-    }
+    private val apiDataProvider: APIDataProvider = APIDataV3Provider()
     private val configProvider: ConfigProvider = mockk {
         every { language } returns "es-ES"
         every { region } returns "ES"
     }
-    private val voteDtoToDomainMapper: VoteDtoToDomainMapper = VoteDtoToDomainMapper()
-    private val pictureDtoToDomainMapper: PictureDtoToDomainMapper = PictureDtoToDomainMapper(
+    private val voteDtoToDomainMapper = VoteDtoToDomainMapper()
+    private val pictureDtoToDomainMapper = PictureDtoToDomainMapper(
         apiDataProvider = apiDataProvider
     )
     private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper = mockk {
         every { transform(any<String>()) } returns LocalDate.of(1970, 1, 1)
     }
-    private val genreDtoToDomainMapper: GenreDtoToDomainMapper = GenreDtoToDomainMapper()
-    private val movieDtoToDomainMapper: MovieDtoToDomainMapper = MovieDtoToDomainMapper(
+    private val genreDtoToDomainMapper = GenreDtoToDomainMapper()
+    private val localeDtoToDomainMapper = LocaleDtoToDomainMapper()
+    private val movieDtoToDomainMapper = MovieDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
+        localeDtoToDomainMapper = localeDtoToDomainMapper,
     )
-    private val tvShowDtoToDomainMapper: TVShowDtoToDomainMapper = TVShowDtoToDomainMapper(
+    private val tvShowDtoToDomainMapper = TVShowDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
+        localeDtoToDomainMapper = localeDtoToDomainMapper,
     )
-    private val mediaDtoToDomainMapper: MediaDtoToDomainMapper = MediaDtoToDomainMapper(
+    private val mediaDtoToDomainMapper = MediaDtoToDomainMapper(
         movieDtoToDomainMapper = movieDtoToDomainMapper,
         tvShowDtoToDomainMapper = tvShowDtoToDomainMapper,
     )
-    private val certificationDtoToDomainMapper: CertificationDtoToDomainMapper = CertificationDtoToDomainMapper(
+    private val certificationDtoToDomainMapper = CertificationDtoToDomainMapper(
         configProvider = configProvider
     )
-    private val movieDetailDtoToDomainMapper: MovieDetailDtoToDomainMapper = MovieDetailDtoToDomainMapper(
+    private val movieDetailDtoToDomainMapper = MovieDetailDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
         certificationDtoToDomainMapper = certificationDtoToDomainMapper,
+        localeDtoToDomainMapper = localeDtoToDomainMapper,
     )
-    private val tvShowDetailDtoToDomainMapper: TVShowDetailDtoToDomainMapper = TVShowDetailDtoToDomainMapper(
+    private val contentRatingDtoToDomainMapper = ContentRatingDtoToDomainMapper(
+        configProvider = configProvider,
+    )
+    private val tvShowDetailDtoToDomainMapper = TVShowDetailDtoToDomainMapper(
         voteDtoToDomainMapper = voteDtoToDomainMapper,
         pictureDtoToDomainMapper = pictureDtoToDomainMapper,
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
         genreDtoToDomainMapper = genreDtoToDomainMapper,
-        certificationDtoToDomainMapper = certificationDtoToDomainMapper,
+        contentRatingDtoToDomainMapper = contentRatingDtoToDomainMapper,
+        localeDtoToDomainMapper = localeDtoToDomainMapper,
     )
-    private val mediaDetailDtoToDomainMapper: MediaDetailDtoToDomainMapper = MediaDetailDtoToDomainMapper(
+    private val mediaDetailDtoToDomainMapper = MediaDetailDtoToDomainMapper(
         movieDetailDtoToDomainMapper = movieDetailDtoToDomainMapper,
         tvShowDetailDtoToDomainMapper = tvShowDetailDtoToDomainMapper,
     )
-    private val mediaTypeToDtoMapper: MediaTypeToDtoMapper = MediaTypeToDtoMapper()
-    private val videoDtoToDomainMapper: VideoDtoToDomainMapper = VideoDtoToDomainMapper(
+    private val mediaTypeToDtoMapper = MediaTypeToDtoMapper()
+    private val videoDtoToDomainMapper = VideoDtoToDomainMapper(
         dateDtoToLocalDateMapper = dateDtoToLocalDateMapper,
     )
-    private val networkErrorDtoToErrorMapper: NetworkErrorDtoToErrorMapper = NetworkErrorDtoToErrorMapper()
+    private val networkErrorDtoToErrorMapper = NetworkErrorDtoToErrorMapper()
     private lateinit var dataSource: MediaRemoteDataSource
 
     @Before
@@ -155,7 +163,8 @@ internal class MediaRemoteDataSourceTest {
                     items = listOf(
                         Media.Movie.mock.copy(
                             genres = emptyList(),
-                            certification = ""
+                            certification = "",
+                            originalLanguage = Locale(""),
                         )
                     ),
                     page = Page(1)

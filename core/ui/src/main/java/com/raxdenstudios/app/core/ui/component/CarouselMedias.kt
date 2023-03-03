@@ -17,7 +17,7 @@ import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 @Composable
 fun CarouselMedias(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(all = 8.dp),
+    contentPadding: PaddingValues = PaddingValues(all = 16.dp),
     horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(4.dp),
     medias: List<MediaModel>,
     onItemClick: (MediaModel) -> Unit = {},
@@ -61,7 +61,7 @@ private val items = List(10) {
     MediaModel.mock.copy(
         id = MediaId(it.toLong()),
         title = "The Batman",
-        releaseDate = "2011",
+        releaseYear = "2011",
         rating = "7.8",
         poster = "https://developer.android.com/static/images/jetpack/compose-tutorial/profile_picture.png"
     )
