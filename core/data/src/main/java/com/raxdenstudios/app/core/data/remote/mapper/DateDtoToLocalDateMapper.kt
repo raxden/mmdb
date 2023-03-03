@@ -7,7 +7,8 @@ import javax.inject.Inject
 
 class DateDtoToLocalDateMapper @Inject constructor() : DataMapper<String, LocalDate>() {
 
+    @Suppress("MagicNumber")
     override fun transform(source: String): LocalDate =
         kotlin.runCatching { LocalDate.parse(source, DateTimeFormatter.ISO_DATE) }
-            .getOrDefault(LocalDate.now())
+            .getOrDefault(LocalDate.of(1970, 1, 1))
 }

@@ -11,6 +11,7 @@ class TVShowDtoToDomainMapper @Inject constructor(
     private val pictureDtoToDomainMapper: PictureDtoToDomainMapper,
     private val dateDtoToLocalDateMapper: DateDtoToLocalDateMapper,
     private val genreDtoToDomainMapper: GenreDtoToDomainMapper,
+    private val localeDtoToDomainMapper: LocaleDtoToDomainMapper,
 ) {
 
     fun transform(source: MediaDto.TVShow): Media = source.toDomain()
@@ -26,6 +27,8 @@ class TVShowDtoToDomainMapper @Inject constructor(
         watchList = false,
         duration = Duration.ofMinutes(0),
         genres = genre_ids.map { id -> genreDtoToDomainMapper.transform(id) },
+        originalLanguage = localeDtoToDomainMapper.transform(original_language),
+        spokenLanguages = emptyList(),
     )
 }
 

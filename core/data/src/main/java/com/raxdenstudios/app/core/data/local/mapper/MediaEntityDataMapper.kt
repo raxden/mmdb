@@ -14,6 +14,7 @@ import com.raxdenstudios.commons.DataMapper
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
 import org.threeten.bp.Duration
+import java.util.Locale
 import javax.inject.Inject
 
 class MediaToEntityMapper @Inject constructor(
@@ -62,6 +63,10 @@ class MediaEntityToDomainMapper @Inject constructor(
             watchList = false,
             duration = Duration.ofMinutes(0),
             genres = emptyList(),
+            originalLanguage = Locale("en"),
+            spokenLanguages = emptyList(),
+            budget = 0.0,
+            revenue = 0.0,
         )
         MediaType.TvShow.value -> Media.TVShow(
             id = MediaId(source.id),
@@ -74,6 +79,8 @@ class MediaEntityToDomainMapper @Inject constructor(
             watchList = false,
             duration = Duration.ofMinutes(0),
             genres = emptyList(),
+            originalLanguage = Locale("en"),
+            spokenLanguages = emptyList(),
         )
         else -> error("Invalid type stored in database, ${source.type}")
     }

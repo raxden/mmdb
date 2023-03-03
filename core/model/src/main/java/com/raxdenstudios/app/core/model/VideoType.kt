@@ -1,3 +1,3 @@
 package com.raxdenstudios.app.core.model
 
-enum class VideoType { Clip, Trailer, BehindTheScenes }
+enum class VideoType { Clip, Trailer, BehindTheScenes, Teaser }

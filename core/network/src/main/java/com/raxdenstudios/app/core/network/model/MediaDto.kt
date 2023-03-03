@@ -56,7 +56,7 @@ sealed class MediaDto {
             @VisibleForTesting
             val mock = Movie(
                 adult = false,
-                backdrop_path = "",
+                backdrop_path = "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
                 genre_ids = emptyList(),
                 id = 1,
                 original_language = "",

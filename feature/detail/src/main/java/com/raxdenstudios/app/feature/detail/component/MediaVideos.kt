@@ -36,8 +36,7 @@ fun MediaVideos(
             .fillMaxWidth(),
     ) {
         Header(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 4.dp),
+            modifier = Modifier,
             title = stringResource(id = R.string.videos),
         )
         LazyRow(

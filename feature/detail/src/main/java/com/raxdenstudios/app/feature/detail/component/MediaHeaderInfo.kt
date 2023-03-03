@@ -77,7 +77,7 @@ private fun HeaderInfoRating(
         }
         Text(
             style = Typography.caption,
-            text = media.releaseDate,
+            text = media.releaseYear,
         )
         DotSeparator()
         Text(

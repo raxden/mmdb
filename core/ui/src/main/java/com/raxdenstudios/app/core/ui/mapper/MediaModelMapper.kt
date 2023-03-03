@@ -9,6 +9,9 @@ import javax.inject.Inject
 
 class MediaModelMapper @Inject constructor(
     private val durationModelMapper: DurationModelMapper,
+    private val dateModelMapper: DateModelMapper,
+    private val languageModelMapper: LanguageModelMapper,
+    private val currencyModelMapper: CurrencyModelMapper,
 ) : DataMapper<Media, MediaModel>() {
 
     override fun transform(source: Media): MediaModel = source.toModel()
@@ -31,8 +34,13 @@ class MediaModelMapper @Inject constructor(
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
-            releaseDate = release.year.toString(),
+            releaseYear = release.year.toString(),
+            releaseDate = dateModelMapper.transform(release),
             watchlist = watchList,
+            originalLanguage = languageModelMapper.transform(originalLanguage),
+            spokenLanguages = spokenLanguages.joinToString { languageModelMapper.transform(it) },
+            budget = currencyModelMapper.transform(budget),
+            revenue = currencyModelMapper.transform(revenue),
         )
         is Media.TVShow -> MediaModel(
             id = id,
@@ -51,8 +59,13 @@ class MediaModelMapper @Inject constructor(
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
             rating = vote.average.toString(),
-            releaseDate = firstAirDate.year.toString(),
+            releaseYear = firstAirDate.year.toString(),
+            releaseDate = dateModelMapper.transform(firstAirDate),
             watchlist = watchList,
+            originalLanguage = languageModelMapper.transform(originalLanguage),
+            spokenLanguages = spokenLanguages.joinToString { languageModelMapper.transform(it) },
+            budget = "",
+            revenue = "",
         )
     }
 }

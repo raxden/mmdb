@@ -12,11 +12,16 @@ data class MediaModel(
     val backdrop: String,
     val poster: String,
     val rating: String,
+    val releaseYear: String,
     val releaseDate: String,
     val duration: String,
     val certification: String,
     val genres: String,
     val watchlist: Boolean,
+    val originalLanguage: String,
+    val spokenLanguages: String,
+    val budget: String,
+    val revenue: String,
 ) {
 
     companion object {
@@ -29,11 +34,16 @@ data class MediaModel(
             backdrop = "",
             poster = "",
             rating = "0.0",
+            releaseYear = "",
             releaseDate = "",
             duration = "",
             certification = "",
             genres = "",
             watchlist = false,
+            originalLanguage = "",
+            spokenLanguages = "",
+            budget = "",
+            revenue = "",
         )
 
         @VisibleForTesting
@@ -42,14 +52,19 @@ data class MediaModel(
             mediaType = MediaType.Movie,
             title = "The Last of Us",
             overview = "Twenty years after modern civilization has been destroyed...",
-            backdrop = "",
+            backdrop = "https://image.tmdb.org/t/p/w500/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
             poster = "",
             rating = "0.0",
-            releaseDate = "1970",
+            releaseYear = "1970",
+            releaseDate = "January 1, 1970",
             duration = "",
             certification = "PEGI 18",
             genres = "Drama, Sci-Fi & Fantasy",
             watchlist = false,
+            originalLanguage = "English",
+            spokenLanguages = "",
+            budget = "",
+            revenue = "",
         )
     }
 }

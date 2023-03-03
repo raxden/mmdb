@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.core.database.model
 
+import androidx.annotation.VisibleForTesting
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -21,13 +22,13 @@ data class MediaEntity(
 
     companion object {
 
-        @Suppress("MagicNumber")
-        val empty = MediaEntity(
-            id = 0L,
-            title = "",
-            overview = "",
-            type = 0,
-            backdrop = PictureEntity.empty,
+        @VisibleForTesting
+        val mock = MediaEntity(
+            id = 1L,
+            title = "The Last of Us",
+            overview = "Twenty years after modern civilization has been destroyed...",
+            type = 1,
+            backdrop = PictureEntity.mock,
             poster = PictureEntity.empty,
             release = LocalDate.of(1970, 1, 1).toMilliseconds(),
             vote = VoteEntity.empty
@@ -59,6 +60,18 @@ data class PictureEntity(
         val empty = PictureEntity(
             thumbnail = SizeEntity.empty.copy(type = "thumbnail"),
             original = SizeEntity.empty.copy(type = "original"),
+        )
+
+        @VisibleForTesting
+        val mock = PictureEntity(
+            thumbnail = SizeEntity.empty.copy(
+                type = "thumbnail",
+                url = "https://image.tmdb.org/t/p/w500/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg"
+            ),
+            original = SizeEntity.empty.copy(
+                type = "original",
+                url = "https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg"
+            ),
         )
     }
 }

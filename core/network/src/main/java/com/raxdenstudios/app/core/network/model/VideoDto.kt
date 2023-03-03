@@ -29,7 +29,7 @@ data class VideoDto(
             size = 0,
             type = "Trailer",
             official = false,
-            published_at = "",
+            published_at = "1970-01-01",
             id = "",
         )
     }

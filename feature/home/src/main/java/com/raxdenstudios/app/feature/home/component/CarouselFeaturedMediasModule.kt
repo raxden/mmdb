@@ -34,8 +34,7 @@ fun CarouselFeaturedMediasModule(
             modifier = Modifier
         ) {
             Header(
-                modifier = Modifier
-                    .padding(all = 8.dp),
+                modifier = Modifier,
                 title = module.label,
                 seeAllVisible = true,
                 onSeeAllClick = { onSeeAllClick(module) },

@@ -53,5 +53,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.annotation)
     implementation(libs.threetenabp)
 }

@@ -24,6 +24,7 @@ class VideoDtoToDomainMapper @Inject constructor(
             "Trailer" -> VideoType.Trailer
             "Clip" -> VideoType.Clip
             "Behind the Scenes" -> VideoType.BehindTheScenes
+            "Teaser" -> VideoType.Teaser
             else -> error("VideoType not found: ${source.type}")
         },
         official = source.official,

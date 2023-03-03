@@ -60,7 +60,7 @@ interface MediaV3Service {
     @GET("tv/{media_id}")
     suspend fun tvShow(
         @Path("media_id") mediaId: String,
-        @Query("append_to_response") appendToResponse: String = "release_dates",
+        @Query("append_to_response") appendToResponse: String = "content_ratings",
     ): NetworkResponse<MediaDetailDto.TVShow, ErrorDto>
 
     @GET("movie/{media_id}/videos")
