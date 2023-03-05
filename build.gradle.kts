@@ -40,7 +40,10 @@ rootCoverage {
         "**/BuildConfig*",
         "**/databinding/*",
         "**/*_*.class",
-        "**/*_Impl*.class"
+        "**/*_Impl*.class",
+        "**/App.class",
+        "**/component/*",
+        "**/*_Screen.class",
     )
 
     // Since 1.1 generateHtml is by default true
