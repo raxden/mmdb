@@ -17,7 +17,9 @@ import com.raxdenstudios.app.core.data.remote.mapper.TVShowDetailDtoToDomainMapp
 import com.raxdenstudios.app.core.data.remote.mapper.TVShowDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.VideoDtoToDomainMapper
 import com.raxdenstudios.app.core.data.remote.mapper.VoteDtoToDomainMapper
+import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
+import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
@@ -33,6 +35,7 @@ import com.raxdenstudios.app.core.network.model.VideoDto
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
+import com.raxdenstudios.core.model.Account
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -41,7 +44,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.LocalDate
-import java.util.Locale
 
 @ExperimentalCoroutinesApi
 internal class MediaRemoteDataSourceTest {
@@ -127,6 +129,121 @@ internal class MediaRemoteDataSourceTest {
     }
 
     @Test
+    fun `nowPlaying should return a list of media`() = runTest {
+        val mediaFilter = MediaFilter.nowPlaying
+        val page = Page(1)
+        val account: Account = Account.Guest.mock
+        coEvery { mediaGateway.nowPlaying(mediaFilter.mediaType, page) } returns ResultData.Success(moviesDto)
+
+        val result = dataSource.fetch(mediaFilter, page, account)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                        )
+                    ),
+                    page = Page(1),
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `topRated should return a list of media`() = runTest {
+        val mediaFilter = MediaFilter.topRated(MediaType.Movie)
+        val page = Page(1)
+        val account: Account = Account.Guest.mock
+        coEvery { mediaGateway.topRated(mediaFilter.mediaType, page) } returns ResultData.Success(moviesDto)
+
+        val result = dataSource.fetch(mediaFilter, page, account)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                        )
+                    ),
+                    page = Page(1),
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `upcoming should return a list of media`() = runTest {
+        val mediaFilter = MediaFilter.upcoming
+        val page = Page(1)
+        val account: Account = Account.Guest.mock
+        coEvery { mediaGateway.upcoming(mediaFilter.mediaType, page) } returns ResultData.Success(moviesDto)
+
+        val result = dataSource.fetch(mediaFilter, page, account)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                        )
+                    ),
+                    page = Page(1),
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `watchlist should return a list of media`() = runTest {
+        val mediaFilter = MediaFilter.watchlist(MediaType.Movie)
+        val page = Page(1)
+        val account = Account.Logged.mock
+        coEvery {
+            watchlistGateway.fetch(mediaFilter.mediaType, page, account.credentials.accountId)
+        } returns ResultData.Success(moviesDto)
+
+        val result = dataSource.fetch(mediaFilter, page, account)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                            watchList = true,
+                        )
+                    ),
+                    page = Page(1),
+                )
+            )
+        )
+    }
+
+
+    @Test
+    fun `watchlist should return an error when account is not logged`() = runTest {
+        val mediaFilter = MediaFilter.watchlist(MediaType.Movie)
+        val page = Page(1)
+        val account = Account.Guest.mock
+
+        val result = dataSource.fetch(mediaFilter, page, account)
+
+        assertThat(result).isEqualTo(
+            ResultData.Failure(
+                ErrorDomain.Unauthorized("Guest account can't fetch watchlist")
+            )
+        )
+    }
+
+    @Test
     fun `fetchById should return a media`() = runTest {
         val mediaId = MediaId(1)
         val mediaType = MediaType.Movie
@@ -164,7 +281,6 @@ internal class MediaRemoteDataSourceTest {
                         Media.Movie.mock.copy(
                             genres = emptyList(),
                             certification = "",
-                            originalLanguage = Locale(""),
                         )
                     ),
                     page = Page(1)

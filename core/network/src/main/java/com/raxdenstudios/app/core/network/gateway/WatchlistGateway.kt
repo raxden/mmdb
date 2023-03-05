@@ -33,13 +33,13 @@ class WatchlistGateway @Inject constructor(
         mediaType: MediaType,
         accountId: String
     ): ResultData<List<MediaDto>, NetworkErrorDto> =
-        fetchByPage(mediaType, FIRST_PAGE, accountId)
+        fetch(mediaType, FIRST_PAGE, accountId)
             .coMap { pageDto ->
                 withContext(dispatcher.io) {
                     val allMedias = pageDto.results.toMutableList()
                     val totalPages = pageDto.total_pages
                     val movies = (FIRST_PAGE.value + 1..totalPages)
-                        .map { page -> async { fetchByPage(mediaType, Page(page), accountId) } }
+                        .map { page -> async { fetch(mediaType, Page(page), accountId) } }
                         .mapNotNull { deferred -> deferred.await().getValueOrNull() }
                         .map { resultData -> resultData.results }
                         .flatten()
@@ -48,7 +48,7 @@ class WatchlistGateway @Inject constructor(
                 }
             }
 
-    suspend fun fetchByPage(
+    suspend fun fetch(
         mediaType: MediaType,
         page: Page,
         accountId: String,

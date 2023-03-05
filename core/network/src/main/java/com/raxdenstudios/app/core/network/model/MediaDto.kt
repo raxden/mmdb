@@ -59,7 +59,7 @@ sealed class MediaDto {
                 backdrop_path = "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
                 genre_ids = emptyList(),
                 id = 1,
-                original_language = "",
+                original_language = "en",
                 original_title = "",
                 overview = "Twenty years after modern civilization has been destroyed...",
                 popularity = 0.0,
