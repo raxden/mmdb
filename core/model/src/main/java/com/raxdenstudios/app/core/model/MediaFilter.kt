@@ -23,7 +23,7 @@ data class MediaFilter(
             mediaType = mediaType,
             mediaCategory = MediaCategory.TopRated,
         )
-        fun wachlist(mediaType: MediaType) = MediaFilter(
+        fun watchlist(mediaType: MediaType) = MediaFilter(
             mediaType = mediaType,
             mediaCategory = MediaCategory.Watchlist,
         )

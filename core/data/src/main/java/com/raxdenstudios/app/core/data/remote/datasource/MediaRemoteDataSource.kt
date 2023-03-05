@@ -14,6 +14,9 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.network.gateway.MediaGateway
 import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
+import com.raxdenstudios.app.core.network.model.MediaDto
+import com.raxdenstudios.app.core.network.model.NetworkErrorDto
+import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.toPageList
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.map
@@ -47,20 +50,26 @@ class MediaRemoteDataSource @Inject constructor(
         page: Page,
         account: Account,
     ): ResultData<PageList<Media>, ErrorDomain> = when (mediaFilter.mediaCategory) {
-        MediaCategory.NowPlaying -> mediaGateway.nowPlaying(mediaFilter.mediaType, page)
-            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
-            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-        MediaCategory.Popular -> mediaGateway.popular(mediaFilter.mediaType, page)
-            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
-            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-        MediaCategory.TopRated -> mediaGateway.topRated(mediaFilter.mediaType, page)
-            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
-            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-        MediaCategory.Upcoming -> mediaGateway.upcoming(mediaFilter.mediaType, page)
-            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
-            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-        MediaCategory.Watchlist -> fetchWatchlist(mediaFilter, page, account)
+        MediaCategory.NowPlaying -> mediaGateway.nowPlaying(mediaFilter.mediaType, page).toDomain()
+        MediaCategory.Popular -> mediaGateway.popular(mediaFilter.mediaType, page).toDomain()
+        MediaCategory.TopRated -> mediaGateway.topRated(mediaFilter.mediaType, page).toDomain()
+        MediaCategory.Upcoming -> mediaGateway.upcoming(mediaFilter.mediaType, page).toDomain()
+        MediaCategory.Watchlist -> when (account) {
+            is Account.Guest -> ResultData.Failure(ErrorDomain.Unauthorized("Guest account can't fetch watchlist"))
+            is Account.Logged -> watchlistGateway.fetch(
+                mediaType = mediaFilter.mediaType,
+                page = page,
+                accountId = account.credentials.accountId
+            ).toDomain().markAsWatchlist()
+        }
     }
+
+    private fun ResultData<PageList<Media>, ErrorDomain>.markAsWatchlist() =
+        map { pageList -> pageList.copy(items = pageList.items.map { movie -> movie.copyWith(watchList = true) }) }
+
+    private fun ResultData<PageDto<MediaDto>, NetworkErrorDto>.toDomain() =
+        map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
+            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
 
     suspend fun addToWatchlist(
         mediaId: MediaId,
@@ -113,20 +122,4 @@ class MediaRemoteDataSource @Inject constructor(
         mediaGateway.related(mediaId, mediaType, page)
             .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
             .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-
-    private suspend fun fetchWatchlist(
-        mediaFilter: MediaFilter,
-        page: Page,
-        account: Account,
-    ): ResultData<PageList<Media>, ErrorDomain> = when (account) {
-        is Account.Guest -> ResultData.Failure(ErrorDomain.Unauthorized("Guest account can't fetch watchlist"))
-        is Account.Logged -> watchlistGateway.fetchByPage(
-            mediaType = mediaFilter.mediaType,
-            page = page,
-            accountId = account.credentials.accountId
-        )
-            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
-            .map { pageList -> pageList.copy(items = pageList.items.map { movie -> movie.copyWith(watchList = true) }) }
-            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
-    }
 }
