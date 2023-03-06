@@ -1,6 +1,15 @@
 name: 'Launch Instrumental tests'
 description: "Launch Instrumental tests and upload outputs to GitHub"
 inputs:
+  arch:
+    description: 'Architecture'
+    required: true
+  target:
+    description: 'Target'
+    required: true
+  channel:
+    description: 'Channel'
+    required: true
   api-level:
     description: 'API level'
     required: true
@@ -15,12 +24,14 @@ runs:
         path: |
           ~/.android/avd/*
           ~/.android/adb*
-        key: avd-${{ inputs.api-level }}
+        key: avd-${{ inputs.api-level }}-${{ inputs.target }}
 
     - name: create AVD and generate snapshot for caching
       if: steps.avd-cache.outputs.cache-hit != 'true'
       uses: reactivecircus/android-emulator-runner@v2  # https://github.com/ReactiveCircus/android-emulator-runner
       with:
+        arch: ${{ inputs.arch }}
+        target: ${{ inputs.target }}
         api-level: ${{ inputs.api-level }}
         force-avd-creation: false
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -30,16 +41,23 @@ runs:
     - name: Run instrumental tests
       uses: reactivecircus/android-emulator-runner@v2 # https://github.com/ReactiveCircus/android-emulator-runner
       with:
+        arch: ${{ inputs.arch }}
+        target: ${{ inputs.target }}
         api-level: ${{ inputs.api-level }}
         force-avd-creation: false
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         script: |
-          ./gradlew connectedDebugAndroidTest --no-configuration-cache --stacktrace --scan
+          touch emulator.log                    # create log file
+          chmod 777 emulator.log                # allow writing to log file
+          adb logcat >> emulator.log &          # pipe all logcat messages into log file as a background process
+          ./gradlew connectedDebugAndroidTest --no-build-cache --no-configuration-cache --no-daemon --stacktrace --scan
 
     - name: Upload Outputs
       uses: actions/upload-artifact@v3
       with:
         name: outputs-android-tests
-        path: ./**/build/outputs/code_coverage/
+        path: |
+          emulator.log
+          ./**/build/outputs/code_coverage/
         retention-days: 3

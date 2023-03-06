@@ -127,6 +127,9 @@ jobs:
     timeout-minutes: 45
     strategy:
       matrix:
+        arch: [ x86_64 ]
+        target: [ google_apis ]
+        channel: [ stable ]
         api-level: [ 29 ]
 
     steps:
@@ -145,6 +148,9 @@ jobs:
       - name: Launch Instrumental tests
         uses: ./.github/actions/instrumental_tests
         with:
+          arch: ${{ matrix.arch }}
+          target: ${{ matrix.target }}
+          channel: ${{ matrix.channel }}
           api-level: ${{ matrix.api-level }}
 
   reports:
