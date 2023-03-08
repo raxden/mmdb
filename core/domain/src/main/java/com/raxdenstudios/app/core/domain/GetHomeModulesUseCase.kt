@@ -42,7 +42,9 @@ class GetHomeModulesUseCase @Inject constructor(
                         }
                     }
                     deferred.await()
-                }.filter { module -> module.medias.isNotEmpty() }
+                }.filter { module ->
+                    module.medias.isNotEmpty()
+                }
             }
             ResultData.Success(modulesWithMedias)
         }
