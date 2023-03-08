@@ -13,6 +13,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 @Suppress("LongParameterList")
 class HttpClientFactory @Inject constructor(
@@ -24,39 +26,45 @@ class HttpClientFactory @Inject constructor(
     private val tokenInterceptor: TokenInterceptor,
     private val sessionInterceptor: SessionInterceptor,
     private val accessTokenInterceptor: AccessTokenInterceptor,
+    private val sslSocketFactory: SSLSocketFactory?,
+    private val x509TrustManager: X509TrustManager?,
     private val cache: Cache,
 ) {
 
-    fun create(version: APIVersion): OkHttpClient = when (version) {
-        APIVersion.V3 -> OkHttpClient.Builder()
-            .cache(cache)
-            .addNetworkInterceptor(httpLoggingInterceptor)
-            .addInterceptor(tokenInterceptor)
-            .addInterceptor(sessionInterceptor)
-            .addInterceptor(languageInterceptor)
-            .addInterceptor(cacheOfflineInterceptor)
-            .addNetworkInterceptor(cacheNetworkInterceptor)
-            .addInterceptor(cacheLoggerInterceptor)
+    fun create(version: APIVersion): OkHttpClient {
+        val builder = when (version) {
+            APIVersion.V3 -> OkHttpClient.Builder()
+                .cache(cache)
+                .addNetworkInterceptor(httpLoggingInterceptor)
+                .addInterceptor(tokenInterceptor)
+                .addInterceptor(sessionInterceptor)
+                .addInterceptor(languageInterceptor)
+                .addInterceptor(cacheOfflineInterceptor)
+                .addNetworkInterceptor(cacheNetworkInterceptor)
+                .addInterceptor(cacheLoggerInterceptor)
 //            .addInterceptor(ganderInterceptor)
-            .retryOnConnectionFailure(true)
-            .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
-            .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
-            .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
-            .build()
-        APIVersion.V4 -> OkHttpClient.Builder()
-            .cache(cache)
-            .addNetworkInterceptor(httpLoggingInterceptor)
-            .addInterceptor(accessTokenInterceptor)
-            .addInterceptor(languageInterceptor)
-            .addInterceptor(cacheOfflineInterceptor)
-            .addNetworkInterceptor(cacheNetworkInterceptor)
-            .addInterceptor(cacheLoggerInterceptor)
+                .retryOnConnectionFailure(true)
+                .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
+                .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
+                .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
+            APIVersion.V4 -> OkHttpClient.Builder()
+                .cache(cache)
+                .addNetworkInterceptor(httpLoggingInterceptor)
+                .addInterceptor(accessTokenInterceptor)
+                .addInterceptor(languageInterceptor)
+                .addInterceptor(cacheOfflineInterceptor)
+                .addNetworkInterceptor(cacheNetworkInterceptor)
+                .addInterceptor(cacheLoggerInterceptor)
 //            .addInterceptor(ganderInterceptor)
-            .retryOnConnectionFailure(true)
-            .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
-            .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
-            .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
-            .build()
+                .retryOnConnectionFailure(true)
+                .readTimeout(timeout.toLong(), TimeUnit.SECONDS)
+                .writeTimeout(timeout.toLong(), TimeUnit.SECONDS)
+                .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
+        }
+        if (sslSocketFactory != null && x509TrustManager != null) {
+            builder.sslSocketFactory(sslSocketFactory, x509TrustManager)
+        }
+        return builder.build()
     }
 
     companion object {

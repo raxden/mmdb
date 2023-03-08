@@ -82,7 +82,7 @@ coil = { module = "io.coil-kt:coil" }
 coil-bom = { module = "io.coil-kt:coil-bom", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose" }
 commons-android = { module = "com.raxdenstudios:commons-android", version.ref = "commons-android" }
-commons-android-test = { module = "com.raxdenstudios:commons-android", version.ref = "commons-android" }
+commons-android-test = { module = "com.raxdenstudios:commons-android-test", version.ref = "commons-android" }
 commons-coroutines = { module = "com.raxdenstudios:commons-coroutines", version.ref = "commons-android" }
 commons-coroutines-test = { module = "com.raxdenstudios:commons-coroutines-test", version.ref = "commons-android" }
 commons-okhttp3 = { module = "com.raxdenstudios:commons-okhttp3", version.ref = "commons-android" }
@@ -219,6 +219,7 @@ testing = [
 testingUI = [
     "commons-coroutines-test",
     "commons-threetenabp",
+    "commons-android-test",
     "coroutines-test",
     "espresso-contrib",
     "espresso-core",

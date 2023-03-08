@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,4 +23,12 @@ object APIDataModule {
     @APIVersionV4
     fun apiV4DataProvider(factory: APIDataProviderFactory): APIDataProvider =
         factory.create(APIVersion.V4)
+
+    @Suppress("FunctionOnlyReturningConstant")
+    @Provides
+    fun sslSocketFactoryProvider(): SSLSocketFactory? = null
+
+    @Suppress("FunctionOnlyReturningConstant")
+    @Provides
+    fun x509TrustManagerProvider(): X509TrustManager? = null
 }

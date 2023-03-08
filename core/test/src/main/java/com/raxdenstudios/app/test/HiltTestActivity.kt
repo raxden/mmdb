@@ -1,7 +1,7 @@
-package com.raxdenstudios.app
+package com.raxdenstudios.app.test
 
 import androidx.activity.ComponentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HiltActivity : ComponentActivity()
+class HiltTestActivity : ComponentActivity()

@@ -1,6 +1,7 @@
 package com.raxdenstudios.app.test
 
 import androidx.test.platform.app.InstrumentationRegistry
+import io.appflate.restmock.RESTMockOptions
 import io.appflate.restmock.RESTMockServer
 import io.appflate.restmock.RESTMockServerStarter
 import io.appflate.restmock.android.AndroidAssetsFileParser
@@ -18,6 +19,7 @@ class MockWebServerRule : TestRule {
                 RESTMockServerStarter.startSync(
                     AndroidAssetsFileParser(InstrumentationRegistry.getInstrumentation().context),
                     AndroidLogger(),
+                    RESTMockOptions.Builder().useHttps(true).build()
                 )
                 // Evaluate the current running test
                 base.evaluate()
