@@ -86,7 +86,9 @@ dependencies {
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
+    androidTestImplementation(project(Modules.app))
     androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(Modules.coreNetwork))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)

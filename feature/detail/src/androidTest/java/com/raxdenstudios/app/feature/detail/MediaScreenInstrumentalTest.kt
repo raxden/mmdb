@@ -1,15 +1,15 @@
 package com.raxdenstudios.app.feature.detail
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
-import com.raxdenstudios.app.HiltActivity
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
+import com.raxdenstudios.app.core.network.APIDataProvider
 import com.raxdenstudios.app.core.network.di.APIVersionV3
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.detail.model.MediaParams
+import com.raxdenstudios.app.test.HiltTestActivity
 import com.raxdenstudios.app.test.MockWebServerRule
 import com.raxdenstudios.app.test.OkHttp3IdlingResource
 import dagger.hilt.android.testing.BindValue
@@ -36,7 +36,7 @@ internal class MediaScreenInstrumentalTest {
     val mockWebServerRule = MockWebServerRule()
 
     @get:Rule(order = 2)
-    val composeTestRule = createAndroidComposeRule<HiltActivity>()
+    val composeTestRule = createAndroidComposeRule<HiltTestActivity>()
 
     @BindValue
     val mediaParamsFactory: MediaParamsFactory = mockk {
@@ -47,6 +47,10 @@ internal class MediaScreenInstrumentalTest {
     @APIVersionV3
     lateinit var okHttpClient: OkHttpClient
 
+    @Inject
+    @APIVersionV3
+    lateinit var apiDataProvider: APIDataProvider
+
     private lateinit var resource: IdlingResource
 
     @Before
@@ -55,6 +59,9 @@ internal class MediaScreenInstrumentalTest {
 
         resource = OkHttp3IdlingResource.create("OkHttp", okHttpClient)
         IdlingRegistry.getInstance().register(resource)
+
+        RESTMockServer.whenGET(pathContains("/movie/1"))
+            .thenReturnFile(200, "media.json")
     }
 
     @After
@@ -64,19 +71,13 @@ internal class MediaScreenInstrumentalTest {
 
     @Test
     fun should_display_MediaScreen() {
-        RESTMockServer.whenGET(pathContains("/movie/1"))
-            .thenReturnFile(200, "media.json")
-
         composeTestRule.run {
             setContent {
                 AppComposeTheme {
                     MediaScreen()
                 }
             }
-            onNodeWithContentDescription("Media Header").assertExists()
-            onNodeWithContentDescription("Media Body").assertExists()
-            onNodeWithContentDescription("Back Button").assertExists()
-            onNodeWithContentDescription("Add to watchlist").assertExists()
+            MediaScreenTestPage(this)
         }
     }
 
@@ -91,7 +92,8 @@ internal class MediaScreenInstrumentalTest {
                     MediaScreen()
                 }
             }
-            onNodeWithContentDescription("Error Dialog").assertExists()
+            MediaScreenTestPage(this)
+                .errorDialogIsDisplayed()
         }
     }
 

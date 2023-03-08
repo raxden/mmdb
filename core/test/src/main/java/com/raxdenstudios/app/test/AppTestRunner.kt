@@ -16,11 +16,5 @@ class AppTestRunner : AndroidJUnitRunner() {
 
     override fun onCreate(arguments: Bundle) {
         super.onCreate(arguments)
-
-//        RESTMockServerStarter.startSync(
-//            AndroidAssetsFileParser(context),
-//            AndroidLogger(),
-//            RESTMockOptions.Builder().useHttps(true).build()
-//        )
     }
 }

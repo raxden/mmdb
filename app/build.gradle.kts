@@ -42,6 +42,8 @@ android {
         setProperty("archivesBaseName", "mmdb")
     }
 
+    namespace = "com.raxdenstudios.app"
+
     signingConfigs {
         getByName("debug") {
             storeFile = file("$rootDir/config/debug.keystore")

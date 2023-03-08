@@ -149,6 +149,7 @@ private fun MediaScreen(
         }
         BackButton(
             modifier = Modifier
+                .semantics { contentDescription = "Back Button" }
                 .statusBarsPadding(),
             onNavigateToBack = { onEvent(MediaContract.UserEvent.BackClicked) }
         )

@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.di
+package com.raxdenstudios.app.feature.di
 
 import com.raxdenstudios.app.core.network.APIDataProvider
 import com.raxdenstudios.app.core.network.di.APIDataModule
@@ -9,6 +9,8 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import io.appflate.restmock.RESTMockServer
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
 
 @Module
 @TestInstallIn(
@@ -40,4 +42,12 @@ object TestApiDataModule {
             override val token: String
                 get() = ""
         }
+
+    @Provides
+    fun sslSocketFactoryProvider(): SSLSocketFactory =
+        RESTMockServer.getSSLSocketFactory()
+
+    @Provides
+    fun x509TrustManagerProvider(): X509TrustManager =
+        RESTMockServer.getTrustManager()
 }
