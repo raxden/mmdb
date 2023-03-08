@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -39,7 +41,8 @@ fun HomeModules(
                 when (val module = modules[index]) {
                     is HomeModuleModel.Carousel.NowPlaying ->
                         CarouselFeaturedMediasModule(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .semantics { contentDescription = "CarouselFeaturedModule" },
                             module = module,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
@@ -47,7 +50,8 @@ fun HomeModules(
                         )
                     is HomeModuleModel.Carousel.Popular ->
                         CarouselMediasModule(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .semantics { contentDescription = "CarouselPopularModule" },
                             module = module,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
@@ -56,7 +60,8 @@ fun HomeModules(
                         )
                     is HomeModuleModel.Carousel.TopRated ->
                         CarouselMediasModule(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .semantics { contentDescription = "CarouselTopRatedModule" },
                             module = module,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
@@ -65,7 +70,8 @@ fun HomeModules(
                         )
                     is HomeModuleModel.Carousel.Upcoming ->
                         CarouselMediasModule(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .semantics { contentDescription = "CarouselUpcomingModule" },
                             module = module,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
@@ -74,7 +80,8 @@ fun HomeModules(
                         )
                     is HomeModuleModel.Carousel.Watchlist ->
                         CarouselMediasModule(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .semantics { contentDescription = "CarouselWatchlistModule" },
                             module = module,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
