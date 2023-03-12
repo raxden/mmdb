@@ -19,11 +19,13 @@ import io.appflate.restmock.RESTMockServer
 import io.appflate.restmock.utils.RequestMatchers.pathContains
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -60,8 +62,12 @@ internal class MediaScreenInstrumentalTest {
         resource = OkHttp3IdlingResource.create("OkHttp", okHttpClient)
         IdlingRegistry.getInstance().register(resource)
 
-        RESTMockServer.whenGET(pathContains("/movie/1"))
-            .thenReturnFile(200, "media.json")
+        RESTMockServer.whenGET(pathContains("/movie/1?append_to_response=release_dates"))
+            .thenReturnFile(200, "movie.json")
+        RESTMockServer.whenGET(pathContains("/movie/1/videos"))
+            .thenReturnFile(200, "videos.json")
+        RESTMockServer.whenGET(pathContains("/movie/1/similar"))
+            .thenReturnFile(200, "similar.json")
     }
 
     @After
@@ -78,6 +84,10 @@ internal class MediaScreenInstrumentalTest {
                 }
             }
             MediaScreenTestPage(this)
+
+            waitForIdle()
+
+            sleep(5000)
         }
     }
 
@@ -94,9 +104,50 @@ internal class MediaScreenInstrumentalTest {
             }
             MediaScreenTestPage(this)
                 .errorDialogIsDisplayed()
+
+            waitForIdle()
         }
     }
 
+    @Test
+    fun navigate_to_back() {
+        composeTestRule.run {
+            val onNavigateToBack: () -> Unit = mockk(relaxed = true)
+            setContent {
+                AppComposeTheme {
+                    MediaScreen(
+                        onNavigateToBack = onNavigateToBack
+                    )
+                }
+            }
+
+            MediaScreenTestPage(this)
+                .clickBackButton()
+
+            waitForIdle()
+            verify(exactly = 1) { onNavigateToBack() }
+        }
+    }
+
+    @Test
+    fun navigateToYoutubeVideo() {
+        composeTestRule.run {
+            val onNavigateToYoutubeVideo: (String) -> Unit = mockk(relaxed = true)
+            setContent {
+                AppComposeTheme {
+                    MediaScreen(
+                        onNavigateToYoutubeVideo = onNavigateToYoutubeVideo
+                    )
+                }
+            }
+
+            MediaScreenTestPage(this)
+                .clickYoutubeVideo()
+
+            waitForIdle()
+            verify(exactly = 1) { onNavigateToYoutubeVideo("") }
+        }
+    }
     companion object {
 
         val params = MediaParams(

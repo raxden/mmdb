@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,7 +90,8 @@ class MediaViewModel @Inject constructor(
         viewModelScope.safeLaunch {
             getMediaVideosUseCase(params)
                 .map { videos -> videoModelMapper.transform(videos) }
-                .map { videos -> _uiState.update { value -> value.copy(videos = videos) } }
+                .onSuccess { videos -> _uiState.update { value -> value.copy(videos = videos) } }
+                .onFailure { error -> Timber.d(error.toString()) }
         }
     }
 

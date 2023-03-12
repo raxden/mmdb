@@ -89,6 +89,7 @@ dependencies {
     androidTestImplementation(project(Modules.app))
     androidTestImplementation(project(Modules.coreTest))
     androidTestImplementation(project(Modules.coreNetwork))
+    androidTestImplementation(project(Modules.coreUI))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)
