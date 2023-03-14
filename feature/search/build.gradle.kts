@@ -17,7 +17,6 @@ android {
 
     defaultConfig {
         minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
 
         testInstrumentationRunner = Application.testInstrumentationRunner
         consumerProguardFile("consumer-rules.pro")
@@ -57,6 +56,7 @@ android {
             excludes.add("META-INF/*.kotlin_module")
         }
     }
+    namespace = "com.raxdenstudios.app.search"
 }
 
 dependencies {

@@ -9,10 +9,10 @@ plugins {
 
 secrets {
     // Optionally specify a different file name containing your secrets. The plugin defaults to "local.properties"
-    propertiesFileName = "$rootDir/config/secrets.properties"
+    propertiesFileName = "./config/secrets.properties"
 
     // A properties file containing default secret values. This file can be checked in version control.
-    defaultPropertiesFileName = "$rootDir/config/secrets.defaults.properties"
+    defaultPropertiesFileName = "./config/secrets.defaults.properties"
 }
 
 android {
@@ -26,7 +26,6 @@ android {
 
     defaultConfig {
         minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
 
         testInstrumentationRunner = Application.testInstrumentationRunner
         consumerProguardFile("consumer-rules.pro")
