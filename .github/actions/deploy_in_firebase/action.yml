@@ -32,5 +32,6 @@ runs:
     - name: Deploy APK in Firebase App Distribution
       uses: gradle/gradle-build-action@v2
       with:
+        cache-disabled: true
         arguments: appDistributionUpload${{ inputs.buildType }} --stacktrace --scan --info
 #        arguments: appDistributionUpload${{ inputs.buildType }} --releaseNotes="${{ inputs.releaseNotes }}" --stacktrace --scan
