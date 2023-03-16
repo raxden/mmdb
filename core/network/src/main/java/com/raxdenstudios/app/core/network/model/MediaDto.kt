@@ -87,5 +87,26 @@ sealed class MediaDto {
         @Expose val original_name: String,
         @Expose val origin_country: List<String>,
         @Expose val first_air_date: String,
-    ) : MediaDto()
+    ) : MediaDto() {
+
+        companion object {
+
+            @VisibleForTesting
+            val mock = TVShow(
+                backdrop_path = "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
+                genre_ids = emptyList(),
+                id = 1,
+                original_language = "en",
+                original_name = "",
+                overview = "Twenty years after modern civilization has been destroyed...",
+                popularity = 0.0,
+                poster_path = "",
+                first_air_date = "1970-01-01",
+                name = "The Last of Us",
+                origin_country = emptyList(),
+                vote_average = 0.0,
+                vote_count = 0,
+            )
+        }
+    }
 }

@@ -48,4 +48,10 @@ interface MediaRepository {
         page: Page,
         pageSize: PageSize,
     ): ResultData<PageList<Media>, ErrorDomain>
+
+    suspend fun search(
+        query: String,
+        page: Page,
+        pageSize: PageSize,
+    ): ResultData<PageList<Media>, ErrorDomain>
 }

@@ -62,4 +62,15 @@ class MediaDataSource @Inject constructor(
             mediaType = mediaType,
             page = page,
         )
+
+    @Suppress("UnusedPrivateMember")
+    suspend fun search(
+        query: String,
+        page: Page,
+        pageSize: PageSize,
+    ): ResultData<PageList<Media>, ErrorDomain> =
+        mediaRemoteDataSource.search(
+            query = query,
+            page = page,
+        )
 }
