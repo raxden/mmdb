@@ -90,6 +90,13 @@ class MediaRepositoryImpl @Inject constructor(
         medias.map { pageList -> pageList.markMediasAsWatched(watchlist) }
     }
 
+    override suspend fun search(
+        query: String,
+        page: Page,
+        pageSize: PageSize
+    ): ResultData<PageList<Media>, ErrorDomain> =
+        mediaDataSource.search(query, page, pageSize)
+
     private fun PageList<Media>.markMediasAsWatched(watchlist: List<Media>): PageList<Media> =
         map { medias ->
             medias.map { media ->

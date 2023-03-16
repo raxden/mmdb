@@ -227,7 +227,6 @@ internal class MediaRemoteDataSourceTest {
         )
     }
 
-
     @Test
     fun `watchlist should return an error when account is not logged`() = runTest {
         val mediaFilter = MediaFilter.watchlist(MediaType.Movie)
@@ -289,9 +288,42 @@ internal class MediaRemoteDataSourceTest {
         )
     }
 
+    @Test
+    fun `results should return a list of medias`() = runTest {
+        val query = "query"
+        val page = Page(1)
+        coEvery { mediaGateway.search(query, page) } returns ResultData.Success(resultsDto)
+
+        val result = dataSource.search(query, page)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                        ),
+                        Media.TVShow.mock.copy(
+                            genres = emptyList(),
+                            certification = "",
+                        ),
+                    ),
+                    page = Page(1)
+                )
+            )
+        )
+    }
+
     companion object {
 
         private val moviesDto = PageDto<MediaDto>(results = listOf(MediaDto.Movie.mock), page = 1)
+        private val resultsDto = PageDto(
+            results = listOf(
+                MediaDto.Movie.mock,
+                MediaDto.TVShow.mock,
+            ), page = 1
+        )
         private val videosDto = PageDto(results = listOf(VideoDto.mock))
     }
 }

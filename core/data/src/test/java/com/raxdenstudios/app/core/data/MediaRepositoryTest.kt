@@ -97,17 +97,47 @@ class MediaRepositoryTest {
         assertThat(result).isEqualTo(ResultData.Success(listOf(Video.mock)))
     }
 
+    @Test
+    fun `Given a query and page, When search is called, Then result results`() = runTest {
+        val query = "query"
+        val page = Page(1)
+        val pageSize = PageSize(10)
+        coEvery { mediaDataSource.search(query, page, pageSize) } returns ResultData.Success(pageListSearchResults)
+
+        val result = repository.search(query, page, pageSize)
+
+        assertThat(result).isEqualTo(
+            ResultData.Success(
+                PageList(
+                    items = listOf(
+                        Media.Movie.mock.copy(id = MediaId(1)),
+                        Media.TVShow.mock.copy(id = MediaId(2)),
+                    ),
+                    page = Page(1),
+                )
+            )
+        )
+    }
+
     companion object {
 
         private val aMovies = listOf(
             Media.Movie.mock.copy(id = MediaId(1)),
             Media.Movie.mock.copy(id = MediaId(2)),
         )
+        private val searchResults = listOf(
+            Media.Movie.mock.copy(id = MediaId(1)),
+            Media.TVShow.mock.copy(id = MediaId(2)),
+        )
         private val movie = Media.Movie.mock.copy(id = MediaId(1))
         private val firstPage = Page(1)
         private val aPageSize = PageSize.defaultSize
         private val aPageList = PageList<Media>(
             items = aMovies,
+            page = firstPage,
+        )
+        private val pageListSearchResults = PageList(
+            items = searchResults,
             page = firstPage,
         )
     }

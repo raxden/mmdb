@@ -76,4 +76,8 @@ class FakeMediaRepository : MediaRepository {
     ): ResultData<PageList<Media>, ErrorDomain> {
         return ResultData.Success(PageList(movies, page))
     }
+
+    override suspend fun search(query: String, page: Page, pageSize: PageSize): ResultData<PageList<Media>, ErrorDomain> {
+        TODO("Not yet implemented")
+    }
 }

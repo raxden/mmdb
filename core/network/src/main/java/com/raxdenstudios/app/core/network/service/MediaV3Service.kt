@@ -7,6 +7,7 @@ import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.VideoDto
 import com.raxdenstudios.app.core.network.model.WatchlistDto
+import org.json.JSONObject
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -84,4 +85,10 @@ interface MediaV3Service {
         @Path("media_id") mediaId: String,
         @Query("page") page: Int,
     ): NetworkResponse<PageDto<MediaDto.TVShow>, ErrorDto>
+
+    @GET("search/multi")
+    suspend fun search(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+    ): NetworkResponse<PageDto<JSONObject>, ErrorDto>
 }

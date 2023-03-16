@@ -113,13 +113,20 @@ class MediaRemoteDataSource @Inject constructor(
             .map { pageDto -> videoDtoToDomainMapper.transform(pageDto.results) }
             .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
 
-
     suspend fun related(
         mediaId: MediaId,
         mediaType: MediaType,
         page: Page,
     ): ResultData<PageList<Media>, ErrorDomain> =
         mediaGateway.related(mediaId, mediaType, page)
+            .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
+            .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
+
+    suspend fun search(
+        query: String,
+        page: Page,
+    ): ResultData<PageList<Media>, ErrorDomain> =
+        mediaGateway.search(query, page)
             .map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
             .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
 }
