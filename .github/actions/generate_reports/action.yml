@@ -21,6 +21,7 @@ runs:
     - name: Jacoco Reports
       uses: gradle/gradle-build-action@v2
       with:
+        cache-disabled: true
         arguments: coverageReport --no-configuration-cache --stacktrace --scan
 
     - name: Upload Reports
