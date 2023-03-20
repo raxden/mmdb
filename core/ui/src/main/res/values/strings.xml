@@ -44,4 +44,5 @@
     <string name="release_date">Release Date</string>
     <string name="country_of_origin">Country of origin</string>
     <string name="language_spoken">Language Spoken</string>
+    <string name="search_bar_hint">Search mmdb</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.raxdenstudios.app.core.network.gateway
 
 import com.google.common.truth.Truth.assertThat
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.network.model.ErrorDto
@@ -15,7 +17,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.json.JSONObject
 import org.junit.Test
 import retrofit2.Response
 
@@ -115,45 +116,45 @@ class MediaGatewayTest {
                 ),
                 response = response,
             )
-        private val aSearchNetworkResponseSuccessFirstPage: NetworkResponse<PageDto<JSONObject>, ErrorDto> =
+        private val aSearchNetworkResponseSuccessFirstPage: NetworkResponse<PageDto<JsonObject>, ErrorDto> =
             NetworkResponse.Success(
                 body = PageDto(
                     page = 1,
                     total_pages = 1,
                     total_results = 2,
                     results = listOf(
-                        JSONObject().apply {
-                            put("adult", false)
-                            put("backdrop_path", "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg")
-                            put("id", 1)
-                            put("title", "The Last of Us")
-                            put("original_language", "en")
-                            put("original_title", "")
-                            put("overview", "Twenty years after modern civilization has been destroyed...")
-                            put("poster_path", "")
-                            put("media_type", "movie")
-                            put("genre_ids", emptyList<Int>())
-                            put("popularity", 0.0)
-                            put("release_date", "1970-01-01")
-                            put("vote_average", 0.0)
-                            put("vote_count", 0)
+                        JsonObject().apply {
+                            addProperty("adult", false)
+                            addProperty("backdrop_path", "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg")
+                            addProperty("id", 1)
+                            addProperty("title", "The Last of Us")
+                            addProperty("original_language", "en")
+                            addProperty("original_title", "")
+                            addProperty("overview", "Twenty years after modern civilization has been destroyed...")
+                            addProperty("poster_path", "")
+                            addProperty("media_type", "movie")
+                            add("genre_ids", JsonArray())
+                            addProperty("popularity", 0.0)
+                            addProperty("release_date", "1970-01-01")
+                            addProperty("vote_average", 0.0)
+                            addProperty("vote_count", 0)
                         },
-                        JSONObject().apply {
-                            put("adult", false)
-                            put("backdrop_path", "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg")
-                            put("id", 1)
-                            put("name", "The Last of Us")
-                            put("original_language", "en")
-                            put("original_name", "")
-                            put("overview", "Twenty years after modern civilization has been destroyed...")
-                            put("poster_path", "")
-                            put("media_type", "tv")
-                            put("genre_ids", emptyList<Int>())
-                            put("origin_country", emptyList<String>())
-                            put("popularity", 0.0)
-                            put("first_air_date", "1970-01-01")
-                            put("vote_average", 0.0)
-                            put("vote_count", 0)
+                        JsonObject().apply {
+                            addProperty("adult", false)
+                            addProperty("backdrop_path", "/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg")
+                            addProperty("id", 1)
+                            addProperty("name", "The Last of Us")
+                            addProperty("original_language", "en")
+                            addProperty("original_name", "")
+                            addProperty("overview", "Twenty years after modern civilization has been destroyed...")
+                            addProperty("poster_path", "")
+                            addProperty("media_type", "tv")
+                            add("genre_ids", JsonArray())
+                            add("origin_country", JsonArray())
+                            addProperty("popularity", 0.0)
+                            addProperty("first_air_date", "1970-01-01")
+                            addProperty("vote_average", 0.0)
+                            addProperty("vote_count", 0)
                         }
                     )
                 ),

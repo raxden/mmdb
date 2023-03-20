@@ -7,6 +7,6 @@ fun NavGraphBuilder.mainGraph(
     appState: AppState,
 ) {
     homeGraph(appState)
-    searchGraph()
+    searchGraph(appState)
     accountGraph()
 }

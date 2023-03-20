@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.component
 
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -14,11 +15,12 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
+import com.raxdenstudios.app.core.ui.component.MediaGridWithPullRefresh
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
+import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.MediaListContract
 import com.raxdenstudios.app.feature.MediaListViewModel
-import com.raxdenstudios.app.feature.component.ListPreviewData.medias
 
 @Composable
 fun MediasScreen(
@@ -66,7 +68,7 @@ private fun MediasScreen(
             )
         },
     ) { paddingValues ->
-        MediaGrid(
+        MediaGridWithPullRefresh(
             modifier = modifier
                 .padding(paddingValues),
             isRefreshing = uiState.isLoading,
@@ -81,6 +83,8 @@ private fun MediasScreen(
     }
 }
 
+@SuppressLint("VisibleForTests")
+@SuppressWarnings("MagicNumber")
 @DevicePreviews
 @Composable
 fun MediasScreenPreview() {
@@ -89,7 +93,9 @@ fun MediasScreenPreview() {
             uiState = MediaListContract.UIState(
                 isLoading = false,
                 title = "Media List",
-                items = medias,
+                items = List(10) {
+                    MediaModel.mock
+                },
             )
         )
     }

@@ -66,6 +66,7 @@ dependencies {
     implementation(project(Modules.coreModel))
     implementation(project(Modules.coreDomain))
     implementation(libs.commons.android)
+    implementation(libs.commons.paginationCo)
     implementation(libs.bundles.coroutines)
     implementation(libs.timber)
     implementation(platform(libs.compose.bom))

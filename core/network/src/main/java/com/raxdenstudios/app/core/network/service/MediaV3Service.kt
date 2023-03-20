@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.core.network.service
 
+import com.google.gson.JsonObject
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.raxdenstudios.app.core.network.model.ErrorDto
 import com.raxdenstudios.app.core.network.model.MediaDetailDto
@@ -7,7 +8,6 @@ import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.VideoDto
 import com.raxdenstudios.app.core.network.model.WatchlistDto
-import org.json.JSONObject
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -90,5 +90,5 @@ interface MediaV3Service {
     suspend fun search(
         @Query("query") query: String,
         @Query("page") page: Int,
-    ): NetworkResponse<PageDto<JSONObject>, ErrorDto>
+    ): NetworkResponse<PageDto<JsonObject>, ErrorDto>
 }

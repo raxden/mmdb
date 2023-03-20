@@ -1,11 +1,7 @@
 package com.raxdenstudios.app.feature.home.component
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +17,7 @@ import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 @Composable
 fun HomeModules(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     modules: List<HomeModuleModel> = emptyList(),
     onModuleFilterClick: (HomeModuleModel.Carousel, MediaFilterModel) -> Unit = { _, _ -> },
     onModuleSeeAllClick: (HomeModuleModel.Carousel) -> Unit = {},
@@ -30,9 +27,7 @@ fun HomeModules(
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
-        contentPadding = WindowInsets.statusBars
-            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
-            .asPaddingValues(),
+        contentPadding = contentPadding,
         content = {
             items(
                 count = modules.size,

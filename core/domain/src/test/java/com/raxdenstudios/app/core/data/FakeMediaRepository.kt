@@ -27,6 +27,24 @@ class FakeMediaRepository : MediaRepository {
         Media.Movie.mock.copy(id = MediaId(2)),
         Media.Movie.mock.copy(id = MediaId(3)),
     )
+    private val pagedMedias: Map<Page, PageList<Media>> = mapOf(
+        Page(1) to PageList(
+            page = Page(1),
+            items = listOf(
+                Media.Movie.mock.copy(id = MediaId(1)),
+                Media.Movie.mock.copy(id = MediaId(2)),
+                Media.Movie.mock.copy(id = MediaId(3)),
+            ),
+        ),
+        Page(2) to PageList(
+            page = Page(2),
+            items = listOf(
+                Media.Movie.mock.copy(id = MediaId(2)),
+                Media.Movie.mock.copy(id = MediaId(3)),
+                Media.Movie.mock.copy(id = MediaId(4)),
+            ),
+        ),
+    )
 
     override suspend fun medias(
         mediaFilter: MediaFilter,
@@ -78,6 +96,6 @@ class FakeMediaRepository : MediaRepository {
     }
 
     override suspend fun search(query: String, page: Page, pageSize: PageSize): ResultData<PageList<Media>, ErrorDomain> {
-        TODO("Not yet implemented")
+        return ResultData.Success(pagedMedias[page]!!)
     }
 }

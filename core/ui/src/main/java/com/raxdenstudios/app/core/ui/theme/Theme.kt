@@ -26,10 +26,10 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = BlazeOrangeDark,
-    primaryVariant = BlazeOrangeDark,
+    primary = DeepOrange500,
+    primaryVariant = DeepOrange500,
     secondary = DeepOrange500,
-    secondaryVariant = BlazeOrangeDark,
+    secondaryVariant = DeepOrange500,
     background = Color.White,
     surface = Color.White,
     error = BlazeOrangeDark,
@@ -53,7 +53,7 @@ fun AppComposeTheme(
         shapes = Shapes,
         content = {
             SystemUiController(
-                color = Color.Transparent,
+                color = WhiteTranslucent,
                 useDarkIcons = !darkTheme
             )
             Surface(color = colors.background) {
@@ -78,7 +78,10 @@ fun SystemUiController(
             darkIcons = useDarkIcons
         )
 
-        systemUiController.setStatusBarColor(BlackTranslucent)
+        systemUiController.setStatusBarColor(
+            color = color,
+            darkIcons = useDarkIcons
+        )
         // setStatusBarColor() and setNavigationBarColor() also exist
         onDispose {}
     }

@@ -2,6 +2,7 @@ package com.raxdenstudios.app.core.ui.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.PlayCircleOutline
 import com.raxdenstudios.app.core.ui.R
 
@@ -12,6 +13,7 @@ object AppIcons {
     val Search = R.drawable.ic_baseline_search_24
     val Account = R.drawable.ic_baseline_account_box_24
     val Play = Icons.Default.PlayCircleOutline
+    val Clear = Icons.Default.Clear
     val Circle = Icons.Default.Circle
     val Rating = R.drawable.ic_baseline_star_24
     val Selected = R.drawable.ic_baseline_check_24

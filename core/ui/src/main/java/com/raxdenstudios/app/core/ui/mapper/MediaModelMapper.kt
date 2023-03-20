@@ -42,6 +42,7 @@ class MediaModelMapper @Inject constructor(
             budget = currencyModelMapper.transform(budget),
             revenue = currencyModelMapper.transform(revenue),
         )
+
         is Media.TVShow -> MediaModel(
             id = id,
             mediaType = MediaType.TvShow,

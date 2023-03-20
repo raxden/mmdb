@@ -38,9 +38,9 @@ class MediaRepositoryImpl @Inject constructor(
         val pageListDeferred = async { mediaDataSource.fetch(mediaFilter, page, pageSize) }
 
         val watchlist = watchlistDeferred.await().getValueOrDefault(emptyList())
-        val medias = pageListDeferred.await()
+        val result = pageListDeferred.await()
 
-        medias.map { pageList -> pageList.markMediasAsWatched(watchlist) }
+        result.map { pageList -> pageList.markMediasAsWatched(watchlist) }
     }
 
     override suspend fun fetchById(
@@ -94,8 +94,15 @@ class MediaRepositoryImpl @Inject constructor(
         query: String,
         page: Page,
         pageSize: PageSize
-    ): ResultData<PageList<Media>, ErrorDomain> =
-        mediaDataSource.search(query, page, pageSize)
+    ): ResultData<PageList<Media>, ErrorDomain> = withContext(dispatcher.io) {
+        val watchlistDeferred = async { watchlistDataSource.observe().first() }
+        val pageListDeferred = async { mediaDataSource.search(query, page, pageSize) }
+
+        val watchlist = watchlistDeferred.await().getValueOrDefault(emptyList())
+        val result = pageListDeferred.await()
+
+        result.map { pageList -> pageList.markMediasAsWatched(watchlist) }
+    }
 
     private fun PageList<Media>.markMediasAsWatched(watchlist: List<Media>): PageList<Media> =
         map { medias ->

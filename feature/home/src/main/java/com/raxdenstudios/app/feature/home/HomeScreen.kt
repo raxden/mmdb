@@ -1,6 +1,12 @@
 package com.raxdenstudios.app.feature.home
 
 import android.content.pm.ActivityInfo
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -16,8 +22,6 @@ import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.ShowSnackbarMessage
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
-import com.raxdenstudios.app.feature.home.HomeContract
-import com.raxdenstudios.app.feature.home.HomeViewModel
 import com.raxdenstudios.app.feature.home.component.HomeModules
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.modules
 
@@ -51,6 +55,8 @@ fun HomeScreen(
 
     HomeScreen(
         modifier = modifier,
+        contentPadding = WindowInsets.statusBars
+            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top).asPaddingValues(),
         uiState = uiState,
         onEvent = { event -> viewModel.setUserEvent(event) },
     )
@@ -59,6 +65,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
     uiState: HomeContract.UIState,
     onEvent: (HomeContract.UserEvent) -> Unit = {},
 ) {
@@ -72,6 +79,7 @@ private fun HomeScreen(
     }
     HomeModules(
         modifier = modifier,
+        contentPadding = contentPadding,
         modules = uiState.modules,
         onModuleFilterClick = { module, filter ->
             onEvent(HomeContract.UserEvent.MediaFilterClicked(module, filter))
