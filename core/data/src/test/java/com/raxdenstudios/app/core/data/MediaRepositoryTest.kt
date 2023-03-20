@@ -103,6 +103,7 @@ class MediaRepositoryTest {
         val page = Page(1)
         val pageSize = PageSize(10)
         coEvery { mediaDataSource.search(query, page, pageSize) } returns ResultData.Success(pageListSearchResults)
+        coEvery { watchlistDataSource.observe() } returns flowOf(ResultData.Success(emptyList()))
 
         val result = repository.search(query, page, pageSize)
 

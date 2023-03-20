@@ -102,14 +102,16 @@ class MediaGateway @Inject constructor(
                     page = pageDto.page,
                     total_pages = pageDto.total_pages,
                     total_results = pageDto.total_results,
-                    results = pageDto.results.mapNotNull { jsonObject ->
-                        when (jsonObject.getString("media_type")) {
-                            "movie" -> Gson().fromJson(jsonObject.toString(), MediaDto.Movie::class.java)
-                            "tv" -> Gson().fromJson(jsonObject.toString(), MediaDto.TVShow::class.java)
-                            "person" -> null
-                            else -> null
+                    results = pageDto.results
+                        .filter { jsonObject -> jsonObject.has("media_type") }
+                        .mapNotNull { jsonObject ->
+                            when (jsonObject.get("media_type").asString) {
+                                "movie" -> Gson().fromJson(jsonObject, MediaDto.Movie::class.java)
+                                "tv" -> Gson().fromJson(jsonObject, MediaDto.TVShow::class.java)
+                                "person" -> null
+                                else -> null
+                            }
                         }
-                    }
                 )
             }
 }

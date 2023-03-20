@@ -4,17 +4,35 @@ import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.ext.getValueOrDefault
+import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class SearchMediasUseCase @Inject constructor(
     private val mediaRepository: MediaRepository,
 ) {
 
-    suspend operator fun invoke(params: Params): ResultData<PageList<Media>, ErrorDomain> =
-        mediaRepository.search(params.query, params.page, params.pageSize)
+    operator fun invoke(params: Params): Flow<ResultData<PageList<Media>, ErrorDomain>> = flow {
+        val searchResult = mediaRepository.search(params.query, params.page, params.pageSize)
+        val flow = mediaRepository.observeWatchlist()
+            .map { result -> result.getValueOrDefault(emptyList()) }
+            .map { watchlist -> watchlist.map { it.id } }
+            .map { watchlistIds ->
+                searchResult.map { pageList ->
+                    pageList.map { medias ->
+                        medias.map { media -> media.copyWith(watchList = watchlistIds.contains(media.id)) }
+                    }
+                }
+            }
+        emitAll(flow)
+    }
 
     data class Params(
         val query: String,

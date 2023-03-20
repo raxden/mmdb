@@ -1,14 +1,7 @@
 package com.raxdenstudios.app.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.raxdenstudios.app.core.navigation.MainRoutes
+import com.raxdenstudios.app.core.ui.component.NavigationBarsSpacer
 import com.raxdenstudios.app.ui.component.MainBottomBar
 import com.raxdenstudios.app.ui.graph.mainGraph
 
@@ -49,24 +43,18 @@ private fun MainScreen(
         modifier = Modifier,
         scaffoldState = appState.scaffoldState,
         bottomBar = {
-            if (uiState.shouldShowBottomBar) {
-                Column {
+            Column {
+                if (uiState.shouldShowBottomBar) {
                     MainBottomBar(
                         onNavigateTo = { route -> appState.navigateToTopLevelDestination(route) },
                     )
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .windowInsetsBottomHeight(WindowInsets.navigationBars)
-                            .background(color = MaterialTheme.colors.background)
-                    )
                 }
+                NavigationBarsSpacer()
             }
         },
     ) { paddingValues ->
         NavHost(
-            modifier = Modifier
-                .padding(paddingValues),
+            modifier = Modifier.padding(paddingValues),
             navController = appState.navController,
             startDestination = MainRoutes.home.value,
         ) {

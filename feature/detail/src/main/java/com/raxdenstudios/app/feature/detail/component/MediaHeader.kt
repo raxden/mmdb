@@ -40,7 +40,6 @@ fun MediaHeader(
             .semantics { contentDescription = "Media Header" }
             .fillMaxWidth()
             .padding(bottom = 8.dp),
-        shape = Shapes.medium,
         elevation = 6.dp
     ) {
         Box(
