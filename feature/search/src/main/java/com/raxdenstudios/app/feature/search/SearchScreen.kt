@@ -2,13 +2,19 @@ package com.raxdenstudios.app.feature.search
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.raxdenstudios.app.core.model.MediaId
@@ -45,6 +51,7 @@ fun SearchScreen(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchScreen(
     modifier: Modifier = Modifier,
@@ -53,25 +60,38 @@ private fun SearchScreen(
 ) {
     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
-    Column(
-        modifier = modifier,
+    val focusManager = LocalFocusManager.current
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(
+                onClick = { focusManager.clearFocus() },
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            )
     ) {
-        StatusBarSpacer()
-        SearchTopBar(
-            modifier = Modifier.fillMaxWidth()
-                .zIndex(1f),
-            model = uiState.searchBarModel,
-            onSearchClick = { query -> onUIEvent(SearchContract.UserEvent.SearchClicked(query)) },
-            onSearchTextChanged = { query -> onUIEvent(SearchContract.UserEvent.SearchBarQueryChanged(query)) },
-            onSearchClearClick = { onUIEvent(SearchContract.UserEvent.ClearSearchBarClicked) },
-        )
-        MediaGrid(
-            modifier = Modifier.fillMaxSize()
-                .zIndex(0f),
-            items = uiState.results,
-            onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
-            onItemWatchButtonClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
-        )
+        Column {
+            StatusBarSpacer()
+            SearchTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .zIndex(1f),
+                model = uiState.searchBarModel,
+                focusManager = focusManager,
+                onSearchClick = { query -> onUIEvent(SearchContract.UserEvent.SearchClicked(query)) },
+                onSearchTextChanged = { query -> onUIEvent(SearchContract.UserEvent.SearchBarQueryChanged(query)) },
+                onSearchClearClick = { onUIEvent(SearchContract.UserEvent.ClearSearchBarClicked) },
+            )
+            MediaGrid(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(0f),
+                items = uiState.results,
+                onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
+                onItemWatchButtonClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
+            )
+        }
     }
 }
 
