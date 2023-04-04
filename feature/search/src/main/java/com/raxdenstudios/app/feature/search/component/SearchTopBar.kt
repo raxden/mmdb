@@ -25,7 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -48,11 +51,12 @@ private const val SEARCH_DELAY = 500L
 fun SearchTopBar(
     modifier: Modifier = Modifier,
     model: SearchBarModel,
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
+    focusManager: FocusManager = LocalFocusManager.current,
     onSearchClick: (String) -> Unit = {},
     onSearchTextChanged: (String) -> Unit = {},
     onSearchClearClick: () -> Unit = {},
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf("") }
     val searchTextFlow = remember { MutableStateFlow("") }
 
@@ -95,7 +99,9 @@ fun SearchTopBar(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
+                    if (searchText.isBlank()) return@KeyboardActions
                     onSearchClick(searchText)
+                    focusManager.clearFocus()
                     keyboardController?.hide()
                 })
         )
@@ -161,6 +167,7 @@ private fun ClearButtonIcon(
         ) {
             Icon(
                 imageVector = AppIcons.Clear,
+                tint = MaterialTheme.colors.primary,
                 contentDescription = null,
             )
         }
@@ -179,16 +186,7 @@ private fun Placeholder(
     )
 }
 
-@DevicePreviews
-@Composable
-fun DefaultSearchTopBarPreview() {
-    AppComposeTheme {
-        SearchTopBar(
-            model = SearchBarModel.Idle
-        )
-    }
-}
-
+@OptIn(ExperimentalComposeUiApi::class)
 @DevicePreviews
 @Composable
 fun LoadingSearchTopBarPreview() {
@@ -201,6 +199,18 @@ fun LoadingSearchTopBarPreview() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
+@DevicePreviews
+@Composable
+fun DefaultSearchTopBarPreview() {
+    AppComposeTheme {
+        SearchTopBar(
+            model = SearchBarModel.Idle
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
 @DevicePreviews
 @Composable
 fun SearchTopBarPreview() {
