@@ -53,13 +53,14 @@ gradleEnterprise {
 }
 
 include(":app")
+include(":catalog")
 
 include(":feature:home")
 include(":feature:list")
 include(":feature:account")
 include(":feature:search")
-include(":feature:detail")
 
+include(":feature:detail")
 include(":core:ui")
 include(":core:network")
 include(":core:domain")

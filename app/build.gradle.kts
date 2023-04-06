@@ -53,7 +53,7 @@ android {
         }
         create("release") {
             getSigningConfigProperties("release").run {
-                storeFile = file("$rootDir${getProperty("storeFile")}")
+                storeFile = file("$rootDir/${getProperty("storeFile")}")
                 storePassword = getProperty("storePassword")
                 keyAlias = getProperty("keyAlias")
                 keyPassword = getProperty("keyPassword")
@@ -121,6 +121,8 @@ fun getSigningConfigProperties(buildType: String): Properties {
     val propertiesFile = file("$rootDir/config/signing_$buildType.properties")
     if (propertiesFile.exists()) {
         propertiesFile.inputStream().use { properties.load(it) }
+    } else {
+        println("No signing config found for build type $buildType")
     }
     return properties
 }
@@ -156,6 +158,7 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // debug libraries
+    debugImplementation(project(Modules.catalog))
     debugImplementation(libs.leakcanary)
     debugImplementation(platform(libs.firebase.bom))
     debugImplementation(libs.bundles.compose.debug)
