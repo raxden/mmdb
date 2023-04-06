@@ -1,6 +1,7 @@
 object Modules {
 
     const val app = ":app"
+    const val catalog = ":catalog"
 
     const val coreNetwork = ":core:network"
     const val coreDatabase = ":core:database"
