@@ -66,7 +66,7 @@ sealed class Media {
                 release = LocalDate.of(1970, 1, 1),
                 originalLanguage = Locale("en"),
                 spokenLanguages = emptyList(),
-                vote = Vote.empty,
+                vote = Vote.mock,
                 watchList = false,
                 certification = "PEGI 18",
                 budget = 0.0,
@@ -115,7 +115,7 @@ sealed class Media {
                 firstAirDate = LocalDate.of(1970, 1, 1),
                 originalLanguage = Locale("en"),
                 spokenLanguages = emptyList(),
-                vote = Vote.empty,
+                vote = Vote.mock,
                 watchList = false,
                 certification = "PEGI 18",
             )

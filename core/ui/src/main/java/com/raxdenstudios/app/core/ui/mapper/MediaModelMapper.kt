@@ -12,6 +12,7 @@ class MediaModelMapper @Inject constructor(
     private val dateModelMapper: DateModelMapper,
     private val languageModelMapper: LanguageModelMapper,
     private val currencyModelMapper: CurrencyModelMapper,
+    private val ratingModelMapper: RatingModelMapper,
 ) : DataMapper<Media, MediaModel>() {
 
     override fun transform(source: Media): MediaModel = source.toModel()
@@ -33,7 +34,7 @@ class MediaModelMapper @Inject constructor(
             certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
-            rating = vote.average.toString(),
+            rating = ratingModelMapper.transform(vote.average),
             releaseYear = release.year.toString(),
             releaseDate = dateModelMapper.transform(release),
             watchlist = watchList,
@@ -59,7 +60,7 @@ class MediaModelMapper @Inject constructor(
             certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
-            rating = vote.average.toString(),
+            rating = ratingModelMapper.transform(vote.average),
             releaseYear = firstAirDate.year.toString(),
             releaseDate = dateModelMapper.transform(firstAirDate),
             watchlist = watchList,

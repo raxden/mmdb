@@ -1,5 +1,7 @@
 package com.raxdenstudios.app.core.model
 
+import androidx.annotation.VisibleForTesting
+
 data class Vote(
     val average: Float,
     val count: Int,
@@ -7,7 +9,8 @@ data class Vote(
 
     companion object {
 
-        val empty = Vote(
+        @VisibleForTesting
+        val mock = Vote(
             average = 0.0f,
             count = 0,
         )
