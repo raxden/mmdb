@@ -18,6 +18,7 @@ import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.detail.mapper.MediaPageListResultModelMapper
@@ -70,11 +71,13 @@ internal class MediaViewModelTest {
     private val dateModelMapper = DateModelMapper()
     private val languageModelMapper = LanguageModelMapper()
     private val currencyModelMapper = CurrencyModelMapper()
+    private val ratingModelMapper = RatingModelMapper()
     private val mediaModelMapper: MediaModelMapper = MediaModelMapper(
         durationModelMapper = durationModelMapper,
         dateModelMapper = dateModelMapper,
         languageModelMapper = languageModelMapper,
         currencyModelMapper = currencyModelMapper,
+        ratingModelMapper = ratingModelMapper,
     )
     private val errorModelMapper: ErrorModelMapper = ErrorModelMapper(stringProvider)
     private val mediaResultModelMapper: MediaResultModelMapper = MediaResultModelMapper(

@@ -13,9 +13,10 @@ import com.raxdenstudios.app.feature.detail.mapper.MediaPageListResultModelMappe
 import com.raxdenstudios.app.feature.detail.mapper.MediaResultModelMapper
 import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
+import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
+import com.raxdenstudios.commons.ext.fold
 import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.onFailure
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class MediaViewModel @Inject constructor(
     private val getMediaUseCase: GetMediaUseCase,
@@ -75,10 +77,7 @@ class MediaViewModel @Inject constructor(
         )
         getMediaUseCase(params)
             .map { result -> mediaResultModelMapper.transform(result) }
-            .collect { result ->
-                result.onSuccess { media -> loadDataSuccess(media) }
-                    .onFailure { error -> loadDataFailure(error) }
-            }
+            .collect { result -> result.fold(::loadDataSuccess, ::loadDataFailure) }
     }
 
     private fun loadMediaVideos() {
@@ -89,8 +88,12 @@ class MediaViewModel @Inject constructor(
         viewModelScope.safeLaunch {
             getMediaVideosUseCase(params)
                 .map { videos -> videoModelMapper.transform(videos) }
-                .map { videos -> _uiState.update { value -> value.copy(videos = videos) } }
+                .onSuccess { videos -> loadMediaVideosSuccess(videos) }
         }
+    }
+
+    private fun loadMediaVideosSuccess(videos: List<VideoModel>) {
+        _uiState.update { value -> value.copy(videos = videos) }
     }
 
     private fun loadRelatedMedias() {
@@ -101,12 +104,12 @@ class MediaViewModel @Inject constructor(
         viewModelScope.safeLaunch {
             getRelatedMediasUseCase(params)
                 .map { result -> mediaPageListResultModelMapper.transform(result) }
-                .collect { result ->
-                    result.onSuccess { relatedMedias ->
-                        _uiState.update { value -> value.copy(relatedMedias = relatedMedias) }
-                    }
-                }
+                .collect { result -> result.onSuccess(::loadRelatedMediasSuccess) }
         }
+    }
+
+    private fun loadRelatedMediasSuccess(relatedMedias: RelatedMediasModel) {
+        _uiState.update { value -> value.copy(relatedMedias = relatedMedias) }
     }
 
     private fun loadDataFailure(error: ErrorModel) {

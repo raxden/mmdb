@@ -17,6 +17,7 @@ import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelMapper
@@ -60,11 +61,13 @@ class HomeViewModelTest {
     private val durationModelMapper = DurationModelMapper(
         stringProvider = stringProvider
     )
+    private val ratingModelMapper = RatingModelMapper()
     private val mediaModelMapper = MediaModelMapper(
         durationModelMapper = durationModelMapper,
         dateModelMapper = dateModelMapper,
         languageModelMapper = languageModelMapper,
         currencyModelMapper = currencyModelMapper,
+        ratingModelMapper = ratingModelMapper,
     )
     private val carouselModelMapper = CarouselModelMapper(
         stringProvider = stringProvider,

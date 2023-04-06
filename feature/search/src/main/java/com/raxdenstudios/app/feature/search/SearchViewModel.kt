@@ -107,7 +107,10 @@ class SearchViewModel @Inject constructor(
 
     private fun clearSearchBarClicked() {
         _uiState.update { value ->
-            value.copy(searchBarModel = SearchBarModel.Focused)
+            value.copy(
+                searchBarModel = SearchBarModel.Focused,
+                results = emptyList()
+            )
         }
     }
 
