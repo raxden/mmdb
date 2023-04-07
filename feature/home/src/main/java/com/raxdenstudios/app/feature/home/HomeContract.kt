@@ -19,7 +19,6 @@ object HomeContract {
     data class UIState(
         val isLoading: Boolean = false,
         val modules: List<HomeModuleModel>,
-        val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     ) {
 
@@ -28,7 +27,6 @@ object HomeContract {
             val loading = UIState(
                 isLoading = true,
                 modules = emptyList(),
-                events = emptySet(),
                 error = null,
             )
         }

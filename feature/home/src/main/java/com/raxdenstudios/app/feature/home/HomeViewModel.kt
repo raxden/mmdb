@@ -21,8 +21,11 @@ import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.provider.StringProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -42,6 +45,9 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(HomeContract.UIState.loading)
     val uiState: StateFlow<HomeContract.UIState> = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<HomeContract.UIEvent>()
+    val uiEvent: SharedFlow<HomeContract.UIEvent> = _uiEvent.asSharedFlow()
 
     init {
         loadData()
@@ -83,24 +89,19 @@ class HomeViewModel @Inject constructor(
             true -> removeFromWatchlist(event.item)
             false -> addToWatchlist(event.item)
         }
+
         is HomeContract.UserEvent.SeeAllButtonClicked -> viewAllButtonSelected(event.module)
         is HomeContract.UserEvent.MediaFilterClicked -> filterChanged(event.module, event.filter)
         HomeContract.UserEvent.ErrorDismissed -> errorDismissed()
     }
 
     private fun viewAllButtonSelected(module: HomeModuleModel.Carousel) {
-        _uiState.update { value ->
-            val mediaFilter = carouselModelToMediaFilterMapper.transform(module)
-            val event = HomeContract.UIEvent.NavigateToMedias(
-                mediaFilter.mediaType,
-                mediaFilter.mediaCategory
-            )
-            value.copy(events = value.events.plus(event))
-        }
-    }
-
-    fun eventConsumed(event: HomeContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.minus(event)) }
+        val mediaFilter = carouselModelToMediaFilterMapper.transform(module)
+        val event = HomeContract.UIEvent.NavigateToMedias(
+            mediaFilter.mediaType,
+            mediaFilter.mediaCategory
+        )
+        viewModelScope.safeLaunch { _uiEvent.emit(event) }
     }
 
     private fun filterChanged(
@@ -114,13 +115,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun mediaSelected(media: MediaModel) {
-        sendEvent(HomeContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
-    }
-
-    private fun sendEvent(event: HomeContract.UIEvent) {
-        _uiState.update { value ->
-            value.copy(events = value.events.plus(event))
-        }
+        val event = HomeContract.UIEvent.NavigateToMedia(media.id, media.mediaType)
+        viewModelScope.safeLaunch { _uiEvent.emit(event) }
     }
 
     private fun addToWatchlist(media: MediaModel) {
@@ -137,7 +133,7 @@ class HomeViewModel @Inject constructor(
     private fun mediaAddedToWatchlist(media: MediaModel) {
         val message = stringProvider.getString(R.string.added_to_watchlist, media.title)
         val event = HomeContract.UIEvent.ShowMessage(message)
-        sendEvent(event)
+        viewModelScope.safeLaunch { _uiEvent.emit(event) }
     }
 
     private fun removeFromWatchlist(media: MediaModel) {
@@ -154,7 +150,7 @@ class HomeViewModel @Inject constructor(
     private fun mediaRemovedFromWatchlist(media: MediaModel) {
         val message = stringProvider.getString(R.string.removed_from_watchlist, media.title)
         val event = HomeContract.UIEvent.ShowMessage(message)
-        sendEvent(event)
+        viewModelScope.safeLaunch { _uiEvent.emit(event) }
     }
 
     private fun errorDismissed() {

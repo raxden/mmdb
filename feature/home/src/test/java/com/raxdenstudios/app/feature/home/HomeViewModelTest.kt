@@ -135,17 +135,15 @@ class HomeViewModelTest {
     @Test
     fun `When media is selected, Then uiState is updated`() {
         runTest {
-            viewModel.uiState.test {
-                skipItems(2)
-                viewModel.setUserEvent(HomeContract.UserEvent.MediaSelected(MediaModel.mock))
+            viewModel.uiEvent.test {
+                val event = HomeContract.UserEvent.MediaSelected(MediaModel.mock)
+                viewModel.setUserEvent(event)
 
-                val uiState = awaitItem()
-                assertThat(uiState.events).isEqualTo(
-                    setOf(
-                        HomeContract.UIEvent.NavigateToMedia(
-                            mediaId = MediaId(1L),
-                            mediaType = MediaType.Movie,
-                        )
+                val uiEvent = awaitItem()
+                assertThat(uiEvent).isEqualTo(
+                    HomeContract.UIEvent.NavigateToMedia(
+                        mediaId = MediaId(1L),
+                        mediaType = MediaType.Movie,
                     )
                 )
             }
@@ -169,9 +167,7 @@ class HomeViewModelTest {
         runTest {
             coEvery { removeMediaToWatchlistUseCase(any()) } returns ResultData.Success(true)
 
-            viewModel.setUserEvent(
-                HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock.copy(watchlist = true))
-            )
+            viewModel.setUserEvent(HomeContract.UserEvent.WatchButtonClicked(MediaModel.mock.copy(watchlist = true)))
 
             advanceUntilIdle()
             coVerify { removeMediaToWatchlistUseCase(any()) }
@@ -181,19 +177,15 @@ class HomeViewModelTest {
     @Test
     fun `When seeAll is selected, Then uiState is updated`() {
         runTest {
-            viewModel.uiState.test {
-                skipItems(2)
-                viewModel.setUserEvent(
-                    HomeContract.UserEvent.SeeAllButtonClicked(HomeModuleModel.Carousel.Popular.empty)
-                )
+            viewModel.uiEvent.test {
+                val event = HomeContract.UserEvent.SeeAllButtonClicked(HomeModuleModel.Carousel.Popular.empty)
+                viewModel.setUserEvent(event)
 
-                val uiState = awaitItem()
-                assertThat(uiState.events).isEqualTo(
-                    setOf(
-                        HomeContract.UIEvent.NavigateToMedias(
-                            mediaType = MediaType.Movie,
-                            mediaCategory = MediaCategory.Popular,
-                        )
+                val uiEvent = awaitItem()
+                assertThat(uiEvent).isEqualTo(
+                    HomeContract.UIEvent.NavigateToMedias(
+                        mediaType = MediaType.Movie,
+                        mediaCategory = MediaCategory.Popular,
                     )
                 )
             }
@@ -204,12 +196,12 @@ class HomeViewModelTest {
     fun `When filter is selected, Then uiState is updated`() {
         runTest {
             coEvery { changeHomeModuleFilterUseCase.invoke(any()) } returns ResultData.Success(true)
-            viewModel.setUserEvent(
-                HomeContract.UserEvent.MediaFilterClicked(
-                    module = HomeModuleModel.Carousel.Popular.empty,
-                    filter = MediaFilterModel.mockk
-                )
+
+            val event = HomeContract.UserEvent.MediaFilterClicked(
+                module = HomeModuleModel.Carousel.Popular.empty,
+                filter = MediaFilterModel.mockk
             )
+            viewModel.setUserEvent(event)
 
             advanceUntilIdle()
             coVerify { changeHomeModuleFilterUseCase.invoke(any()) }
