@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,7 +21,6 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
-import com.raxdenstudios.app.core.ui.component.ShowSnackbarMessage
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.component.HomeModules
 import com.raxdenstudios.app.feature.home.component.HomePreviewData.modules
@@ -34,22 +34,14 @@ fun HomeScreen(
     onNavigateToMedias: (mediaType: MediaType, mediaCategory: MediaCategory) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            is HomeContract.UIEvent.NavigateToMedias -> {
-                onNavigateToMedias(event.mediaType, event.mediaCategory)
-                viewModel.eventConsumed(event)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is HomeContract.UIEvent.NavigateToMedias -> onNavigateToMedias(event.mediaType, event.mediaCategory)
+                is HomeContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
+                is HomeContract.UIEvent.ShowMessage -> scaffoldState.snackbarHostState.showSnackbar(event.message)
             }
-            is HomeContract.UIEvent.NavigateToMedia -> {
-                onNavigateToMedia(event.mediaId, event.mediaType)
-                viewModel.eventConsumed(event)
-            }
-            is HomeContract.UIEvent.ShowMessage ->
-                ShowSnackbarMessage(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    message = event.message,
-                    onDismiss = { viewModel.eventConsumed(event) }
-                )
         }
     }
 
