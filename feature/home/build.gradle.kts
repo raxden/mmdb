@@ -78,6 +78,7 @@ android {
 
 dependencies {
     implementation(project(Modules.coreCommon))
+    implementation(project(Modules.corei18n))
     implementation(project(Modules.coreUI))
     implementation(project(Modules.coreModel))
     implementation(project(Modules.coreDomain))

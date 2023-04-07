@@ -33,8 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Typography

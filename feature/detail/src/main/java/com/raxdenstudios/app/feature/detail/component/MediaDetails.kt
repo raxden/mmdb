@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.component.Header
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme

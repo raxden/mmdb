@@ -5,6 +5,7 @@ object Modules {
     const val coreNetwork = ":core:network"
     const val coreDatabase = ":core:database"
     const val coreUI = ":core:ui"
+    const val corei18n = ":core:i18n"
     const val coreDomain = ":core:domain"
     const val coreData = ":core:data"
     const val coreCommon = ":core:common"

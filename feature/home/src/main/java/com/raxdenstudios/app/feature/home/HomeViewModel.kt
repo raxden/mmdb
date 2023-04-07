@@ -6,7 +6,7 @@ import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
 import com.raxdenstudios.app.core.domain.ChangeHomeModuleFilterUseCase
 import com.raxdenstudios.app.core.domain.GetHomeModulesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
-import com.raxdenstudios.app.core.ui.R
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
@@ -83,6 +83,7 @@ class HomeViewModel @Inject constructor(
             true -> removeFromWatchlist(event.item)
             false -> addToWatchlist(event.item)
         }
+
         is HomeContract.UserEvent.SeeAllButtonClicked -> viewAllButtonSelected(event.module)
         is HomeContract.UserEvent.MediaFilterClicked -> filterChanged(event.module, event.filter)
         HomeContract.UserEvent.ErrorDismissed -> errorDismissed()

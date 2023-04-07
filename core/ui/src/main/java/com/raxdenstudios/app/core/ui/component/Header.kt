@@ -16,8 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.DeepOrange500

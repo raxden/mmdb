@@ -127,6 +127,7 @@ fun getSigningConfigProperties(buildType: String): Properties {
 
 dependencies {
     implementation(project(Modules.coreCommon))
+    implementation(project(Modules.corei18n))
     implementation(project(Modules.coreUI))
     implementation(project(Modules.coreNetwork))
     implementation(project(Modules.coreDatabase))
