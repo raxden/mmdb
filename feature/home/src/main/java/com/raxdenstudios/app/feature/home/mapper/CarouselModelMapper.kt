@@ -1,9 +1,9 @@
 package com.raxdenstudios.app.feature.home.mapper
 
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel

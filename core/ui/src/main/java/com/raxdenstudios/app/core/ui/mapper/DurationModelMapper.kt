@@ -1,6 +1,6 @@
 package com.raxdenstudios.app.core.ui.mapper
 
-import com.raxdenstudios.app.core.ui.R
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.commons.DataMapper
 import com.raxdenstudios.commons.provider.StringProvider
 import org.threeten.bp.Duration

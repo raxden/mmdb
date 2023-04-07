@@ -2,7 +2,7 @@ package com.raxdenstudios.app.ui.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.raxdenstudios.app.core.ui.R
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 
 sealed class BottomBarItemModel(

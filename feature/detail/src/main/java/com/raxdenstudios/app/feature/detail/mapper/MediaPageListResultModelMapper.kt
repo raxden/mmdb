@@ -1,9 +1,9 @@
 package com.raxdenstudios.app.feature.detail.mapper
 
+import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.core.ui.R
 import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
