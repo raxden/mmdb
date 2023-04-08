@@ -47,6 +47,8 @@ rootCoverage {
         "**/*Activity.class",
         "**/*Fragment.class",
         "**/*Adapter.class",
+        "**/component/*",
+        "**/*Screen.class",
     )
 
     // Since 1.1 generateHtml is by default true
