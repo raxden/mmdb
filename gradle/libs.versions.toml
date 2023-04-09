@@ -26,7 +26,7 @@ compose-compiler = "1.4.0"
 compose-navigation = "2.5.3"
 compose-navigation-hilt = "1.0.0"
 compose-ui-constraintlayout = "1.0.1"
-compose-viewmodel = "2.6.0"
+compose-lifecycle = "2.6.0"
 coroutines-bom = "1.6.4"
 detekt = "1.22.0"
 espresso = "3.5.1"
@@ -104,7 +104,8 @@ compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose-viewmodel" }
+compose-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android" }
 coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "coroutines-bom" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
@@ -172,7 +173,8 @@ compose-material = [
     "compose-navigation-hilt",
     "compose-ui-constraintlayout",
     "compose-ui-tooling-preview",
-    "compose-viewmodel",
+    "compose-lifecycle-viewmodel",
+    "compose-lifecycle-runtime",
 ]
 coroutines = [
     "commons-coroutines",
