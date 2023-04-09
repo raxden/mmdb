@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
@@ -29,7 +29,7 @@ fun MediasScreen(
     onNavigateToBack: () -> Unit,
     onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MediaListContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)

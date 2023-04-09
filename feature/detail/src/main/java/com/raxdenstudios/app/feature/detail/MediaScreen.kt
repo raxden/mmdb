@@ -25,7 +25,6 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +38,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
@@ -67,7 +67,7 @@ fun MediaScreen(
     onNavigateToRelatedMedias: (id: MediaId, mediaType: MediaType) -> Unit = { _, _ -> },
 ) {
 
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MediaContract.UIEvent.NavigateToBack -> onNavigateToBack()

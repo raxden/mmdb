@@ -7,12 +7,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.raxdenstudios.app.core.navigation.MainRoutes
 import com.raxdenstudios.app.core.navigation.NavigationRoute
 import com.raxdenstudios.app.core.ui.DevicePreviews
@@ -28,7 +28,7 @@ fun MainBottomBar(
     viewModel: BottomBarViewModel = hiltViewModel(),
     onNavigateTo: (NavigationRoute) -> Unit = {},
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             BottomBarContract.UIEvent.NavigateToAccount -> onNavigateTo(MainRoutes.account)
