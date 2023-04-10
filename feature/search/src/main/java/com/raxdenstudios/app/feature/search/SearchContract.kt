@@ -12,7 +12,6 @@ object SearchContract {
     data class UIState(
         val searchBarModel: SearchBarModel = SearchBarModel.Idle,
         val results: List<MediaModel> = emptyList(),
-        val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     )
 

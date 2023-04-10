@@ -24,28 +24,6 @@ internal class BottomBarViewModelTest {
     }
 
     @Test
-    fun `consume event`() = runTest {
-        val event = BottomBarContract.UserEvent.ItemSelected(BottomBarItemModel.Account())
-
-        viewModel.setUserEvent(event)
-        viewModel.eventConsumed(BottomBarContract.UIEvent.NavigateToAccount)
-
-        viewModel.uiState.test {
-            val result = awaitItem()
-            assertThat(result).isEqualTo(
-                BottomBarContract.UIState(
-                    items = listOf(
-                        BottomBarItemModel.Home(),
-                        BottomBarItemModel.Search(),
-                        BottomBarItemModel.Account(isSelected = true)
-                    ),
-                    events = emptySet()
-                )
-            )
-        }
-    }
-
-    @Test
     fun `navigate to account`() = runTest {
         val event = BottomBarContract.UserEvent.ItemSelected(BottomBarItemModel.Account())
 
@@ -60,9 +38,13 @@ internal class BottomBarViewModelTest {
                         BottomBarItemModel.Search(),
                         BottomBarItemModel.Account(isSelected = true)
                     ),
-                    events = setOf(BottomBarContract.UIEvent.NavigateToAccount)
                 )
             )
+            viewModel.uiEvent.test {
+                val event = awaitItem()
+                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToAccount)
+            }
+            cancelAndConsumeRemainingEvents()
         }
     }
 
@@ -81,9 +63,13 @@ internal class BottomBarViewModelTest {
                         BottomBarItemModel.Search(),
                         BottomBarItemModel.Account()
                     ),
-                    events = setOf(BottomBarContract.UIEvent.NavigateToHome)
                 )
             )
+            viewModel.uiEvent.test {
+                val event = awaitItem()
+                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToHome)
+            }
+            cancelAndConsumeRemainingEvents()
         }
     }
 
@@ -102,9 +88,13 @@ internal class BottomBarViewModelTest {
                         BottomBarItemModel.Search(isSelected = true),
                         BottomBarItemModel.Account()
                     ),
-                    events = setOf(BottomBarContract.UIEvent.NavigateToSearch)
                 )
             )
+            viewModel.uiEvent.test {
+                val event = awaitItem()
+                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToSearch)
+            }
+            cancelAndConsumeRemainingEvents()
         }
     }
 }

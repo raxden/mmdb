@@ -14,7 +14,6 @@ object MediaListContract {
         val isLoadingMoreContent: Boolean = false,
         val title: String,
         val items: List<MediaModel>,
-        val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     ) {
 
