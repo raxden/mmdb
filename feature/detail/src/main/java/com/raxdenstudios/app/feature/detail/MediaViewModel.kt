@@ -20,8 +20,11 @@ import com.raxdenstudios.commons.ext.map
 import com.raxdenstudios.commons.ext.onSuccess
 import com.raxdenstudios.commons.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -44,6 +47,9 @@ class MediaViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MediaContract.UIState.loading)
     val uiState: StateFlow<MediaContract.UIState> = _uiState.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<MediaContract.UIEvent>()
+    val uiEvent: SharedFlow<MediaContract.UIEvent> = _uiEvent.asSharedFlow()
+
     private val params: MediaParams by lazy { mediaParamsFactory.create() }
 
     init {
@@ -60,14 +66,6 @@ class MediaViewModel @Inject constructor(
         is MediaContract.UserEvent.RelatedWatchlistClick -> watchlistClick(event.media)
         is MediaContract.UserEvent.WatchlistClick -> watchlistClick(event.media)
         MediaContract.UserEvent.RelatedSeeAllButtonClicked -> relatedSeeAllClick()
-    }
-
-    fun eventConsumed(event: MediaContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.minus(event)) }
-    }
-
-    private fun updateUIStateWithEvent(event: MediaContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.plus(event)) }
     }
 
     private fun loadMedia() = viewModelScope.safeLaunch {
@@ -132,12 +130,16 @@ class MediaViewModel @Inject constructor(
 
     private fun relatedSeeAllClick() {
         val event = MediaContract.UIEvent.NavigateToRelatedMedias(params.mediaId, params.mediaType)
-        updateUIStateWithEvent(event)
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(event)
+        }
     }
 
     private fun relatedMediaClick(media: MediaModel) {
         val event = MediaContract.UIEvent.NavigateToMedia(media.id, media.mediaType)
-        updateUIStateWithEvent(event)
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(event)
+        }
     }
 
     private fun watchlistClick(media: MediaModel) {
@@ -176,12 +178,16 @@ class MediaViewModel @Inject constructor(
 
     private fun backClicked() {
         val event = MediaContract.UIEvent.NavigateToBack
-        updateUIStateWithEvent(event)
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(event)
+        }
     }
 
     private fun videoClick(video: VideoModel) {
         val event = MediaContract.UIEvent.PlayYoutubeVideo(video.uri)
-        updateUIStateWithEvent(event)
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(event)
+        }
     }
 
     private fun errorDismissed() {

@@ -163,20 +163,12 @@ internal class MediaViewModelTest {
 
     @Test
     fun `When backClicked is received, Then update uiState`() = runTest {
-        viewModel.uiState.test {
-            skipItems(1)
+        viewModel.uiEvent.test {
 
             viewModel.setUserEvent(MediaContract.UserEvent.BackClicked)
 
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = listOf(VideoModel.mock),
-                    events = setOf(MediaContract.UIEvent.NavigateToBack),
-                )
-            )
+            val uiEvent = awaitItem()
+            assertThat(uiEvent).isEqualTo(MediaContract.UIEvent.NavigateToBack)
         }
     }
 
@@ -185,18 +177,9 @@ internal class MediaViewModelTest {
         val media = MediaModel.mock.copy(watchlist = false)
 
         viewModel.uiState.test {
-            skipItems(1)
-
             viewModel.setUserEvent(MediaContract.UserEvent.WatchlistClick(media))
 
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = listOf(VideoModel.mock),
-                )
-            )
+            cancelAndConsumeRemainingEvents()
             coVerify(exactly = 1) { addMediaToWatchlistUseCase.invoke(any()) }
         }
     }
@@ -206,38 +189,21 @@ internal class MediaViewModelTest {
         val media = MediaModel.mock.copy(watchlist = true)
 
         viewModel.uiState.test {
-            skipItems(1)
-
             viewModel.setUserEvent(MediaContract.UserEvent.WatchlistClick(media))
 
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = listOf(VideoModel.mock),
-                )
-            )
+            cancelAndConsumeRemainingEvents()
             coVerify(exactly = 1) { removeMediaFromWatchlistUseCase.invoke(any()) }
         }
     }
 
     @Test
     fun `When videoClicked is received, Then update uiState`() = runTest {
-        viewModel.uiState.test {
-            skipItems(2)
+        viewModel.uiEvent.test {
 
             viewModel.setUserEvent(MediaContract.UserEvent.VideoClick(videoModel))
 
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = listOf(VideoModel.mock),
-                    events = setOf(MediaContract.UIEvent.PlayYoutubeVideo("https://www.youtube.com/watch?v=l6rAoph5UgI")),
-                )
-            )
+            val uiEvent = awaitItem()
+            assertThat(uiEvent).isEqualTo(MediaContract.UIEvent.PlayYoutubeVideo("https://www.youtube.com/watch?v=l6rAoph5UgI"))
         }
     }
 
@@ -256,27 +222,6 @@ internal class MediaViewModelTest {
                     media = MediaModel.mock,
                     relatedMedias = RelatedMediasModel.mock,
                     videos = emptyList(),
-                    error = null,
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `When eventConsumed is called, Then remove the event from uiState`() = runTest {
-        viewModel.uiState.test {
-            skipItems(2)
-
-            viewModel.setUserEvent(MediaContract.UserEvent.BackClicked)
-            skipItems(1)
-            viewModel.eventConsumed(MediaContract.UIEvent.NavigateToBack)
-
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = listOf(VideoModel.mock),
                     error = null,
                 )
             )

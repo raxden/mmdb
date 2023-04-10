@@ -154,17 +154,13 @@ class SearchViewModelTest {
     @Test
     fun `should navigate to media`() = runTest {
         val media = MediaModel.mock
-        viewModel.uiState.test {
-            skipItems(1)
+        viewModel.uiEvent.test {
 
             viewModel.setUserEvent(SearchContract.UserEvent.MediaClicked(media))
 
-            val firstResult = awaitItem()
-            assertThat(firstResult).isEqualTo(
-                SearchContract.UIState(
-                    events = setOf(SearchContract.UIEvent.NavigateToMedia(media.id, media.mediaType)),
-                )
-            )
+            val result = awaitItem()
+            assertThat(result).isEqualTo(SearchContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
+
             cancelAndIgnoreRemainingEvents()
         }
     }

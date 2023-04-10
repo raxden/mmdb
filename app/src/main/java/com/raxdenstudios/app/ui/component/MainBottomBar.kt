@@ -7,6 +7,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,13 +30,15 @@ fun MainBottomBar(
     onNavigateTo: (NavigationRoute) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            BottomBarContract.UIEvent.NavigateToAccount -> onNavigateTo(MainRoutes.account)
-            BottomBarContract.UIEvent.NavigateToHome -> onNavigateTo(MainRoutes.home)
-            BottomBarContract.UIEvent.NavigateToSearch -> onNavigateTo(MainRoutes.search)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                BottomBarContract.UIEvent.NavigateToAccount -> onNavigateTo(MainRoutes.account)
+                BottomBarContract.UIEvent.NavigateToHome -> onNavigateTo(MainRoutes.home)
+                BottomBarContract.UIEvent.NavigateToSearch -> onNavigateTo(MainRoutes.search)
+            }
         }
-        viewModel.eventConsumed(event)
     }
 
     MainBottomBar(

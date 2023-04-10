@@ -25,6 +25,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,16 +69,18 @@ fun MediaScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            is MediaContract.UIEvent.NavigateToBack -> onNavigateToBack()
-            is MediaContract.UIEvent.PlayYoutubeVideo -> onNavigateToYoutubeVideo(event.url)
-            is MediaContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
-            is MediaContract.UIEvent.NavigateToMedias -> onNavigateToMedias(event.mediaType, event.mediaCategory)
-            is MediaContract.UIEvent.NavigateToRelatedMedias ->
-                onNavigateToRelatedMedias(event.mediaId, event.mediaType)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is MediaContract.UIEvent.NavigateToBack -> onNavigateToBack()
+                is MediaContract.UIEvent.PlayYoutubeVideo -> onNavigateToYoutubeVideo(event.url)
+                is MediaContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
+                is MediaContract.UIEvent.NavigateToMedias -> onNavigateToMedias(event.mediaType, event.mediaCategory)
+                is MediaContract.UIEvent.NavigateToRelatedMedias ->
+                    onNavigateToRelatedMedias(event.mediaId, event.mediaType)
+            }
         }
-        viewModel.eventConsumed(event)
     }
 
     MediaScreen(

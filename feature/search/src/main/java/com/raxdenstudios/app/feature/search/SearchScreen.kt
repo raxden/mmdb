@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -35,11 +36,12 @@ fun SearchScreen(
     onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit = { _, _ -> },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            is SearchContract.UIEvent.NavigateToMedia -> {
-                onNavigateToMedia(event.mediaId, event.mediaType)
-                viewModel.eventConsumed(event)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is SearchContract.UIEvent.NavigateToMedia ->
+                    onNavigateToMedia(event.mediaId, event.mediaType)
             }
         }
     }

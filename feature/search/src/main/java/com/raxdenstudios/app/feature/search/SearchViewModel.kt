@@ -14,8 +14,11 @@ import com.raxdenstudios.commons.ext.fold
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.pagination.model.PageList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -31,6 +34,9 @@ class SearchViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(SearchContract.UIState())
     val uiState: StateFlow<SearchContract.UIState> = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<SearchContract.UIEvent>()
+    val uiEvent: SharedFlow<SearchContract.UIEvent> = _uiEvent.asSharedFlow()
 
     fun setUserEvent(event: SearchContract.UserEvent): Unit = when (event) {
         SearchContract.UserEvent.ClearSearchBarClicked -> clearSearchBarClicked()
@@ -114,16 +120,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun eventConsumed(event: SearchContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.minus(event)) }
-    }
-
     private fun mediaClick(media: MediaModel) {
-        sendEvent(SearchContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
-    }
-
-    private fun sendEvent(event: SearchContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.plus(event)) }
+        viewModelScope.safeLaunch {
+            val event = SearchContract.UIEvent.NavigateToMedia(media.id, media.mediaType)
+            _uiEvent.emit(event)
+        }
     }
 
     private fun errorDismissed() {

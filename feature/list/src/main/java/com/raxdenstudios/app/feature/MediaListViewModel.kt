@@ -28,8 +28,11 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageResult
 import com.raxdenstudios.commons.pagination.model.PageSize
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -60,6 +63,9 @@ class MediaListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MediaListContract.UIState.loading())
     val uiState: StateFlow<MediaListContract.UIState> = _uiState.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<MediaListContract.UIEvent>()
+    val uiEvent: SharedFlow<MediaListContract.UIEvent> = _uiEvent.asSharedFlow()
+
     init {
         setTitle(params)
         requestFirstPage(params)
@@ -77,15 +83,22 @@ class MediaListViewModel @Inject constructor(
             true -> removeMovieFromWatchlist(event.item)
             false -> addMovieToWatchlist(event.item)
         }
-        MediaListContract.UserEvent.BackClicked ->
-            updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToBack)
-        is MediaListContract.UserEvent.MediaClicked ->
-            updateUIStateWithEvent(MediaListContract.UIEvent.NavigateToMedia(event.item.id, event.item.mediaType))
+
+        MediaListContract.UserEvent.BackClicked -> navigateToBack()
+        is MediaListContract.UserEvent.MediaClicked -> navigateToMedia(event.item)
         MediaListContract.UserEvent.ErrorDismissed -> errorDismissed()
     }
 
-    private fun updateUIStateWithEvent(event: MediaListContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.plus(event)) }
+    private fun navigateToBack() {
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(MediaListContract.UIEvent.NavigateToBack)
+        }
+    }
+
+    private fun navigateToMedia(media: MediaModel) {
+        viewModelScope.safeLaunch {
+            _uiEvent.emit(MediaListContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
+        }
     }
 
     private fun addMovieToWatchlist(item: MediaModel) {
@@ -183,16 +196,13 @@ class MediaListViewModel @Inject constructor(
                 getMediasUseCase(useCaseParams)
                     .getValueOrDefault(PageList(emptyList(), page))
             }
+
             is MediaListParams.Related -> {
                 val useCaseParams = GetRelatedMediasUseCase.Params(params.mediaId, params.mediaType, page, pageSize)
                 getRelatedMediasUseCase(useCaseParams).first()
                     .getValueOrDefault(PageList(emptyList(), page))
             }
         }
-
-    fun eventConsumed(event: MediaListContract.UIEvent) {
-        _uiState.update { value -> value.copy(events = value.events.minus(event)) }
-    }
 
     private fun errorDismissed() {
         _uiState.update { value -> value.copy(error = null) }

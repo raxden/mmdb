@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,12 +31,14 @@ fun MediasScreen(
     onNavigateToMedia: (id: MediaId, type: MediaType) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    uiState.events.firstOrNull()?.let { event ->
-        when (event) {
-            is MediaListContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
-            is MediaListContract.UIEvent.NavigateToBack -> onNavigateToBack()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is MediaListContract.UIEvent.NavigateToMedia -> onNavigateToMedia(event.mediaId, event.mediaType)
+                is MediaListContract.UIEvent.NavigateToBack -> onNavigateToBack()
+            }
         }
-        viewModel.eventConsumed(event)
     }
 
     MediasScreen(

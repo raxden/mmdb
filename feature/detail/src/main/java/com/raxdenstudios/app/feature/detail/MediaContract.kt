@@ -16,7 +16,6 @@ object MediaContract {
         val media: MediaModel = MediaModel.empty,
         val videos: List<VideoModel> = emptyList(),
         val relatedMedias: RelatedMediasModel = RelatedMediasModel.empty,
-        val events: Set<UIEvent> = emptySet(),
         val error: ErrorModel? = null,
     ) {
 

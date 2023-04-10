@@ -7,7 +7,6 @@ object BottomBarContract {
 
     data class UIState(
         val items: List<BottomBarItemModel> = BottomBarItemModel.default,
-        val events: Set<UIEvent> = emptySet(),
     )
 
     sealed class UserEvent {
