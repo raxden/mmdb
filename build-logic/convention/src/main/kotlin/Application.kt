@@ -1,4 +1,5 @@
 import org.gradle.api.JavaVersion
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 object Application {
 
@@ -7,6 +8,9 @@ object Application {
     const val minSdk = 21
     const val compileSdk = 33
     const val targetSdk = 33
-    val sourceCompatibility = JavaVersion.VERSION_1_8
-    val targetCompatibility = JavaVersion.VERSION_1_8
+
+    private const val version = 11
+    val javaLanguageVersion = JavaLanguageVersion.of(version)
+    val sourceCompatibility = JavaVersion.VERSION_11
+    val targetCompatibility = JavaVersion.VERSION_11
 }

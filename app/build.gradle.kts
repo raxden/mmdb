@@ -1,16 +1,11 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.versioning)
-    alias(libs.plugins.android.application)
+    id("com.raxdenstudios.android-application")
     alias(libs.plugins.play.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.appdistribution)
     alias(libs.plugins.gradle.play.publisher)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 versioning {
@@ -22,109 +17,22 @@ play {
 }
 
 android {
-
-    compileSdk = Application.compileSdk
-
-    compileOptions {
-        sourceCompatibility = Application.sourceCompatibility
-        targetCompatibility = Application.targetCompatibility
-    }
-
-    defaultConfig {
-        applicationId = Application.id
-
-        minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
-
-        testInstrumentationRunner = Application.testInstrumentationRunner
-
-        // apk name, is posible to add variables as version, date...
-        setProperty("archivesBaseName", "mmdb")
-    }
-
     namespace = "com.raxdenstudios.app"
-
-    signingConfigs {
-        getByName("debug") {
-            storeFile = file("$rootDir/config/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-        }
-        create("release") {
-            getSigningConfigProperties("release").run {
-                storeFile = file("$rootDir/${getProperty("storeFile")}")
-                storePassword = getProperty("storePassword")
-                keyAlias = getProperty("keyAlias")
-                keyPassword = getProperty("keyPassword")
-            }
-        }
-    }
 
     buildTypes {
         getByName("debug") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
-            applicationIdSuffix = ".debug"
-            enableUnitTestCoverage = true
-            enableAndroidTestCoverage = true
-            isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
             firebaseAppDistribution {
                 serviceCredentialsFile = "$rootDir/config/service_credentials.json"
             }
         }
         getByName("release") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
-            isMinifyEnabled = true
-            isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
-            proguardFiles(
-                "proguard-android-optimize.txt",
-                "proguard-rules.pro"
-            )
             firebaseAppDistribution {
                 serviceCredentialsFile = "$rootDir/config/service_credentials.json"
             }
         }
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
-    kotlinOptions {
-        jvmTarget = libs.versions.kotlin.jvm.get()
-    }
-
-    // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
-    kapt {
-        correctErrorTypes = true
-    }
-
-    packagingOptions {
-        resources {
-            excludes.add("META-INF/AL2.0")
-            excludes.add("META-INF/LGPL2.1")
-            excludes.add("META-INF/LICENSE.md")
-            excludes.add("META-INF/LICENSE-notice.md")
-            excludes.add("META-INF/*.kotlin_module")
-        }
-    }
-}
-
-fun getSigningConfigProperties(buildType: String): Properties {
-    val properties = Properties()
-    val propertiesFile = file("$rootDir/config/signing_$buildType.properties")
-    if (propertiesFile.exists()) {
-        propertiesFile.inputStream().use { properties.load(it) }
-    } else {
-        println("No signing config found for build type $buildType")
-    }
-    return properties
 }
 
 dependencies {
