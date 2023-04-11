@@ -1,64 +1,10 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.parcelize)
+    id("com.raxdenstudios.android-compose-feature")
     alias(libs.plugins.hilt.android)
 }
 
 android {
-
-    compileSdk = Application.compileSdk
-
-    compileOptions {
-        sourceCompatibility = Application.sourceCompatibility
-        targetCompatibility = Application.targetCompatibility
-    }
-
-    defaultConfig {
-        minSdk = Application.minSdk
-        targetSdk = Application.targetSdk
-
-        testInstrumentationRunner = Application.testInstrumentationRunner
-        consumerProguardFile("consumer-rules.pro")
-    }
-
-    buildTypes {
-        getByName("debug") {
-            enableUnitTestCoverage = true
-            enableAndroidTestCoverage = true
-            isMinifyEnabled = false
-        }
-    }
-
     namespace = "com.raxdenstudios.app.feature.account"
-
-    buildFeatures {
-        compose = true
-    }
-
-    kotlinOptions {
-        jvmTarget = libs.versions.kotlin.jvm.get()
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
-    // Allow references to generated code -> https://developer.android.com/training/dependency-injection/hilt-android#kts
-    kapt {
-        correctErrorTypes = true
-    }
-
-    packagingOptions {
-        resources {
-            excludes.add("META-INF/AL2.0")
-            excludes.add("META-INF/LGPL2.1")
-            excludes.add("META-INF/LICENSE.md")
-            excludes.add("META-INF/LICENSE-notice.md")
-            excludes.add("META-INF/*.kotlin_module")
-        }
-    }
 }
 
 dependencies {

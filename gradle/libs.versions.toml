@@ -21,7 +21,6 @@ commons-android = "4.41.0"
 compose = "1.3.3"
 compose-activity = "1.6.1"
 compose-bom = "2023.01.00"
-# @keep this version, https://developer.android.com/jetpack/androidx/releases/compose-compiler
 compose-compiler = "1.4.0"
 compose-navigation = "2.5.3"
 compose-navigation-hilt = "1.0.0"
@@ -41,8 +40,6 @@ hilt-android = "2.44.2"
 rootcoverage = "1.6.0"
 # @pin Pinning the version will keep every library using this version. Depends on compose-compiler
 kotlin = "1.8.0"
-# @keep this version, because it is not used in a dependency declaration
-kotlin-jvm = "1.8"
 landscapist = "2.1.1"
 leakcanary = "2.9.1"
 mockk = "1.13.3"
@@ -148,6 +145,10 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 restMockServer = { module = "com.github.andrzejchm.RESTMock:android", version.ref = "restMockServer" }
 json = { module = "org.json:json", version.ref = "json" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [bundles]
 accompanist = [
     "accompanist-pager",
@@ -243,8 +244,6 @@ threetenabp = [
 ]
 
 [plugins]
-#android-gradle-plugin = { id = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
-#kotlin-gradle-plugin = { id = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 android-releasing = { id = "com.raxdenstudios.android-releasing", version.ref = "android-releasing" }
