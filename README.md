@@ -21,7 +21,7 @@ TMDB_TOKEN_V4=YOUR_API_KEY
 - [x] Dark mode
 - [x] Media detail (WIP)
 - [ ] Player
-- [ ] Search
+- [x] Search (WIP)
 - [ ] Account
 
 ## Guidelines
@@ -43,7 +43,7 @@ The goal of this project is to do practice on the new technologies, patterns and
 - [x] Coroutines
   - [x] Flow
   - [x] StateFlow
-  - [ ] SharedFlow
+  - [x] SharedFlow
 - [x] Hilt
 - [x] Compose
   - [x] Navigation
@@ -80,4 +80,4 @@ The goal of this project is to do practice on the new technologies, patterns and
   - [x] Use gradle kotlin dsl
   - [x] Use gradle plugin portal
   - [x] Version catalog (.toml)
-  - [ ] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project
+  - [x] Use composite build - https://stackoverflow.com/questions/60464719/gradle-includebuild-vs-implementation-project
