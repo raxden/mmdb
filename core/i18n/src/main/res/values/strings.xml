@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MMDb</string>
+    <string name="app_name_catalog">MMdb</string>
     <string name="hours_minutes">%1$s hours %2$s minutes</string>
     <string name="hours">%1$s hours</string>
     <string name="hour_minutes">%1$s hour %2$s minutes</string>
