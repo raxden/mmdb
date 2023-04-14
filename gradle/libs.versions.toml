@@ -35,7 +35,7 @@ firebase-crashlytics = "2.9.5"
 gander = "3.1.0"
 gradle-play-publisher = "3.7.0"
 gradle-plugin = "7.4.2"
-gson = "2.9.0"
+gson = "2.10.1"
 hilt-android = "2.44.2"
 rootcoverage = "1.6.0"
 # @pin Pinning the version will keep every library using this version. Depends on compose-compiler
