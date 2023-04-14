@@ -1,5 +1,5 @@
 [versions]
-accompanist = "0.28.0"
+accompanist = "0.30.1"
 android-material = "1.8.0"
 android-play = "1.10.3"
 android-releasing = "0.50"
