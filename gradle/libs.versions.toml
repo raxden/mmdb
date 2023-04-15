@@ -58,7 +58,7 @@ turbine = "0.9.0"
 versionCatalogUpdate = "0.8.0"
 secrets = "2.0.1"
 restMockServer = "0.4.4"
-json = "20201115"
+json = "20230227"
 
 [libraries]
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
