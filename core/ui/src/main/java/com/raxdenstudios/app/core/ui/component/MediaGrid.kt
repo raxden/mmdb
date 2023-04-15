@@ -29,7 +29,7 @@ fun MediaGrid(
     scrollState: LazyGridState = rememberLazyGridState(),
     onPageIndexListener: (PageIndex) -> Unit = {},
     onItemClick: (MediaModel) -> Unit = {},
-    onItemWatchButtonClick: (MediaModel) -> Unit = {}
+    onItemWatchClick: (MediaModel) -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -59,7 +59,7 @@ fun MediaGrid(
                         modifier = Modifier,
                         model = items[index],
                         onClick = { onItemClick(items[index]) },
-                        onWatchButtonClick = { onItemWatchButtonClick(items[index]) }
+                        onWatchButtonClick = { onItemWatchClick(items[index]) }
                     )
                 }
             },

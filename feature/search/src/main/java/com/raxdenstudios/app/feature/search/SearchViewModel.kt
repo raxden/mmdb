@@ -45,6 +45,7 @@ class SearchViewModel @Inject constructor(
         is SearchContract.UserEvent.SearchBarQueryChanged -> performSearch(event.query)
         is SearchContract.UserEvent.SearchClicked -> performSearch(event.query)
         is SearchContract.UserEvent.MediaWatchButtonClicked -> mediaWatchButtonClicked(event.media)
+        is SearchContract.UserEvent.RecentSearchClicked -> performSearch(event.query)
     }
 
     private fun mediaWatchButtonClicked(media: MediaModel) {

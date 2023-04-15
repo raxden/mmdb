@@ -165,6 +165,66 @@ class SearchViewModelTest {
         }
     }
 
+    @Test
+    fun `should perform to search when searchClicked`() = runTest {
+        val query = "query"
+        coEvery { searchMediasUseCase.invoke(any()) } returns flowOf(ResultData.Success(results))
+
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.setUserEvent(SearchContract.UserEvent.SearchClicked(query))
+
+            val firstResult = awaitItem()
+            assertThat(firstResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.Searching(query),
+                )
+            )
+            val secondResult = awaitItem()
+            assertThat(secondResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.WithResults(query = query),
+                    results = listOf(
+                        MediaModel.mock.copy(mediaType = MediaType.Movie),
+                        MediaModel.mock.copy(mediaType = MediaType.TvShow),
+                    ),
+                )
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should perform to search when recentSearchClicked`() = runTest {
+        val query = "query"
+        coEvery { searchMediasUseCase.invoke(any()) } returns flowOf(ResultData.Success(results))
+
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.setUserEvent(SearchContract.UserEvent.RecentSearchClicked(query))
+
+            val firstResult = awaitItem()
+            assertThat(firstResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.Searching(query),
+                )
+            )
+            val secondResult = awaitItem()
+            assertThat(secondResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.WithResults(query = query),
+                    results = listOf(
+                        MediaModel.mock.copy(mediaType = MediaType.Movie),
+                        MediaModel.mock.copy(mediaType = MediaType.TvShow),
+                    ),
+                )
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     companion object {
 
         private val results = PageList(
