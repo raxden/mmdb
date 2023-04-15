@@ -51,7 +51,7 @@ class FakeMediaRepository : MediaRepository {
         page: Page,
         pageSize: PageSize
     ): ResultData<PageList<Media>, ErrorDomain> {
-        TODO("Not yet implemented")
+        return ResultData.Success(pagedMedias[page]!!)
     }
 
     override fun fetchById(mediaId: MediaId, mediaType: MediaType): Flow<ResultData<Media, ErrorDomain>> {

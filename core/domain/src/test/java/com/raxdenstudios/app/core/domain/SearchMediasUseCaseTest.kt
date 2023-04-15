@@ -32,7 +32,7 @@ class SearchMediasUseCaseTest {
     }
 
     @Test
-    fun `Given a query, When invoke method is called, Then query is saved as recent search`() = runTest {
+    fun `Given a query with results, When invoke method is called, Then query is saved as recent search`() = runTest {
         val params = SearchMediasUseCase.Params(query = "query")
 
         useCase(params).test {

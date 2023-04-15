@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
+import com.raxdenstudios.app.core.ui.extension.mirror
 import com.raxdenstudios.app.core.ui.icon.AppIcons
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
@@ -20,7 +20,7 @@ fun RecentSearch(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(horizontal = 18.dp, vertical = 18.dp),
     ) {
         Icon(
             modifier = Modifier,
@@ -35,7 +35,8 @@ fun RecentSearch(
             text = label
         )
         Icon(
-            modifier = Modifier,
+            modifier = Modifier
+                .mirror(),
             imageVector = AppIcons.RecentSearchSelect,
             tint = MaterialTheme.colors.primary,
             contentDescription = null,

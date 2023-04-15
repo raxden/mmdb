@@ -24,7 +24,7 @@ class SearchMediasUseCase @Inject constructor(
 
     operator fun invoke(params: Params): Flow<ResultData<PageList<Media>, ErrorDomain>> = flow {
         val searchResult = mediaRepository.search(params.query, params.page, params.pageSize)
-            .onCoSuccess { recentSearchRepository.save(params.query) }
+            .onCoSuccess { results -> if (results.totalItems > 0) recentSearchRepository.save(params.query) }
         val flow = mediaRepository.observeWatchlist()
             .map { result -> result.getValueOrDefault(emptyList()) }
             .map { watchlist -> watchlist.map { it.id } }
