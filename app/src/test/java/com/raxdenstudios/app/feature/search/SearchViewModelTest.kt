@@ -3,6 +3,7 @@ package com.raxdenstudios.app.feature.search
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
+import com.raxdenstudios.app.core.domain.LastRecentSearchesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.domain.SearchMediasUseCase
 import com.raxdenstudios.app.core.model.ErrorDomain
@@ -40,6 +41,7 @@ class SearchViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val searchMediasUseCase: SearchMediasUseCase = mockk()
+    private val lastRecentSearchesUseCase: LastRecentSearchesUseCase = mockk()
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk()
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk()
     private val stringProvider: StringProvider = mockk(relaxed = true)
@@ -70,6 +72,7 @@ class SearchViewModelTest {
     fun setUp() {
         viewModel = SearchViewModel(
             searchMediasUseCase = searchMediasUseCase,
+            lastRecentSearchesUseCase = lastRecentSearchesUseCase,
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             pageListMediaModelMapper = pageListMediaModelMapper,

@@ -96,7 +96,7 @@ private fun SearchScreen(
                 onSearchTextChanged = { query -> onUIEvent(SearchContract.UserEvent.SearchBarQueryChanged(query)) },
                 onSearchClearClick = { onUIEvent(SearchContract.UserEvent.ClearSearchBarClicked) },
             )
-            if (uiState.recentSearches.isNotEmpty()) {
+            if (uiState.shouldShowRecentSearches) {
                 RecentSearches(
                     modifier = Modifier
                         .fillMaxSize()
@@ -105,7 +105,7 @@ private fun SearchScreen(
                     onRecentSearchClicked = { query -> onUIEvent(SearchContract.UserEvent.RecentSearchClicked(query)) }
                 )
             }
-            if (uiState.results.isNotEmpty()) {
+            if (uiState.shouldShowResults) {
                 MediaGrid(
                     modifier = Modifier
                         .fillMaxSize()

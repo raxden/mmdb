@@ -4,12 +4,15 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.data.FakeMediaRepository
 import com.raxdenstudios.app.core.data.MediaRepository
+import com.raxdenstudios.app.core.data.RecentSearchRepository
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -17,13 +20,25 @@ import org.junit.Test
 class SearchMediasUseCaseTest {
 
     private val mediaRepository: MediaRepository = FakeMediaRepository()
+    private val recentSearchRepository: RecentSearchRepository = mockk(relaxed = true)
     private lateinit var useCase: SearchMediasUseCase
 
     @Before
     fun setUp() {
         useCase = SearchMediasUseCase(
             mediaRepository = mediaRepository,
+            recentSearchRepository = recentSearchRepository,
         )
+    }
+
+    @Test
+    fun `Given a query, When invoke method is called, Then query is saved as recent search`() = runTest {
+        val params = SearchMediasUseCase.Params(query = "query")
+
+        useCase(params).test {
+            coVerify { recentSearchRepository.save("query") }
+            cancelAndConsumeRemainingEvents()
+        }
     }
 
     @Test

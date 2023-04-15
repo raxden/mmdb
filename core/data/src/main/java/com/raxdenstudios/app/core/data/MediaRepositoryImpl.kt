@@ -43,7 +43,7 @@ class MediaRepositoryImpl @Inject constructor(
         result.map { pageList -> pageList.markMediasAsWatched(watchlist) }
     }
 
-    override suspend fun fetchById(
+    override fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType,
     ): Flow<ResultData<Media, ErrorDomain>> = flow {

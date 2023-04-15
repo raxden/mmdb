@@ -14,7 +14,15 @@ object SearchContract {
         val recentSearches: List<String> = emptyList(),
         val results: List<MediaModel> = emptyList(),
         val error: ErrorModel? = null,
-    )
+    ) {
+
+        private val hasResults: Boolean = results.isNotEmpty()
+        private val hasRecentSearches: Boolean = recentSearches.isNotEmpty()
+        val shouldShowRecentSearches: Boolean
+            get() = hasRecentSearches && !hasResults
+        val shouldShowResults: Boolean
+            get() = hasResults
+    }
 
     sealed interface UserEvent {
         object ErrorDismissed : UserEvent
