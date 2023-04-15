@@ -194,3 +194,9 @@ jobs:
         with:
           buildType: ${{ matrix.buildType }}
           googleApplicationCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+  status:
+    needs: [ test, instrumental-test, reports ]
+    if: success()
+    name: Build & Upload to Firebase App Distribution
+    runs-on: ubuntu-latest
