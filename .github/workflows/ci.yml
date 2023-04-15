@@ -198,5 +198,5 @@ jobs:
   status:
     needs: [ test, instrumental-test, reports ]
     if: success()
-    name: Build & Upload to Firebase App Distribution
+    name: Status
     runs-on: ubuntu-latest

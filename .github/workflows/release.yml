@@ -198,3 +198,10 @@ jobs:
 #        env:
 #          ANDROID_PUBLISHER_CREDENTIALS: ${{ secrets.ANDROID_PUBLISHER_CREDENTIALS }}
 #        run: bash ./gradlew publishBundle --stacktrace
+
+  status:
+#    needs: [ test, instrumental-test, reports, deploy-firebase, deploy-playstore ]
+    needs: [ test, instrumental-test, reports, deploy-firebase ]
+    if: success()
+    name: Status
+    runs-on: ubuntu-latest
