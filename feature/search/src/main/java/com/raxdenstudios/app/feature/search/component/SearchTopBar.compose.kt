@@ -88,7 +88,13 @@ fun SearchTopBar(
                 disabledIndicatorColor = Color.Transparent,
             ),
             textStyle = Typography.body1,
-            value = searchText,
+            value = when (model) {
+                SearchBarModel.Focused -> searchText
+                SearchBarModel.Idle -> searchText
+                is SearchBarModel.Searching -> model.query
+                is SearchBarModel.WithResults -> model.query
+                is SearchBarModel.WithoutResults -> model.query
+            },
             onValueChange = { value ->
                 searchText = value
                 searchTextFlow.value = value
