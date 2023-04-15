@@ -21,7 +21,7 @@ abstract class RecentSearchDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val NAME = "recent_search.db"
+        const val NAME = "recent_search.db"
 
         @Volatile
         private var INSTANCE: RecentSearchDatabase? = null
