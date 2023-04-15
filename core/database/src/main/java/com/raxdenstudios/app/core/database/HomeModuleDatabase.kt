@@ -18,7 +18,7 @@ abstract class HomeModuleDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val NAME = "home_module.db"
+        const val NAME = "home_module.db"
 
         @Volatile
         private var INSTANCE: HomeModuleDatabase? = null
