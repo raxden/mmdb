@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.search
 
+import RecentSearches
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.clickable
@@ -95,14 +96,25 @@ private fun SearchScreen(
                 onSearchTextChanged = { query -> onUIEvent(SearchContract.UserEvent.SearchBarQueryChanged(query)) },
                 onSearchClearClick = { onUIEvent(SearchContract.UserEvent.ClearSearchBarClicked) },
             )
-            MediaGrid(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(0f),
-                items = uiState.results,
-                onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
-                onItemWatchButtonClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
-            )
+            if (uiState.recentSearches.isNotEmpty()) {
+                RecentSearches(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0f),
+                    searches = uiState.recentSearches,
+                    onRecentSearchClicked = { query -> onUIEvent(SearchContract.UserEvent.RecentSearchClicked(query)) }
+                )
+            }
+            if (uiState.results.isNotEmpty()) {
+                MediaGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0f),
+                    items = uiState.results,
+                    onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
+                    onItemWatchClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
+                )
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ object SearchContract {
 
     data class UIState(
         val searchBarModel: SearchBarModel = SearchBarModel.Idle,
+        val recentSearches: List<String> = emptyList(),
         val results: List<MediaModel> = emptyList(),
         val error: ErrorModel? = null,
     )
@@ -20,6 +21,7 @@ object SearchContract {
         data class MediaClicked(val media: MediaModel) : UserEvent
         data class SearchBarQueryChanged(val query: String) : UserEvent
         data class SearchClicked(val query: String) : UserEvent
+        data class RecentSearchClicked(val query: String) : UserEvent
         object ClearSearchBarClicked : UserEvent
         data class MediaWatchButtonClicked(val media: MediaModel) : UserEvent
     }
