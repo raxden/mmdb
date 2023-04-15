@@ -33,12 +33,14 @@ fun HomeModules(
                 count = modules.size,
                 key = { index -> modules[index].id },
             ) { index ->
+                val isFirstModule = index == 0
                 when (val module = modules[index]) {
                     is HomeModuleModel.Carousel.NowPlaying ->
                         CarouselFeaturedMediasModule(
                             modifier = Modifier
                                 .semantics { contentDescription = "CarouselFeaturedModule" },
                             module = module,
+                            isFirstModule = isFirstModule,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
                             onItemWatchButtonClick = onModuleItemWatchButtonClick,
@@ -48,6 +50,7 @@ fun HomeModules(
                             modifier = Modifier
                                 .semantics { contentDescription = "CarouselPopularModule" },
                             module = module,
+                            isFirstModule = isFirstModule,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
@@ -58,6 +61,7 @@ fun HomeModules(
                             modifier = Modifier
                                 .semantics { contentDescription = "CarouselTopRatedModule" },
                             module = module,
+                            isFirstModule = isFirstModule,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
@@ -68,6 +72,7 @@ fun HomeModules(
                             modifier = Modifier
                                 .semantics { contentDescription = "CarouselUpcomingModule" },
                             module = module,
+                            isFirstModule = isFirstModule,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
@@ -78,6 +83,7 @@ fun HomeModules(
                             modifier = Modifier
                                 .semantics { contentDescription = "CarouselWatchlistModule" },
                             module = module,
+                            isFirstModule = isFirstModule,
                             onFilterClick = onModuleFilterClick,
                             onSeeAllClick = onModuleSeeAllClick,
                             onItemClick = onModuleItemClick,
