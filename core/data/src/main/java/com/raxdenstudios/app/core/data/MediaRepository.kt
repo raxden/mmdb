@@ -20,7 +20,7 @@ interface MediaRepository {
         pageSize: PageSize,
     ): ResultData<PageList<Media>, ErrorDomain>
 
-    suspend fun fetchById(
+    fun fetchById(
         mediaId: MediaId,
         mediaType: MediaType,
     ): Flow<ResultData<Media, ErrorDomain>>

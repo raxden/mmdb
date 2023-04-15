@@ -18,6 +18,8 @@ abstract class AccountDatabase : RoomDatabase() {
 
     companion object {
 
+        private const val NAME = "account.db"
+
         @Volatile
         private var INSTANCE: AccountDatabase? = null
 
@@ -36,7 +38,7 @@ abstract class AccountDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): AccountDatabase {
-            return Room.databaseBuilder(context, AccountDatabase::class.java, "account.db")
+            return Room.databaseBuilder(context, AccountDatabase::class.java, NAME)
                 .fallbackToDestructiveMigration()
                 .build()
         }
