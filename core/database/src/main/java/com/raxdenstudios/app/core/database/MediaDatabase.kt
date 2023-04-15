@@ -25,7 +25,7 @@ abstract class MediaDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val NAME = "media.db"
+        const val NAME = "media.db"
 
         @Volatile
         private var INSTANCE: MediaDatabase? = null
