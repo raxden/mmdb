@@ -201,7 +201,7 @@ jobs:
 
   status:
 #    needs: [ test, instrumental-test, reports, deploy-firebase, deploy-playstore ]
-    needs: [ test, instrumental-test, reports, deploy-firebase ]
+    needs: [ assemble, test, instrumental-test, reports, deploy-firebase ]
     if: success()
     name: Status
     runs-on: ubuntu-latest

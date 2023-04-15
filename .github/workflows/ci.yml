@@ -196,7 +196,7 @@ jobs:
           googleApplicationCredentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
   status:
-    needs: [ test, instrumental-test, reports ]
+    needs: [ assemble, test, instrumental-test, reports ]
     if: success()
     name: Status
     runs-on: ubuntu-latest
