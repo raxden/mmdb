@@ -3,6 +3,7 @@ package com.raxdenstudios.app.feature.home.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 fun CarouselMediasModule(
     modifier: Modifier = Modifier,
     module: HomeModuleModel.Carousel,
+    isFirstModule: Boolean = false,
     onFilterClick: (HomeModuleModel.Carousel, MediaFilterModel) -> Unit = { _, _ -> },
     onSeeAllClick: (HomeModuleModel.Carousel) -> Unit = {},
     onItemClick: (HomeModuleModel.Carousel, MediaModel) -> Unit = { _, _ -> },
@@ -37,7 +39,7 @@ fun CarouselMediasModule(
             modifier = Modifier
         ) {
             Header(
-                modifier = Modifier,
+                modifier = if (isFirstModule) Modifier.statusBarsPadding() else Modifier,
                 title = module.label,
                 seeAllVisible = true,
                 onSeeAllClick = { onSeeAllClick(module) },

@@ -50,6 +50,7 @@ private const val SEARCH_DELAY = 500L
 @Composable
 fun SearchTopBar(
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(4.dp),
     model: SearchBarModel,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     focusManager: FocusManager = LocalFocusManager.current,
@@ -70,7 +71,7 @@ fun SearchTopBar(
     TopAppBar(
         modifier = modifier
             .fillMaxWidth(),
-        contentPadding = PaddingValues(4.dp),
+        contentPadding = contentPadding,
         backgroundColor = MaterialTheme.colors.background,
     ) {
         OutlinedTextField(
