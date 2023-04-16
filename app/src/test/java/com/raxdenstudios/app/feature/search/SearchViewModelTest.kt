@@ -3,6 +3,7 @@ package com.raxdenstudios.app.feature.search
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
+import com.raxdenstudios.app.core.domain.LastRecentSearchesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.domain.SearchMediasUseCase
 import com.raxdenstudios.app.core.model.ErrorDomain
@@ -40,6 +41,7 @@ class SearchViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val searchMediasUseCase: SearchMediasUseCase = mockk()
+    private val lastRecentSearchesUseCase: LastRecentSearchesUseCase = mockk()
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk()
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk()
     private val stringProvider: StringProvider = mockk(relaxed = true)
@@ -70,6 +72,7 @@ class SearchViewModelTest {
     fun setUp() {
         viewModel = SearchViewModel(
             searchMediasUseCase = searchMediasUseCase,
+            lastRecentSearchesUseCase = lastRecentSearchesUseCase,
             addMediaToWatchlistUseCase = addMediaToWatchlistUseCase,
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             pageListMediaModelMapper = pageListMediaModelMapper,
@@ -161,6 +164,66 @@ class SearchViewModelTest {
             val result = awaitItem()
             assertThat(result).isEqualTo(SearchContract.UIEvent.NavigateToMedia(media.id, media.mediaType))
 
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should perform to search when searchClicked`() = runTest {
+        val query = "query"
+        coEvery { searchMediasUseCase.invoke(any()) } returns flowOf(ResultData.Success(results))
+
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.setUserEvent(SearchContract.UserEvent.SearchClicked(query))
+
+            val firstResult = awaitItem()
+            assertThat(firstResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.Searching(query),
+                )
+            )
+            val secondResult = awaitItem()
+            assertThat(secondResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.WithResults(query = query),
+                    results = listOf(
+                        MediaModel.mock.copy(mediaType = MediaType.Movie),
+                        MediaModel.mock.copy(mediaType = MediaType.TvShow),
+                    ),
+                )
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should perform to search when recentSearchClicked`() = runTest {
+        val query = "query"
+        coEvery { searchMediasUseCase.invoke(any()) } returns flowOf(ResultData.Success(results))
+
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.setUserEvent(SearchContract.UserEvent.RecentSearchClicked(query))
+
+            val firstResult = awaitItem()
+            assertThat(firstResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.Searching(query),
+                )
+            )
+            val secondResult = awaitItem()
+            assertThat(secondResult).isEqualTo(
+                SearchContract.UIState(
+                    searchBarModel = SearchBarModel.WithResults(query = query),
+                    results = listOf(
+                        MediaModel.mock.copy(mediaType = MediaType.Movie),
+                        MediaModel.mock.copy(mediaType = MediaType.TvShow),
+                    ),
+                )
+            )
             cancelAndIgnoreRemainingEvents()
         }
     }

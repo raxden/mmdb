@@ -2,11 +2,6 @@ package com.raxdenstudios.app.feature.home
 
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -47,8 +42,6 @@ fun HomeScreen(
 
     HomeScreen(
         modifier = modifier,
-        contentPadding = WindowInsets.statusBars
-            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top).asPaddingValues(),
         uiState = uiState,
         onEvent = { event -> viewModel.setUserEvent(event) },
     )

@@ -3,6 +3,7 @@ package com.raxdenstudios.app.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
+import com.raxdenstudios.app.core.domain.LastRecentSearchesUseCase
 import com.raxdenstudios.app.core.domain.RemoveMediaFromWatchlistUseCase
 import com.raxdenstudios.app.core.domain.SearchMediasUseCase
 import com.raxdenstudios.app.core.ui.mapper.PageListMediaModelMapper
@@ -11,6 +12,7 @@ import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.search.model.SearchBarModel
 import com.raxdenstudios.commons.ResultData
 import com.raxdenstudios.commons.ext.fold
+import com.raxdenstudios.commons.ext.getValueOrDefault
 import com.raxdenstudios.commons.ext.safeLaunch
 import com.raxdenstudios.commons.pagination.model.PageList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val searchMediasUseCase: SearchMediasUseCase,
+    private val lastRecentSearchesUseCase: LastRecentSearchesUseCase,
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase,
     private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase,
     private val pageListMediaModelMapper: PageListMediaModelMapper,
@@ -38,6 +41,18 @@ class SearchViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<SearchContract.UIEvent>()
     val uiEvent: SharedFlow<SearchContract.UIEvent> = _uiEvent.asSharedFlow()
 
+    init {
+        loadLastRecentSearches()
+    }
+
+    private fun loadLastRecentSearches() {
+        viewModelScope.safeLaunch {
+            lastRecentSearchesUseCase.invoke()
+                .map { resultData -> resultData.getValueOrDefault(emptyList()) }
+                .collect { recentSearches -> _uiState.update { value -> value.copy(recentSearches = recentSearches) } }
+        }
+    }
+
     fun setUserEvent(event: SearchContract.UserEvent): Unit = when (event) {
         SearchContract.UserEvent.ClearSearchBarClicked -> clearSearchBarClicked()
         SearchContract.UserEvent.ErrorDismissed -> errorDismissed()
@@ -45,6 +60,7 @@ class SearchViewModel @Inject constructor(
         is SearchContract.UserEvent.SearchBarQueryChanged -> performSearch(event.query)
         is SearchContract.UserEvent.SearchClicked -> performSearch(event.query)
         is SearchContract.UserEvent.MediaWatchButtonClicked -> mediaWatchButtonClicked(event.media)
+        is SearchContract.UserEvent.RecentSearchClicked -> performSearch(event.query)
     }
 
     private fun mediaWatchButtonClicked(media: MediaModel) {

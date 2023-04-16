@@ -51,10 +51,10 @@ class FakeMediaRepository : MediaRepository {
         page: Page,
         pageSize: PageSize
     ): ResultData<PageList<Media>, ErrorDomain> {
-        TODO("Not yet implemented")
+        return ResultData.Success(pagedMedias[page]!!)
     }
 
-    override suspend fun fetchById(mediaId: MediaId, mediaType: MediaType): Flow<ResultData<Media, ErrorDomain>> {
+    override fun fetchById(mediaId: MediaId, mediaType: MediaType): Flow<ResultData<Media, ErrorDomain>> {
         TODO("Not yet implemented")
     }
 
@@ -94,6 +94,8 @@ class FakeMediaRepository : MediaRepository {
     ): ResultData<PageList<Media>, ErrorDomain> {
         return ResultData.Success(PageList(movies, page))
     }
+
+
 
     override suspend fun search(query: String, page: Page, pageSize: PageSize): ResultData<PageList<Media>, ErrorDomain> {
         return ResultData.Success(pagedMedias[page]!!)

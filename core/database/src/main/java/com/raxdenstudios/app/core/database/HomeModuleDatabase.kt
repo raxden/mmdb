@@ -18,9 +18,10 @@ abstract class HomeModuleDatabase : RoomDatabase() {
 
     companion object {
 
+        const val NAME = "home_module.db"
+
         @Volatile
         private var INSTANCE: HomeModuleDatabase? = null
-
 
         fun getInstance(
             context: Context,
@@ -44,7 +45,7 @@ abstract class HomeModuleDatabase : RoomDatabase() {
         private fun buildDatabase(
             context: Context,
         ): HomeModuleDatabase {
-            return Room.databaseBuilder(context, HomeModuleDatabase::class.java, "home_module.db")
+            return Room.databaseBuilder(context, HomeModuleDatabase::class.java, NAME)
                 .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
         }

@@ -5,40 +5,36 @@ import androidx.annotation.VisibleForTesting
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.raxdenstudios.app.core.database.dao.MediaDao
-import com.raxdenstudios.app.core.database.dao.WatchlistDao
+import com.raxdenstudios.app.core.database.dao.RecentSearchDao
 import com.raxdenstudios.app.core.database.migration.MediaDatabaseMigrationV1toV2
-import com.raxdenstudios.app.core.database.model.MediaEntity
-import com.raxdenstudios.app.core.database.model.WatchlistEntity
+import com.raxdenstudios.app.core.database.model.RecentSearchEntity
 
 @Database(
     entities = [
-        MediaEntity::class,
-        WatchlistEntity::class,
+        RecentSearchEntity::class,
     ],
-    version = 2,
+    version = 1,
 )
-abstract class MediaDatabase : RoomDatabase() {
+abstract class RecentSearchDatabase : RoomDatabase() {
 
-    abstract fun mediaDao(): MediaDao
-    abstract fun watchlistDao(): WatchlistDao
+    abstract fun recentSearchDao(): RecentSearchDao
 
     companion object {
 
-        const val NAME = "media.db"
+        const val NAME = "recent_search.db"
 
         @Volatile
-        private var INSTANCE: MediaDatabase? = null
+        private var INSTANCE: RecentSearchDatabase? = null
 
-        fun getInstance(context: Context): MediaDatabase {
+        fun getInstance(context: Context): RecentSearchDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
         }
 
         @VisibleForTesting
-        fun switchToInMemory(context: Context): MediaDatabase {
-            return Room.inMemoryDatabaseBuilder(context, MediaDatabase::class.java)
+        fun switchToInMemory(context: Context): RecentSearchDatabase {
+            return Room.inMemoryDatabaseBuilder(context, RecentSearchDatabase::class.java)
                 // allowing main thread queries, just for testing
                 .addMigrations(
                     MediaDatabaseMigrationV1toV2()
@@ -47,8 +43,8 @@ abstract class MediaDatabase : RoomDatabase() {
                 .build()
         }
 
-        private fun buildDatabase(context: Context): MediaDatabase {
-            return Room.databaseBuilder(context, MediaDatabase::class.java, NAME)
+        private fun buildDatabase(context: Context): RecentSearchDatabase {
+            return Room.databaseBuilder(context, RecentSearchDatabase::class.java, NAME)
                 .addMigrations(
                     MediaDatabaseMigrationV1toV2()
                 )

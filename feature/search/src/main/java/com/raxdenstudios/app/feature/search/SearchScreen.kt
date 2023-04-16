@@ -1,20 +1,26 @@
 package com.raxdenstudios.app.feature.search
 
+import RecentSearches
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,11 +29,11 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.component.MediaGrid
-import com.raxdenstudios.app.core.ui.component.StatusBarSpacer
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.search.component.SearchTopBar
 import com.raxdenstudios.app.feature.search.model.SearchBarModel
+import com.raxdenstudios.commons.ext.toDp
 
 @Composable
 fun SearchScreen(
@@ -74,25 +80,41 @@ private fun SearchScreen(
             )
     ) {
         Column {
-            StatusBarSpacer()
             SearchTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .zIndex(1f),
+                contentPadding = PaddingValues(
+                    start = 4.dp,
+                    end = 4.dp,
+                    top = WindowInsets.systemBars.getTop(LocalDensity.current).toDp().dp,
+                    bottom = 4.dp
+                ),
                 model = uiState.searchBarModel,
                 focusManager = focusManager,
                 onSearchClick = { query -> onUIEvent(SearchContract.UserEvent.SearchClicked(query)) },
                 onSearchTextChanged = { query -> onUIEvent(SearchContract.UserEvent.SearchBarQueryChanged(query)) },
                 onSearchClearClick = { onUIEvent(SearchContract.UserEvent.ClearSearchBarClicked) },
             )
-            MediaGrid(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .zIndex(0f),
-                items = uiState.results,
-                onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
-                onItemWatchButtonClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
-            )
+            if (uiState.shouldShowRecentSearches) {
+                RecentSearches(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0f),
+                    searches = uiState.recentSearches,
+                    onRecentSearchClicked = { query -> onUIEvent(SearchContract.UserEvent.RecentSearchClicked(query)) }
+                )
+            }
+            if (uiState.shouldShowResults) {
+                MediaGrid(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(0f),
+                    items = uiState.results,
+                    onItemClick = { item -> onUIEvent(SearchContract.UserEvent.MediaClicked(item)) },
+                    onItemWatchClick = { item -> onUIEvent(SearchContract.UserEvent.MediaWatchButtonClicked(item)) },
+                )
+            }
         }
     }
 }

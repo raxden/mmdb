@@ -11,15 +11,25 @@ object SearchContract {
 
     data class UIState(
         val searchBarModel: SearchBarModel = SearchBarModel.Idle,
+        val recentSearches: List<String> = emptyList(),
         val results: List<MediaModel> = emptyList(),
         val error: ErrorModel? = null,
-    )
+    ) {
+
+        private val hasResults: Boolean = results.isNotEmpty()
+        private val hasRecentSearches: Boolean = recentSearches.isNotEmpty()
+        val shouldShowRecentSearches: Boolean
+            get() = hasRecentSearches && !hasResults
+        val shouldShowResults: Boolean
+            get() = hasResults
+    }
 
     sealed interface UserEvent {
         object ErrorDismissed : UserEvent
         data class MediaClicked(val media: MediaModel) : UserEvent
         data class SearchBarQueryChanged(val query: String) : UserEvent
         data class SearchClicked(val query: String) : UserEvent
+        data class RecentSearchClicked(val query: String) : UserEvent
         object ClearSearchBarClicked : UserEvent
         data class MediaWatchButtonClicked(val media: MediaModel) : UserEvent
     }
