@@ -17,7 +17,7 @@ import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 @Composable
 fun CarouselMedias(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(all = 16.dp),
+    contentPadding: PaddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp),
     horizontalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(4.dp),
     medias: List<MediaModel>,
     onItemClick: (MediaModel) -> Unit = {},
