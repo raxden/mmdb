@@ -120,7 +120,7 @@ jobs:
     if: success()
     name: Run Android Instrumental Tests
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       matrix:
         arch: [ x86_64 ]
