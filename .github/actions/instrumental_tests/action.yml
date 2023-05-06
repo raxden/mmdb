@@ -51,7 +51,7 @@ runs:
           touch emulator.log                    # create log file
           chmod 777 emulator.log                # allow writing to log file
           adb logcat >> emulator.log &          # pipe all logcat messages into log file as a background process
-          ./gradlew connectedDebugAndroidTest --no-build-cache --no-configuration-cache --no-daemon --stacktrace --scan
+          ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
     - name: Upload Outputs
       uses: actions/upload-artifact@v3
