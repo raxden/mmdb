@@ -13,7 +13,6 @@ import org.junit.Test
 
 class RecentSearchLocalDataSourceTest {
 
-
     private lateinit var database: RecentSearchDatabase
     private lateinit var dataSource: RecentSearchLocalDataSource
 
@@ -35,10 +34,11 @@ class RecentSearchLocalDataSourceTest {
     @Test
     fun observe_should_return_a_flow_of_result_data() = runTest {
         dataSource.observe().test {
-            dataSource.add("query")
+            val result = dataSource.add("query")
+            assertEquals(ResultData.Success(true), result)
 
-            val result = awaitItem()
-            assertEquals(ResultData.Success(listOf("query")), result)
+            val result2 = awaitItem()
+            assertEquals(ResultData.Success(listOf("query")), result2)
 
             cancelAndConsumeRemainingEvents()
         }
