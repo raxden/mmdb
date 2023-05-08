@@ -16,6 +16,7 @@ import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.mapper.PageListMediaModelMapper
+import com.raxdenstudios.app.core.ui.mapper.PictureModelMapper
 import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -52,12 +53,14 @@ class SearchViewModelTest {
     private val languageModelMapper = LanguageModelMapper()
     private val currencyModelMapper = CurrencyModelMapper()
     private val ratingModelMapper = RatingModelMapper()
+    private val pictureModelMapper = PictureModelMapper()
     private val mediaModelMapper = MediaModelMapper(
         durationModelMapper = durationModelMapper,
         dateModelMapper = dateModelMapper,
         languageModelMapper = languageModelMapper,
         currencyModelMapper = currencyModelMapper,
         ratingModelMapper = ratingModelMapper,
+        pictureModelMapper = pictureModelMapper,
     )
     private val errorModelMapper = ErrorModelMapper(
         stringProvider = stringProvider

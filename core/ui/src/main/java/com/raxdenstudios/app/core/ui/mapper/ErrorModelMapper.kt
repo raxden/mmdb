@@ -46,9 +46,5 @@ class ErrorModelMapper @Inject constructor(
             title = stringProvider.getString(R.string.error_information),
             message = stringProvider.getString(R.string.error_unespected_error_message),
         )
-        else -> ErrorModel(
-            title = stringProvider.getString(R.string.error_information),
-            message = stringProvider.getString(R.string.error_unespected_error_message),
-        )
     }
 }
