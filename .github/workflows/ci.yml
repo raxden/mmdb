@@ -22,6 +22,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # Increment this to invalidate the cache.
+  CACHE_VERSION: 1
   # Enable debug for the `gradle-build-action` cache operations
   GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
 
