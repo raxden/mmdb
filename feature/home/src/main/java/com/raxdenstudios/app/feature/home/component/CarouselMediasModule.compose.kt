@@ -15,7 +15,7 @@ import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
-import com.raxdenstudios.app.feature.home.component.HomePreviewData.popularModule
+import com.raxdenstudios.app.feature.home.component.PreviewData.popularModule
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 
 @Composable

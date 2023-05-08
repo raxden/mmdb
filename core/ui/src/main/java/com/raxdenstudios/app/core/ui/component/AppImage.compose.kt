@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.raxdenstudios.app.core.ui.DevicePreviews
 import com.raxdenstudios.app.core.ui.icon.AppIcons
-import com.raxdenstudios.app.core.ui.icon.PreviewPlaceHolders
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
@@ -23,7 +22,7 @@ fun AppImage(
     modifier: Modifier = Modifier,
     image: String,
     imageOptions: ImageOptions = ImageOptions(contentScale = ContentScale.Crop),
-    previewPlaceholder: Int = PreviewPlaceHolders.Backdrop
+    previewPlaceholder: Int = PreviewData.Backdrop
 ) {
     CoilImage(
         modifier = modifier
@@ -40,7 +39,7 @@ fun AppVideoImage(
     image: String,
     onPlayClick: () -> Unit = {},
     imageOptions: ImageOptions = ImageOptions(contentScale = ContentScale.Crop),
-    previewPlaceholder: Int = PreviewPlaceHolders.Backdrop
+    previewPlaceholder: Int = PreviewData.Backdrop
 ) {
     Box(
         modifier = modifier

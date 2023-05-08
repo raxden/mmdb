@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.icon.PreviewPlaceHolders
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
@@ -21,7 +20,7 @@ fun PosterWithWatchButton(
     image: String,
     watchlist: Boolean = false,
     onWatchButtonClick: () -> Unit = {},
-    previewPlaceholder: Int = PreviewPlaceHolders.Poster
+    previewPlaceholder: Int = PreviewData.Poster
 ) {
     Surface(
         modifier = modifier,

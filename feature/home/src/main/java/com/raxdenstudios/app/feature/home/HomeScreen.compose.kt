@@ -18,7 +18,7 @@ import com.raxdenstudios.app.core.ui.component.ErrorDialog
 import com.raxdenstudios.app.core.ui.component.LockScreenOrientation
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.home.component.HomeModules
-import com.raxdenstudios.app.feature.home.component.HomePreviewData.modules
+import com.raxdenstudios.app.feature.home.component.PreviewData.modules
 
 @Composable
 fun HomeScreen(

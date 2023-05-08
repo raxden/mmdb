@@ -41,14 +41,11 @@ rootCoverage {
         "**/databinding/*",
         "**/*_*.class",
         "**/*_Impl*.class",
-        "**/graph/*",
         "**/App.class",
-        "**/AppState.class",
-        "**/*Activity.class",
-        "**/*Fragment.class",
-        "**/*Adapter.class",
-        "**/component/*",
-        "**/*Screen.class",
+        "**/*Activity.*",
+        "**/*Fragment.*",
+        "**/*Adapter.*",
+        "**/*.compose.*",
     )
 
     // Since 1.1 generateHtml is by default true

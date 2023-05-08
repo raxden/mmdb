@@ -1,4 +1,4 @@
-package com.raxdenstudios.app.feature.component
+package com.raxdenstudios.app.feature
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
@@ -20,8 +20,6 @@ import com.raxdenstudios.app.core.ui.component.MediaGridWithPullRefresh
 import com.raxdenstudios.app.core.ui.component.TopAppBarBack
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
-import com.raxdenstudios.app.feature.MediaListContract
-import com.raxdenstudios.app.feature.MediaListViewModel
 
 @Composable
 fun MediasScreen(

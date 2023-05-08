@@ -13,7 +13,7 @@ import com.raxdenstudios.app.core.ui.component.Header
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.core.ui.theme.Shapes
-import com.raxdenstudios.app.feature.home.component.HomePreviewData.nowPlayingModule
+import com.raxdenstudios.app.feature.home.component.PreviewData.nowPlayingModule
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 
 @Composable
