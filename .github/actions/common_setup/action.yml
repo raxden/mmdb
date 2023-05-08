@@ -1,11 +1,19 @@
 name: 'Common machine setup'
 description: "Prepares the machine"
+inputs:
+  java-version:
+    description: "Java version"
+    required: true
+    default: '11'
+  signingFiles:
+    description: 'Base64 encoded string of the file'
+    required: true
 outputs: { }
 runs:
   using: "composite"
   steps:
-    - name: Set up JDK 11 and Gradle cache
+    - name: Set up JDK ${{ inputs.java-version }} and Gradle cache
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
-        java-version: '11'
+        java-version: ${{ inputs.java-version }}
