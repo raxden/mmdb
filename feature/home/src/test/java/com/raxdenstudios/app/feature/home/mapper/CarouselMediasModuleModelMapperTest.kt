@@ -10,6 +10,7 @@ import com.raxdenstudios.app.core.ui.mapper.DateModelMapper
 import com.raxdenstudios.app.core.ui.mapper.DurationModelMapper
 import com.raxdenstudios.app.core.ui.mapper.LanguageModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
+import com.raxdenstudios.app.core.ui.mapper.PictureModelMapper
 import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
@@ -28,12 +29,14 @@ class CarouselMediasModuleModelMapperTest {
     private val languageModelMapper = LanguageModelMapper()
     private val currencyModelMapper = CurrencyModelMapper()
     private val ratingModelMapper = RatingModelMapper()
+    private val pictureModelMapper = PictureModelMapper()
     private val mediaModelMapper = MediaModelMapper(
         durationModelMapper = durationModelMapper,
         dateModelMapper = dateModelMapper,
         languageModelMapper = languageModelMapper,
         currencyModelMapper = currencyModelMapper,
         ratingModelMapper = ratingModelMapper,
+        pictureModelMapper = pictureModelMapper,
     )
 
     private val mapper: CarouselModelMapper by lazy {
