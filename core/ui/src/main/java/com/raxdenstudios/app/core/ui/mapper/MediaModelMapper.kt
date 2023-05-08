@@ -2,7 +2,6 @@ package com.raxdenstudios.app.core.ui.mapper
 
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.app.core.model.Picture
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.commons.DataMapper
 import javax.inject.Inject
@@ -13,6 +12,7 @@ class MediaModelMapper @Inject constructor(
     private val languageModelMapper: LanguageModelMapper,
     private val currencyModelMapper: CurrencyModelMapper,
     private val ratingModelMapper: RatingModelMapper,
+    private val pictureModelMapper: PictureModelMapper,
 ) : DataMapper<Media, MediaModel>() {
 
     override fun transform(source: Media): MediaModel = source.toModel()
@@ -23,14 +23,8 @@ class MediaModelMapper @Inject constructor(
             mediaType = MediaType.Movie,
             title = title,
             overview = overview,
-            backdrop = when (val backdrop = backdrop) {
-                Picture.Empty -> ""
-                is Picture.WithImage -> backdrop.thumbnail.url
-            },
-            poster = when (val poster = poster) {
-                Picture.Empty -> ""
-                is Picture.WithImage -> poster.thumbnail.url
-            },
+            backdrop = pictureModelMapper.transform(backdrop),
+            poster = pictureModelMapper.transform(poster),
             certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
@@ -49,14 +43,8 @@ class MediaModelMapper @Inject constructor(
             mediaType = MediaType.TvShow,
             title = name,
             overview = overview,
-            backdrop = when (val backdrop = backdrop) {
-                Picture.Empty -> ""
-                is Picture.WithImage -> backdrop.thumbnail.url
-            },
-            poster = when (val poster = poster) {
-                Picture.Empty -> ""
-                is Picture.WithImage -> poster.thumbnail.url
-            },
+            backdrop = pictureModelMapper.transform(backdrop),
+            poster = pictureModelMapper.transform(poster),
             certification = certification,
             genres = genres.joinToString { it.name },
             duration = durationModelMapper.transform(duration),
