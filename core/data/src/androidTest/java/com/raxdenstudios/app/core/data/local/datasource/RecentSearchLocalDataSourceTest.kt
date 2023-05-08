@@ -33,12 +33,10 @@ class RecentSearchLocalDataSourceTest {
 
     @Test
     fun observe_should_return_a_flow_of_result_data() = runTest {
+        dataSource.add("query")
         dataSource.observe().test {
-            val result = dataSource.add("query")
-            assertEquals(ResultData.Success(true), result)
-
-            val result2 = awaitItem()
-            assertEquals(ResultData.Success(listOf("query")), result2)
+            val result = awaitItem()
+            assertEquals(ResultData.Success(listOf("query")), result)
 
             cancelAndConsumeRemainingEvents()
         }

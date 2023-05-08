@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.raxdenstudios.app.core.ui.DevicePreviews
-import com.raxdenstudios.app.core.ui.icon.PreviewPlaceHolders
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 
 @Composable
@@ -20,7 +19,7 @@ fun Video(
     shape: Shape = RoundedCornerShape(0.dp),
     image: String,
     onPlayClick: () -> Unit = {},
-    previewPlaceholder: Int = PreviewPlaceHolders.Backdrop
+    previewPlaceholder: Int = PreviewData.Backdrop
 ) {
     Surface(
         modifier = modifier,

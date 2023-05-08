@@ -1,12 +1,12 @@
 package com.raxdenstudios.app.feature.home.component
 
-import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
+import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 
-object HomePreviewData {
+object PreviewData {
 
     private val filters = listOf(
         MediaFilterModel(
@@ -42,18 +42,18 @@ object HomePreviewData {
         medias = medias,
         filters = filters,
     )
-    val topRatedModule = HomeModuleModel.Carousel.TopRated.empty.copy(
+    private val topRatedModule = HomeModuleModel.Carousel.TopRated.empty.copy(
         id = 3L,
         label = "TopRated",
         medias = medias,
         filters = filters,
     )
-    val upcomingModule = HomeModuleModel.Carousel.Upcoming.empty.copy(
+    private val upcomingModule = HomeModuleModel.Carousel.Upcoming.empty.copy(
         id = 4L,
         label = "Upcoming",
         medias = medias
     )
-    val watchlistModule = HomeModuleModel.Carousel.Watchlist.empty.copy(
+    private val watchlistModule = HomeModuleModel.Carousel.Watchlist.empty.copy(
         id = 5L,
         label = "Watchlist",
         medias = medias,
