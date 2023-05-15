@@ -2,7 +2,7 @@
 accompanist = "0.30.1"
 android-material = "1.9.0"
 android-play = "1.10.3"
-android-releasing = "0.50"
+android-releasing = "0.54"
 android-versioning = "0.50"
 androidx-activity-ktx = "1.7.1"
 androidx-constraintlayout = "2.1.4"
