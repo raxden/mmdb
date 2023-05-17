@@ -1,5 +1,4 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     /**
@@ -13,6 +12,7 @@ plugins {
      */
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
@@ -21,13 +21,9 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.appdistribution) apply false
     alias(libs.plugins.rootcoverage)
-    alias(libs.plugins.android.releasing)
-    alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.test.logger)
     alias(libs.plugins.detekt)
     alias(libs.plugins.gradle.play.publisher) apply false
-    alias(libs.plugins.benManes)
-    alias(libs.plugins.versionCatalogUpdate)
 }
 
 rootCoverage {
@@ -68,31 +64,6 @@ rootCoverage {
     // Since 1.4: Sets jacoco.includeNoLocationClasses, so you don't have to. Helpful when using Robolectric
     // which usually requires this attribute to be true
     includeNoLocationClasses = false
-}
-
-// Dependencies
-// ./gradlew versionCatalogUpdate
-// ./gradlew versionCatalogUpdate --interactive
-// ./gradlew versionCatalogApplyUpdates
-// More info -> https://github.com/littlerobots/version-catalog-update-plugin
-versionCatalogUpdate {
-    // sort the catalog by key (default is true
-    sortByKey.set(true)
-}
-
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
-}
-
-// Task to discard the version of the dependencies that are not stable, used by versionCatalogUpdate plugin
-// https://github.com/ben-manes/gradle-versions-plugin
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf {
-        isNonStable(candidate.version) && !isNonStable(currentVersion)
-    }
 }
 
 // Detekt info ->

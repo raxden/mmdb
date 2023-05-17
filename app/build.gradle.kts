@@ -17,7 +17,12 @@ play {
 }
 
 android {
-    namespace = "com.raxdenstudios.app"
+    defaultConfig {
+        applicationId = "com.raxdenstudios.mmdb"
+        testInstrumentationRunner = "com.raxdenstudios.app.test.AppTestRunner"
+    }
+
+    namespace = "com.raxdenstudios.mmdb"
 
     buildTypes {
         getByName("debug") {
