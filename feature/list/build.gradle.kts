@@ -8,11 +8,11 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.corei18n))
-    implementation(project(Modules.coreUI))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreDomain))
+    implementation(project(":core:common"))
+    implementation(project(":core:i18n"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:model"))
+    implementation(project(":core:domain"))
     implementation(libs.commons.android)
     implementation(libs.commons.paginationCo)
     implementation(libs.bundles.coroutines)
@@ -29,11 +29,11 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)

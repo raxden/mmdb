@@ -7,11 +7,11 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.corei18n))
-    implementation(project(Modules.coreDomain))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreNavigation))
+    implementation(project(":core:common"))
+    implementation(project(":core:i18n"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:navigation"))
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.threetenabp)
     implementation(libs.commons.paginationCo)
@@ -30,11 +30,11 @@ dependencies {
     debugImplementation(libs.bundles.compose.debug)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)

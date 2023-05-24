@@ -7,10 +7,10 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreUI))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreDomain))
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:model"))
+    implementation(project(":core:domain"))
     implementation(libs.commons.android)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose.material)

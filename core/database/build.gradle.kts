@@ -13,8 +13,8 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
     implementation(libs.bundles.threetenabp)
     implementation(libs.bundles.room)
     kapt(libs.room.compiler)
@@ -22,11 +22,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.room.test)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)

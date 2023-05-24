@@ -9,9 +9,9 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreData))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data"))
     implementation(libs.bundles.coroutines)
     implementation(libs.commons.paginationCo)
     implementation(libs.bundles.threetenabp)
@@ -19,11 +19,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)
 }

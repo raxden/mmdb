@@ -36,20 +36,20 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.corei18n))
-    implementation(project(Modules.coreUI))
-    implementation(project(Modules.coreNetwork))
-    implementation(project(Modules.coreDatabase))
-    implementation(project(Modules.coreDomain))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreData))
-    implementation(project(Modules.coreNavigation))
-    implementation(project(Modules.featureAccount))
-    implementation(project(Modules.featureSearch))
-    implementation(project(Modules.featureMediaList))
-    implementation(project(Modules.featureMedia))
-    implementation(project(Modules.featureHome))
+    implementation(project(":core:common"))
+    implementation(project(":core:i18n"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data"))
+    implementation(project(":core:navigation"))
+    implementation(project(":feature:account"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:list"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:home"))
     implementation(libs.commons.paginationCo)
     implementation(libs.bundles.android)
     implementation(platform(libs.firebase.bom))
@@ -66,17 +66,17 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // debug libraries
-    debugImplementation(project(Modules.catalog))
+    debugImplementation(project(":catalog"))
     debugImplementation(libs.leakcanary)
     debugImplementation(platform(libs.firebase.bom))
     debugImplementation(libs.bundles.compose.debug)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)

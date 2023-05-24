@@ -9,7 +9,7 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
+    implementation(project(":core:common"))
     implementation(libs.bundles.threetenabp)
     implementation(libs.bundles.coroutines)
     implementation(libs.commons.android)
@@ -19,11 +19,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
+    testImplementation(project(":core:test"))
     testImplementation(libs.bundles.testing)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
+    androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.bundles.testingUI)
     kaptAndroidTest(libs.hilt.compiler)
 }
