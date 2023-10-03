@@ -21,21 +21,19 @@ import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.search.model.SearchBarModel
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
-import com.raxdenstudios.commons.provider.StringProvider
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.android.provider.StringProvider
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
 
     @get:Rule

@@ -2,11 +2,11 @@ package com.raxdenstudios.app.di
 
 import android.content.Context
 import com.raxdenstudios.commons.ActivityHolder
-import com.raxdenstudios.commons.DispatcherProvider
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,4 +49,3 @@ class AppModule {
         )
     }
 }
-

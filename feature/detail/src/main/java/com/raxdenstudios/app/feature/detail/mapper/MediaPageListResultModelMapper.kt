@@ -8,11 +8,11 @@ import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.mapFailure
 import com.raxdenstudios.commons.pagination.model.PageList
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import javax.inject.Inject
 
 class MediaPageListResultModelMapper @Inject constructor(

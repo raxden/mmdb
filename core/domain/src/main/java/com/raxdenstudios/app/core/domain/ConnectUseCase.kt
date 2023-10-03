@@ -3,9 +3,9 @@ package com.raxdenstudios.app.core.domain
 import com.raxdenstudios.app.core.data.AuthenticationRepository
 import com.raxdenstudios.app.core.model.AccessToken
 import com.raxdenstudios.app.core.model.ErrorDomain
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.coFlatMap
-import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.coFlatMap
+import com.raxdenstudios.commons.core.ext.map
 import com.raxdenstudios.core.model.Credentials
 import javax.inject.Inject
 
@@ -28,4 +28,3 @@ class ConnectUseCase @Inject constructor(
             sessionId = sessionId,
         )
 }
-

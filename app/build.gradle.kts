@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     alias(libs.plugins.android.versioning)
     id("com.raxdenstudios.android-application")
@@ -9,7 +11,7 @@ plugins {
 }
 
 versioning {
-    versionFilePath = "$rootDir/version.properties"
+    filePath = "$rootDir/version.properties"
 }
 
 play {
@@ -36,48 +38,49 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.corei18n))
-    implementation(project(Modules.coreUI))
-    implementation(project(Modules.coreNetwork))
-    implementation(project(Modules.coreDatabase))
-    implementation(project(Modules.coreDomain))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreData))
-    implementation(project(Modules.coreNavigation))
-    implementation(project(Modules.featureAccount))
-    implementation(project(Modules.featureSearch))
-    implementation(project(Modules.featureMediaList))
-    implementation(project(Modules.featureMedia))
-    implementation(project(Modules.featureHome))
-    implementation(libs.commons.paginationCo)
-    implementation(libs.bundles.android)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.bundles.firebase)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.bundles.coil)
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.timber)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose.material)
-    implementation(libs.bundles.accompanist)
-    implementation(libs.bundles.landscapists)
-    implementation(libs.hilt.android)
+    implementation(project(":core:common"))
+    implementation(project(":core:i18n"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data"))
+    implementation(project(":core:navigation"))
+    implementation(project(":feature:account"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:list"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:home"))
+
+    implementationBundle(libs.bundles.material)
+    implementationBundle(libs.bundles.firebase)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.coil.compose)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.androidx.compose)
+
+    implementationBundle(libs.bundles.hilt)
     kapt(libs.hilt.compiler)
 
     // debug libraries
-    debugImplementation(project(Modules.catalog))
+    debugImplementation(project(":catalog"))
     debugImplementation(libs.leakcanary)
-    debugImplementation(platform(libs.firebase.bom))
     debugImplementation(libs.bundles.compose.debug)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.bundles.testingUI)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.android)
+    androidTestImplementation(libs.bundles.test.espresso)
+    androidTestImplementation(libs.bundles.test.coroutines)
+    androidTestImplementation(libs.bundles.test.threetenabp)
+    androidTestImplementation(libs.bundles.test.mockwebserver)
+    androidTestImplementation(libs.bundles.test.hilt)
     kaptAndroidTest(libs.hilt.compiler)
 }

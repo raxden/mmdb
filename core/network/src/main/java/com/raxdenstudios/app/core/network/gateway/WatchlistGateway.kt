@@ -8,16 +8,18 @@ import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.WatchlistDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
 import com.raxdenstudios.app.core.network.service.MediaV4Service
-import com.raxdenstudios.commons.DispatcherProvider
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.coMap
-import com.raxdenstudios.commons.ext.getValueOrNull
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.coMap
+import com.raxdenstudios.commons.core.ext.getValueOrNull
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.retrofit.toResultData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 class WatchlistGateway @Inject constructor(
     private val dispatcher: DispatcherProvider,
     private val mediaV3Service: MediaV3Service,
@@ -55,27 +57,32 @@ class WatchlistGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV4Service.watchListMovies(accountId, page.value)
             .toResultData("Error occurred during fetching watch list movies")
+            .map { dto -> dto as PageDto<MediaDto> }
+
         MediaType.TvShow -> mediaV4Service.watchListTVShows(accountId, page.value)
             .toResultData("Error occurred during fetching watch list tv shows")
+            .map { dto -> dto as PageDto<MediaDto> }
     }
 
     suspend fun add(
         mediaId: MediaId,
         mediaType: String,
         accountId: String,
-    ): ResultData<Boolean, NetworkErrorDto> =
-        mediaV3Service.watchList(
-            accountId,
-            WatchlistDto.Request.Add(mediaId.value, mediaType)
-        ).toResultData("Error occurred during adding movie to watch list") { true }
+    ): ResultData<Boolean, NetworkErrorDto> = mediaV3Service.watchList(
+        accountId,
+        WatchlistDto.Request.Add(mediaId.value, mediaType)
+    )
+        .toResultData("Error occurred during adding movie to watch list")
+        .map { true }
 
     suspend fun remove(
         mediaId: MediaId,
         mediaType: String,
         accountId: String,
-    ): ResultData<Boolean, NetworkErrorDto> =
-        mediaV3Service.watchList(
-            accountId,
-            WatchlistDto.Request.Remove(mediaId.value, mediaType)
-        ).toResultData("Error occurred during adding movie to watch list") { true }
+    ): ResultData<Boolean, NetworkErrorDto> = mediaV3Service.watchList(
+        accountId,
+        WatchlistDto.Request.Remove(mediaId.value, mediaType)
+    )
+        .toResultData("Error occurred during adding movie to watch list")
+        .map { true }
 }

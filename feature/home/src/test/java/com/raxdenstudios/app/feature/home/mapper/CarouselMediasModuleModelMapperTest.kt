@@ -15,7 +15,7 @@ import com.raxdenstudios.app.core.ui.mapper.RatingModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import io.mockk.mockk
 import org.junit.Test
 

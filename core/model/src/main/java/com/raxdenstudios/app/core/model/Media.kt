@@ -1,6 +1,5 @@
 package com.raxdenstudios.app.core.model
 
-import androidx.annotation.VisibleForTesting
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
 import java.util.Locale
@@ -44,7 +43,6 @@ sealed class Media {
 
         companion object {
 
-            @VisibleForTesting
             val mock = Movie(
                 id = MediaId(1L),
                 title = "The Last of Us",
@@ -93,7 +91,6 @@ sealed class Media {
 
         companion object {
 
-            @VisibleForTesting
             val mock = TVShow(
                 id = MediaId(1L),
                 name = "The Last of Us",

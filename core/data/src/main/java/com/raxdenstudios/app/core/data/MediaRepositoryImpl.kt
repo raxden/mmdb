@@ -6,11 +6,11 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
-import com.raxdenstudios.commons.DispatcherProvider
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.getValueOrDefault
-import com.raxdenstudios.commons.ext.getValueOrNull
-import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.getValueOrDefault
+import com.raxdenstudios.commons.core.ext.getValueOrNull
+import com.raxdenstudios.commons.core.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize

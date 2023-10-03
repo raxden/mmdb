@@ -8,7 +8,7 @@ import com.raxdenstudios.app.core.data.RecentSearchRepository
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import io.mockk.coVerify

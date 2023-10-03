@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.core.data.remote.mapper
 
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class MediaTypeToDtoMapper @Inject constructor() : DataMapper<MediaType, String>() {

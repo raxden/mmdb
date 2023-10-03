@@ -21,7 +21,6 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.appdistribution) apply false
     alias(libs.plugins.rootcoverage)
-    alias(libs.plugins.android.releasing)
     alias(libs.plugins.android.versioning) apply false
     alias(libs.plugins.test.logger)
     alias(libs.plugins.detekt)
@@ -113,8 +112,10 @@ detekt {
 }
 
 subprojects {
-    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
+//    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
+//    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
+    apply(plugin = "com.adarshr.test-logger")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     // https://docs.gradle.org/current/userguide/project_report_plugin.html#sec:project_reports_tasks
     apply(plugin = "project-report")
 
@@ -126,8 +127,7 @@ subprojects {
     dependencies {
         // This rule set provides wrappers for rules implemented by ktlint - https://ktlint.github.io/.
         // https://detekt.dev/docs/rules/formatting/dawd
-        val detektFormatting = rootProject.libs.plugins.detektformatting.get().toString()
-        detektPlugins(detektFormatting)
+        detektPlugins(rootProject.libs.plugins.detekt.formatting.get().toString())
     }
 }
 

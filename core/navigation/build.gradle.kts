@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
@@ -9,21 +11,22 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.commons.android)
-    implementation(libs.timber)
-    implementation(libs.compose.navigation)
+    implementation(project(":core:common"))
+
+    implementationBundle(libs.bundles.material)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.androidx.compose)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.android)
 }

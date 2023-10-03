@@ -3,8 +3,8 @@ package com.raxdenstudios.app.ui
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.ui.model.BottomBarItemModel
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
+
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule

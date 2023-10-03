@@ -4,9 +4,9 @@ import com.raxdenstudios.app.core.data.HomeModuleRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.coFlatMap
-import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.coFlatMap
+import com.raxdenstudios.commons.core.ext.map
 import javax.inject.Inject
 
 class ChangeHomeModuleFilterUseCase @Inject constructor(

@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.domain
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.data.RecentSearchRepository
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

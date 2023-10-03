@@ -6,7 +6,7 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize

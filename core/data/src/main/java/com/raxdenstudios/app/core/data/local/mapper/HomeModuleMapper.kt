@@ -4,7 +4,7 @@ import com.raxdenstudios.app.core.database.model.HomeModuleEntity
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class HomeModuleToEntityMapper @Inject constructor() :

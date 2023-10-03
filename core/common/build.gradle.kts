@@ -5,7 +5,3 @@ plugins {
 android {
     namespace = "com.raxdenstudios.app.core.common"
 }
-
-dependencies {
-    implementation(libs.androidx.annotation)
-}

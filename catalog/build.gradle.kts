@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-compose-library")
 }
@@ -7,13 +9,12 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreUI))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreDomain))
-    implementation(libs.commons.android)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose.material)
-    implementation(libs.bundles.accompanist)
-    implementation(libs.bundles.landscapists)
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:model"))
+    implementation(project(":core:domain"))
+
+    implementationBundle(libs.bundles.material)
+    implementationBundle(libs.bundles.firebase)
+    implementationBundle(libs.bundles.androidx.compose)
 }

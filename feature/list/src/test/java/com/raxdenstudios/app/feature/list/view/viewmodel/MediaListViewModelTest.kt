@@ -24,24 +24,24 @@ import com.raxdenstudios.app.feature.MediaListParamsFactory
 import com.raxdenstudios.app.feature.MediaListViewModel
 import com.raxdenstudios.app.feature.mapper.MediaListTitleModelMapper
 import com.raxdenstudios.app.feature.model.MediaListParams
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageIndex
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
-import com.raxdenstudios.commons.provider.StringProvider
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.android.provider.StringProvider
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 import kotlinx.coroutines.test.runTest
 import net.lachlanmckee.timberjunit.TimberTestRule
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
+
 class MediaListViewModelTest {
 
     @get:Rule

@@ -2,8 +2,8 @@ package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.RecentSearchRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

@@ -15,8 +15,7 @@ import com.raxdenstudios.app.core.data.local.mapper.VoteEntityToDomainMapper
 import com.raxdenstudios.app.core.data.local.mapper.VoteToEntityMapper
 import com.raxdenstudios.app.core.database.MediaDatabase
 import com.raxdenstudios.app.core.model.MediaId
-import com.raxdenstudios.commons.ResultData
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.raxdenstudios.commons.core.ResultData
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -24,7 +23,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @SmallTest
 class WatchlistLocalDataSourceInstrumentalTest {
 

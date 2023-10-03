@@ -25,13 +25,13 @@ import com.raxdenstudios.app.feature.home.mapper.CarouselModelMapper
 import com.raxdenstudios.app.feature.home.mapper.CarouselModelToMediaFilterMapper
 import com.raxdenstudios.app.feature.home.mapper.HomeModuleModelMapper
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.provider.StringProvider
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.android.provider.StringProvider
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest

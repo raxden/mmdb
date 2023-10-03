@@ -1,7 +1,5 @@
 package com.raxdenstudios.core.model
 
-import androidx.annotation.VisibleForTesting
-
 data class Credentials(
     val accountId: String,
     val accessToken: String,
@@ -16,7 +14,6 @@ data class Credentials(
             sessionId = "",
         )
 
-        @VisibleForTesting
         val mock = Credentials(
             accountId = "",
             accessToken = "",

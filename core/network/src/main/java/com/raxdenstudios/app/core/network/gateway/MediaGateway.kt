@@ -9,11 +9,13 @@ import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.VideoDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.retrofit.toResultData
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 class MediaGateway @Inject constructor(
     private val mediaV3Service: MediaV3Service,
 ) {
@@ -32,6 +34,7 @@ class MediaGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.nowPlayingMovies(page.value)
             .toResultData("Error occurred during fetching now playing movies")
+            .map { dto -> dto as PageDto<MediaDto> }
 
         MediaType.TvShow -> ResultData.Success(PageDto.empty())
     }
@@ -42,9 +45,11 @@ class MediaGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.popularMovies(page.value)
             .toResultData("Error occurred during fetching popular movies")
+            .map { dto -> dto as PageDto<MediaDto> }
 
         MediaType.TvShow -> mediaV3Service.popularTVShows(page.value)
             .toResultData("Error occurred during fetching popular tv shows")
+            .map { dto -> dto as PageDto<MediaDto> }
     }
 
     suspend fun topRated(
@@ -53,9 +58,11 @@ class MediaGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.topRatedMovies(page.value)
             .toResultData("Error occurred during fetching top rated movies")
+            .map { dto -> dto as PageDto<MediaDto> }
 
         MediaType.TvShow -> mediaV3Service.topRatedTVShows(page.value)
             .toResultData("Error occurred during fetching top rated tv shows")
+            .map { dto -> dto as PageDto<MediaDto> }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -65,6 +72,7 @@ class MediaGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.upcoming(page.value)
             .toResultData("Error occurred during fetching upcoming movies")
+            .map { dto -> dto as PageDto<MediaDto> }
 
         MediaType.TvShow -> ResultData.Success(PageDto.empty())
     }
@@ -87,9 +95,11 @@ class MediaGateway @Inject constructor(
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> = when (mediaType) {
         MediaType.Movie -> mediaV3Service.relatedMovies(mediaId.value.toString(), page.value)
             .toResultData("Error occurred during related videos for movie with id: $mediaId")
+            .map { dto -> dto as PageDto<MediaDto> }
 
         MediaType.TvShow -> mediaV3Service.relatedTVShows(mediaId.value.toString(), page.value)
             .toResultData("Error occurred during related videos for tv show with id: $mediaId")
+            .map { dto -> dto as PageDto<MediaDto> }
     }
 
     suspend fun search(
@@ -97,7 +107,8 @@ class MediaGateway @Inject constructor(
         page: Page,
     ): ResultData<PageDto<MediaDto>, NetworkErrorDto> =
         mediaV3Service.search(query, page.value)
-            .toResultData("Error occurred during searching media with query: $query") { pageDto ->
+            .toResultData("Error occurred during searching media with query: $query")
+            .map { pageDto ->
                 PageDto(
                     page = pageDto.page,
                     total_pages = pageDto.total_pages,

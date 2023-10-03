@@ -1,7 +1,9 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.secrets)
+    alias(libs.plugins.gradle.secrets)
 }
 
 secrets {
@@ -18,25 +20,27 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(libs.commons.android)
-    implementation(libs.commons.paginationCo)
-    implementation(libs.bundles.retrofit)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.timber)
-    implementation(libs.gson)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementationBundle(libs.bundles.material)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.retrofit.asProvider())
+    implementation(libs.network.response.adapter)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
     debugImplementation(libs.gander.debug)
     releaseImplementation(libs.gander.release)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.android)
 }

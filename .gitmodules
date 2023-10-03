@@ -1,0 +1,3 @@
+[submodule "android-convention"]
+	path = build-logic
+	url = git@github.com:raxden/android-convention.git

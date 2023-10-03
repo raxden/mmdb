@@ -18,6 +18,9 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") { from(files("build-logic/gradle/libraries.versions.toml")) }
+    }
     /**
      * The dependencyResolutionManagement { repositories {...}}
      * block is where you configure the repositories and dependencies used by
@@ -40,7 +43,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.13.2"
+    id("com.gradle.enterprise") version "3.13.1"
 }
 
 gradleEnterprise {

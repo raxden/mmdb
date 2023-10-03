@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
@@ -9,26 +11,31 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreNetwork))
-    implementation(project(Modules.coreDatabase))
-    implementation(libs.bundles.coroutines)
-    implementation(libs.commons.android)
-    implementation(libs.commons.paginationCo)
-    implementation(libs.timber)
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.bundles.room)
-    kapt(libs.room.compiler)
-    implementation(libs.hilt.android)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+
+    implementationBundle(libs.bundles.material)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.retrofit.asProvider())
+
+    implementationBundle(libs.bundles.hilt)
     kapt(libs.hilt.compiler)
 
+    implementationBundle(libs.bundles.room)
+    kapt(libs.room.compiler)
+
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
+    testImplementation(libs.bundles.test.coroutines)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.android)
+    androidTestImplementation(libs.bundles.test.coroutines)
 }

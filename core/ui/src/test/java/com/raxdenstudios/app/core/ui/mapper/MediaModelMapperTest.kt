@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Test

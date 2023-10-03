@@ -1,4 +1,5 @@
 import extension.roomConfig
+import extension.implementationBundle
 
 plugins {
     id("com.raxdenstudios.android-library")
@@ -13,22 +14,23 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.bundles.room)
-    kapt(libs.room.compiler)
-    implementation(libs.hilt.android)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementationBundle(libs.bundles.threetenabp)
+
+    implementationBundle(libs.bundles.hilt)
     kapt(libs.hilt.compiler)
 
+    implementationBundle(libs.bundles.room)
+    kapt(libs.room.compiler)
+
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.room.test)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.android)
 }

@@ -8,14 +8,12 @@ import com.raxdenstudios.app.core.data.local.mapper.AccountToEntityMapper
 import com.raxdenstudios.app.core.database.AccountDatabase
 import com.raxdenstudios.core.model.Account
 import com.raxdenstudios.core.model.Credentials
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @SmallTest
 class AccountLocalDataSourceTest {
 

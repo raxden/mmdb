@@ -1,7 +1,5 @@
 package com.raxdenstudios.core.model
 
-import androidx.annotation.VisibleForTesting
-
 sealed class Account {
 
     abstract val id: Long
@@ -16,7 +14,6 @@ sealed class Account {
                 id = 1L
             )
 
-            @VisibleForTesting
             val mock = Guest(
                 id = 1L
             )
@@ -40,7 +37,6 @@ sealed class Account {
                 credentials = Credentials.empty
             )
 
-            @VisibleForTesting
             val mock = Logged(
                 id = 1L,
                 credentials = Credentials.mock

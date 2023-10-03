@@ -7,8 +7,8 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.MediaFilterModel
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.commons.DataMapper
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.core.util.DataMapper
+import com.raxdenstudios.commons.android.provider.StringProvider
 import javax.inject.Inject
 
 class CarouselModelMapper @Inject constructor(

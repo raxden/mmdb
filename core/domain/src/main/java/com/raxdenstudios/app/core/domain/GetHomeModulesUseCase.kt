@@ -8,10 +8,10 @@ import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.DispatcherProvider
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.getValueOrDefault
-import com.raxdenstudios.commons.ext.map
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.getValueOrDefault
+import com.raxdenstudios.commons.core.ext.map
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageSize
 import kotlinx.coroutines.async

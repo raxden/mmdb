@@ -28,15 +28,15 @@ import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
-import com.raxdenstudios.commons.provider.StringProvider
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.android.provider.StringProvider
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest

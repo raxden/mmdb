@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.ui.mapper
 import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.ui.model.ErrorModel
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import javax.inject.Inject
 
 class ErrorModelMapper @Inject constructor(

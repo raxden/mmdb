@@ -8,7 +8,7 @@ import com.raxdenstudios.app.core.network.model.SessionRequestDto
 import com.raxdenstudios.app.core.network.model.SessionResponseDto
 import com.raxdenstudios.app.core.network.service.AuthenticationV3Service
 import com.raxdenstudios.app.core.network.service.AuthenticationV4Service
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.retrofit.toResultData
 import javax.inject.Inject
 

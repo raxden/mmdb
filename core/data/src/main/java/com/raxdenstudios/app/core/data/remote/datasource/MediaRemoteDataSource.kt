@@ -18,9 +18,9 @@ import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.toPageList
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.mapFailure
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.core.model.Account
