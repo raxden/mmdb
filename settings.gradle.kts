@@ -19,7 +19,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     versionCatalogs {
-        create("libs") { from(files("build-logic/gradle/libraries.versions.toml")) }
+        create("libs") { from(files("gradle/libraries.versions.toml")) }
     }
     /**
      * The dependencyResolutionManagement { repositories {...}}

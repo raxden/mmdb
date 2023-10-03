@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.di
 
 import android.content.Context
-import com.raxdenstudios.commons.ActivityHolder
+import com.raxdenstudios.commons.android.ActivityHolder
 import com.raxdenstudios.commons.coroutines.DispatcherProvider
 import com.raxdenstudios.commons.pagination.Pagination
 import com.raxdenstudios.commons.pagination.model.Page

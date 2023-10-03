@@ -21,6 +21,13 @@ play {
 android {
     namespace = "com.raxdenstudios.app"
 
+    defaultConfig {
+        applicationId = "com.raxdenstudios.mmdb"
+
+        // apk name, is posible to add variables as version, date...
+        project.setProperty("archivesBaseName", "mmdb")
+    }
+
     buildTypes {
         getByName("debug") {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
