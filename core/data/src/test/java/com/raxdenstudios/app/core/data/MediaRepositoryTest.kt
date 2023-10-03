@@ -26,7 +26,9 @@ class MediaRepositoryTest {
     val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule(testDispatcher)
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     private val dispatcherProvider: DispatcherProvider = object : DispatcherProvider {
         override val main = testDispatcher

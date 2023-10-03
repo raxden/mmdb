@@ -8,12 +8,10 @@ import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.commons.core.ResultData
 import io.mockk.coEvery
 import io.mockk.mockk
-
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 internal class GetMediaVideosUseCaseTest {
 
     private val mediaRepository: MediaRepository = mockk()

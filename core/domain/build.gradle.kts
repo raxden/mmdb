@@ -25,6 +25,7 @@ dependencies {
     // test libraries
     testImplementation(project(":core:test"))
     testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
 
     // instrumental test libraries
     androidTestImplementation(project(":core:test"))

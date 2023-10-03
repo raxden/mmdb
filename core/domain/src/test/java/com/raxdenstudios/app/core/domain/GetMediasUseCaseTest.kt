@@ -13,17 +13,14 @@ import com.raxdenstudios.commons.pagination.model.PageSize
 import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
-
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-
 internal class GetMediasUseCaseTest {
 
-    @ExperimentalCoroutinesApi
-    val testDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(

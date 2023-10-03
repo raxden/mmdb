@@ -15,12 +15,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
 
-@ExperimentalCoroutinesApi
 class MediaGatewayTest {
 
     private val mediaV3Service: MediaV3Service = mockk(relaxed = true)

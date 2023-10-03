@@ -31,7 +31,7 @@ dependencies {
     testImplementation(project(":core:test"))
     testImplementation(libs.bundles.test)
     testImplementation(libs.bundles.test.coroutines)
-    testImplementation(libs.bundles.test.coroutines)
+    testImplementation(libs.bundles.test.threetenabp)
 
     // instrumental test libraries
     androidTestImplementation(project(":core:test"))

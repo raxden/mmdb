@@ -10,18 +10,15 @@ import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
-
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-
 internal class GetMediaUseCaseTest {
 
-    @ExperimentalCoroutinesApi
-    val testDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(

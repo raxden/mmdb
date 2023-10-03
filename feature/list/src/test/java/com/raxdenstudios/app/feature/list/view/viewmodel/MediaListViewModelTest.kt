@@ -35,17 +35,20 @@ import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.lachlanmckee.timberjunit.TimberTestRule
 import org.junit.Rule
 import org.junit.Test
 
-
 class MediaListViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     @get:Rule
     val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()

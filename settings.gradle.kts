@@ -19,7 +19,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     versionCatalogs {
-        create("libs") { from(files("gradle/libraries.versions.toml")) }
+        create("libs") { from(files("./gradle/libraries.versions.toml")) }
     }
     /**
      * The dependencyResolutionManagement { repositories {...}}
@@ -43,7 +43,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.13.1"
+    id("com.gradle.enterprise") version "3.13.2"
 }
 
 gradleEnterprise {

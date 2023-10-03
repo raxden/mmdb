@@ -1,3 +1,4 @@
+import extension.androidTestImplementationBundle
 import extension.implementationBundle
 
 plugins {
@@ -13,6 +14,12 @@ dependencies {
 
     implementationBundle(libs.bundles.test.asProvider())
     implementationBundle(libs.bundles.test.android)
+    implementationBundle(libs.bundles.test.compose)
+    implementationBundle(libs.bundles.test.espresso)
+    implementationBundle(libs.bundles.test.coroutines)
+    implementationBundle(libs.bundles.test.threetenabp)
+    implementationBundle(libs.bundles.test.mockwebserver)
+    implementationBundle(libs.bundles.test.hilt)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

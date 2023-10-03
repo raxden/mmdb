@@ -28,28 +28,31 @@ import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
+import com.raxdenstudios.commons.android.provider.StringProvider
 import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
-import com.raxdenstudios.commons.android.provider.StringProvider
-import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.lachlanmckee.timberjunit.TimberTestRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 internal class MediaViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     @get:Rule
     val timberTestRule: TimberTestRule = TimberTestRule.logAllWhenTestFails()
@@ -87,13 +90,15 @@ internal class MediaViewModelTest {
         mediaModelMapper = mediaModelMapper,
         errorModelMapper = errorModelMapper,
     )
-    private val mediaPageListResultModelMapper: MediaPageListResultModelMapper = MediaPageListResultModelMapper(
-        mediaModelMapper = mediaModelMapper,
-        errorModelMapper = errorModelMapper,
-        stringProvider = stringProvider,
-    )
+    private val mediaPageListResultModelMapper: MediaPageListResultModelMapper =
+        MediaPageListResultModelMapper(
+            mediaModelMapper = mediaModelMapper,
+            errorModelMapper = errorModelMapper,
+            stringProvider = stringProvider,
+        )
     private val addMediaToWatchlistUseCase: AddMediaToWatchlistUseCase = mockk(relaxed = true)
-    private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase = mockk(relaxed = true)
+    private val removeMediaFromWatchlistUseCase: RemoveMediaFromWatchlistUseCase =
+        mockk(relaxed = true)
     private lateinit var viewModel: MediaViewModel
 
     @Before
@@ -115,10 +120,7 @@ internal class MediaViewModelTest {
     fun `When viewModel is started, Then media is loaded`() = runTest {
         viewModel.uiState.test {
             val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(MediaContract.UIState.loading)
-
-            val uiState2 = awaitItem()
-            assertThat(uiState2).isEqualTo(
+            assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
                     relatedMedias = RelatedMediasModel.mock,
@@ -132,10 +134,7 @@ internal class MediaViewModelTest {
     fun `When viewModel is started, Then videos are loaded`() = runTest {
         viewModel.uiState.test {
             val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(MediaContract.UIState.loading)
-
-            val uiState2 = awaitItem()
-            assertThat(uiState2).isEqualTo(
+            assertThat(uiState).isEqualTo(
                 MediaContract.UIState(
                     media = MediaModel.mock,
                     relatedMedias = RelatedMediasModel.mock,
@@ -146,21 +145,26 @@ internal class MediaViewModelTest {
     }
 
     @Test
-    fun `Given an error, When viewModel is started, Then error is loaded`() = runTest {
-        coEvery { getMediaUseCase.invoke(any()) } returns flowOf(ResultData.Failure(ErrorDomain.Unknown("")))
-
-        viewModel.uiState.test {
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(MediaContract.UIState.loading)
-
-            val uiState2 = awaitItem()
-            assertThat(uiState2).isEqualTo(
-                MediaContract.UIState(
-                    videos = listOf(VideoModel.mock),
-                    error = ErrorModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
+    fun `Given an error, When viewModel is started, Then error is loaded`() {
+        coEvery { getMediaUseCase.invoke(any()) } returns flowOf(
+            ResultData.Failure(
+                ErrorDomain.Unknown(
+                    ""
                 )
             )
+        )
+
+        runTest {
+            viewModel.uiState.test {
+                val uiState = awaitItem()
+                assertThat(uiState).isEqualTo(
+                    MediaContract.UIState(
+                        videos = listOf(VideoModel.mock),
+                        error = ErrorModel.mock,
+                        relatedMedias = RelatedMediasModel.mock,
+                    )
+                )
+            }
         }
     }
 
@@ -211,23 +215,25 @@ internal class MediaViewModelTest {
     }
 
     @Test
-    fun `When error is dismissed, Then update uiState`() = runTest {
-        coEvery { getMediaVideosUseCase.invoke(any()) } returns ResultData.Failure(ErrorDomain.Unknown(""))
+    fun `When error is dismissed, Then update uiState`() {
+        coEvery {
+            getMediaVideosUseCase.invoke(any())
+        } returns ResultData.Failure(ErrorDomain.Unknown(""))
 
-        viewModel.uiState.test {
-            skipItems(1)
+        runTest {
+            viewModel.uiState.test {
+                viewModel.setUserEvent(MediaContract.UserEvent.ErrorDismissed)
 
-            viewModel.setUserEvent(MediaContract.UserEvent.ErrorDismissed)
-
-            val uiState = awaitItem()
-            assertThat(uiState).isEqualTo(
-                MediaContract.UIState(
-                    media = MediaModel.mock,
-                    relatedMedias = RelatedMediasModel.mock,
-                    videos = emptyList(),
-                    error = null,
+                val uiState = awaitItem()
+                assertThat(uiState).isEqualTo(
+                    MediaContract.UIState(
+                        media = MediaModel.mock,
+                        relatedMedias = RelatedMediasModel.mock,
+                        videos = emptyList(),
+                        error = null,
+                    )
                 )
-            )
+            }
         }
     }
 

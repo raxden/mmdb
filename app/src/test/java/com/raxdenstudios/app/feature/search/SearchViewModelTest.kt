@@ -1,5 +1,6 @@
 package com.raxdenstudios.app.feature.search
 
+import android.util.Log
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.domain.AddMediaToWatchlistUseCase
@@ -27,17 +28,26 @@ import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.android.provider.StringProvider
 import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class SearchViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     private val searchMediasUseCase: SearchMediasUseCase = mockk()
     private val lastRecentSearchesUseCase: LastRecentSearchesUseCase = mockk()
@@ -78,6 +88,13 @@ class SearchViewModelTest {
             removeMediaFromWatchlistUseCase = removeMediaFromWatchlistUseCase,
             pageListMediaModelMapper = pageListMediaModelMapper,
         )
+        mockkStatic(Log::class)
+        every { Log.e(any(), any(), any()) } returns 0
+    }
+
+    @After
+    fun after() {
+        unmockkStatic(Log::class)
     }
 
     @Test

@@ -1,3 +1,4 @@
+import extension.androidTestImplementationBundle
 import extension.implementationBundle
 
 plugins {
@@ -84,6 +85,7 @@ dependencies {
     androidTestImplementation(project(":core:test"))
     androidTestImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.test.android)
+    androidTestImplementationBundle(libs.bundles.test.compose)
     androidTestImplementation(libs.bundles.test.espresso)
     androidTestImplementation(libs.bundles.test.coroutines)
     androidTestImplementation(libs.bundles.test.threetenabp)
