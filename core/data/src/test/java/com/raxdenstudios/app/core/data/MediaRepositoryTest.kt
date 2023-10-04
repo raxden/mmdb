@@ -7,29 +7,28 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
-import com.raxdenstudios.commons.DispatcherProvider
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MediaRepositoryTest {
 
-    @ExperimentalCoroutinesApi
-    val testDispatcher = StandardTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
 
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule(testDispatcher)
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     private val dispatcherProvider: DispatcherProvider = object : DispatcherProvider {
         override val main = testDispatcher

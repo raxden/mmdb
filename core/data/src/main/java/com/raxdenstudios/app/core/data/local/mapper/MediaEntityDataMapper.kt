@@ -10,7 +10,7 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Picture
 import com.raxdenstudios.app.core.model.Size
 import com.raxdenstudios.app.core.model.Vote
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import com.raxdenstudios.commons.threeten.ext.toLocalDate
 import com.raxdenstudios.commons.threeten.ext.toMilliseconds
 import org.threeten.bp.Duration

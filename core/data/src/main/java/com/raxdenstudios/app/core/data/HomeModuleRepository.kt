@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.data
 import com.raxdenstudios.app.core.data.local.datasource.HomeModuleLocalDataSource
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

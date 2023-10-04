@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.data
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

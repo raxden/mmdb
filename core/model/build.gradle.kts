@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
 }
@@ -7,6 +9,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.annotation)
-    implementation(libs.threetenabp)
+    implementationBundle(libs.bundles.threetenabp)
 }

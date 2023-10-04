@@ -33,7 +33,7 @@ import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.feature.search.component.SearchTopBar
 import com.raxdenstudios.app.feature.search.model.SearchBarModel
-import com.raxdenstudios.commons.ext.toDp
+import com.raxdenstudios.commons.android.ext.toDp
 
 @Composable
 fun SearchScreen(

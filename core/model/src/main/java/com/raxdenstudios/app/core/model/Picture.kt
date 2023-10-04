@@ -1,7 +1,5 @@
 package com.raxdenstudios.app.core.model
 
-import androidx.annotation.VisibleForTesting
-
 sealed class Picture {
 
     object Empty : Picture()
@@ -13,7 +11,6 @@ sealed class Picture {
 
         companion object {
 
-            @VisibleForTesting
             val mock = WithImage(
                 thumbnail = Size.Thumbnail(
                     url = "https://image.tmdb.org/t/p/w500/6KErczPBROQty7QoIsaa6wJYXZi.jpg",

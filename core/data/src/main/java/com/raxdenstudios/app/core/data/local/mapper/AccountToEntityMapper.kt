@@ -2,7 +2,7 @@ package com.raxdenstudios.app.core.data.local.mapper
 
 import com.raxdenstudios.app.core.database.model.AccountEntity
 import com.raxdenstudios.app.core.database.model.TMDBCredentialsEntity
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import com.raxdenstudios.core.model.Account
 import com.raxdenstudios.core.model.Credentials
 import javax.inject.Inject

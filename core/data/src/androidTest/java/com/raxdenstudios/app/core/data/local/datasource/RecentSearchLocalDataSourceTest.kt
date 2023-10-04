@@ -4,7 +4,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import app.cash.turbine.test
 import com.raxdenstudios.app.core.data.local.mapper.ExceptionToErrorMapper
 import com.raxdenstudios.app.core.database.RecentSearchDatabase
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals

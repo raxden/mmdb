@@ -2,7 +2,7 @@ package com.raxdenstudios.app.feature.home.mapper
 
 import com.raxdenstudios.app.core.model.HomeModule
 import com.raxdenstudios.app.feature.home.model.HomeModuleModel
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class HomeModuleModelMapper @Inject constructor(

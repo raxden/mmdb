@@ -1,3 +1,6 @@
+import extension.androidTestImplementationBundle
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
@@ -9,26 +12,29 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreNetwork))
-    implementation(project(Modules.coreDatabase))
-    implementation(libs.bundles.coroutines)
-    implementation(libs.commons.android)
-    implementation(libs.commons.paginationCo)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+
+    implementation(libs.commons.retrofit)
     implementation(libs.timber)
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.bundles.room)
-    kapt(libs.room.compiler)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.room)
+    implementationBundle(libs.bundles.hilt)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
+    testImplementation(libs.bundles.test.threetenabp)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementationBundle(libs.bundles.test.android)
+    androidTestImplementationBundle(libs.bundles.test.coroutines)
+    androidTestImplementationBundle(libs.bundles.test.threetenabp)
+    androidTestImplementationBundle(libs.bundles.test.espresso)
+    androidTestImplementationBundle(libs.bundles.test.hilt)
 }

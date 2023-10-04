@@ -7,18 +7,16 @@ import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 internal class GetRelatedMediasUseCaseTest {
 
     private val testDispatcher = StandardTestDispatcher()

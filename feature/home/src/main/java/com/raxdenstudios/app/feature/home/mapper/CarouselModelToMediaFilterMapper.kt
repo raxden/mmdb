@@ -4,7 +4,7 @@ import com.raxdenstudios.app.feature.home.model.HomeModuleModel
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class CarouselModelToMediaFilterMapper @Inject constructor() :

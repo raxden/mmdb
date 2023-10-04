@@ -7,7 +7,7 @@ import com.raxdenstudios.app.core.ui.theme.AppComposeTheme
 import com.raxdenstudios.app.test.HiltTestActivity
 import com.raxdenstudios.app.test.MockWebServerRule
 import com.raxdenstudios.app.test.OkHttp3IdlingResource
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.appflate.restmock.RESTMockServer

@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.ui.model.ErrorModel
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before

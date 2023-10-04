@@ -12,9 +12,10 @@ import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.mapFailure
-import com.raxdenstudios.commons.ext.runCatching
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.coRunCatching
+import com.raxdenstudios.commons.core.ext.mapFailure
+import com.raxdenstudios.commons.core.ext.runCatching
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -65,34 +66,34 @@ class WatchlistLocalDataSource @Inject constructor(
         observe().first()
 
     @Transaction
-    suspend fun add(media: Media): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun add(media: Media): ResultData<Boolean, ErrorDomain> = coRunCatching {
         mediaDao.insert(mediaToEntityMapper.transform(media))
         watchListDao.insert(mediaToWatchlistEntityMapper.transform(media))
         true
     }.mapFailure { error -> exceptionToErrorMapper.transform(error) }
 
     @Transaction
-    suspend fun add(medias: List<Media>): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun add(medias: List<Media>): ResultData<Boolean, ErrorDomain> = coRunCatching {
         mediaDao.insert(mediaToEntityMapper.transform(medias))
         watchListDao.insert(mediaToWatchlistEntityMapper.transform(medias))
         true
     }.mapFailure { error -> exceptionToErrorMapper.transform(error) }
 
     @Transaction
-    suspend fun init(medias: List<Media>): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun init(medias: List<Media>): ResultData<Boolean, ErrorDomain> = coRunCatching {
         watchListDao.clear()
         mediaDao.insert(mediaToEntityMapper.transform(medias))
         watchListDao.insert(mediaToWatchlistEntityMapper.transform(medias))
         true
     }.mapFailure { error -> exceptionToErrorMapper.transform(error) }
 
-    suspend fun clear(): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun clear(): ResultData<Boolean, ErrorDomain> = coRunCatching {
         watchListDao.clear()
         true
     }.mapFailure { error -> exceptionToErrorMapper.transform(error) }
 
     @Transaction
-    suspend fun remove(mediaId: MediaId): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun remove(mediaId: MediaId): ResultData<Boolean, ErrorDomain> = coRunCatching {
         watchListDao.delete(mediaId.value)
         mediaDao.delete(mediaId.value)
         true

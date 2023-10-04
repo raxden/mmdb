@@ -3,7 +3,7 @@ package com.raxdenstudios.app.feature.detail.mapper
 import com.raxdenstudios.app.core.model.Picture
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.feature.detail.model.VideoModel
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class VideoModelMapper @Inject constructor() : DataMapper<Video, VideoModel>() {

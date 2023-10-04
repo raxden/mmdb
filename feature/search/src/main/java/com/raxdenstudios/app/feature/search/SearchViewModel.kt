@@ -10,10 +10,10 @@ import com.raxdenstudios.app.core.ui.mapper.PageListMediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
 import com.raxdenstudios.app.feature.search.model.SearchBarModel
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.fold
-import com.raxdenstudios.commons.ext.getValueOrDefault
-import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.fold
+import com.raxdenstudios.commons.core.ext.getValueOrDefault
+import com.raxdenstudios.commons.coroutines.ext.safeLaunch
 import com.raxdenstudios.commons.pagination.model.PageList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

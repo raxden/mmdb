@@ -6,9 +6,9 @@ import com.raxdenstudios.app.core.ui.mapper.ErrorModelMapper
 import com.raxdenstudios.app.core.ui.mapper.MediaModelMapper
 import com.raxdenstudios.app.core.ui.model.ErrorModel
 import com.raxdenstudios.app.core.ui.model.MediaModel
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.mapFailure
 import javax.inject.Inject
 
 class MediaResultModelMapper @Inject constructor(

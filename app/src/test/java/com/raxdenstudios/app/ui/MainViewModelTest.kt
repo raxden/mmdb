@@ -4,18 +4,21 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.navigation.HomeRoutes
 import com.raxdenstudios.app.core.navigation.MainRoutes
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 internal class MainViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     private lateinit var viewModel: MainViewModel
 

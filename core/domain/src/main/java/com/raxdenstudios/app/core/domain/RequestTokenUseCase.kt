@@ -2,7 +2,7 @@ package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.AuthenticationRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import javax.inject.Inject
 
 class RequestTokenUseCase @Inject constructor(

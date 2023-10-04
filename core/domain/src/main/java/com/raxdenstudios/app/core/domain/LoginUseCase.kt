@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.core.domain
 
 import com.raxdenstudios.app.core.data.AccountRepository
-import com.raxdenstudios.commons.DispatcherProvider
+import com.raxdenstudios.commons.coroutines.DispatcherProvider
 import com.raxdenstudios.core.model.Credentials
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

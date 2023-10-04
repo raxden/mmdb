@@ -3,18 +3,21 @@ package com.raxdenstudios.app.ui
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.ui.model.BottomBarItemModel
-import com.raxdenstudios.commons.test.rules.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.raxdenstudios.commons.coroutines.test.rules.MainDispatcherRule
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 internal class BottomBarViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(
+        testDispatcher = testDispatcher
+    )
 
     private lateinit var viewModel: BottomBarViewModel
 
@@ -41,8 +44,8 @@ internal class BottomBarViewModelTest {
                 )
             )
             viewModel.uiEvent.test {
-                val event = awaitItem()
-                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToAccount)
+                val uiEvent = awaitItem()
+                assertThat(uiEvent).isEqualTo(BottomBarContract.UIEvent.NavigateToAccount)
             }
             cancelAndConsumeRemainingEvents()
         }
@@ -66,8 +69,8 @@ internal class BottomBarViewModelTest {
                 )
             )
             viewModel.uiEvent.test {
-                val event = awaitItem()
-                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToHome)
+                val uiEvent = awaitItem()
+                assertThat(uiEvent).isEqualTo(BottomBarContract.UIEvent.NavigateToHome)
             }
             cancelAndConsumeRemainingEvents()
         }
@@ -91,8 +94,8 @@ internal class BottomBarViewModelTest {
                 )
             )
             viewModel.uiEvent.test {
-                val event = awaitItem()
-                assertThat(event).isEqualTo(BottomBarContract.UIEvent.NavigateToSearch)
+                val uiEvent = awaitItem()
+                assertThat(uiEvent).isEqualTo(BottomBarContract.UIEvent.NavigateToSearch)
             }
             cancelAndConsumeRemainingEvents()
         }

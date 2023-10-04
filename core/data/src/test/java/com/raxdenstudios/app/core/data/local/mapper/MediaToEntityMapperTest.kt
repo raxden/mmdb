@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.data.local.mapper
 import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.database.model.MediaEntity
 import com.raxdenstudios.app.core.model.Media
-import com.raxdenstudios.app.test.ThreeTenRule
+import com.raxdenstudios.commons.treeten.test.rules.ThreeTenRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

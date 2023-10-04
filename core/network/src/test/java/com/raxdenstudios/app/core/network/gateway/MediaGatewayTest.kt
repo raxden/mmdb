@@ -9,18 +9,16 @@ import com.raxdenstudios.app.core.network.model.ErrorDto
 import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.service.MediaV3Service
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import retrofit2.Response
 
-@ExperimentalCoroutinesApi
 class MediaGatewayTest {
 
     private val mediaV3Service: MediaV3Service = mockk(relaxed = true)
