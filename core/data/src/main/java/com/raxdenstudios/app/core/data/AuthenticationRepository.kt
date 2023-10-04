@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.data
 import com.raxdenstudios.app.core.data.remote.datasource.AuthenticationRemoteDataSource
 import com.raxdenstudios.app.core.model.AccessToken
 import com.raxdenstudios.app.core.model.ErrorDomain
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import javax.inject.Inject
 
 class AuthenticationRepository @Inject constructor(

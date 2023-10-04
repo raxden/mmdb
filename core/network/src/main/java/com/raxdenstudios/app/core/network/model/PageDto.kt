@@ -12,6 +12,13 @@ data class PageDto<T>(
     @Expose val results: List<T>,
 ) {
 
+    fun <R> map(mapper: (List<T>) -> List<R>): PageDto<R> = PageDto(
+        page = page,
+        total_pages = total_pages,
+        total_results = total_results,
+        results = mapper(results),
+    )
+
     companion object {
 
         fun <T> empty(): PageDto<T> = PageDto(

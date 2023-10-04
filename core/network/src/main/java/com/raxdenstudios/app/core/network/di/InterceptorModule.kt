@@ -7,7 +7,7 @@ import com.raxdenstudios.app.core.network.interceptor.TokenInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheLoggerInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheNetworkInterceptor
 import com.raxdenstudios.commons.okhttp3.CacheOfflineInterceptor
-import com.raxdenstudios.commons.util.Network
+import com.raxdenstudios.commons.android.util.Network
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

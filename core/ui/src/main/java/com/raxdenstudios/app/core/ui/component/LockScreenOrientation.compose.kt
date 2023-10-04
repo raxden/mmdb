@@ -3,7 +3,7 @@ package com.raxdenstudios.app.core.ui.component
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
-import com.raxdenstudios.commons.ext.findActivity
+import com.raxdenstudios.commons.android.ext.findActivity
 
 @Composable
 fun LockScreenOrientation(orientation: Int) {

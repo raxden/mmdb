@@ -1,5 +1,5 @@
 pluginManagement {
-    includeBuild("build-logic")
+    includeBuild("android-convention")
     /**
      * The pluginManagement {repositories {...}} block configures the
      * repositories Gradle uses to search or download the Gradle plugins and
@@ -18,6 +18,9 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") { from(files("./gradle/libraries.versions.toml")) }
+    }
     /**
      * The dependencyResolutionManagement { repositories {...}}
      * block is where you configure the repositories and dependencies used by

@@ -15,10 +15,10 @@ import com.raxdenstudios.app.feature.detail.mapper.VideoModelMapper
 import com.raxdenstudios.app.feature.detail.model.MediaParams
 import com.raxdenstudios.app.feature.detail.model.RelatedMediasModel
 import com.raxdenstudios.app.feature.detail.model.VideoModel
-import com.raxdenstudios.commons.ext.fold
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.onSuccess
-import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.core.ext.fold
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.onSuccess
+import com.raxdenstudios.commons.coroutines.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

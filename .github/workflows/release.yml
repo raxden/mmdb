@@ -31,7 +31,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -58,7 +60,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -83,7 +87,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -112,7 +118,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -139,7 +147,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -166,7 +176,9 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup machine
         uses: ./.github/actions/common_setup
@@ -208,4 +220,6 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'

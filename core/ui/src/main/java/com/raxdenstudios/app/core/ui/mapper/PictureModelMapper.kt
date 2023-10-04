@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.core.ui.mapper
 
 import com.raxdenstudios.app.core.model.Picture
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class PictureModelMapper @Inject constructor() : DataMapper<Picture, String>() {

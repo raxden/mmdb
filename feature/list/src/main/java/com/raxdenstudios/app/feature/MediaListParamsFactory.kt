@@ -6,7 +6,7 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.feature.model.MediaListParams
-import com.raxdenstudios.commons.ext.getOrThrow
+import com.raxdenstudios.commons.android.ext.getOrThrow
 import javax.inject.Inject
 
 class MediaListParamsFactory @Inject constructor(

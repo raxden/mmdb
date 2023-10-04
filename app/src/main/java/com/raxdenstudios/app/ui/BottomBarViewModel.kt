@@ -3,7 +3,7 @@ package com.raxdenstudios.app.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.raxdenstudios.app.ui.model.BottomBarItemModel
-import com.raxdenstudios.commons.ext.safeLaunch
+import com.raxdenstudios.commons.coroutines.ext.safeLaunch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

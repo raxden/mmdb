@@ -4,10 +4,10 @@ import com.raxdenstudios.app.core.data.MediaRepository
 import com.raxdenstudios.app.core.data.RecentSearchRepository
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.Media
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.getValueOrDefault
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.onCoSuccess
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.getValueOrDefault
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.onCoSuccess
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize

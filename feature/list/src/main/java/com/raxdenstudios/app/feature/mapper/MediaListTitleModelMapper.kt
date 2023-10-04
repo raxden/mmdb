@@ -4,7 +4,7 @@ import com.raxdenstudios.app.core.i18n.R
 import com.raxdenstudios.app.core.model.MediaCategory
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.feature.model.MediaListParams
-import com.raxdenstudios.commons.provider.StringProvider
+import com.raxdenstudios.commons.android.provider.StringProvider
 import javax.inject.Inject
 
 class MediaListTitleModelMapper @Inject constructor(

@@ -8,7 +8,7 @@ import com.raxdenstudios.app.core.model.MediaFilter
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.commons.pagination.model.PageSize
@@ -19,7 +19,7 @@ class MediaDataSource @Inject constructor(
     private val accountLocalDataSource: AccountLocalDataSource,
 ) {
 
-    @Suppress("UnusedPrivateMember")
+    @SuppressWarnings("UnusedPrivateMember")
     suspend fun fetch(
         mediaFilter: MediaFilter,
         page: Page,
@@ -40,7 +40,7 @@ class MediaDataSource @Inject constructor(
             mediaType = mediaType,
         )
 
-    @Suppress("UnusedPrivateMember")
+    @SuppressWarnings("UnusedPrivateMember")
     suspend fun videos(
         mediaId: MediaId,
         mediaType: MediaType,
@@ -50,7 +50,7 @@ class MediaDataSource @Inject constructor(
             mediaType = mediaType,
         )
 
-    @Suppress("UnusedPrivateMember")
+    @SuppressWarnings("UnusedPrivateMember")
     suspend fun related(
         mediaId: MediaId,
         mediaType: MediaType,
@@ -63,7 +63,7 @@ class MediaDataSource @Inject constructor(
             page = page,
         )
 
-    @Suppress("UnusedPrivateMember")
+    @SuppressWarnings("UnusedPrivateMember")
     suspend fun search(
         query: String,
         page: Page,

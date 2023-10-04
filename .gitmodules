@@ -1,0 +1,3 @@
+[submodule "android-convention"]
+	path = android-convention
+	url = git@github.com:raxden/android-convention.git

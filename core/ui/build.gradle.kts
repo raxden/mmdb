@@ -1,3 +1,7 @@
+import extension.androidTestImplementationBundle
+import extension.debugImplementationBundle
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-compose-library")
 }
@@ -7,35 +11,35 @@ android {
 }
 
 dependencies {
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.corei18n))
-    implementation(project(Modules.coreDomain))
-    implementation(project(Modules.coreModel))
-    implementation(project(Modules.coreNavigation))
-    implementation(libs.bundles.retrofit)
-    implementation(libs.bundles.threetenabp)
-    implementation(libs.commons.paginationCo)
-    implementation(libs.commons.android)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.timber)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose.material)
-    implementation(libs.bundles.accompanist)
-    implementation(libs.bundles.landscapists)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(project(":core:common"))
+    implementation(project(":core:i18n"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:navigation"))
+
+    implementationBundle(libs.bundles.android.material)
+    implementationBundle(libs.bundles.androidx.compose)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.hilt)
+    implementationBundle(libs.bundles.firebase)
+    implementationBundle(libs.bundles.coil.compose)
+    implementationBundle(libs.bundles.retrofit)
 
     // debug libraries
-    debugImplementation(platform(libs.firebase.bom))
-    debugImplementation(libs.bundles.compose.debug)
+    debugImplementationBundle(libs.bundles.debug.androidx.compose)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
+    testImplementation(libs.bundles.test.threetenabp)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementationBundle(libs.bundles.test.android)
+    androidTestImplementationBundle(libs.bundles.test.coroutines)
+    androidTestImplementationBundle(libs.bundles.test.threetenabp)
+    androidTestImplementationBundle(libs.bundles.test.androidx.compose)
+    androidTestImplementationBundle(libs.bundles.test.hilt)
 }

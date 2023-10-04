@@ -32,20 +32,18 @@ import com.raxdenstudios.app.core.network.model.MediaDetailDto
 import com.raxdenstudios.app.core.network.model.MediaDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.VideoDto
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.core.model.Account
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.LocalDate
 
-@ExperimentalCoroutinesApi
 internal class MediaRemoteDataSourceTest {
 
     private val mediaGateway: MediaGateway = mockk()

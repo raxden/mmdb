@@ -5,7 +5,7 @@ import com.raxdenstudios.app.core.model.Size
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.model.VideoType
 import com.raxdenstudios.app.core.network.model.VideoDto
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import javax.inject.Inject
 
 class VideoDtoToDomainMapper @Inject constructor(

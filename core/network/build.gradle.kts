@@ -1,7 +1,10 @@
+import extension.androidTestImplementationBundle
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.secrets)
+    alias(libs.plugins.gradle.secrets)
 }
 
 secrets {
@@ -18,25 +21,31 @@ android {
 
 dependencies {
     // libraries
-    implementation(project(Modules.coreCommon))
-    implementation(project(Modules.coreModel))
-    implementation(libs.commons.android)
-    implementation(libs.commons.paginationCo)
-    implementation(libs.bundles.retrofit)
-    implementation(libs.bundles.coroutines)
-    implementation(libs.timber)
-    implementation(libs.gson)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementationBundle(libs.bundles.android.material)
+    implementationBundle(libs.bundles.coroutines)
+    implementationBundle(libs.bundles.threetenabp)
+    implementationBundle(libs.bundles.hilt)
+    implementationBundle(libs.bundles.retrofit)
+
+    // debug libraries
     debugImplementation(libs.gander.debug)
+
+    // release libraries
     releaseImplementation(libs.gander.release)
 
     // test libraries
-    testImplementation(project(Modules.coreTest))
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":core:test"))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.bundles.test.coroutines)
+    testImplementation(libs.bundles.test.threetenabp)
 
     // instrumental test libraries
-    androidTestImplementation(project(Modules.coreTest))
-    androidTestImplementation(libs.bundles.testingUI)
-    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(project(":core:test"))
+    androidTestImplementationBundle(libs.bundles.test.android)
+    androidTestImplementationBundle(libs.bundles.test.coroutines)
+    androidTestImplementationBundle(libs.bundles.test.threetenabp)
+    androidTestImplementationBundle(libs.bundles.test.hilt)
 }

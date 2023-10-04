@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.feature.detail.model.MediaParams
-import com.raxdenstudios.commons.ext.getOrThrow
+import com.raxdenstudios.commons.android.ext.getOrThrow
 import javax.inject.Inject
 
 class MediaParamsFactory @Inject constructor(

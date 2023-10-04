@@ -6,9 +6,9 @@ import com.raxdenstudios.app.core.database.RecentSearchDatabase
 import com.raxdenstudios.app.core.database.dao.RecentSearchDao
 import com.raxdenstudios.app.core.database.model.RecentSearchEntity
 import com.raxdenstudios.app.core.model.ErrorDomain
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.mapFailure
-import com.raxdenstudios.commons.ext.runCatching
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.coRunCatching
+import com.raxdenstudios.commons.core.ext.mapFailure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class RecentSearchLocalDataSource @Inject constructor(
             .map { query -> ResultData.Success(query) }
 
     @Transaction
-    suspend fun add(query: String): ResultData<Boolean, ErrorDomain> = runCatching {
+    suspend fun add(query: String): ResultData<Boolean, ErrorDomain> = coRunCatching {
         recentSearchDao.insert(RecentSearchEntity(query = query))
         true
     }.mapFailure { error -> exceptionToErrorMapper.transform(error) }

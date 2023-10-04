@@ -1,7 +1,7 @@
 package com.raxdenstudios.app.core.data.remote.mapper
 
 import com.raxdenstudios.app.core.network.model.NetworkErrorDto
-import com.raxdenstudios.commons.DataMapper
+import com.raxdenstudios.commons.core.util.DataMapper
 import com.raxdenstudios.commons.NetworkError
 import com.raxdenstudios.app.core.model.ErrorDomain
 import javax.inject.Inject

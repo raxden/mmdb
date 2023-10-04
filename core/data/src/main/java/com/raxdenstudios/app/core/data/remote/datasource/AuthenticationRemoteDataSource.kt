@@ -4,9 +4,9 @@ import com.raxdenstudios.app.core.data.remote.mapper.NetworkErrorDtoToErrorMappe
 import com.raxdenstudios.app.core.model.AccessToken
 import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.network.gateway.AuthenticationGateway
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.mapFailure
 import javax.inject.Inject
 
 class AuthenticationRemoteDataSource @Inject constructor(

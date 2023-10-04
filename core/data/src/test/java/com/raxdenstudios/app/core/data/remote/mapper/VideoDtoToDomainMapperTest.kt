@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.model.VideoType
 import com.raxdenstudios.app.core.network.model.VideoDto
-import com.raxdenstudios.app.test.ThreeTenRule
+import com.raxdenstudios.commons.treeten.test.rules.ThreeTenRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

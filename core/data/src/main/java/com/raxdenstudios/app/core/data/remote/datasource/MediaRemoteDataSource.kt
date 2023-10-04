@@ -14,13 +14,14 @@ import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
 import com.raxdenstudios.app.core.network.gateway.MediaGateway
 import com.raxdenstudios.app.core.network.gateway.WatchlistGateway
+import com.raxdenstudios.app.core.network.model.ErrorDto
 import com.raxdenstudios.app.core.network.model.MediaDto
-import com.raxdenstudios.app.core.network.model.NetworkErrorDto
 import com.raxdenstudios.app.core.network.model.PageDto
 import com.raxdenstudios.app.core.network.model.toPageList
-import com.raxdenstudios.commons.ResultData
-import com.raxdenstudios.commons.ext.map
-import com.raxdenstudios.commons.ext.mapFailure
+import com.raxdenstudios.commons.NetworkError
+import com.raxdenstudios.commons.core.ResultData
+import com.raxdenstudios.commons.core.ext.map
+import com.raxdenstudios.commons.core.ext.mapFailure
 import com.raxdenstudios.commons.pagination.model.Page
 import com.raxdenstudios.commons.pagination.model.PageList
 import com.raxdenstudios.core.model.Account
@@ -67,7 +68,7 @@ class MediaRemoteDataSource @Inject constructor(
     private fun ResultData<PageList<Media>, ErrorDomain>.markAsWatchlist() =
         map { pageList -> pageList.copy(items = pageList.items.map { movie -> movie.copyWith(watchList = true) }) }
 
-    private fun ResultData<PageDto<MediaDto>, NetworkErrorDto>.toDomain() =
+    private fun ResultData<PageDto<MediaDto>, NetworkError<ErrorDto>>.toDomain() =
         map { pageDto -> pageDto.toPageList { results -> mediaDtoToDomainMapper.transform(results) } }
             .mapFailure { error -> networkErrorDtoToErrorMapper.transform(error) }
 

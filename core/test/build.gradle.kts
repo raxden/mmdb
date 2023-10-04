@@ -1,3 +1,5 @@
+import extension.implementationBundle
+
 plugins {
     id("com.raxdenstudios.android-library")
     alias(libs.plugins.hilt.android)
@@ -8,9 +10,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.testing)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.testingUI)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementationBundle(libs.bundles.test.android)
+    implementationBundle(libs.bundles.test.coroutines)
+    implementationBundle(libs.bundles.test.threetenabp)
+    implementationBundle(libs.bundles.test.espresso)
+    implementationBundle(libs.bundles.test.androidx.compose)
+    implementationBundle(libs.bundles.hilt)
+    implementationBundle(libs.bundles.test.hilt)
+    implementationBundle(libs.bundles.test.mockwebserver)
 }

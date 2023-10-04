@@ -5,7 +5,7 @@ import com.raxdenstudios.app.core.model.ErrorDomain
 import com.raxdenstudios.app.core.model.MediaId
 import com.raxdenstudios.app.core.model.MediaType
 import com.raxdenstudios.app.core.model.Video
-import com.raxdenstudios.commons.ResultData
+import com.raxdenstudios.commons.core.ResultData
 import javax.inject.Inject
 
 class GetMediaVideosUseCase @Inject constructor(

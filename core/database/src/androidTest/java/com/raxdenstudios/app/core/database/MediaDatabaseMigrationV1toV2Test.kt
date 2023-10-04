@@ -5,11 +5,9 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.test.platform.app.InstrumentationRegistry
 import com.raxdenstudios.app.core.database.migration.MediaDatabaseMigrationV1toV2
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class MediaDatabaseMigrationV1toV2Test {
 
     companion object {
