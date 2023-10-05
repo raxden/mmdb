@@ -43,7 +43,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.13.2"
+    id("com.gradle.enterprise") version "3.15.1"
 }
 
 gradleEnterprise {
