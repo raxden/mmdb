@@ -1,5 +1,5 @@
 pluginManagement {
-    includeBuild("android-convention")
+    includeBuild("build-logic")
     /**
      * The pluginManagement {repositories {...}} block configures the
      * repositories Gradle uses to search or download the Gradle plugins and
