@@ -1,6 +1,6 @@
 import extension.androidTestImplementationBundle
 import extension.implementationBundle
-import extension.roomConfig
+import extension.roomSetup
 
 plugins {
     id("com.raxdenstudios.android-library")
@@ -10,7 +10,7 @@ plugins {
 android {
     namespace = "com.raxdenstudios.app.core.database"
 
-    roomConfig(project)
+    roomSetup(project)
 }
 
 dependencies {
