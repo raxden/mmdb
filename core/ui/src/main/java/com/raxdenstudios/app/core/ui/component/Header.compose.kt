@@ -22,7 +22,7 @@ fun Header(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 12.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -31,6 +31,7 @@ fun Header(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 6.dp, bottom = 2.dp),
+            maxLines = 1,
             text = title,
         )
         if (seeAllVisible) {

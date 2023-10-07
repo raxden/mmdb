@@ -11,11 +11,13 @@ import com.raxdenstudios.app.core.ui.theme.Typography
 fun H6Text(
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int = Int.MAX_VALUE,
     text: String,
 ) {
     Text(
         modifier = modifier,
         textAlign = textAlign,
+        maxLines = maxLines,
         style = Typography.h6.copy(
             fontWeight = FontWeight.Bold,
         ),
@@ -27,11 +29,13 @@ fun H6Text(
 fun Body2Text(
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int = Int.MAX_VALUE,
     text: String,
 ) {
     Text(
         modifier = modifier,
         textAlign = textAlign,
+        maxLines = maxLines,
         style = Typography.body2.copy(
             fontWeight = FontWeight.Medium,
         ),
