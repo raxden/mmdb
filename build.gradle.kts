@@ -112,10 +112,8 @@ detekt {
 }
 
 subprojects {
-//    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
-//    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
-    apply(plugin = "com.adarshr.test-logger")
-    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = rootProject.libs.plugins.test.logger.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.detekt.asProvider().get().pluginId)
     // https://docs.gradle.org/current/userguide/project_report_plugin.html#sec:project_reports_tasks
     apply(plugin = "project-report")
 
