@@ -28,7 +28,7 @@ dependencies {
     implementationBundle(libs.bundles.coroutines)
     implementationBundle(libs.bundles.threetenabp)
     implementationBundle(libs.bundles.hilt)
-    implementationBundle(libs.bundles.retrofit)
+    implementationBundle(libs.bundles.retrofit2.asProvider())
 
     // debug libraries
     debugImplementation(libs.gander.debug)

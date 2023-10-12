@@ -24,7 +24,7 @@ dependencies {
     implementationBundle(libs.bundles.hilt)
     implementationBundle(libs.bundles.firebase)
     implementationBundle(libs.bundles.coil.compose)
-    implementationBundle(libs.bundles.retrofit)
+    implementationBundle(libs.bundles.retrofit2.asProvider())
 
     // debug libraries
     debugImplementationBundle(libs.bundles.debug.androidx.compose)

@@ -279,7 +279,7 @@ okhttp3 = [
     "okhttp3",
     "okhttp3-logging-interceptor",
 ]
-retrofit = [
+retrofit2 = [
     "commons-retrofit",
     "retrofit-core",
     "retrofit-gson",
