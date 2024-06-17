@@ -12,7 +12,7 @@ jobs:
           submodules: 'true'
 
       - uses: ./.github/actions/common_setup
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/gradle-build-action@v3
         with:
           gradle-version: release-candidate
       - run: gradle build --dry-run # just test build configuration
