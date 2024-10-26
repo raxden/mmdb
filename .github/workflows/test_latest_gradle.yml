@@ -1,7 +1,7 @@
 name: Test latest Gradle RC
 on:
-  schedule:
-    - cron: 0 0 * * 0 # every sunday
+  # schedule:
+    # - cron: 0 0 * * 0 # every sunday
 
 jobs:
   gradle-rc:
